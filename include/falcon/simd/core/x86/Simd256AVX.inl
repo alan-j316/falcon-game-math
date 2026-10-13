@@ -1178,21 +1178,52 @@ namespace flcn
             {
                 return Simd256(_mm256_cmp_ps(_reg, *other, _CMP_GT_OQ));
             }
-            else if constexpr (sizeof(DataType) == 8)
+            // Signed types
+            else if constexpr (types::IsQWord<DataType>)
             {
                 return Simd256(_mm256_cmpgt_epi64(_reg, *other));
             }
-            else if constexpr (sizeof(DataType) == 4)
+            else if constexpr (types::IsDWord<DataType>)
             {
                 return Simd256(_mm256_cmpgt_epi32(_reg, *other));
             }
-            else if constexpr (sizeof(DataType) == 2)
+            else if constexpr (types::IsWord<DataType>)
             {
                 return Simd256(_mm256_cmpgt_epi16(_reg, *other));
             }
-            else // if constexpr (sizeof(DataType) == 1)
+            else if constexpr (types::IsByte<DataType>)
             {
                 return Simd256(_mm256_cmpgt_epi8(_reg, *other));
+            }
+            // Unsigned types
+            // For unsigned types we need to offset the sign bit before comparison
+            else if constexpr (types::IsUQWord<DataType>)
+            {
+                const auto bias    = _mm256_set1_epi64x(0x8000000000000000ULL);
+                const auto biasedA = _mm256_sub_epi64(_reg, bias);
+                const auto biasedB = _mm256_sub_epi64(*other, bias);
+                return Simd256(_mm256_cmpgt_epi64(biasedA, biasedB));
+            }
+            else if constexpr (types::IsUDWord<DataType>)
+            {
+                const auto bias    = _mm256_set1_epi32(0x80000000);
+                const auto biasedA = _mm256_sub_epi32(_reg, bias);
+                const auto biasedB = _mm256_sub_epi32(*other, bias);
+                return Simd256(_mm256_cmpgt_epi32(biasedA, biasedB));
+            }
+            else if constexpr (types::IsUWord<DataType>)
+            {
+                const auto bias    = _mm256_set1_epi16(0x8000);
+                const auto biasedA = _mm256_sub_epi16(_reg, bias);
+                const auto biasedB = _mm256_sub_epi16(*other, bias);
+                return Simd256(_mm256_cmpgt_epi16(biasedA, biasedB));
+            }
+            else // if constexpr (types::IsUByte<DataType>)
+            {
+                const auto bias    = _mm256_set1_epi8(0x80);
+                const auto biasedA = _mm256_sub_epi8(_reg, bias);
+                const auto biasedB = _mm256_sub_epi8(*other, bias);
+                return Simd256(_mm256_cmpgt_epi8(biasedA, biasedB));
             }
         }
         else

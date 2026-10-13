@@ -10,6 +10,7 @@
  */
 
 
+#include "Simd128SSE.h"
 #include "falcon/simd/utils/SIMDUtils.h"
 
 #include <bitset>
@@ -1397,9 +1398,11 @@ namespace flcn
                 }
                 else
                 {
-                    const __m128i mask = _mm_set1_epi16(0x00FF);
-// TODO: Update to blend
-                    return Simd128(_mm_or_si128(_mm_and_si128(mask, evenProduct), _mm_andnot_si128(mask, oddProduct)));
+                    const auto mask = Simd128(_mm_set1_epi16(0xFF00));
+                    return Simd128(evenProduct).blend(Simd128(oddProduct), mask);
+                    // TODO: Update to blend
+                    // return Simd128(_mm_or_si128(_mm_and_si128(mask, evenProduct), _mm_andnot_si128(mask,
+                    // oddProduct)));
                 }
             }
         }

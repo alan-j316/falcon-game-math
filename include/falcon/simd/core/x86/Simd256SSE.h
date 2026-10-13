@@ -27,7 +27,7 @@ namespace flcn
 {
 
     template <typename DataType>
-    struct Emulated256<SimdBackend::ARCH_SSE2, DataType>
+    struct alignas(32) Emulated256<SimdBackend::ARCH_SSE2, DataType>
     {
         using EmulatedRegType = simd::internal::Simd128Register_t<DataType>;
         EmulatedRegType lower;

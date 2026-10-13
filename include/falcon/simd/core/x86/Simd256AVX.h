@@ -32,7 +32,7 @@ namespace flcn
      *                  less than 256.
      */
     template <typename DataType, size_t Lane>
-    struct Simd256<SimdBackend::ARCH_AVX, DataType, Lane>
+    struct alignas(32) Simd256<SimdBackend::ARCH_AVX, DataType, Lane>
     {
 
         static constexpr size_t BufferWidth  = 256;      ///< Width of the register in bits.

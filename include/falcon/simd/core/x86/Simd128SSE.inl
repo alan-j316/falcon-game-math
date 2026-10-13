@@ -1385,7 +1385,7 @@ namespace flcn
                 const __m128i evenProduct = _mm_mullo_epi16(_register, other.naive());
                 __m128i oddProduct        = _mm_mullo_epi16(oddA, oddB);
 
-                // Shift the odd product to left to prepare for ORing
+                // Shift the odd product to left to prepare for 'OR'ing
                 oddProduct = _mm_slli_epi16(oddProduct, 8);
 
                 // OR together with a mask since pure OR can collect the garbage values from even product
@@ -1398,7 +1398,7 @@ namespace flcn
                 else
                 {
                     const __m128i mask = _mm_set1_epi16(0x00FF);
-
+// TODO: Update to blend
                     return Simd128(_mm_or_si128(_mm_and_si128(mask, evenProduct), _mm_andnot_si128(mask, oddProduct)));
                 }
             }

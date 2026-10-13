@@ -810,47 +810,71 @@ namespace flcn
             {
                 return Simd256(_mm256_mul_ps(_reg, *other));
             }
-            // Signed types
-            else if constexpr (types::IsQWord<DataType>)
+            else if constexpr (sizeof(DataType) == 8)
             {
-                // TODO:
-                return other;
+                if constexpr (CURRENT_SIMD_BACKEND >= SimdBackend::ARCH_AVX512EX) // AVX512DQ + VL
+                {
+                    return Simd256(_mm256_mullo_epi64(_reg, *other));
+                }
+                else
+                {
+                    // Split the integer into low and high parts and multiply and join
+                    // A * B = (A_Hi * 2^32 + A_Lo) * (B_Hi * 2^32 + B_Lo)
+                    // (A_Hi * 2^32 * B_Low) + (A_Lo * B_Hi * 2^32) + (A_Lo * B_Lo) + (A_Hi * B_Hi * 2^64)
+                    // Last term is discarded due to overflow
+
+                    // (A_Lo * B_Lo)
+                    const auto prodLo = _mm256_mul_epu32(_reg, *other);
+
+                    // Shift the upper registers to lower lane to facilitate multiplication
+                    const auto aHi = _mm256_srli_epi64(_reg, 32);
+                    const auto bHi = _mm256_srli_epi64(*other, 32);
+                    // (A_Hi *  B_Low)
+                    const auto aHiBLo = _mm256_mul_epu32(aHi, *other);
+                    // (A_Lo * B_Hi)
+                    const auto aLoBHi = _mm256_mul_epu32(_reg, bHi);
+
+                    // Add the shift
+                    // (A_Hi *  B_Low) + (A_Lo * B_Hi)
+                    const auto sumHi = _mm256_add_epi64(aHiBLo, aLoBHi);
+                    // (A_Hi *  B_Low) + (A_Lo * B_Hi) * 2^32
+                    const auto shiftedHi = _mm256_slli_epi64(sumHi, 32);
+
+                    // Add and return the upper and lower portions
+                    return Simd256(_mm256_add_epi64(prodLo, shiftedHi));
+                }
             }
-            else if constexpr (types::IsDWord<DataType>)
+            else if constexpr (sizeof(DataType) == 4)
             {
-                // TODO:
-                return other;
+                return Simd256(_mm256_mullo_epi32(_reg, *other));
             }
-            else if constexpr (types::IsWord<DataType>)
+            else if constexpr (sizeof(DataType) == 2)
             {
-                // TODO:
-                return other;
+                return Simd256(_mm256_mullo_epi16(_reg, *other));
             }
-            else if constexpr (types::IsByte<DataType>)
+            else // if constexpr (sizeof(DataType) == 1)
             {
-                // TODO:
-                return other;
-            }
-            // Unsigned types
-            else if constexpr (types::IsUQWord<DataType>)
-            {
-                // TODO:
-                return other;
-            }
-            else if constexpr (types::IsUDWord<DataType>)
-            {
-                // TODO:
-                return other;
-            }
-            else if constexpr (types::IsUWord<DataType>)
-            {
-                // TODO:
-                return other;
-            }
-            else // if constexpr(types::IsUByte<DataType>)
-            {
-                // TODO:
-                return other;
+                // There is 8-bit integral multiplication
+                // So we can do two 2 16-bit multiplication and pack the results
+                // When blending we can only select the lower 8 lanes so we can directly multiply
+                // without zeroing out the upper lanes
+                const auto evenProd = _mm256_mullo_epi16(_reg, *other);
+                // Move the integers in the upper lanes to lower lanes
+                const auto oddA    = _mm256_srli_epi16(_reg, 8);
+                const auto oddB    = _mm256_srli_epi16(*other, 8);
+                auto oddProd = _mm256_mullo_epi16(oddA, oddB);
+                // Move the odd products to the upper lanes
+                oddProd = _mm256_slli_epi16(oddProd, 8);
+
+
+                if constexpr (CURRENT_SIMD_BACKEND >= SimdBackend::ARCH_AVX512EX) // AVX512F + BW
+                {
+                    // 0x5555 -> 0b010101.. which selects the 8-bits form oddReg, evenReg...
+                    return Simd256(_mm_mask_mov_epi8(oddProd, 0x5555, evenProd));
+                }
+                const auto mask = _mm256_set1_epi16(0x00FF); // 0000 0000 1111 1111
+                // TODO: Replace with blend
+                return Simd256(_mm256_or_si256(_mm256_and_si256(mask, evenProd), _mm256_andnot_si256(mask, oddProd)));
             }
         }
         else

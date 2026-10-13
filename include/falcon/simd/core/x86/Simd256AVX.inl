@@ -13,6 +13,8 @@
 #include "Simd256SSE.h"
 #include "falcon/simd/utils/SIMDUtils.h"
 
+#include <immintrin.h>
+
 namespace flcn
 {
 /// Macro for differentiating SIMD256 pathways based on architectural support.
@@ -909,19 +911,140 @@ namespace flcn
             }
             else if constexpr (sizeof(DataType) == 8)
             {
-                return Simd256(_mm256_sub_epi64(_reg, *other));
+                // The only possible combination lane count is 4(since we forbids initializing a 64x4 Simd256).
+                // so we can manually calculate the division for 4 integers without loops
+                alignas(32) std::array<DataType, Lane> a{}, b{};
+                storeAligned(a.data());
+                other.storeAligned(b.data());
+                a[0] /= b[0];
+                a[1] /= b[1];
+                a[2] /= b[2];
+                a[3] /= b[3];
+
+                return Simd256(a);
             }
-            else if constexpr (sizeof(DataType) == 4)
+            else if constexpr (types::IsDWord<DataType>)
             {
-                return Simd256(_mm256_sub_epi32(_reg, *other));
+                // For signed integers we need to convert them to doubles
+                // and then perform the multiplication and pack them
+                const auto loA = _mm256_cvtepi32_pd(_mm256_castsi256_si128(_reg));
+                const auto loB = _mm256_cvtepi32_pd(_mm256_castsi256_si128(*other));
+
+                const auto hiA = _mm256_cvtepi32_pd(_mm256_extractf128_si256(_reg, 1));
+                const auto hiB = _mm256_cvtepi32_pd(_mm256_extractf128_si256(*other, 1));
+
+                // Perform Division
+                const auto loProd = _mm256_div_pd(loA, loB);
+                const auto hiProd = _mm256_div_pd(hiA, hiB);
+
+                // Convert to integrals
+                const auto loInt = _mm256_castsi128_si256(_mm256_cvttpd_epi32(loProd));
+                const auto hiInt = _mm256_cvttpd_epi32(hiProd);
+
+                // Pack them
+                return Simd256(_mm256_inserti128_si256(loInt, hiInt, 1));
             }
-            else if constexpr (sizeof(DataType) == 2)
+            else if constexpr (types::IsUDWord<DataType>)
             {
-                return Simd256(_mm256_sub_epi16(_reg, *other));
+                // cvtepu32_pd and cvtpd_epu32 only available with AVX512F + VL
+                if constexpr (CURRENT_SIMD_BACKEND >= SimdBackend::ARCH_AVX512EX)
+                {
+                    // For signed integers we need to convert them to doubles
+                    // and then perform the multiplication and pack them
+                    const auto loA = _mm256_cvtepu32_pd(_mm256_castsi256_si128(_reg));
+                    const auto loB = _mm256_cvtepu32_pd(_mm256_castsi256_si128(*other));
+
+                    const auto hiA = _mm256_cvtepu32_pd(_mm256_extractf128_si256(_reg, 1));
+                    const auto hiB = _mm256_cvtepu32_pd(_mm256_extractf128_si256(*other, 1));
+
+                    // Perform Division
+                    const auto loProd = _mm256_div_pd(loA, loB);
+                    const auto hiProd = _mm256_div_pd(hiA, hiB);
+
+                    // Convert to integrals
+                    const auto loInt = _mm256_castsi128_si256(_mm256_cvttpd_epu32(loProd));
+                    const auto hiInt = _mm256_cvttpd_epu32(hiProd);
+
+                    // Pack them
+                    return Simd256(_mm256_inserti128_si256(loInt, hiInt, 1));
+                }
+                else
+                {
+                    // Use stack spill and perform division
+                    alignas(32) std::array<DataType, Lane> a{}, b{};
+                    storeAligned(a.data());
+                    other.storeAligned(b.data());
+                    a[0] /= b[0];
+                    a[1] /= b[1];
+                    a[2] /= b[2];
+                    a[3] /= b[3];
+                    a[4] /= b[4];
+                    a[5] /= b[5];
+                    a[6] /= b[6];
+                    a[7] /= b[7];
+
+                    return Simd256(a);
+                }
+            }
+            else if constexpr (types::IsWord<DataType>)
+            {
+                // Similar logic to 32-bit integrals but we can use floats since
+                // they have 23-bits of precision
+                // Due to the lack of direct conversion from epi16 to ps we need to unpack and then convert
+                //
+                // To sign extend we can pack the register with itself and arithmetic shift to the right by 16 bits
+                // which fills the upper lane with 1 if negative
+                // Eg: Take -7: 1001 => 1001 1001, which we need to shift by 4 times since that is width of our data
+                // 1001 1001 => 1100 1100 => 1110 0110 => 1111 0011 => 1111 1001, which is -7(2's complement)
+                const auto signExtLoA = _mm256_srai_epi32(_mm256_unpacklo_epi16(_reg, _reg), 16);
+                const auto signExtLoB = _mm256_srai_epi32(_mm256_unpacklo_epi16(*other, *other), 16);
+                const auto signExtHiA = _mm256_srai_epi32(_mm256_unpackhi_epi16(_reg, _reg), 16);
+                const auto signExtHiB = _mm256_srai_epi32(_mm256_unpackhi_epi16(*other, *other), 16);
+
+                // Convert to float
+                const auto loA = _mm256_cvtepi32_ps(signExtLoA);
+                const auto loB = _mm256_cvtepi32_ps(signExtLoB);
+                const auto hiA = _mm256_cvtepi32_ps(signExtHiA);
+                const auto hiB = _mm256_cvtepi32_ps(signExtHiB);
+
+                // Perform division
+                const auto loRes = _mm256_div_ps(loA, loB);
+                const auto hiRes = _mm256_div_ps(hiA, hiB);
+
+                // Convert to integers
+                const auto loInt = _mm256_cvttps_epi32(loRes); // (Q3, Q2, Q1, Q0)
+                const auto hiInt = _mm256_cvttps_epi32(hiRes); // (Q7, Q6, Q5, Q4)
+                return Simd256(_mm256_packs_epi32(loInt, hiInt));
+            }
+            else if constexpr (types::IsUWord<DataType>)
+            {
+                using Simd16 = Simd128<SimdBackend::ARCH_SSE2, DataType, LaneCount / 2>;
+                // TODO: Update with lower/upper
+                Simd16 loA(_mm256_castsi256_si128(_reg));
+                Simd16 loB(_mm256_castsi256_si128(*other));
+                Simd16 hiA(_mm256_extracti128_si256(_reg, 1));
+                Simd16 hiB(_mm256_extracti128_si256(*other, 1));
+
+                const Simd16 loDiv = loA.divReg(loB);
+                const Simd16 hiDiv = hiA.divReg(hiB);
+
+                const auto lo256 = _mm256_castsi128_si256(*loDiv);
+                return Simd256(_mm256_inserti128_si256(lo256, *hiDiv, 1));
             }
             else // if constexpr (sizeof(DataType) == 1)
             {
-                return Simd256(_mm256_sub_epi8(_reg, *other));
+                using Simd16 = Simd128<SimdBackend::ARCH_SSE2, DataType, LaneCount / 2>;
+                // TODO: Update with lower/upper
+                Simd16 loA(_mm256_castsi256_si128(_reg));
+                Simd16 loB(_mm256_castsi256_si128(*other));
+                Simd16 hiA(_mm256_extracti128_si256(_reg, 1));
+                Simd16 hiB(_mm256_extracti128_si256(*other, 1));
+
+                const Simd16 loDiv = loA.divReg(loB);
+                const Simd16 hiDiv = hiA.divReg(hiB);
+
+                const auto lo256 = _mm256_castsi128_si256(*loDiv);
+                return Simd256(_mm256_inserti128_si256(lo256, *hiDiv, 1));
             }
         }
         else
@@ -947,7 +1070,8 @@ namespace flcn
 
 
     // template <typename DataType, size_t Lane>
-    // FALCON_INLINE constexpr Simd256<SimdBackend::ARCH_AVX, DataType, Lane> Simd256<SimdBackend::ARCH_AVX, DataType,
+    // FALCON_INLINE constexpr Simd256<SimdBackend::ARCH_AVX, DataType, Lane> Simd256<SimdBackend::ARCH_AVX,
+    // DataType,
     //                                                                                 Lane>::fma(const Simd256 b,
     //                                                                                            Simd256 c) const
     //                                                                                            noexcept
@@ -955,12 +1079,13 @@ namespace flcn
     //
     //
     // template <typename DataType, size_t Lane>
-    // FALCON_INLINE constexpr DataType Simd256<SimdBackend::ARCH_AVX, DataType, Lane>::horizontalAdd() const noexcept
-    // { return _lower.horizontalAdd() + _upper.horizontalAdd(); }
+    // FALCON_INLINE constexpr DataType Simd256<SimdBackend::ARCH_AVX, DataType, Lane>::horizontalAdd() const
+    // noexcept { return _lower.horizontalAdd() + _upper.horizontalAdd(); }
     //
     //
     // template <typename DataType, size_t Lane>
-    // FALCON_INLINE constexpr DataType Simd256<SimdBackend::ARCH_AVX, DataType, Lane>::horizontalSub() const noexcept
+    // FALCON_INLINE constexpr DataType Simd256<SimdBackend::ARCH_AVX, DataType, Lane>::horizontalSub() const
+    // noexcept
     // {
     //     // NOTE: For horizontal sub to work like A - B - C - D
     //     //       We need to use a horizontal sub and horizontal add
@@ -1044,8 +1169,10 @@ namespace flcn
     //
     // template <typename DataType, size_t Lane>
     // template <uint32_t Count>
-    // FALCON_INLINE constexpr Simd256<SimdBackend::ARCH_AVX, DataType, Lane> Simd256<SimdBackend::ARCH_AVX, DataType,
-    //                                                                                 Lane>::shiftLeft() const noexcept
+    // FALCON_INLINE constexpr Simd256<SimdBackend::ARCH_AVX, DataType, Lane> Simd256<SimdBackend::ARCH_AVX,
+    // DataType,
+    //                                                                                 Lane>::shiftLeft() const
+    //                                                                                 noexcept
     // { return Simd256(_lower.template shiftLeft<Count>(), _upper.template shiftLeft<Count>()); }
     //
     //
@@ -1053,7 +1180,8 @@ namespace flcn
     // template <uint32_t Count>
     // FALCON_INLINE constexpr Simd256<SimdBackend::ARCH_AVX, DataType, Lane> Simd256<
     //     SimdBackend::ARCH_AVX, DataType, Lane>::shiftRightArithmetic() const noexcept
-    // { return Simd256(_lower.template shiftRightArithmetic<Count>(), _upper.template shiftRightArithmetic<Count>()); }
+    // { return Simd256(_lower.template shiftRightArithmetic<Count>(), _upper.template
+    // shiftRightArithmetic<Count>()); }
     //
     //
     // template <typename DataType, size_t Lane>
@@ -1085,8 +1213,10 @@ namespace flcn
     //
     // template <typename DataType, size_t Lane>
     // template <uint8_t... ShuffleIndex>
-    // FALCON_INLINE constexpr Simd256<SimdBackend::ARCH_AVX, DataType, Lane> Simd256<SimdBackend::ARCH_AVX, DataType,
-    //                                                                                 Lane>::shuffle() const noexcept
+    // FALCON_INLINE constexpr Simd256<SimdBackend::ARCH_AVX, DataType, Lane> Simd256<SimdBackend::ARCH_AVX,
+    // DataType,
+    //                                                                                 Lane>::shuffle() const
+    //                                                                                 noexcept
     // {
     //     static_assert(sizeof...(ShuffleIndex) == Lane && "There must be <Lane> shuffle indices.");
     //     static_assert(((ShuffleIndex < Lane) && ...) && "Indices must be between 0(inclusive) and
@@ -1151,36 +1281,42 @@ namespace flcn
     //
     //
     // template <typename DataType, size_t Lane>
-    // FALCON_INLINE constexpr DataType Simd256<SimdBackend::ARCH_AVX, DataType, Lane>::horizontalMin() const noexcept
-    // { return std::min(_lower.horizontalMin(), _upper.horizontalMin()); }
+    // FALCON_INLINE constexpr DataType Simd256<SimdBackend::ARCH_AVX, DataType, Lane>::horizontalMin() const
+    // noexcept { return std::min(_lower.horizontalMin(), _upper.horizontalMin()); }
     //
     //
     // template <typename DataType, size_t Lane>
-    // FALCON_INLINE constexpr DataType Simd256<SimdBackend::ARCH_AVX, DataType, Lane>::horizontalMax() const noexcept
-    // { return std::max(_lower.horizontalMax(), _upper.horizontalMax()); }
+    // FALCON_INLINE constexpr DataType Simd256<SimdBackend::ARCH_AVX, DataType, Lane>::horizontalMax() const
+    // noexcept { return std::max(_lower.horizontalMax(), _upper.horizontalMax()); }
     //
     //
     // template <typename DataType, size_t Lane>
-    // FALCON_INLINE constexpr Simd256<SimdBackend::ARCH_AVX, DataType, Lane> Simd256<SimdBackend::ARCH_AVX, DataType,
+    // FALCON_INLINE constexpr Simd256<SimdBackend::ARCH_AVX, DataType, Lane> Simd256<SimdBackend::ARCH_AVX,
+    // DataType,
     //                                                                                 Lane>::abs() const noexcept
     // { return Simd256(_lower.abs(), _upper.abs()); }
     //
     //
     // template <typename DataType, size_t Lane>
-    // FALCON_INLINE constexpr Simd256<SimdBackend::ARCH_AVX, DataType, Lane> Simd256<SimdBackend::ARCH_AVX, DataType,
+    // FALCON_INLINE constexpr Simd256<SimdBackend::ARCH_AVX, DataType, Lane> Simd256<SimdBackend::ARCH_AVX,
+    // DataType,
     //                                                                                 Lane>::sqrt() const noexcept
     // { return Simd256(_lower.sqrt(), _upper.sqrt()); }
     //
     //
     // template <typename DataType, size_t Lane>
-    // FALCON_INLINE constexpr Simd256<SimdBackend::ARCH_AVX, DataType, Lane> Simd256<SimdBackend::ARCH_AVX, DataType,
-    //                                                                                 Lane>::hasNan() const noexcept
+    // FALCON_INLINE constexpr Simd256<SimdBackend::ARCH_AVX, DataType, Lane> Simd256<SimdBackend::ARCH_AVX,
+    // DataType,
+    //                                                                                 Lane>::hasNan() const
+    //                                                                                 noexcept
     // { return Simd256(_lower.hasNan(), _upper.hasNan()); }
     //
     //
     // template <typename DataType, size_t Lane>
-    // FALCON_INLINE constexpr Simd256<SimdBackend::ARCH_AVX, DataType, Lane> Simd256<SimdBackend::ARCH_AVX, DataType,
-    //                                                                                 Lane>::hasInf() const noexcept
+    // FALCON_INLINE constexpr Simd256<SimdBackend::ARCH_AVX, DataType, Lane> Simd256<SimdBackend::ARCH_AVX,
+    // DataType,
+    //                                                                                 Lane>::hasInf() const
+    //                                                                                 noexcept
     // { return Simd256(_lower.hasInf(), _upper.hasInf()); }
 
 

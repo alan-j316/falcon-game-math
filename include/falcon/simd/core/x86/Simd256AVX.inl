@@ -1016,22 +1016,9 @@ namespace flcn
                 const auto hiInt = _mm256_cvttps_epi32(hiRes); // (Q7, Q6, Q5, Q4)
                 return Simd256(_mm256_packs_epi32(loInt, hiInt));
             }
-            else if constexpr (types::IsUWord<DataType>)
-            {
-                using Simd16 = Simd128<SimdBackend::ARCH_SSE2, DataType, LaneCount / 2>;
-                // TODO: Update with lower/upper
-                Simd16 loA(_mm256_castsi256_si128(_reg));
-                Simd16 loB(_mm256_castsi256_si128(*other));
-                Simd16 hiA(_mm256_extracti128_si256(_reg, 1));
-                Simd16 hiB(_mm256_extracti128_si256(*other, 1));
-
-                const Simd16 loDiv = loA.divReg(loB);
-                const Simd16 hiDiv = hiA.divReg(hiB);
-
-                const auto lo256 = _mm256_castsi128_si256(*loDiv);
-                return Simd256(_mm256_inserti128_si256(lo256, *hiDiv, 1));
-            }
-            else // if constexpr (sizeof(DataType) == 1)
+            // else if constexpr (sizeof(DataType) == 1)
+            // else if constexpr (types::IsUWord<DataType>)
+            else
             {
                 using Simd16 = Simd128<SimdBackend::ARCH_SSE2, DataType, LaneCount / 2>;
                 // TODO: Update with lower/upper

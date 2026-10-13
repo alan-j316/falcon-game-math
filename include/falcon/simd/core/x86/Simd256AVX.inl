@@ -1090,14 +1090,39 @@ namespace flcn
     //     //       A - B - (C + D)
     //     return _lower.horizontalSub() - _upper.horizontalAdd();
     // }
-    //
-    //
-    // template <typename DataType, size_t Lane>
-    // FALCON_INLINE constexpr Simd256<SimdBackend::ARCH_AVX, DataType, Lane> Simd256<
-    //     SimdBackend::ARCH_AVX, DataType, Lane>::operator==(const Simd256 other) const noexcept
-    // { return Simd256(_lower == other._lower, _upper == other._upper); }
-    //
-    //
+
+
+    template <typename DataType, size_t Lane>
+    FALCON_INLINE constexpr Simd256<SimdBackend::ARCH_AVX, DataType, Lane> Simd256<
+        SimdBackend::ARCH_AVX, DataType, Lane>::operator==(const Simd256 other) const noexcept
+    {
+        if constexpr (types::IsFP64<DataType>)
+        {
+            return Simd256(_mm256_cmp_pd(_reg, *other, _CMP_EQ_OQ));
+        }
+        else if constexpr (types::IsFP32<DataType>)
+        {
+            return Simd256(_mm256_cmp_ps(_reg, *other, _CMP_EQ_OQ));
+        }
+        else if constexpr (sizeof(DataType) == 8)
+        {
+            return Simd256(_mm256_cmpeq_epi64(_reg, *other));
+        }
+        else if constexpr (sizeof(DataType) == 4)
+        {
+            return Simd256(_mm256_cmpeq_epi32(_reg, *other));
+        }
+        else if constexpr (sizeof(DataType) == 2)
+        {
+            return Simd256(_mm256_cmpeq_epi16(_reg, *other));
+        }
+        else // if constexpr (sizeof(DataType) == 1)
+        {
+            return Simd256(_mm256_cmpeq_epi8(_reg, *other));
+        }
+    }
+
+
     // template <typename DataType, size_t Lane>
     // FALCON_INLINE constexpr Simd256<SimdBackend::ARCH_AVX, DataType, Lane> Simd256<
     //     SimdBackend::ARCH_AVX, DataType, Lane>::operator!=(const Simd256 other) const noexcept

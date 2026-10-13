@@ -545,7 +545,7 @@ namespace flcn
 
     template <typename DataType, size_t Lane>
     FALCON_INLINE constexpr Simd256<SimdBackend::ARCH_AVX, DataType, Lane> Simd256<
-        SimdBackend::ARCH_AVX, DataType, Lane>::operator&(Simd256 other) const noexcept
+        SimdBackend::ARCH_AVX, DataType, Lane>::operator&(const Simd256 other) const noexcept
     {
         if constexpr (_FALCON_SIMD256_SUPPORT_NATIVE_INTRINSIC(DataType))
         {
@@ -571,7 +571,7 @@ namespace flcn
 
     template <typename DataType, size_t Lane>
     FALCON_INLINE constexpr Simd256<SimdBackend::ARCH_AVX, DataType, Lane> Simd256<
-        SimdBackend::ARCH_AVX, DataType, Lane>::operator|(Simd256 other) const noexcept
+        SimdBackend::ARCH_AVX, DataType, Lane>::operator|(const Simd256 other) const noexcept
     {
         if constexpr (_FALCON_SIMD256_SUPPORT_NATIVE_INTRINSIC(DataType))
         {
@@ -597,7 +597,7 @@ namespace flcn
 
     template <typename DataType, size_t Lane>
     FALCON_INLINE constexpr Simd256<SimdBackend::ARCH_AVX, DataType, Lane> Simd256<
-        SimdBackend::ARCH_AVX, DataType, Lane>::operator^(Simd256 other) const noexcept
+        SimdBackend::ARCH_AVX, DataType, Lane>::operator^(const Simd256 other) const noexcept
     {
         if constexpr (_FALCON_SIMD256_SUPPORT_NATIVE_INTRINSIC(DataType))
         {
@@ -623,7 +623,7 @@ namespace flcn
 
     template <typename DataType, size_t Lane>
     FALCON_INLINE constexpr Simd256<SimdBackend::ARCH_AVX, DataType, Lane> Simd256<
-        SimdBackend::ARCH_AVX, DataType, Lane>::andNot(Simd256 other) const noexcept
+        SimdBackend::ARCH_AVX, DataType, Lane>::andNot(const Simd256 other) const noexcept
     {
         if constexpr (_FALCON_SIMD256_SUPPORT_NATIVE_INTRINSIC(DataType))
         {
@@ -694,7 +694,7 @@ namespace flcn
 
     template <typename DataType, size_t Lane>
     FALCON_INLINE constexpr Simd256<SimdBackend::ARCH_AVX, DataType, Lane> Simd256<
-        SimdBackend::ARCH_AVX, DataType, Lane>::operator+(Simd256 other) const noexcept
+        SimdBackend::ARCH_AVX, DataType, Lane>::operator+(const Simd256 other) const noexcept
     {
         if constexpr (_FALCON_SIMD256_SUPPORT_NATIVE_INTRINSIC(DataType))
         {
@@ -732,7 +732,7 @@ namespace flcn
 
     template <typename DataType, size_t Lane>
     FALCON_INLINE constexpr Simd256<SimdBackend::ARCH_AVX, DataType, Lane>& Simd256<
-        SimdBackend::ARCH_AVX, DataType, Lane>::operator+=(Simd256 other) noexcept
+        SimdBackend::ARCH_AVX, DataType, Lane>::operator+=(const Simd256 other) noexcept
     {
         *this = *this + other;
         return *this;
@@ -741,7 +741,7 @@ namespace flcn
 
     template <typename DataType, size_t Lane>
     FALCON_INLINE constexpr Simd256<SimdBackend::ARCH_AVX, DataType, Lane> Simd256<
-        SimdBackend::ARCH_AVX, DataType, Lane>::operator-(Simd256 other) const noexcept
+        SimdBackend::ARCH_AVX, DataType, Lane>::operator-(const Simd256 other) const noexcept
     {
         if constexpr (_FALCON_SIMD256_SUPPORT_NATIVE_INTRINSIC(DataType))
         {
@@ -779,7 +779,7 @@ namespace flcn
 
     template <typename DataType, size_t Lane>
     FALCON_INLINE constexpr Simd256<SimdBackend::ARCH_AVX, DataType, Lane>& Simd256<
-        SimdBackend::ARCH_AVX, DataType, Lane>::operator-=(Simd256 other) noexcept
+        SimdBackend::ARCH_AVX, DataType, Lane>::operator-=(const Simd256 other) noexcept
     {
         *this = *this - other;
         return *this;
@@ -798,7 +798,7 @@ namespace flcn
 
     template <typename DataType, size_t Lane>
     FALCON_INLINE constexpr Simd256<SimdBackend::ARCH_AVX, DataType, Lane> Simd256<
-        SimdBackend::ARCH_AVX, DataType, Lane>::operator*(Simd256 other) const noexcept
+        SimdBackend::ARCH_AVX, DataType, Lane>::operator*(const Simd256 other) const noexcept
     {
         if constexpr (_FALCON_SIMD256_SUPPORT_NATIVE_INTRINSIC(DataType))
         {
@@ -860,9 +860,9 @@ namespace flcn
                 // without zeroing out the upper lanes
                 const auto evenProd = _mm256_mullo_epi16(_reg, *other);
                 // Move the integers in the upper lanes to lower lanes
-                const auto oddA    = _mm256_srli_epi16(_reg, 8);
-                const auto oddB    = _mm256_srli_epi16(*other, 8);
-                auto oddProd = _mm256_mullo_epi16(oddA, oddB);
+                const auto oddA = _mm256_srli_epi16(_reg, 8);
+                const auto oddB = _mm256_srli_epi16(*other, 8);
+                auto oddProd    = _mm256_mullo_epi16(oddA, oddB);
                 // Move the odd products to the upper lanes
                 oddProd = _mm256_slli_epi16(oddProd, 8);
 
@@ -886,37 +886,37 @@ namespace flcn
 
     template <typename DataType, size_t Lane>
     FALCON_INLINE constexpr Simd256<SimdBackend::ARCH_AVX, DataType, Lane>& Simd256<
-        SimdBackend::ARCH_AVX, DataType, Lane>::operator*=(Simd256 other) noexcept
+        SimdBackend::ARCH_AVX, DataType, Lane>::operator*=(const Simd256 other) noexcept
     {
         *this = *this * other;
         return *this;
     }
 
 
-    // template <typename DataType, size_t Lane>
-    // FALCON_INLINE constexpr Simd256<SimdBackend::ARCH_AVX, DataType, Lane> Simd256<
-    //     SimdBackend::ARCH_AVX, DataType, Lane>::divReg(Simd256 other) const noexcept
-    // { return Simd256(_lower.divReg(other._lower), _upper.divReg(other._upper)); }
-    //
-    //
-    // template <typename DataType, size_t Lane>
-    // FALCON_INLINE constexpr Simd256<SimdBackend::ARCH_AVX, DataType, Lane> Simd256<
-    //     SimdBackend::ARCH_AVX, DataType, Lane>::operator/(DataType scalar) const noexcept
-    // { return Simd256(_lower / scalar, _upper / scalar); }
-    //
-    //
-    // template <typename DataType, size_t Lane>
-    // FALCON_INLINE constexpr Simd256<SimdBackend::ARCH_AVX, DataType, Lane>& Simd256<
-    //     SimdBackend::ARCH_AVX, DataType, Lane>::operator/=(DataType scalar) noexcept
-    // {
-    //     *this = *this / scalar;
-    //     return *this;
-    // }
-    //
-    //
+    template <typename DataType, size_t Lane>
+    FALCON_INLINE constexpr Simd256<SimdBackend::ARCH_AVX, DataType, Lane> Simd256<
+        SimdBackend::ARCH_AVX, DataType, Lane>::divReg(const Simd256 other) const noexcept
+    { return other; }
+
+
+    template <typename DataType, size_t Lane>
+    FALCON_INLINE constexpr Simd256<SimdBackend::ARCH_AVX, DataType, Lane> Simd256<
+        SimdBackend::ARCH_AVX, DataType, Lane>::operator/(const DataType scalar) const noexcept
+    { return divReg(scalar); }
+
+
+    template <typename DataType, size_t Lane>
+    FALCON_INLINE constexpr Simd256<SimdBackend::ARCH_AVX, DataType, Lane>& Simd256<
+        SimdBackend::ARCH_AVX, DataType, Lane>::operator/=(const DataType scalar) noexcept
+    {
+        *this = *this / scalar;
+        return *this;
+    }
+
+
     // template <typename DataType, size_t Lane>
     // FALCON_INLINE constexpr Simd256<SimdBackend::ARCH_AVX, DataType, Lane> Simd256<SimdBackend::ARCH_AVX, DataType,
-    //                                                                                 Lane>::fma(Simd256 b,
+    //                                                                                 Lane>::fma(const Simd256 b,
     //                                                                                            Simd256 c) const
     //                                                                                            noexcept
     // { return Simd256(_lower.fma(b._lower, c._lower), _upper.fma(b._upper, c._upper)); }
@@ -940,37 +940,37 @@ namespace flcn
     //
     // template <typename DataType, size_t Lane>
     // FALCON_INLINE constexpr Simd256<SimdBackend::ARCH_AVX, DataType, Lane> Simd256<
-    //     SimdBackend::ARCH_AVX, DataType, Lane>::operator==(Simd256 other) const noexcept
+    //     SimdBackend::ARCH_AVX, DataType, Lane>::operator==(const Simd256 other) const noexcept
     // { return Simd256(_lower == other._lower, _upper == other._upper); }
     //
     //
     // template <typename DataType, size_t Lane>
     // FALCON_INLINE constexpr Simd256<SimdBackend::ARCH_AVX, DataType, Lane> Simd256<
-    //     SimdBackend::ARCH_AVX, DataType, Lane>::operator!=(Simd256 other) const noexcept
+    //     SimdBackend::ARCH_AVX, DataType, Lane>::operator!=(const Simd256 other) const noexcept
     // { return Simd256(_lower != other._lower, _upper != other._upper); }
     //
     //
     // template <typename DataType, size_t Lane>
     // FALCON_INLINE constexpr Simd256<SimdBackend::ARCH_AVX, DataType, Lane> Simd256<
-    //     SimdBackend::ARCH_AVX, DataType, Lane>::operator>(Simd256 other) const noexcept
+    //     SimdBackend::ARCH_AVX, DataType, Lane>::operator>(const Simd256 other) const noexcept
     // { return Simd256(_lower > other._lower, _upper > other._upper); }
     //
     //
     // template <typename DataType, size_t Lane>
     // FALCON_INLINE constexpr Simd256<SimdBackend::ARCH_AVX, DataType, Lane> Simd256<
-    //     SimdBackend::ARCH_AVX, DataType, Lane>::operator>=(Simd256 other) const noexcept
+    //     SimdBackend::ARCH_AVX, DataType, Lane>::operator>=(const Simd256 other) const noexcept
     // { return Simd256(_lower >= other._lower, _upper >= other._upper); }
     //
     //
     // template <typename DataType, size_t Lane>
     // FALCON_INLINE constexpr Simd256<SimdBackend::ARCH_AVX, DataType, Lane> Simd256<
-    //     SimdBackend::ARCH_AVX, DataType, Lane>::operator<(Simd256 other) const noexcept
+    //     SimdBackend::ARCH_AVX, DataType, Lane>::operator<(const Simd256 other) const noexcept
     // { return Simd256(_lower < other._lower, _upper < other._upper); }
     //
     //
     // template <typename DataType, size_t Lane>
     // FALCON_INLINE constexpr Simd256<SimdBackend::ARCH_AVX, DataType, Lane> Simd256<
-    //     SimdBackend::ARCH_AVX, DataType, Lane>::operator<=(Simd256 other) const noexcept
+    //     SimdBackend::ARCH_AVX, DataType, Lane>::operator<=(const Simd256 other) const noexcept
     // { return Simd256(_lower <= other._lower, _upper <= other._upper); }
     //
     //
@@ -1033,14 +1033,14 @@ namespace flcn
     //
     // template <typename DataType, size_t Lane>
     // FALCON_INLINE constexpr Simd256<SimdBackend::ARCH_AVX, DataType, Lane> Simd256<
-    //     SimdBackend::ARCH_AVX, DataType, Lane>::blend(Simd256 other, Simd256 mask) const noexcept
+    //     SimdBackend::ARCH_AVX, DataType, Lane>::blend(const Simd256 other, Simd256 mask) const noexcept
     // { return Simd256{ _lower.blend(other._lower, mask._lower), _upper.blend(other._upper, mask._upper) }; }
     //
     //
     // template <typename DataType, size_t Lane>
     // template <BlendMask32_t Mask>
     // FALCON_INLINE constexpr Simd256<SimdBackend::ARCH_AVX, DataType, Lane> Simd256<
-    //     SimdBackend::ARCH_AVX, DataType, Lane>::blend(Simd256 other) const noexcept
+    //     SimdBackend::ARCH_AVX, DataType, Lane>::blend(const Simd256 other) const noexcept
     // {
     //     // Lower Mask only takes into account the lower 16-bits(expanded to 32-bits).
     //     // Upper mask the upper 16-bits but shifted to to the lower lane(expanded to 32-bits).

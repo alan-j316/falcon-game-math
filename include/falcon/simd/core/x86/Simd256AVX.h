@@ -421,68 +421,64 @@ namespace flcn
         constexpr Simd256& operator*=(Simd256 other) noexcept;
 
 
-        //     /**
-        //      * @brief Divide contents of this register by another register(@p other).
-        //      *
-        //      * @note Register arithmetic is limited to same data types and lanes.
-        //      * @note Direct SIMD operations are limited to floating-point numbers only.
-        //      *       Therefore the operations for integrals are emulated by converting them to floating points, but
-        //      some
-        //      *       integrals like for `uint64_t` and `int64_t` are fully scalar since converting them to floating
-        //      point
-        //      *       can lead to precision loss due to the 53-bit maximum precision of double precision float point
-        //      numbers.
-        //      *
-        //      * @note For division with same divisor it is faster to use operator/ or operator/= which implements
-        //      division
-        //      *       by constant from Hackers Delight. (TODO)
-        //      *
-        //      * @param other The register containing the divisors.
-        //      *
-        //      * @return A new register with the quotient.
-        //      *
-        //      * @relatedalso operator/(const DataType)
-        //      * @relatedalso operator/=(const DataType)
-        //      */
-        //     [[nodiscard]] constexpr Simd256 divReg(Simd256 other) const noexcept;
-        //
-        //
-        //     /**
-        //      * @brief Divide contents of this register by a @p scalar.
-        //      * @todo Update to use division by constant and update readme
-        //      *
-        //      * @note Register arithmetic is limited to same data types and lanes.
-        //      * @note For integral division with different divisors @ref divReg may be
-        //      *       faster.
-        //      *
-        //      * @param scalar The divisor.
-        //      *
-        //      * @return A new register with the quotient.
-        //      *
-        //      * @relatedalso divReg(const Simd256)
-        //      * @relatedalso operator/=(const DataType)
-        //      */
-        //     [[nodiscard]] constexpr Simd256 operator/(DataType scalar) const noexcept;
-        //
-        //
-        //     /**
-        //      * @brief Divide contents of this register by a @p scalar in-place.
-        //      * @todo Update to use division by constant and update readme
-        //      *
-        //      * @note Register arithmetic is limited to same data types and lanes.
-        //      * @note For integral division with different divisors @ref divReg may be
-        //      *       faster.
-        //      *
-        //      * @param scalar The divisor.
-        //      *
-        //      * @return A reference to this register with products.
-        //      *
-        //      * @relatedalso divReg(const Simd256)
-        //      * @relatedalso operator/(const DataType)
-        //      */
-        //     constexpr Simd256& operator/=(DataType scalar) noexcept;
-        //
-        //
+        /**
+         * @brief Divide contents of this register by another register(@p other).
+         *
+         * @note Register arithmetic is limited to same data types and lanes.
+         * @note Direct SIMD operations are limited to floating-point numbers only.
+         *       Therefore the operations for integrals are emulated by converting them to floating points, but some
+         *       integrals like for `uint64_t` and `int64_t` are fully scalar since converting them to floating point
+         *       can lead to precision loss due to the 53-bit maximum precision of double precision float point numbers.
+         *
+         * @note For division with same divisor it is faster to use operator/ or operator/= which implements division
+         *       by constant from Hackers Delight. (TODO)
+         *
+         * @param other The register containing the divisors.
+         *
+         * @return A new register with the quotient.
+         *
+         * @relatedalso operator/(const DataType)
+         * @relatedalso operator/=(const DataType)
+         */
+        [[nodiscard]] constexpr Simd256 divReg(Simd256 other) const noexcept;
+
+
+        /**
+         * @brief Divide contents of this register by a @p scalar.
+         * @todo Update to use division by constant and update readme
+         *
+         * @note Register arithmetic is limited to same data types and lanes.
+         * @note For integral division with different divisors @ref divReg may be
+         *       faster.
+         *
+         * @param scalar The divisor.
+         *
+         * @return A new register with the quotient.
+         *
+         * @relatedalso divReg(const Simd256)
+         * @relatedalso operator/=(const DataType)
+         */
+        [[nodiscard]] constexpr Simd256 operator/(DataType scalar) const noexcept;
+
+
+        /**
+         * @brief Divide contents of this register by a @p scalar in-place.
+         * @todo Update to use division by constant and update readme
+         *
+         * @note Register arithmetic is limited to same data types and lanes.
+         * @note For integral division with different divisors @ref divReg may be
+         *       faster.
+         *
+         * @param scalar The divisor.
+         *
+         * @return A reference to this register with products.
+         *
+         * @relatedalso divReg(const Simd256)
+         * @relatedalso operator/(const DataType)
+         */
+        constexpr Simd256& operator/=(DataType scalar) noexcept;
+
+
         //     /**
         //      * @brief Perform a fused multiply and add (this * b + c).
         //      *

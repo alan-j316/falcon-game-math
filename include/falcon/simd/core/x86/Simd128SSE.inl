@@ -1400,9 +1400,6 @@ namespace flcn
                 {
                     const auto mask = Simd128(_mm_set1_epi16(0xFF00));
                     return Simd128(evenProduct).blend(Simd128(oddProduct), mask);
-                    // TODO: Update to blend
-                    // return Simd128(_mm_or_si128(_mm_and_si128(mask, evenProduct), _mm_andnot_si128(mask,
-                    // oddProduct)));
                 }
             }
         }
@@ -1420,7 +1417,7 @@ namespace flcn
 
     template <typename DataType, size_t Lane>
     FALCON_INLINE constexpr Simd128<SimdBackend::ARCH_SSE2, DataType, Lane> Simd128<
-        SimdBackend::ARCH_SSE2, DataType, Lane>::divReg(Simd128 other) const noexcept
+        SimdBackend::ARCH_SSE2, DataType, Lane>::divReg(const Simd128 other) const noexcept
     {
         if constexpr (types::IsFP64<DataType>)
         {
@@ -2613,7 +2610,7 @@ namespace flcn
     template <typename DataType, size_t Lane>
     template <BlendMask32_t Mask>
     FALCON_INLINE constexpr Simd128<SimdBackend::ARCH_SSE2, DataType, Lane> Simd128<
-        SimdBackend::ARCH_SSE2, DataType, Lane>::blend(Simd128 other) const noexcept
+        SimdBackend::ARCH_SSE2, DataType, Lane>::blend(const Simd128 other) const noexcept
     {
         // For fallback we can use (A & ~Mask) | (B & Mask)
         // But we need to perform a bitwise expansion on the mask and then forward it to a register.

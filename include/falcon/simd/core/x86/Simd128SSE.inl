@@ -1437,17 +1437,14 @@ namespace flcn
             {
                 // The only possible combination for b lane is 2.
                 // so we can manually calculate the division for 2 integers without loops
-                std::array<DataType, Lane> a{}, b{}, result{};
+                alignas(16) std::array<DataType, Lane> a{}, b{};
                 store(a.data());
                 other.store(b.data());
 
-                result[0] = a[0] / b[0];
-                result[1] = a[1] / b[1];
+                a[0] /= b[0];
+                a[1] /= b[1];
 
-                // TODO: Refactor using ctor inits
-                Simd128 reg;
-                reg.load(result.data());
-                return reg;
+                return Simd128(a);
             }
             else if constexpr (types::IsDWord<DataType>)
             {
@@ -1504,18 +1501,14 @@ namespace flcn
                 }
                 else
                 {
-                    std::array<DataType, Lane> a{}, b{}, result{};
+                    alignas(16) std::array<DataType, Lane> a{}, b{};
                     store(a.data());
                     other.store(b.data());
                     for (size_t i = 0; i < Lane; ++i)
                     {
-                        result[i] = a[i] / b[i];
+                        a[i] /= b[i];
                     }
-
-                    // TODO: Refactor to 1 line with ctor
-                    Simd128 data;
-                    data.load(result.data());
-                    return data;
+                    return Simd128(a);
                 }
             }
             else if constexpr (types::IsWord<DataType>)
@@ -2827,23 +2820,19 @@ namespace flcn
                 // two categories for SSE, anything below SSE4.2 will use the SSE2 fallback.
                 if constexpr (CURRENT_SIMD_BACKEND >= SimdBackend::ARCH_SSE4)
                 {
-                    // TODO: Move to ctor inits
                     alignas(16) std::array<DataType, Lane> mask{ ShuffleIdx... };
-                    Simd128 maskReg{};
-                    maskReg.loadAligned(mask.data());
-                    return Simd128(_mm_shuffle_epi8(_register, maskReg.naive()));
+                    const Simd128 maskReg{ mask };
+                    return Simd128(_mm_shuffle_epi8(_register, *maskReg));
                 }
                 else
                 {
                     // Store the data into an stack-array
-                    std::array<DataType, Lane> stored{};
+                    alignas(16) std::array<DataType, Lane> stored{};
                     store(stored.data());
                     // Create a new array using shuffleIdx and parameter unpacking
-                    std::array<DataType, Lane> res{ stored[ShuffleIdx]... };
+                    alignas(16) std::array<DataType, Lane> res{ stored[ShuffleIdx]... };
                     // Loading it into a new register and return it.
-                    Simd128 reg;
-                    reg.load(res.data());
-                    return reg;
+                    return Simd128(res);
                 }
             }
         }

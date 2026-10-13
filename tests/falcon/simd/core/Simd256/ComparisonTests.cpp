@@ -210,23 +210,23 @@ TYPED_TEST(Simd256ComparisonTests, DoubleEqualsOperator_ReturnsAValidMask)
 }
 
 
-// TYPED_TEST(Simd256ComparisonTests, NotEqualsOperator_ReturnsAValidMask)
-// {
-//     using Type = typename TypeParam::Type;
-//     flcn::Simd256_t<Type, TypeParam::VALUE> a{}, b{};
-//     a.load(this->lhsData.data());
-//     b.load(this->rhsData.data());
-//
-//     std::array<Type, TypeParam::VALUE> result{};
-//     auto resReg = a != b;
-//     resReg.store(result.data());
-//     for (size_t i = 0; i < TypeParam::VALUE; ++i)
-//     {
-//         EXPECT_TRUE(isEqualBitwise(this->neqMask[i], result[i]))
-//             << "Equality mismatch at index " << i << "\nExpected: " << this->neqMask[i] << "\nGot: " << result[i]
-//             << "\nLHS: " << this->lhsData[i] << "\nRHS: " << this->rhsData[i] << '\n';
-//     }
-// }
+TYPED_TEST(Simd256ComparisonTests, NotEqualsOperator_ReturnsAValidMask)
+{
+    using Type = typename TypeParam::Type;
+    flcn::Simd256_t<Type, TypeParam::VALUE> a{}, b{};
+    a.load(this->lhsData.data());
+    b.load(this->rhsData.data());
+
+    std::array<Type, TypeParam::VALUE> result{};
+    auto resReg = a != b;
+    resReg.store(result.data());
+    for (size_t i = 0; i < TypeParam::VALUE; ++i)
+    {
+        EXPECT_TRUE(isEqualBitwise(this->neqMask[i], result[i]))
+            << "Equality mismatch at index " << i << "\nExpected: " << this->neqMask[i] << "\nGot: " << result[i]
+            << "\nLHS: " << this->lhsData[i] << "\nRHS: " << this->rhsData[i] << '\n';
+    }
+}
 
 
 
@@ -332,30 +332,30 @@ static constexpr float NaN = std::numeric_limits<float>::quiet_NaN();
 //     EXPECT_TRUE(isEqualBitwise(getAllOnes<float>(), result[6]));
 //     EXPECT_TRUE(isEqualBitwise(static_cast<float>(0), result[7]));
 // }
-//
-//
-// TEST(Simd256ComparisonTests, NotEqualsOperator_ReturnTrueForNaNComparisons)
-// {
-//     constexpr std::array<float, 8> lhsData{ NaN, 1.0f, NaN, 1.0f, 1.0f, NaN, 3.0f, 4.0f };
-//     constexpr std::array<float, 8> rhsData{ 1.0f, NaN, NaN, 1.0f, 1.0f, 2.0f, 3.0f, NaN };
-//     flcn::Simd256_t<float, 8> a{}, b{};
-//     a.load(lhsData.data());
-//     b.load(rhsData.data());
-//
-//     std::array<float, 8> result{};
-//     const auto resReg = a != b;
-//     resReg.store(result.data());
-//
-//     // ONLY For != does NaN comparisons return a true.
-//     EXPECT_TRUE(isEqualBitwise(getAllOnes<float>(), result[0]));
-//     EXPECT_TRUE(isEqualBitwise(getAllOnes<float>(), result[1]));
-//     EXPECT_TRUE(isEqualBitwise(getAllOnes<float>(), result[2]));
-//     EXPECT_TRUE(isEqualBitwise(static_cast<float>(0), result[3]));
-//     EXPECT_TRUE(isEqualBitwise(static_cast<float>(0), result[4]));
-//     EXPECT_TRUE(isEqualBitwise(getAllOnes<float>(), result[5]));
-//     EXPECT_TRUE(isEqualBitwise(static_cast<float>(0), result[6]));
-//     EXPECT_TRUE(isEqualBitwise(getAllOnes<float>(), result[7]));
-// }
+
+
+TEST(Simd256ComparisonTests, NotEqualsOperator_ReturnTrueForNaNComparisons)
+{
+    constexpr std::array<float, 8> lhsData{ NaN, 1.0f, NaN, 1.0f, 1.0f, NaN, 3.0f, 4.0f };
+    constexpr std::array<float, 8> rhsData{ 1.0f, NaN, NaN, 1.0f, 1.0f, 2.0f, 3.0f, NaN };
+    flcn::Simd256_t<float, 8> a{}, b{};
+    a.load(lhsData.data());
+    b.load(rhsData.data());
+
+    std::array<float, 8> result{};
+    const auto resReg = a != b;
+    resReg.store(result.data());
+
+    // ONLY For != does NaN comparisons return a true.
+    EXPECT_TRUE(isEqualBitwise(getAllOnes<float>(), result[0]));
+    EXPECT_TRUE(isEqualBitwise(getAllOnes<float>(), result[1]));
+    EXPECT_TRUE(isEqualBitwise(getAllOnes<float>(), result[2]));
+    EXPECT_TRUE(isEqualBitwise(static_cast<float>(0), result[3]));
+    EXPECT_TRUE(isEqualBitwise(static_cast<float>(0), result[4]));
+    EXPECT_TRUE(isEqualBitwise(getAllOnes<float>(), result[5]));
+    EXPECT_TRUE(isEqualBitwise(static_cast<float>(0), result[6]));
+    EXPECT_TRUE(isEqualBitwise(getAllOnes<float>(), result[7]));
+}
 
 
 TEST(Simd256ComparisonTests, DoubleEqualsOperator_ReturnFalseForNaNComparisons)

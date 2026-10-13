@@ -1771,9 +1771,8 @@ namespace flcn
 
 
     template <typename DataType, size_t Lane>
-    FALCON_INLINE constexpr Simd128<SimdBackend::ARCH_SSE2, DataType, Lane> Simd128<SimdBackend::ARCH_SSE2, DataType,
-                                                                                    Lane>::fma(Simd128 b,
-                                                                                               Simd128 c) const noexcept
+    FALCON_INLINE constexpr Simd128<SimdBackend::ARCH_SSE2, DataType, Lane> Simd128<
+        SimdBackend::ARCH_SSE2, DataType, Lane>::fma(const Simd128 b, const Simd128 c) const noexcept
     {
         if constexpr (FALCON_FMA_ENABLED && types::IsFP64<DataType>)
         {

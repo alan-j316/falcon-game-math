@@ -1056,15 +1056,25 @@ namespace flcn
     }
 
 
-    // template <typename DataType, size_t Lane>
-    // FALCON_INLINE constexpr Simd256<SimdBackend::ARCH_AVX, DataType, Lane> Simd256<SimdBackend::ARCH_AVX,
-    // DataType,
-    //                                                                                 Lane>::fma(const Simd256 b,
-    //                                                                                            Simd256 c) const
-    //                                                                                            noexcept
-    // { return Simd256(_lower.fma(b._lower, c._lower), _upper.fma(b._upper, c._upper)); }
-    //
-    //
+    template <typename DataType, size_t Lane>
+    FALCON_INLINE constexpr Simd256<SimdBackend::ARCH_AVX, DataType, Lane> Simd256<
+        SimdBackend::ARCH_AVX, DataType, Lane>::fma(const Simd256 b, const Simd256 c) const noexcept
+    {
+        if constexpr (FALCON_FMA_ENABLED && types::IsFP64<DataType>)
+        {
+            return Simd256(_mm256_fmadd_pd(_reg, *b, *c));
+        }
+        else if constexpr (FALCON_FMA_ENABLED && types::IsFP32<DataType>)
+        {
+            return Simd256(_mm256_fmadd_ps(_reg, *b, *c));
+        }
+        else
+        {
+            return (*this * b) + c;
+        }
+    }
+
+
     // template <typename DataType, size_t Lane>
     // FALCON_INLINE constexpr DataType Simd256<SimdBackend::ARCH_AVX, DataType, Lane>::horizontalAdd() const
     // noexcept { return _lower.horizontalAdd() + _upper.horizontalAdd(); }

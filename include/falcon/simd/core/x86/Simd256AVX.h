@@ -479,18 +479,18 @@ namespace flcn
         constexpr Simd256& operator/=(DataType scalar) noexcept;
 
 
-        //     /**
-        //      * @brief Perform a fused multiply and add (this * b + c).
-        //      *
-        //      * @note Register arithmetic is limited to same data types and lanes.
-        //      * @param b The register to multiply with this register.
-        //      * @param c The register to add to the product.
-        //      *
-        //      * @return A new register with the fma result.
-        //      */
-        //     [[nodiscard]] constexpr Simd256 fma(Simd256 b, Simd256 c) const noexcept;
-        //
-        //
+        /**
+         * @brief Perform a fused multiply and add (this * b + c).
+         *
+         * @note Register arithmetic is limited to same data types and lanes.
+         * @param b The register to multiply with this register.
+         * @param c The register to add to the product.
+         *
+         * @return A new register with the fma result.
+         */
+        [[nodiscard]] constexpr Simd256 fma(Simd256 b, Simd256 c) const noexcept;
+
+
         //     /**
         //      * @brief Add together elements from all the lanes of the current register.
         //      * @return The sum of elements in all the lanes.

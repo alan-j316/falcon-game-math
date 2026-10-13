@@ -896,13 +896,45 @@ namespace flcn
     template <typename DataType, size_t Lane>
     FALCON_INLINE constexpr Simd256<SimdBackend::ARCH_AVX, DataType, Lane> Simd256<
         SimdBackend::ARCH_AVX, DataType, Lane>::divReg(const Simd256 other) const noexcept
-    { return other; }
+    {
+        if constexpr (_FALCON_SIMD256_SUPPORT_NATIVE_INTRINSIC(DataType))
+        {
+            if constexpr (types::IsFP64<DataType>)
+            {
+                return Simd256(_mm256_div_pd(_reg, *other));
+            }
+            else if constexpr (types::IsFP32<DataType>)
+            {
+                return Simd256(_mm256_div_ps(_reg, *other));
+            }
+            else if constexpr (sizeof(DataType) == 8)
+            {
+                return Simd256(_mm256_sub_epi64(_reg, *other));
+            }
+            else if constexpr (sizeof(DataType) == 4)
+            {
+                return Simd256(_mm256_sub_epi32(_reg, *other));
+            }
+            else if constexpr (sizeof(DataType) == 2)
+            {
+                return Simd256(_mm256_sub_epi16(_reg, *other));
+            }
+            else // if constexpr (sizeof(DataType) == 1)
+            {
+                return Simd256(_mm256_sub_epi8(_reg, *other));
+            }
+        }
+        else
+        {
+            return _reg.divReg(*other);
+        }
+    }
 
 
     template <typename DataType, size_t Lane>
     FALCON_INLINE constexpr Simd256<SimdBackend::ARCH_AVX, DataType, Lane> Simd256<
         SimdBackend::ARCH_AVX, DataType, Lane>::operator/(const DataType scalar) const noexcept
-    { return divReg(scalar); }
+    { return divReg(Simd256(scalar)); }
 
 
     template <typename DataType, size_t Lane>

@@ -380,258 +380,253 @@ TEST(Simd256ArithmeticTests, CompoundMultiplicationOperation_WorksWithMixedNumbe
 }
 
 
-// TYPED_TEST(Simd256ArithmeticTests, DivReg_ReturnsAValidResult)
-// {
-//     using Type            = TypeParam::Type;
-//     constexpr size_t Lane = TypeParam::VALUE;
-//
-//     alignas(32) std::array<Type, Lane> lhs{}, rhs{}, expected{}, result{};
-//     for (size_t i = 0; i < Lane; ++i)
-//     {
-//         lhs[i]      = this->a[i];
-//         rhs[i]      = this->b[i];
-//         expected[i] = static_cast<Type>(lhs[i] / rhs[i]);
-//     }
-//
-//     flcn::Simd256_t<Type, Lane> regA, regB;
-//     regA.loadAligned(lhs.data());
-//     regB.loadAligned(rhs.data());
-//
-//     auto regRes = regA.divReg(regB);
-//     regRes.storeAligned(result.data());
-//
-//     for (size_t i = 0; i < Lane; ++i)
-//     {
-//         EXPECT_ANY_EQ(expected[i], result[i]);
-//     }
-// }
-//
-//
-//
-// /// @test Verify that division using divReg function returns the correct value for the largest and smallest numbers.
-// TYPED_TEST(Simd256ArithmeticTests, DivReg_MaintainsPrecisionForAtUpperAndLowerLimits)
-// {
-//     using Type            = TypeParam::Type;
-//     constexpr size_t Lane = TypeParam::VALUE;
-//
-//     constexpr auto largestNumber  = std::numeric_limits<Type>::max();
-//     constexpr auto smallestNumber = std::numeric_limits<Type>::min();
-//
-//     alignas(32) std::array<Type, Lane> lhs{}, rhs{}, expected{}, result{};
-//     for (size_t i = 0; i < Lane; ++i)
-//     {
-//         lhs[i]      = this->a[i];
-//         rhs[i]      = this->b[i];
-//         expected[i] = static_cast<Type>(lhs[i] / rhs[i]);
-//     }
-//     lhs[0]      = largestNumber;
-//     lhs[1]      = smallestNumber;
-//     expected[0] = static_cast<Type>(lhs[0] / rhs[0]);
-//     expected[1] = static_cast<Type>(lhs[1] / rhs[1]);
-//
-//
-//     flcn::Simd256_t<Type, Lane> regA, regB;
-//     regA.loadAligned(lhs.data());
-//     regB.loadAligned(rhs.data());
-//
-//     auto regRes = regA.divReg(regB);
-//     regRes.storeAligned(result.data());
-//
-//     for (size_t i = 0; i < Lane; ++i)
-//     {
-//         EXPECT_ANY_EQ(expected[i], result[i]);
-//     }
-// }
-//
-//
-// TEST(Simd256ArithmeticTests, DivReg_WorksWithMixedNumbers)
-// {
-//     alignas(32) std::array<float, 8> lhs{ 25, -51, 13, 0, 12, 15, 44, 17 }, rhs{ -5, 25, 3, 16, 2, 3, 11, 2 }, result{};
-//     const std::array<float, 8> expected{ -5, -2.04f, 4.333333f, 0, 6, 5, 4, 8.5 };
-//
-//     flcn::Simd256_t<float, 8> regA, regB;
-//     regA.loadAligned(lhs.data());
-//     regB.loadAligned(rhs.data());
-//
-//     const auto regRes = regA.divReg(regB);
-//     regRes.storeAligned(result.data());
-//
-//
-//     for (size_t i = 0; i < 8; ++i)
-//     {
-//         EXPECT_FLOAT_EQ(expected[i], result[i]);
-//     }
-// }
-//
-//
-//
-// TYPED_TEST(Simd256ArithmeticTests, BinaryDivideOperator_ReturnsAValidResult)
-// {
-//     using Type            = TypeParam::Type;
-//     constexpr size_t Lane = TypeParam::VALUE;
-//     const Type divisor    = Type(5);
-//
-//     alignas(32) std::array<Type, Lane> lhs{}, expected{}, result{};
-//     for (size_t i = 0; i < Lane; ++i)
-//     {
-//         lhs[i]      = this->a[i];
-//         expected[i] = static_cast<Type>(lhs[i] / divisor);
-//     }
-//
-//     flcn::Simd256_t<Type, Lane> regA;
-//     regA.loadAligned(lhs.data());
-//
-//     auto regRes = regA / divisor;
-//     regRes.storeAligned(result.data());
-//
-//     for (size_t i = 0; i < Lane; ++i)
-//     {
-//         EXPECT_ANY_EQ(expected[i], result[i]);
-//     }
-// }
-//
-//
-//
-// /// @test Verify that division using operator/ returns the correct value for the largest and smallest numbers.
-// TYPED_TEST(Simd256ArithmeticTests, BinaryDivideOperator_MaintainsPrecisionForAtUpperAndLowerLimits)
-// {
-//     using Type            = TypeParam::Type;
-//     constexpr size_t Lane = TypeParam::VALUE;
-//     const Type divisor    = Type(5);
-//
-//     constexpr auto largestNumber  = std::numeric_limits<Type>::max();
-//     constexpr auto smallestNumber = std::numeric_limits<Type>::min();
-//
-//     // We are swapping for the largest and smallest for the first two indices
-//     // since we have at least 2 lanes(256 / 64(max data type size)) we can safely inject those values
-//     alignas(32) std::array<Type, Lane> lhs{}, expected{}, result{};
-//     for (size_t i = 0; i < Lane; ++i)
-//     {
-//         lhs[i]      = this->a[i];
-//         expected[i] = static_cast<Type>(lhs[i] / divisor);
-//     }
-//     lhs[0]      = largestNumber;
-//     lhs[1]      = smallestNumber;
-//     expected[0] = static_cast<Type>(lhs[0] / divisor);
-//     expected[1] = static_cast<Type>(lhs[1] / divisor);
-//
-//
-//     flcn::Simd256_t<Type, Lane> regA;
-//     regA.loadAligned(lhs.data());
-//
-//     auto regRes = regA / divisor;
-//     regRes.storeAligned(result.data());
-//
-//     for (size_t i = 0; i < Lane; ++i)
-//     {
-//         EXPECT_ANY_EQ(expected[i], result[i]);
-//     }
-// }
-//
-//
-// TEST(Simd256ArithmeticTests, BinaryDivideOperator_WorksWithMixedNumbers)
-// {
-//     alignas(32) std::array<float, 8> lhs{ 25, -51, 13, 0, 12, 15, 44, 17 }, result{};
-//     const std::array<float, 8> expected{ -6.25, 12.75, -3.25, -0.0, -3.0, -3.75, -11.0, -4.25 };
-//
-//     flcn::Simd256_t<float, 8> regA;
-//     regA.loadAligned(lhs.data());
-//
-//     const auto regRes = regA / -4;
-//     regRes.storeAligned(result.data());
-//
-//
-//     for (size_t i = 0; i < 8; ++i)
-//     {
-//         EXPECT_FLOAT_EQ(expected[i], result[i]);
-//     }
-// }
-//
-//
-//
-// TYPED_TEST(Simd256ArithmeticTests, CompoundDivideOperator_ReturnsAValidResult)
-// {
-//     using Type            = TypeParam::Type;
-//     constexpr size_t Lane = TypeParam::VALUE;
-//     const Type divisor    = Type(5);
-//
-//     alignas(32) std::array<Type, Lane> lhs{}, expected{}, result{};
-//     for (size_t i = 0; i < Lane; ++i)
-//     {
-//         lhs[i]      = this->a[i];
-//         expected[i] = static_cast<Type>(lhs[i] / divisor);
-//     }
-//
-//     flcn::Simd256_t<Type, Lane> regA;
-//     regA.loadAligned(lhs.data());
-//
-//     regA /= divisor;
-//     regA.storeAligned(result.data());
-//
-//     for (size_t i = 0; i < Lane; ++i)
-//     {
-//         EXPECT_ANY_EQ(expected[i], result[i]);
-//     }
-// }
-//
-//
-//
-// /// @test Verify that division using operator/ returns the correct value for the largest and smallest numbers.
-// TYPED_TEST(Simd256ArithmeticTests, CompoundDivideOperator_MaintainsPrecisionForAtUpperAndLowerLimits)
-// {
-//     using Type            = TypeParam::Type;
-//     constexpr size_t Lane = TypeParam::VALUE;
-//     const Type divisor    = Type(5);
-//
-//     constexpr auto largestNumber  = std::numeric_limits<Type>::max();
-//     constexpr auto smallestNumber = std::numeric_limits<Type>::min();
-//
-//     // We are swapping for the largest and smallest for the first two indices
-//     // since we have at least 2 lanes(256 / 64(max data type size)) we can safely inject those values
-//     alignas(32) std::array<Type, Lane> lhs{}, expected{}, result{};
-//     for (size_t i = 0; i < Lane; ++i)
-//     {
-//         lhs[i]      = this->a[i];
-//         expected[i] = static_cast<Type>(lhs[i] / divisor);
-//     }
-//     lhs[0]      = largestNumber;
-//     lhs[1]      = smallestNumber;
-//     expected[0] = static_cast<Type>(lhs[0] / divisor);
-//     expected[1] = static_cast<Type>(lhs[1] / divisor);
-//
-//
-//     flcn::Simd256_t<Type, Lane> regA;
-//     regA.loadAligned(lhs.data());
-//
-//     regA /= divisor;
-//     regA.storeAligned(result.data());
-//
-//     for (size_t i = 0; i < Lane; ++i)
-//     {
-//         EXPECT_ANY_EQ(expected[i], result[i]);
-//     }
-// }
-//
-//
-// TEST(Simd256ArithmeticTests, CompoundDivideOperator_WorksWithMixedNumbers)
-// {
-//     alignas(32) std::array<float, 8> lhs{ 25, -51, 13, 0, 12, 15, 44, 17 }, result{};
-//     const std::array<float, 8> expected{ -6.25, 12.75, -3.25, -0.0, -3.0, -3.75, -11.0, -4.25 };
-//
-//     flcn::Simd256_t<float, 8> regA;
-//     regA.loadAligned(lhs.data());
-//
-//     regA /= -4;
-//     regA.storeAligned(result.data());
-//
-//     for (size_t i = 0; i < 8; ++i)
-//     {
-//         EXPECT_FLOAT_EQ(expected[i], result[i]);
-//     }
-// }
-//
-//
-//
+TYPED_TEST(Simd256ArithmeticTests, DivReg_ReturnsAValidResult)
+{
+    using Type            = TypeParam::Type;
+    constexpr size_t Lane = TypeParam::VALUE;
+
+    alignas(32) std::array<Type, Lane> lhs{}, rhs{}, expected{}, result{};
+    for (size_t i = 0; i < Lane; ++i)
+    {
+        lhs[i]      = this->a[i];
+        rhs[i]      = this->b[i];
+        expected[i] = static_cast<Type>(lhs[i] / rhs[i]);
+    }
+
+    flcn::Simd256_t<Type, Lane> regA, regB;
+    regA.loadAligned(lhs.data());
+    regB.loadAligned(rhs.data());
+
+    auto regRes = regA.divReg(regB);
+    regRes.storeAligned(result.data());
+
+    for (size_t i = 0; i < Lane; ++i)
+    {
+        EXPECT_ANY_EQ(expected[i], result[i]);
+    }
+}
+
+
+/// @test Verify that division using divReg function returns the correct value for the largest and smallest numbers.
+TYPED_TEST(Simd256ArithmeticTests, DivReg_MaintainsPrecisionForAtUpperAndLowerLimits)
+{
+    using Type            = TypeParam::Type;
+    constexpr size_t Lane = TypeParam::VALUE;
+
+    constexpr auto largestNumber  = std::numeric_limits<Type>::max();
+    constexpr auto smallestNumber = std::numeric_limits<Type>::min();
+
+    alignas(32) std::array<Type, Lane> lhs{}, rhs{}, expected{}, result{};
+    for (size_t i = 0; i < Lane; ++i)
+    {
+        lhs[i]      = this->a[i];
+        rhs[i]      = this->b[i];
+        expected[i] = static_cast<Type>(lhs[i] / rhs[i]);
+    }
+    lhs[0]      = largestNumber;
+    lhs[1]      = smallestNumber;
+    expected[0] = static_cast<Type>(lhs[0] / rhs[0]);
+    expected[1] = static_cast<Type>(lhs[1] / rhs[1]);
+
+
+    flcn::Simd256_t<Type, Lane> regA, regB;
+    regA.loadAligned(lhs.data());
+    regB.loadAligned(rhs.data());
+
+    auto regRes = regA.divReg(regB);
+    regRes.storeAligned(result.data());
+
+    for (size_t i = 0; i < Lane; ++i)
+    {
+        EXPECT_ANY_EQ(expected[i], result[i]);
+    }
+}
+
+
+TEST(Simd256ArithmeticTests, DivReg_WorksWithMixedNumbers)
+{
+    alignas(32) std::array<float, 8> lhs{ 25, -51, 13, 0, 12, 15, 44, 17 }, rhs{ -5, 25, 3, 16, 2, 3, 11, 2 }, result{};
+    const std::array<float, 8> expected{ -5, -2.04f, 4.333333f, 0, 6, 5, 4, 8.5 };
+
+    flcn::Simd256_t<float, 8> regA, regB;
+    regA.loadAligned(lhs.data());
+    regB.loadAligned(rhs.data());
+
+    const auto regRes = regA.divReg(regB);
+    regRes.storeAligned(result.data());
+
+
+    for (size_t i = 0; i < 8; ++i)
+    {
+        EXPECT_FLOAT_EQ(expected[i], result[i]);
+    }
+}
+
+
+TYPED_TEST(Simd256ArithmeticTests, BinaryDivideOperator_ReturnsAValidResult)
+{
+    using Type            = TypeParam::Type;
+    constexpr size_t Lane = TypeParam::VALUE;
+    const Type divisor    = Type(5);
+
+    alignas(32) std::array<Type, Lane> lhs{}, expected{}, result{};
+    for (size_t i = 0; i < Lane; ++i)
+    {
+        lhs[i]      = this->a[i];
+        expected[i] = static_cast<Type>(lhs[i] / divisor);
+    }
+
+    flcn::Simd256_t<Type, Lane> regA;
+    regA.loadAligned(lhs.data());
+
+    auto regRes = regA / divisor;
+    regRes.storeAligned(result.data());
+
+    for (size_t i = 0; i < Lane; ++i)
+    {
+        EXPECT_ANY_EQ(expected[i], result[i]);
+    }
+}
+
+
+/// @test Verify that division using operator/ returns the correct value for the largest and smallest numbers.
+TYPED_TEST(Simd256ArithmeticTests, BinaryDivideOperator_MaintainsPrecisionForAtUpperAndLowerLimits)
+{
+    using Type            = TypeParam::Type;
+    constexpr size_t Lane = TypeParam::VALUE;
+    const Type divisor    = Type(5);
+
+    constexpr auto largestNumber  = std::numeric_limits<Type>::max();
+    constexpr auto smallestNumber = std::numeric_limits<Type>::min();
+
+    // We are swapping for the largest and smallest for the first two indices
+    // since we have at least 2 lanes(256 / 64(max data type size)) we can safely inject those values
+    alignas(32) std::array<Type, Lane> lhs{}, expected{}, result{};
+    for (size_t i = 0; i < Lane; ++i)
+    {
+        lhs[i]      = this->a[i];
+        expected[i] = static_cast<Type>(lhs[i] / divisor);
+    }
+    lhs[0]      = largestNumber;
+    lhs[1]      = smallestNumber;
+    expected[0] = static_cast<Type>(lhs[0] / divisor);
+    expected[1] = static_cast<Type>(lhs[1] / divisor);
+
+
+    flcn::Simd256_t<Type, Lane> regA;
+    regA.loadAligned(lhs.data());
+
+    auto regRes = regA / divisor;
+    regRes.storeAligned(result.data());
+
+    for (size_t i = 0; i < Lane; ++i)
+    {
+        EXPECT_ANY_EQ(expected[i], result[i]);
+    }
+}
+
+
+TEST(Simd256ArithmeticTests, BinaryDivideOperator_WorksWithMixedNumbers)
+{
+    alignas(32) std::array<float, 8> lhs{ 25, -51, 13, 0, 12, 15, 44, 17 }, result{};
+    const std::array<float, 8> expected{ -6.25, 12.75, -3.25, -0.0, -3.0, -3.75, -11.0, -4.25 };
+
+    flcn::Simd256_t<float, 8> regA;
+    regA.loadAligned(lhs.data());
+
+    const auto regRes = regA / -4;
+    regRes.storeAligned(result.data());
+
+
+    for (size_t i = 0; i < 8; ++i)
+    {
+        EXPECT_FLOAT_EQ(expected[i], result[i]);
+    }
+}
+
+
+TYPED_TEST(Simd256ArithmeticTests, CompoundDivideOperator_ReturnsAValidResult)
+{
+    using Type            = TypeParam::Type;
+    constexpr size_t Lane = TypeParam::VALUE;
+    const Type divisor    = Type(5);
+
+    alignas(32) std::array<Type, Lane> lhs{}, expected{}, result{};
+    for (size_t i = 0; i < Lane; ++i)
+    {
+        lhs[i]      = this->a[i];
+        expected[i] = static_cast<Type>(lhs[i] / divisor);
+    }
+
+    flcn::Simd256_t<Type, Lane> regA;
+    regA.loadAligned(lhs.data());
+
+    regA /= divisor;
+    regA.storeAligned(result.data());
+
+    for (size_t i = 0; i < Lane; ++i)
+    {
+        EXPECT_ANY_EQ(expected[i], result[i]);
+    }
+}
+
+
+/// @test Verify that division using operator/ returns the correct value for the largest and smallest numbers.
+TYPED_TEST(Simd256ArithmeticTests, CompoundDivideOperator_MaintainsPrecisionForAtUpperAndLowerLimits)
+{
+    using Type            = TypeParam::Type;
+    constexpr size_t Lane = TypeParam::VALUE;
+    const Type divisor    = Type(5);
+
+    constexpr auto largestNumber  = std::numeric_limits<Type>::max();
+    constexpr auto smallestNumber = std::numeric_limits<Type>::min();
+
+    // We are swapping for the largest and smallest for the first two indices
+    // since we have at least 2 lanes(256 / 64(max data type size)) we can safely inject those values
+    alignas(32) std::array<Type, Lane> lhs{}, expected{}, result{};
+    for (size_t i = 0; i < Lane; ++i)
+    {
+        lhs[i]      = this->a[i];
+        expected[i] = static_cast<Type>(lhs[i] / divisor);
+    }
+    lhs[0]      = largestNumber;
+    lhs[1]      = smallestNumber;
+    expected[0] = static_cast<Type>(lhs[0] / divisor);
+    expected[1] = static_cast<Type>(lhs[1] / divisor);
+
+
+    flcn::Simd256_t<Type, Lane> regA;
+    regA.loadAligned(lhs.data());
+
+    regA /= divisor;
+    regA.storeAligned(result.data());
+
+    for (size_t i = 0; i < Lane; ++i)
+    {
+        EXPECT_ANY_EQ(expected[i], result[i]);
+    }
+}
+
+
+TEST(Simd256ArithmeticTests, CompoundDivideOperator_WorksWithMixedNumbers)
+{
+    alignas(32) std::array<float, 8> lhs{ 25, -51, 13, 0, 12, 15, 44, 17 }, result{};
+    const std::array<float, 8> expected{ -6.25, 12.75, -3.25, -0.0, -3.0, -3.75, -11.0, -4.25 };
+
+    flcn::Simd256_t<float, 8> regA;
+    regA.loadAligned(lhs.data());
+
+    regA /= -4;
+    regA.storeAligned(result.data());
+
+    for (size_t i = 0; i < 8; ++i)
+    {
+        EXPECT_FLOAT_EQ(expected[i], result[i]);
+    }
+}
+
+
+
 // /// @test Verify that fma operation returns a valid result (a * b + c).
 // TYPED_TEST(Simd256ArithmeticTests, FMA_ReturnsAValidResult)
 // {

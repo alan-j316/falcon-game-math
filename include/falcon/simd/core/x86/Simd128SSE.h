@@ -828,63 +828,13 @@ namespace flcn
 
     private:
         simd::internal::Simd128Register_t<DataType> _register;
-
-        ///+=+=+=+=+=+=+=+=+=+=+=+=+=
-        ///         HELPERS
-        ///+=+=+=+=+=+=+=+=+=+=+=+=+=
-
-        /// Perform a logical right shift on the 128-bit register composed of Byte values.
-        static constexpr __m128i _mm_srl_epi8_custom(__m128i reg, uint32_t count) noexcept;
-
-
-        /// Perform a arithmetic right shift on the 128-bit register composed of Quad Word (64-bit integral) values.
-        static constexpr __m128i _mm_sra_epi64_custom(__m128i reg, uint32_t count) noexcept;
-
-
-        /// @brief Perform a logical left shift on the 128-bit register composed of Byte values by a constant known
-        ///        at compile time.
-        /// @tparam Count The shift amount.
-        template <uint32_t Count>
-        static constexpr __m128i _mm_slli_epi8_custom(__m128i reg) noexcept;
-
-
-        /// @brief Perform a arithmetic right shift on the 128-bit register composed of Quad Word (64-bit integral)
-        /// values
-        ///        by a constant known at compile time.
-        /// @tparam Count The shift amount.
-        template <uint32_t Count>
-        static constexpr __m128i _mm_srai_epi64_custom(__m128i reg) noexcept;
-
-
-        /// @brief Perform a logical left right on the 128-bit register composed of Byte values by a constant known
-        ///        at compile time.
-        /// @tparam Count The shift amount.
-        template <uint32_t Count>
-        static constexpr __m128i _mm_srli_epi8_custom(__m128i reg) noexcept;
-
-
-        /// @brief Perform a arithmetic left right on the 128-bit register composed of Byte values by a constant known
-        ///        at compile time.
-        /// @tparam Count The shift amount.
-        template <uint32_t Count>
-        static constexpr __m128i _mm_srai_epi8_custom(__m128i reg) noexcept;
-
-        /// @brief Unpack the lower lanes of the integral register into the next power of 2 (16->32).
-        ///        with sign saturation.
-        /// @note This has no effect on the 64-bit integrals.
-        static constexpr __m128i _mm_unpacklo_saturated_custom(__m128i reg) noexcept;
-
-
-        /// @brief Unpack the upper lanes of the integral register into the next power of 2 (16->32)
-        ///        with sign saturation.
-        /// @note This has no effect on the 64-bit integrals.
-        static constexpr __m128i _mm_unpackhi_saturated_custom(__m128i reg) noexcept;
     };
 
 } // namespace flcn
 
 
-// --- THIS SHOULD BE INCLUDED FIRST as the .inl files use functions declared in this header.
+// --- THESE SHOULD BE INCLUDED FIRST as the .inl files use functions declared in this header.
+#include "CustomX86Intrin.inl"
 #include "Simd128X86Math.h"
 // ------
 #include "Simd128SSE.inl"

@@ -12,6 +12,7 @@ add_library(${FALCON_SIMD_TARGET_NAME} INTERFACE
         core/x86/Simd256X86Math.inl
         core/x86/Simd256AVX.h
         core/x86/Simd256AVX.inl
+        core/x86/CustomX86Intrin.inl
 
         utils/SIMDUtils.h
         utils/TypeTraits.h

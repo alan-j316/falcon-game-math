@@ -10,7 +10,6 @@
  */
 
 
-#include "Simd128SSE.h"
 #include "falcon/simd/utils/SIMDUtils.h"
 
 #include <bitset>
@@ -2334,7 +2333,7 @@ namespace flcn
             }
             else
             {
-                auto shifted = _mm_sra_epi64_custom(integralReg, count);
+                auto shifted = intrin::_mm_sra_epi64_custom(integralReg, count);
                 return Simd128(_mm_castsi128_pd(shifted));
             }
         }
@@ -2353,7 +2352,7 @@ namespace flcn
             }
             else
             {
-                return Simd128(_mm_sra_epi64_custom(_register, count));
+                return Simd128(intrin::_mm_sra_epi64_custom(_register, count));
             }
         }
         else if constexpr (types::IsDWord<DataType>)
@@ -2378,10 +2377,10 @@ namespace flcn
             // 1101 xor 1111 = 0010      | 0101 xor 0000 = 0101      |
             // 0011 >>     3 = 0000      | 0101 >>     3 = 0001      |
             // 0000 xor 1111 = 1111      | 0000 xor 0001 = 0001      |
-            const auto isolatedSignBit = _mm_srli_epi8_custom<7>(_register);
+            const auto isolatedSignBit = intrin::_mm_srli_epi8_custom<7>(_register);
             const auto tReg            = _mm_sub_epi8(_mm_setzero_si128(), isolatedSignBit);
             const auto xXorTReg        = _mm_xor_si128(_register, tReg);
-            const auto shiftedXor      = _mm_srl_epi8_custom(xXorTReg, count);
+            const auto shiftedXor      = intrin::_mm_srl_epi8_custom(xXorTReg, count);
             return Simd128(_mm_xor_si128(shiftedXor, tReg));
         }
         // Unsigned types
@@ -2432,7 +2431,7 @@ namespace flcn
         }
         else // if constexpr (sizeof(DataType) == 1)
         {
-            return Simd128(_mm_srl_epi8_custom(_register, count));
+            return Simd128(intrin::_mm_srl_epi8_custom(_register, count));
         }
     }
 
@@ -2468,7 +2467,7 @@ namespace flcn
         }
         else // if constexpr(sizeof(DataType) == 1)
         {
-            return Simd128(_mm_slli_epi8_custom<Count>(_register));
+            return Simd128(intrin::_mm_slli_epi8_custom<Count>(_register));
         }
     }
 
@@ -2490,7 +2489,7 @@ namespace flcn
             }
             else
             {
-                const auto shifted = _mm_srai_epi64_custom<Count>(integralReg);
+                const auto shifted = intrin::_mm_srai_epi64_custom<Count>(integralReg);
                 return Simd128(_mm_castsi128_pd(shifted));
             }
         }
@@ -2509,7 +2508,7 @@ namespace flcn
             }
             else
             {
-                return Simd128(_mm_srai_epi64_custom<Count>(_register));
+                return Simd128(intrin::_mm_srai_epi64_custom<Count>(_register));
             }
         }
         else if constexpr (types::IsDWord<DataType>)
@@ -2522,7 +2521,7 @@ namespace flcn
         }
         else if constexpr (types::IsByte<DataType>)
         {
-            return Simd128(_mm_srai_epi8_custom<Count>(_register));
+            return Simd128(intrin::_mm_srai_epi8_custom<Count>(_register));
         }
         // Unsigned
         else // if (std::is_unsigned_v<DataType>)
@@ -2564,7 +2563,7 @@ namespace flcn
         }
         else // if constexpr (sizeof(DataType) == 1)
         {
-            return Simd128(_mm_srli_epi8_custom<Count>(_register));
+            return Simd128(intrin::_mm_srli_epi8_custom<Count>(_register));
         }
     }
 
@@ -3290,7 +3289,7 @@ namespace flcn
             {
                 reg = *max(*this, Simd128(_mm_setzero_si128()));
             }
-            const auto regLo = _mm_unpacklo_saturated_custom(reg);
+            const auto regLo = intrin::_mm_unpacklo_saturated_custom<DataType>(reg);
             // NOTE: We need to clamp negative numbers to zero since we cannot have negative sqrt(imaginary numbers)
             const auto floatRegLo = _mm_cvtepi32_ps(regLo);
             const auto sqrtLo     = _mm_sqrt_ps(floatRegLo);
@@ -3301,7 +3300,7 @@ namespace flcn
             }
             else
             {
-                const auto regHi      = _mm_unpackhi_saturated_custom(reg);
+                const auto regHi      = intrin::_mm_unpackhi_saturated_custom<DataType>(reg);
                 const auto floatRegHi = _mm_cvtepi32_ps(regHi);
                 const auto sqrtHi     = _mm_sqrt_ps(floatRegHi);
                 const auto intSqrtHi  = _mm_cvttps_epi32(sqrtHi);
@@ -3322,8 +3321,8 @@ namespace flcn
             {
                 reg = *max(*this, Simd128(_mm_setzero_si128()));
             }
-            const auto regLo = _mm_unpacklo_saturated_custom(reg);   // Unpacked 16-bit register
-            const auto regA  = _mm_unpacklo_saturated_custom(regLo); // <_, _, _, A>
+            const auto regLo = intrin::_mm_unpacklo_saturated_custom<DataType>(reg);   // Unpacked 16-bit register
+            const auto regA  = intrin::_mm_unpacklo_saturated_custom<DataType>(regLo); // <_, _, _, A>
             // NOTE: We need to clamp negative numbers to zero since we cannot have negative sqrt(imaginary numbers)
             const auto floatRegA  = _mm_cvtepi32_ps(regA);
             const auto sqrtA      = _mm_sqrt_ps(floatRegA);
@@ -3335,7 +3334,7 @@ namespace flcn
             }
             else
             {
-                const auto regB        = _mm_unpackhi_saturated_custom(regLo); // <_, _, B, _>
+                const auto regB        = intrin::_mm_unpackhi_saturated_custom<DataType>(regLo); // <_, _, B, _>
                 const auto floatRegB   = _mm_cvtepi32_ps(regB);
                 const auto sqrtB       = _mm_sqrt_ps(floatRegB);
                 const auto intSqrtB    = _mm_cvttps_epi32(sqrtB);
@@ -3346,8 +3345,8 @@ namespace flcn
                 }
                 else
                 {
-                    const auto regHi      = _mm_unpackhi_saturated_custom(_register);
-                    const auto regC       = _mm_unpacklo_saturated_custom(regHi); // <_, C, _, _>
+                    const auto regHi      = intrin::_mm_unpackhi_saturated_custom<DataType>(_register);
+                    const auto regC       = intrin::_mm_unpacklo_saturated_custom<DataType>(regHi); // <_, C, _, _>
                     const auto floatRegC  = _mm_cvtepi32_ps(regC);
                     const auto sqrtC      = _mm_sqrt_ps(floatRegC);
                     const auto intSqrtC   = _mm_cvttps_epi32(sqrtC);
@@ -3358,7 +3357,7 @@ namespace flcn
                     }
                     else
                     {
-                        const auto regD        = _mm_unpackhi_saturated_custom(regHi); // <D, _, _, _>
+                        const auto regD        = intrin::_mm_unpackhi_saturated_custom<DataType>(regHi); // <D, _, _, _>
                         const auto floatRegD   = _mm_cvtepi32_ps(regD);
                         const auto sqrtD       = _mm_sqrt_ps(floatRegD);
                         const auto intSqrtD    = _mm_cvttps_epi32(sqrtD);
@@ -3425,7 +3424,7 @@ namespace flcn
         }
         else if constexpr (types::IsFP32<DataType>)
         {
-            // AVL2 Library: https://github.com/vectorclass/version2/blob/master/vectorf128.h
+            // VCL2 Library: https://github.com/vectorclass/version2/blob/master/vectorf128.h
             const auto shifted = cast<uint32_t>().template shiftLeft<1>();
             const auto res     = shifted == Simd128<SimdBackend::ARCH_SSE2, uint32_t, Lane>(0xFF000000U);
             return Simd128(_mm_castsi128_ps(*res));
@@ -3433,230 +3432,6 @@ namespace flcn
         else // if constexpr (std::is_integral_v<DataType>)
         {
             return Simd128(_mm_setzero_si128());
-        }
-    }
-
-
-
-    ///+=+=+=+=+=+=+=+=+=+=+=+=+=
-    ///    PRIVATE FUNCTIONS
-    ///+=+=+=+=+=+=+=+=+=+=+=+=+=
-
-    template <typename DataType, size_t Lane>
-    FALCON_INLINE constexpr __m128i Simd128<SimdBackend::ARCH_SSE2, DataType, Lane>::_mm_srl_epi8_custom(
-        const __m128i reg, const uint32_t count) noexcept
-    {
-        // Since there is no direct shift operation for 8-bit integers
-        // we need to shift using epi16 and apply a mask to the overflow
-        // ([1001 1001] [1001 1001]) >> 3 = [0010 0110] [0010 0110]
-        // We first mask out the bit that will be zero when shifted
-        // [1111 1111] << 3 -> [1111 1000] Create the mask
-        // [1001 1001] & [1111 1000] = [1001 1000] And apply it
-        const auto countReg = _mm_cvtsi32_si128(count); // Load the shift value into the lower 32-bit lanes
-        const auto mask     = 0xff << count;
-        const auto maskReg  = _mm_set1_epi8(static_cast<int8_t>(mask));
-        const auto andReg   = _mm_and_si128(reg, maskReg);
-        // Now we shift the entire register to the left by shiftCount
-        // since the overflown values are already zero-ed out shifting this will
-        // create the correct put.
-        // [1001 1000] [1001 1000] >> 3
-        // [0010 1100] [0010 1100]
-        return _mm_srl_epi16(andReg, countReg);
-    }
-
-
-    template <typename DataType, size_t Lane>
-    FALCON_INLINE constexpr __m128i Simd128<SimdBackend::ARCH_SSE2, DataType, Lane>::_mm_sra_epi64_custom(
-        const __m128i reg, const uint32_t count) noexcept
-    {
-        const auto countReg = _mm_cvtsi32_si128(count);
-        // Hacker Delight Ch.2 (2-7)
-        // ((x + 0x8000..00) u>> n) - (0x8000.000 u>> n)
-        // For signed shift we need to first remove the sign bit or add it (if its a positive number)
-        // and then we shift both the sum and the sign by the shifted amount.
-        // Finally subtracting the sign will remove the sign if it was a unsigned number(or positive signed
-        // number) or if it was a negative number, it will cause an signed overflow since we are subtracting a
-        // smaller number from a larger number(sign will be larger), which will fill all the shifted spaces with 1.
-        // -7(1101) >> 2 = -1(1111)                          | 5(0101) >> 2 = 1(0001)                        |
-        // 1101 + 1000 = 0101 (Overflow)                     | 0101 + 1000  = 1101                           |
-        // 0101 >> 2   = 0001                                | 1101 >> 2    = 0011                           |
-        // 1000 >> 2   = 0010                                | 1000 >> 2    = 0010                           |
-        // 0001 - 0010 = 1111 (Borrowed bit signed overflow) | 0011 - 0010  = 0001                           |
-        const auto signReg        = _mm_set1_epi64x(0x8000000000000000ULL);
-        const auto sumReg         = _mm_add_epi64(reg, signReg);
-        const auto shiftedSumReg  = _mm_srl_epi64(sumReg, countReg);
-        const auto shiftedSignReg = _mm_srl_epi64(signReg, countReg);
-        return _mm_sub_epi64(shiftedSumReg, shiftedSignReg);
-    }
-
-
-    template <typename DataType, size_t Lane>
-    template <uint32_t Count>
-    FALCON_INLINE constexpr __m128i Simd128<SimdBackend::ARCH_SSE2, DataType, Lane>::_mm_slli_epi8_custom(
-        const __m128i reg) noexcept
-    {
-        // 8-bit integrals have no right or left shift operations so, we need to mask out the overflow bits
-        // and then do a shift using the epi16 intrinsic.
-        // Since this is a left shift operations values to to the right will need to be masked.
-        constexpr auto mask = 0xFF >> Count;                             // 0b0011 1111(Assume Count = 2)
-        const auto maskReg  = _mm_set1_epi8(static_cast<uint8_t>(mask)); // [0b00111111, 0b00111111, ..]
-        const auto andReg   = _mm_and_si128(reg, maskReg);               // [00xxxxxx, 00xxxxxx, 00xxxxxx,..]
-        return _mm_slli_epi16(andReg, Count);
-    }
-
-
-    template <typename DataType, size_t Lane>
-    template <uint32_t Count>
-    FALCON_INLINE constexpr __m128i Simd128<SimdBackend::ARCH_SSE2, DataType, Lane>::_mm_srai_epi64_custom(
-        const __m128i reg) noexcept
-    {
-        // Until AVX512F + VL there is no dedicated srai function so, we need to use xor to convert the signed
-        // values to unsigned and then shifted and the sign bits.
-        // Hacker Delight Ch.2 (2-7) (See a detailed example in operator>> definition)
-        // t = -(x u>> 63) // This is -1(0b111..111) for negative numbers and 0 for positive numbers.
-        // res = ((x xor t) u>> Count) xor t
-        const auto signShifted   = _mm_srli_epi64(reg, 63); // x u>> 63
-        const auto t             = _mm_sub_epi64(_mm_setzero_si128(), signShifted);
-        const auto signIsolated  = _mm_xor_si128(reg, t);               // x xor t
-        const auto unsignedShift = _mm_srli_epi64(signIsolated, Count); // (x xor t) u>> Count
-        return _mm_xor_si128(unsignedShift, t);
-    }
-
-
-    template <typename DataType, size_t Lane>
-    template <uint32_t Count>
-    FALCON_INLINE constexpr __m128i Simd128<SimdBackend::ARCH_SSE2, DataType, Lane>::_mm_srli_epi8_custom(
-        const __m128i reg) noexcept
-    {
-        // Since we don't have 8-bit integral logical right shift intrinsic we need to use masks to mask out all the
-        // bits that are not overflown, and then use epi16 shifts.
-        // See _mm_srl_epi8_custom for a detailed example.
-        constexpr auto mask = 0xff << Count; // 0b11111100 (Assume Count = 2)
-        const auto maskReg  = _mm_set1_epi8(static_cast<uint8_t>(mask));
-        // This essentially pseudo-shifts by zeroing out the bit in that would have zeroed out if
-        // performed the shift.
-        const auto andReg = _mm_and_si128(reg, maskReg);
-        // The final shift, shifts the binary values to their shifted place.
-        return _mm_srli_epi16(andReg, Count);
-    }
-
-
-    template <typename DataType, size_t Lane>
-    template <uint32_t Count>
-    FALCON_INLINE constexpr __m128i Simd128<SimdBackend::ARCH_SSE2, DataType, Lane>::_mm_srai_epi8_custom(
-        const __m128i reg) noexcept
-    {
-        // For arithmetic shifts we can use the XOR trick from Hackers Delight explained in operator>> or
-        // _mm_srai_epi64_custom implementation.
-        const auto shiftedSign = _mm_srli_epi8_custom<7>(reg);                   // Extract the sign bit to the LSB
-        const auto t           = _mm_sub_epi8(_mm_setzero_si128(), shiftedSign); // t = -(x u>> 7)
-        const auto unsignedReg = _mm_xor_si128(reg, t);                          // x xor t => Remove the sign bit
-        const auto shiftedReg  = _mm_srli_epi8_custom<Count>(unsignedReg);       // x xor t u>> Count.
-        // Add back the sign bit and return
-        return _mm_xor_si128(shiftedReg, t); // ((x xor t) u>> Count) xor t
-    }
-
-
-    template <typename DataType, size_t Lane>
-    FALCON_INLINE constexpr __m128i Simd128<SimdBackend::ARCH_SSE2, DataType, Lane>::_mm_unpacklo_saturated_custom(
-        const __m128i reg) noexcept
-    {
-        // NOTE: Floats are not handled.
-        // For unpacking signed numbers, we need to unpack a number with itself and
-        // expands its sign bits through arithmetic right shift.
-        // For expanding 1011 we can do
-        // Unpack 1011 1011 a>> 4 bits
-        // Res    1111 1011
-        // Signed integrals
-        if constexpr (types::IsDWord<DataType>)
-        {
-            /// Since there is no srai for epi64 we can create a sign bit mask
-            /// with srai
-            /// 1000 1011 = 1111 1111
-            /// and unpack the sign bits with the register
-            /// 1111 1011
-            const auto signBits = _mm_srai_epi32(reg, 31);
-            return _mm_unpacklo_epi32(reg, signBits);
-        }
-        else if constexpr (types::IsWord<DataType>)
-        {
-            const auto unpacked = _mm_unpacklo_epi16(reg, reg);
-            return _mm_srai_epi32(unpacked, 16);
-        }
-        else if constexpr (types::IsByte<DataType>)
-        {
-            const auto unpacked = _mm_unpacklo_epi8(reg, reg);
-            return _mm_srai_epi16(unpacked, 8);
-        }
-        // Unsigned integrals
-        else if constexpr (types::IsUDWord<DataType>)
-        {
-            return _mm_unpacklo_epi32(reg, _mm_setzero_si128());
-        }
-        else if constexpr (types::IsUWord<DataType>)
-        {
-            return _mm_unpacklo_epi16(reg, _mm_setzero_si128());
-        }
-        else if constexpr (types::IsUByte<DataType>)
-        {
-            return _mm_unpacklo_epi8(reg, _mm_setzero_si128());
-        }
-        else
-        {
-            // 64-bit integrals are not unpacked further
-            return reg;
-        }
-    }
-
-
-    template <typename DataType, size_t Lane>
-    FALCON_INLINE constexpr __m128i Simd128<SimdBackend::ARCH_SSE2, DataType, Lane>::_mm_unpackhi_saturated_custom(
-        const __m128i reg) noexcept
-    {
-        // NOTE: Floats are not handled.
-        // For unpacking signed numbers, we need to unpack a number with itself and
-        // expands its sign bits through arithmetic right shift.
-        // For expanding 1011 we can do
-        // Unpack 1011 1011 a>> 4 bits
-        // Res    1111 1011
-        // Signed integrals
-        if constexpr (types::IsDWord<DataType>)
-        {
-            /// Since there is no srai for epi64 we can create a sign bit mask
-            /// with srai
-            /// 1000 1011 = 1111 1111
-            /// and unpack the sign bits with the register
-            /// 1111 1011
-            const auto signBits = _mm_srai_epi32(reg, 31);
-            return _mm_unpackhi_epi32(reg, signBits);
-        }
-        else if constexpr (types::IsWord<DataType>)
-        {
-            const auto unpacked = _mm_unpackhi_epi16(reg, reg);
-            return _mm_srai_epi32(unpacked, 16);
-        }
-        else if constexpr (types::IsByte<DataType>)
-        {
-            const auto unpacked = _mm_unpackhi_epi8(reg, reg);
-            return _mm_srai_epi16(unpacked, 8);
-        }
-        // Unsigned integrals
-        else if constexpr (types::IsUDWord<DataType>)
-        {
-            return _mm_unpackhi_epi32(reg, _mm_setzero_si128());
-        }
-        else if constexpr (types::IsUWord<DataType>)
-        {
-            return _mm_unpackhi_epi16(reg, _mm_setzero_si128());
-        }
-        else if constexpr (types::IsUByte<DataType>)
-        {
-            return _mm_unpackhi_epi8(reg, _mm_setzero_si128());
-        }
-        else
-        {
-            // 64-bit integrals are not unpacked further
-            return reg;
         }
     }
 

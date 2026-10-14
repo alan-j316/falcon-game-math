@@ -562,44 +562,44 @@ namespace flcn
         constexpr Simd256& operator<<=(uint32_t count) noexcept;
 
 
-        //     /**
-        //      * @brief Perform a arithmetic/logical(type dependent) right shift by @p count and return a new register.
-        //      *
-        //      * @warning If @p count is known at compile time then it is recommended to use @ref shiftRight<Count> as
-        //      *          it is faster.
-        //      *
-        //      * @return A new 256-bit register with shifted values.
-        //      *
-        //      * @relatedalso operator<<(uint32_t)
-        //      * @relatedalso operator<<=(uint32_t)
-        //      * @relatedalso operator>>=(uint32_t)
-        //      * @relatedalso shiftRightLogical(uint32_t)
-        //      * @relatedalso shiftLeft<uint32_t>()
-        //      * @relatedalso shiftRightArithmetic<uint32_t>()
-        //      * @relatedalso shiftRightLogical<uint32_t>()
-        //      */
-        //     [[nodiscard]] constexpr Simd256 operator>>(uint32_t count) const noexcept;
-        //
-        //
-        //     /**
-        //      * @brief Perform a arithmetic/logical(type dependent) right shift on this register by @p count.
-        //      *
-        //      * @warning If @p count is known at compile time then it is recommended to use
-        //      *          @ref shiftRightArithmetic<uint32_t> as it is faster.
-        //      *
-        //      * @return A reference to this register.
-        //      *
-        //      * @relatedalso operator<<(uint32_t)
-        //      * @relatedalso operator<<=(uint32_t)
-        //      * @relatedalso operator>>(uint32_t)
-        //      * @relatedalso shiftRightLogical(uint32_t)
-        //      * @relatedalso shiftLeft<uint32_t>()
-        //      * @relatedalso shiftRightArithmetic<uint32_t>()
-        //      * @relatedalso shiftRightLogical<uint32_t>()
-        //      */
-        //     constexpr Simd256& operator>>=(uint32_t count) noexcept;
-        //
-        //
+        /**
+         * @brief Perform a arithmetic/logical(type dependent) right shift by @p count and return a new register.
+         *
+         * @warning If @p count is known at compile time then it is recommended to use @ref shiftRight<Count> as
+         *          it is faster.
+         *
+         * @return A new 256-bit register with shifted values.
+         *
+         * @relatedalso operator<<(uint32_t)
+         * @relatedalso operator<<=(uint32_t)
+         * @relatedalso operator>>=(uint32_t)
+         * @relatedalso shiftRightLogical(uint32_t)
+         * @relatedalso shiftLeft<uint32_t>()
+         * @relatedalso shiftRightArithmetic<uint32_t>()
+         * @relatedalso shiftRightLogical<uint32_t>()
+         */
+        [[nodiscard]] constexpr Simd256 operator>>(uint32_t count) const noexcept;
+
+
+        /**
+         * @brief Perform a arithmetic/logical(type dependent) right shift on this register by @p count.
+         *
+         * @warning If @p count is known at compile time then it is recommended to use
+         *          @ref shiftRightArithmetic<uint32_t> as it is faster.
+         *
+         * @return A reference to this register.
+         *
+         * @relatedalso operator<<(uint32_t)
+         * @relatedalso operator<<=(uint32_t)
+         * @relatedalso operator>>(uint32_t)
+         * @relatedalso shiftRightLogical(uint32_t)
+         * @relatedalso shiftLeft<uint32_t>()
+         * @relatedalso shiftRightArithmetic<uint32_t>()
+         * @relatedalso shiftRightLogical<uint32_t>()
+         */
+        constexpr Simd256& operator>>=(uint32_t count) noexcept;
+
+
         //     /**
         //      * @brief Perform a logical right shift (zero extension) on this register and return a new register.
         //      *
@@ -824,18 +824,6 @@ namespace flcn
         static constexpr auto UpperLaneCount = (Lane - Max128BitLaneCount > 0) ? (Lane - Max128BitLaneCount) : 0;
 
         simd::internal::Simd256Register_t<CURRENT_SIMD_BACKEND, DataType, Lane> _reg;
-
-
-        /// +=+=+=+=+=+=+=+=
-        /// PRIVATE HELPERS
-        /// +=+=+=+=+=+=+=+=
-
-
-        /// @brief Shift the 64x4 @p reg by @p count.
-        static __m256i _mm256_sll_epi64_custom(__m256i reg, __m128i count) noexcept;
-
-        /// @brief Shift the 32x8 @p reg by @p count.
-        static __m256i _mm256_sll_epi32_custom(__m256i reg, __m128i count) noexcept;
     };
 
 
@@ -843,6 +831,7 @@ namespace flcn
 
 
 // --- THIS SHOULD BE INCLUDED FIRST as the .inl files use functions declared in this header.
+#include "CustomX86Intrin.inl"
 #include "Simd256X86Math.h"
 // ------
 #include "Simd256AVX.inl"

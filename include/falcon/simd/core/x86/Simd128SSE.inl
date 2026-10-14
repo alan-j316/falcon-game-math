@@ -2309,7 +2309,7 @@ namespace flcn
 
     template <typename DataType, size_t Lane>
     FALCON_INLINE constexpr Simd128<SimdBackend::ARCH_SSE2, DataType, Lane>& Simd128<
-        SimdBackend::ARCH_SSE2, DataType, Lane>::operator<<=(uint32_t count) noexcept
+        SimdBackend::ARCH_SSE2, DataType, Lane>::operator<<=(const uint32_t count) noexcept
     {
         *this = *this << count;
         return *this;
@@ -2318,7 +2318,7 @@ namespace flcn
 
     template <typename DataType, size_t Lane>
     constexpr Simd128<SimdBackend::ARCH_SSE2, DataType, Lane> Simd128<SimdBackend::ARCH_SSE2, DataType,
-                                                                      Lane>::operator>>(uint32_t count) const noexcept
+                                                                      Lane>::operator>>(const uint32_t count) const noexcept
     {
         const auto countReg = _mm_cvtsi32_si128(count);
         // For floating point numbers we need to convert them to integral of similar Lane width
@@ -2326,16 +2326,8 @@ namespace flcn
         if constexpr (types::IsFP64<DataType>)
         {
             auto integralReg = _mm_castpd_si128(_register);
-            if constexpr (CURRENT_SIMD_BACKEND >= SimdBackend::ARCH_AVX512EX)
-            {
-                auto shifted = _mm_sra_epi64(integralReg, countReg);
-                return Simd128(_mm_castsi128_pd(shifted));
-            }
-            else
-            {
-                auto shifted = intrin::_mm_sra_epi64_custom(integralReg, count);
-                return Simd128(_mm_castsi128_pd(shifted));
-            }
+            auto shifted = intrin::_mm_sra_epi64_custom(integralReg, countReg);
+            return Simd128(_mm_castsi128_pd(shifted));
         }
         else if constexpr (types::IsFP32<DataType>)
         {
@@ -2346,14 +2338,7 @@ namespace flcn
         // Signed Types
         else if constexpr (types::IsQWord<DataType>)
         {
-            if constexpr (CURRENT_SIMD_BACKEND >= SimdBackend::ARCH_AVX512EX)
-            {
-                return Simd128(_mm_sra_epi64(_register, countReg));
-            }
-            else
-            {
-                return Simd128(intrin::_mm_sra_epi64_custom(_register, count));
-            }
+            return Simd128(intrin::_mm_sra_epi64_custom(_register, countReg));
         }
         else if constexpr (types::IsDWord<DataType>)
         {
@@ -2392,7 +2377,7 @@ namespace flcn
 
     template <typename DataType, size_t Lane>
     FALCON_INLINE constexpr Simd128<SimdBackend::ARCH_SSE2, DataType, Lane>& Simd128<
-        SimdBackend::ARCH_SSE2, DataType, Lane>::operator>>=(uint32_t count) noexcept
+        SimdBackend::ARCH_SSE2, DataType, Lane>::operator>>=(const uint32_t count) noexcept
     {
         *this = *this >> count;
         return *this;
@@ -2400,7 +2385,7 @@ namespace flcn
 
     template <typename DataType, size_t Lane>
     FALCON_INLINE constexpr Simd128<SimdBackend::ARCH_SSE2, DataType, Lane> Simd128<
-        SimdBackend::ARCH_SSE2, DataType, Lane>::shiftRightLogical(uint32_t count) const noexcept
+        SimdBackend::ARCH_SSE2, DataType, Lane>::shiftRightLogical(const uint32_t count) const noexcept
     {
         const auto countReg = _mm_cvtsi32_si128(count);
         /// Floating point numbers needs to be cast to use integrals since there is no

@@ -419,13 +419,13 @@ namespace flcn
 
     template <typename DataType, size_t Lane>
     FALCON_INLINE constexpr Simd256<SimdBackend::ARCH_SSE2, DataType, Lane> Simd256<
-        SimdBackend::ARCH_SSE2, DataType, Lane>::operator<<(uint32_t count) const noexcept
+        SimdBackend::ARCH_SSE2, DataType, Lane>::operator<<(const uint32_t count) const noexcept
     { return Simd256(_lower << count, _upper << count); }
 
 
     template <typename DataType, size_t Lane>
     FALCON_INLINE constexpr Simd256<SimdBackend::ARCH_SSE2, DataType, Lane>& Simd256<
-        SimdBackend::ARCH_SSE2, DataType, Lane>::operator<<=(uint32_t count) noexcept
+        SimdBackend::ARCH_SSE2, DataType, Lane>::operator<<=(const uint32_t count) noexcept
     {
         *this = *this << count;
         return *this;
@@ -434,13 +434,13 @@ namespace flcn
 
     template <typename DataType, size_t Lane>
     FALCON_INLINE constexpr Simd256<SimdBackend::ARCH_SSE2, DataType, Lane> Simd256<
-        SimdBackend::ARCH_SSE2, DataType, Lane>::operator>>(uint32_t count) const noexcept
+        SimdBackend::ARCH_SSE2, DataType, Lane>::operator>>(const uint32_t count) const noexcept
     { return Simd256(_lower >> count, _upper >> count); }
 
 
     template <typename DataType, size_t Lane>
     FALCON_INLINE constexpr Simd256<SimdBackend::ARCH_SSE2, DataType, Lane>& Simd256<
-        SimdBackend::ARCH_SSE2, DataType, Lane>::operator>>=(uint32_t count) noexcept
+        SimdBackend::ARCH_SSE2, DataType, Lane>::operator>>=(const uint32_t count) noexcept
     {
         *this = *this >> count;
         return *this;
@@ -449,7 +449,7 @@ namespace flcn
 
     template <typename DataType, size_t Lane>
     FALCON_INLINE constexpr Simd256<SimdBackend::ARCH_SSE2, DataType, Lane> Simd256<
-        SimdBackend::ARCH_SSE2, DataType, Lane>::shiftRightLogical(uint32_t count) const noexcept
+        SimdBackend::ARCH_SSE2, DataType, Lane>::shiftRightLogical(const uint32_t count) const noexcept
     { return Simd256(_lower.shiftRightLogical(count), _upper.shiftRightLogical(count)); }
 
 

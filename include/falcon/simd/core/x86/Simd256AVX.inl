@@ -1313,13 +1313,17 @@ namespace flcn
     }
 
 
+    ///+=+=+=+=+=
+    /// SHIFTING
+    ///+=+=+=+=+=
+
     template <typename DataType, size_t Lane>
     FALCON_INLINE constexpr Simd256<SimdBackend::ARCH_AVX, DataType, Lane> Simd256<
-        SimdBackend::ARCH_AVX, DataType, Lane>::operator<<(uint32_t count) const noexcept
+        SimdBackend::ARCH_AVX, DataType, Lane>::operator<<(const uint32_t count) const noexcept
     {
         if constexpr (_FALCON_SIMD256_SUPPORT_NATIVE_INTRINSIC(DataType))
         {
-            const auto countReg = _mm_set1_epi64x(count);
+            const auto countReg = _mm_cvtsi32_si128(count);
             if constexpr (types::IsFP64<DataType>)
             {
                 const auto intReg     = _mm256_castpd_si256(_reg);
@@ -1346,21 +1350,9 @@ namespace flcn
             }
             else // if constexpr (sizeof(DataType) == 1)
             {
-                // There is no native shifts for epi8
-                // so we need to mask the bits that will be zeroed out
-                // and shift using epi16
-                // Example using 8-bit register and 4-bit shifts
-                // [1011 1101] << 2 => [1100 0100]
-                // Mask = 0b1111 >> 2 = 0b0011
-                // Mask Reg = 0011 0011
-                // And Reg  = 1011 1101 & 0011 0011
-                //          = 0011 0001
-                // 0011 0001 8<< 2 1100 0100
-                const auto mask    = 0xff >> count;
-                const auto maskReg = _mm256_set1_epi8(mask);
-                const auto andReg  = _mm256_and_si256(_reg, maskReg);
 
-                return Simd256(_mm256_sll_epi16(andReg, countReg));
+
+                return Simd256(intrin::_mm256_sll_epi8_custom(_reg, count));
             }
         }
         else
@@ -1372,7 +1364,7 @@ namespace flcn
 
     template <typename DataType, size_t Lane>
     FALCON_INLINE constexpr Simd256<SimdBackend::ARCH_AVX, DataType, Lane>& Simd256<
-        SimdBackend::ARCH_AVX, DataType, Lane>::operator<<=(uint32_t count) noexcept
+        SimdBackend::ARCH_AVX, DataType, Lane>::operator<<=(const uint32_t count) noexcept
     {
         *this = *this << count;
         return *this;
@@ -1381,11 +1373,11 @@ namespace flcn
 
     template <typename DataType, size_t Lane>
     FALCON_INLINE constexpr Simd256<SimdBackend::ARCH_AVX, DataType, Lane> Simd256<
-        SimdBackend::ARCH_AVX, DataType, Lane>::operator>>(uint32_t count) const noexcept
+        SimdBackend::ARCH_AVX, DataType, Lane>::operator>>(const uint32_t count) const noexcept
     {
         if constexpr (_FALCON_SIMD256_SUPPORT_NATIVE_INTRINSIC(DataType))
         {
-            const auto countReg = _mm_set1_epi64x(count);
+            const auto countReg = _mm_cvtsi32_si128(count);
             if constexpr (types::IsFP64<DataType>)
             {
                 const auto intReg     = _mm256_castpd_si256(_reg);
@@ -1412,21 +1404,23 @@ namespace flcn
             }
             else // if constexpr (sizeof(DataType) == 1)
             {
-                // There is no native shifts for epi8
-                // so we need to mask the bits that will be zeroed out
-                // and shift using epi16
-                // Example using 8-bit register and 4-bit shifts
-                // [1011 1101] << 2 => [1100 0100]
-                // Mask = 0b1111 >> 2 = 0b0011
-                // Mask Reg = 0011 0011
-                // And Reg  = 1011 1101 & 0011 0011
-                //          = 0011 0001
-                // 0011 0001 8<< 2 1100 0100
-                const auto mask    = 0xff << count;
-                const auto maskReg = _mm256_set1_epi8(mask);
-                const auto andReg  = _mm256_and_si256(_reg, maskReg);
-
-                return Simd256(_mm256_sra_epi16(andReg, countReg));
+                // Hacker Delight Ch.2 (2-7)
+                // t = -(x >> 7)
+                // ((x xor t) >> n) xor t)
+                // For positive number all the shifts t results in a zero which when xored returns the same result.
+                // But for negative number, the first xor converts it to a positive number and the next one undoes
+                // that converting the positive shifted number to a negative.
+                // -7(1101) >> 2 = -1(1111)  | 5(0101) >>  2 = 1(0001)   |
+                // 1101 >>     3 = 0001      | 0101 >>     3 = 0000      |
+                // 0000  -  0001 = 1111 (t)  | 0000 -   0000 = 0000 (t)  |
+                // 1101 xor 1111 = 0010      | 0101 xor 0000 = 0101      |
+                // 0011 >>     3 = 0000      | 0101 >>     3 = 0001      |
+                // 0000 xor 1111 = 1111      | 0000 xor 0001 = 0001      |
+                const auto isolatedSignBit = intrin::_mm256_srli_epi8_custom<7>(_reg);
+                const auto tReg            = _mm256_sub_epi8(_mm256_setzero_si256(), isolatedSignBit);
+                const auto xXorTReg        = _mm256_xor_si256(_reg, tReg);
+                const auto shiftedXor      = intrin::_mm256_srl_epi8_custom(xXorTReg, count);
+                return Simd256(_mm256_xor_si256(shiftedXor, tReg));
             }
         }
         else
@@ -1438,7 +1432,7 @@ namespace flcn
 
     template <typename DataType, size_t Lane>
     FALCON_INLINE constexpr Simd256<SimdBackend::ARCH_AVX, DataType, Lane>& Simd256<
-        SimdBackend::ARCH_AVX, DataType, Lane>::operator>>=(uint32_t count) noexcept
+        SimdBackend::ARCH_AVX, DataType, Lane>::operator>>=(const uint32_t count) noexcept
     {
         *this = *this >> count;
         return *this;
@@ -1447,7 +1441,7 @@ namespace flcn
 
     // template <typename DataType, size_t Lane>
     // FALCON_INLINE constexpr Simd256<SimdBackend::ARCH_AVX, DataType, Lane> Simd256<
-    //     SimdBackend::ARCH_AVX, DataType, Lane>::shiftRightLogical(uint32_t count) const noexcept
+    //     SimdBackend::ARCH_AVX, DataType, Lane>::shiftRightLogical(const uint32_t count) const noexcept
     // { return Simd256(_lower.shiftRightLogical(count), _upper.shiftRightLogical(count)); }
     //
     //

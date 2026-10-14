@@ -314,7 +314,7 @@ namespace flcn
         ///+=+=+=+=+=+=+=+=+=+=+=+=+=
         ///    BITWISE OPERATIONS
         ///+=+=+=+=+=+=+=+=+=+=+=+=+=
-// TODO: Add bitwise |=, &= ^= etc.
+        // TODO: Add bitwise |=, &= ^= etc.
         /// @brief Perform bitwise NOT on the entire register.
         [[nodiscard]] constexpr Simd256 operator~() const noexcept;
 
@@ -522,27 +522,27 @@ namespace flcn
 
         [[nodiscard]] constexpr Simd256 operator<(Simd256 other) const noexcept;
 
-        //     [[nodiscard]] constexpr Simd256 operator<=(Simd256 other) const noexcept;
-        //
-        //     /**
-        //      * @brief Perform a logical left shift on this register by @p count.
-        //      *
-        //      * @warning If @p count is known at compile time then it is recommended to use
-        //      *          @ref shiftLeft<uint32_t> as it is faster.
-        //      *
-        //      * @return A new 256-bit register with shifted values.
-        //      *
-        //      * @relatedalso operator<<=(uint32_t)
-        //      * @relatedalso operator>>(uint32_t)
-        //      * @relatedalso operator>>=(uint32_t)
-        //      * @relatedalso shiftRightLogical(uint32_t)
-        //      * @relatedalso shiftLeft<uint32_t>()
-        //      * @relatedalso shiftRightArithmetic<uint32_t>()
-        //      * @relatedalso shiftRightLogical<uint32_t>()
-        //      */
-        //     [[nodiscard]] constexpr Simd256 operator<<(uint32_t count) const noexcept;
-        //
-        //
+        [[nodiscard]] constexpr Simd256 operator<=(Simd256 other) const noexcept;
+
+        /**
+         * @brief Perform a logical left shift on this register by @p count.
+         *
+         * @warning If @p count is known at compile time then it is recommended to use
+         *          @ref shiftLeft<uint32_t> as it is faster.
+         *
+         * @return A new 256-bit register with shifted values.
+         *
+         * @relatedalso operator<<=(uint32_t)
+         * @relatedalso operator>>(uint32_t)
+         * @relatedalso operator>>=(uint32_t)
+         * @relatedalso shiftRightLogical(uint32_t)
+         * @relatedalso shiftLeft<uint32_t>()
+         * @relatedalso shiftRightArithmetic<uint32_t>()
+         * @relatedalso shiftRightLogical<uint32_t>()
+         */
+        [[nodiscard]] constexpr Simd256 operator<<(uint32_t count) const noexcept;
+
+
         //     /**
         //      * @brief Perform a logical left shift on this register by @p count in-place.
         //      *
@@ -824,6 +824,18 @@ namespace flcn
         static constexpr auto UpperLaneCount = (Lane - Max128BitLaneCount > 0) ? (Lane - Max128BitLaneCount) : 0;
 
         simd::internal::Simd256Register_t<CURRENT_SIMD_BACKEND, DataType, Lane> _reg;
+
+
+        /// +=+=+=+=+=+=+=+=
+        /// PRIVATE HELPERS
+        /// +=+=+=+=+=+=+=+=
+
+
+        /// @brief Shift the 64x4 @p reg by @p count.
+        static __m256i _mm256_sll_epi64_custom(__m256i reg, __m128i count) noexcept;
+
+        /// @brief Shift the 32x8 @p reg by @p count.
+        static __m256i _mm256_sll_epi32_custom(__m256i reg, __m128i count) noexcept;
     };
 
 

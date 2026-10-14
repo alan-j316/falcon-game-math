@@ -1236,7 +1236,8 @@ namespace flcn
     template <typename DataType, size_t Lane>
     FALCON_INLINE constexpr Simd256<SimdBackend::ARCH_AVX, DataType, Lane> Simd256<
         SimdBackend::ARCH_AVX, DataType, Lane>::operator>=(const Simd256 other) const noexcept
-    { if constexpr (_FALCON_SIMD256_SUPPORT_NATIVE_INTRINSIC(DataType))
+    {
+        if constexpr (_FALCON_SIMD256_SUPPORT_NATIVE_INTRINSIC(DataType))
         {
             if constexpr (types::IsFP64<DataType>)
             {
@@ -1286,18 +1287,90 @@ namespace flcn
     }
 
 
-    // template <typename DataType, size_t Lane>
-    // FALCON_INLINE constexpr Simd256<SimdBackend::ARCH_AVX, DataType, Lane> Simd256<
-    //     SimdBackend::ARCH_AVX, DataType, Lane>::operator<=(const Simd256 other) const noexcept
-    // { return Simd256(_lower <= other._lower, _upper <= other._upper); }
-    //
-    //
-    // template <typename DataType, size_t Lane>
-    // FALCON_INLINE constexpr Simd256<SimdBackend::ARCH_AVX, DataType, Lane> Simd256<
-    //     SimdBackend::ARCH_AVX, DataType, Lane>::operator<<(uint32_t count) const noexcept
-    // { return Simd256(_lower << count, _upper << count); }
-    //
-    //
+    template <typename DataType, size_t Lane>
+    FALCON_INLINE constexpr Simd256<SimdBackend::ARCH_AVX, DataType, Lane> Simd256<
+        SimdBackend::ARCH_AVX, DataType, Lane>::operator<=(const Simd256 other) const noexcept
+    {
+        if constexpr (_FALCON_SIMD256_SUPPORT_NATIVE_INTRINSIC(DataType))
+        {
+            if constexpr (types::IsFP64<DataType>)
+            {
+                return Simd256(_mm256_cmp_pd(_reg, *other, _CMP_LE_OQ));
+            }
+            else if constexpr (types::IsFP32<DataType>)
+            {
+                return Simd256(_mm256_cmp_ps(_reg, *other, _CMP_LE_OQ));
+            }
+            else
+            {
+                // A <= B == ~(A > B)
+                return ~(*this > other);
+            }
+        }
+        else
+        {
+            return Simd256(_reg <= *other);
+        }
+    }
+
+
+    template <typename DataType, size_t Lane>
+    FALCON_INLINE constexpr Simd256<SimdBackend::ARCH_AVX, DataType, Lane> Simd256<
+        SimdBackend::ARCH_AVX, DataType, Lane>::operator<<(uint32_t count) const noexcept
+    {
+        if constexpr (_FALCON_SIMD256_SUPPORT_NATIVE_INTRINSIC(DataType))
+        {
+            const auto countReg = _mm_set1_epi64x(count);
+            if constexpr (types::IsFP64<DataType>)
+            {
+                const auto intReg     = _mm256_castpd_si256(_reg);
+                const auto shiftedReg = _mm256_sll_epi64_custom(intReg, countReg);
+                return Simd256(_mm256_castsi256_pd(shiftedReg));
+            }
+            else if constexpr (types::IsFP32<DataType>)
+            {
+                const auto intReg     = _mm256_castps_si256(_reg);
+                const auto shiftedReg = _mm256_sll_epi32_custom(intReg, countReg);
+                return Simd256(_mm256_castsi256_ps(shiftedReg));
+            }
+            else if constexpr (sizeof(DataType) == 8)
+            {
+                return Simd256(_mm256_sll_epi64_custom(_reg, countReg));
+            }
+            else if constexpr (sizeof(DataType) == 4)
+            {
+                return Simd256(_mm256_sll_epi32_custom(_reg, countReg));
+            }
+            else if constexpr (sizeof(DataType) == 2)
+            {
+                return Simd256(_mm256_sll_epi16(_reg, countReg));
+            }
+            else // if constexpr (sizeof(DataType) == 1)
+            {
+                // There is no native shifts for epi8
+                // so we need to mask the bits that will be zeroed out
+                // and shift using epi16
+                // Example using 8-bit register and 4-bit shifts
+                // [1011 1101] << 2 => [1100 0100]
+                // Mask = 0b1111 >> 2 = 0b0011
+                // Mask Reg = 0011 0011
+                // And Reg  = 1011 1101 & 0011 0011
+                //          = 0011 0001
+                // 0011 0001 8<< 2 1100 0100
+                const auto mask    = 0xff >> count;
+                const auto maskReg = _mm256_set1_epi8(mask);
+                const auto andReg  = _mm256_and_si256(_reg, maskReg);
+
+                return Simd256(_mm256_sll_epi16(andReg, countReg));
+            }
+        }
+        else
+        {
+            return Simd256(_reg << count);
+        }
+    }
+
+
     // template <typename DataType, size_t Lane>
     // FALCON_INLINE constexpr Simd256<SimdBackend::ARCH_AVX, DataType, Lane>& Simd256<
     //     SimdBackend::ARCH_AVX, DataType, Lane>::operator<<=(uint32_t count) noexcept
@@ -1486,6 +1559,51 @@ namespace flcn
     //                                                                                 Lane>::hasInf() const
     //                                                                                 noexcept
     // { return Simd256(_lower.hasInf(), _upper.hasInf()); }
+
+
+    template <typename DataType, size_t Lane>
+    FALCON_INLINE __m256i Simd256<SimdBackend::ARCH_AVX, DataType, Lane>::_mm256_sll_epi64_custom(
+        const __m256i reg, const __m128i count) noexcept
+    {
+        if constexpr (CURRENT_SIMD_BACKEND >= SimdBackend::ARCH_AVX2)
+        {
+            return _mm256_sll_epi64(reg, count);
+        }
+        else
+        {
+            // AVX doesn't have integral shifts so we have to extract them
+            // and perform 2 128-bit shifts, insert, and cast back.
+            const auto loReg = _mm256_castsi256_si128(reg);
+            const auto hiReg = _mm256_extracti128_si256(reg, 1);
+
+            const auto loShifted = _mm256_castsi128_si256(_mm_sll_epi64(loReg, count));
+            const auto hiShifted = _mm_sll_epi64(hiReg, count);
+            return _mm256_inserti128_si256(loShifted, hiShifted, 1);
+        }
+    }
+
+
+    template <typename DataType, size_t Lane>
+    FALCON_INLINE __m256i Simd256<SimdBackend::ARCH_AVX, DataType, Lane>::_mm256_sll_epi32_custom(
+        const __m256i reg, const __m128i count) noexcept
+    {
+        if constexpr (CURRENT_SIMD_BACKEND >= SimdBackend::ARCH_AVX2)
+        {
+            return _mm256_sll_epi32(reg, count);
+        }
+        else
+        {
+            // AVX doesn't have integral shifts so we have to extract them
+            // and perform 2 128-bit shifts, insert, and cast back.
+            const auto loReg = _mm256_castsi256_si128(reg);
+            const auto hiReg = _mm256_extracti128_si256(reg, 1);
+
+            const auto loShifted = _mm256_castsi128_si256(_mm_sll_epi32(loReg, count));
+            const auto hiShifted = _mm_sll_epi32(hiReg, count);
+            return _mm256_inserti128_si256(loShifted, hiShifted, 1);
+            return _mm256_inserti128_si256(loShifted, hiShifted, 1);
+        }
+    }
 
 
 #undef _FALCON_SIMD256_SUPPORT_NATIVE_INTRINSIC

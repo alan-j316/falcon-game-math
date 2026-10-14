@@ -171,23 +171,23 @@ TYPED_TEST(Simd256ComparisonTests, LessThanOperator_ReturnsAValidMask)
 }
 
 
-// TYPED_TEST(Simd256ComparisonTests, LessThanOrEqualsOperator_ReturnsAValidMask)
-// {
-//     using Type = typename TypeParam::Type;
-//     flcn::Simd256_t<Type, TypeParam::VALUE> a{}, b{};
-//     a.load(this->lhsData.data());
-//     b.load(this->rhsData.data());
-//
-//     std::array<Type, TypeParam::VALUE> result{};
-//     auto resReg = a <= b;
-//     resReg.store(result.data());
-//     for (size_t i = 0; i < TypeParam::VALUE; ++i)
-//     {
-//         EXPECT_TRUE(isEqualBitwise(this->lteMask[i], result[i]))
-//             << "Equality mismatch at index " << i << "\nExpected: " << this->lteMask[i] << "\nGot: " << result[i]
-//             << "\nLHS: " << this->lhsData[i] << "\nRHS: " << this->rhsData[i] << '\n';
-//     }
-// }
+TYPED_TEST(Simd256ComparisonTests, LessThanOrEqualsOperator_ReturnsAValidMask)
+{
+    using Type = typename TypeParam::Type;
+    flcn::Simd256_t<Type, TypeParam::VALUE> a{}, b{};
+    a.load(this->lhsData.data());
+    b.load(this->rhsData.data());
+
+    std::array<Type, TypeParam::VALUE> result{};
+    auto resReg = a <= b;
+    resReg.store(result.data());
+    for (size_t i = 0; i < TypeParam::VALUE; ++i)
+    {
+        EXPECT_TRUE(isEqualBitwise(this->lteMask[i], result[i]))
+            << "Equality mismatch at index " << i << "\nExpected: " << this->lteMask[i] << "\nGot: " << result[i]
+            << "\nLHS: " << this->lhsData[i] << "\nRHS: " << this->rhsData[i] << '\n';
+    }
+}
 
 
 TYPED_TEST(Simd256ComparisonTests, DoubleEqualsOperator_ReturnsAValidMask)
@@ -261,76 +261,76 @@ TEST(Simd256ComparisonTests, GreaterThanOperator_ReturnFalseForNaNComparisons)
     EXPECT_TRUE(isEqualBitwise(static_cast<float>(0), result[7]));
 }
 
-//
-// TEST(Simd256ComparisonTests, GreaterThanOrEqualsOperator_ReturnFalseForNaNComparisons)
-// {
-//     constexpr std::array<float, 8> lhsData{ NaN, 1.0f, NaN, 1.0f, 1.0f, NaN, 3.0f, 4.0f };
-//     constexpr std::array<float, 8> rhsData{ 1.0f, NaN, NaN, 1.0f, 1.0f, 2.0f, 3.0f, NaN };
-//     flcn::Simd256_t<float, 8> a{}, b{};
-//     a.load(lhsData.data());
-//     b.load(rhsData.data());
-//
-//     std::array<float, 8> result{};
-//     const auto resReg = a >= b;
-//     resReg.store(result.data());
-//
-//     EXPECT_TRUE(isEqualBitwise(static_cast<float>(0), result[0]));
-//     EXPECT_TRUE(isEqualBitwise(static_cast<float>(0), result[1]));
-//     EXPECT_TRUE(isEqualBitwise(static_cast<float>(0), result[2]));
-//     EXPECT_TRUE(isEqualBitwise(getAllOnes<float>(), result[3]));
-//     EXPECT_TRUE(isEqualBitwise(getAllOnes<float>(), result[4]));
-//     EXPECT_TRUE(isEqualBitwise(static_cast<float>(0), result[5]));
-//     EXPECT_TRUE(isEqualBitwise(getAllOnes<float>(), result[6]));
-//     EXPECT_TRUE(isEqualBitwise(static_cast<float>(0), result[7]));
-// }
+
+TEST(Simd256ComparisonTests, GreaterThanOrEqualsOperator_ReturnFalseForNaNComparisons)
+{
+    constexpr std::array<float, 8> lhsData{ NaN, 1.0f, NaN, 1.0f, 1.0f, NaN, 3.0f, 4.0f };
+    constexpr std::array<float, 8> rhsData{ 1.0f, NaN, NaN, 1.0f, 1.0f, 2.0f, 3.0f, NaN };
+    flcn::Simd256_t<float, 8> a{}, b{};
+    a.load(lhsData.data());
+    b.load(rhsData.data());
+
+    std::array<float, 8> result{};
+    const auto resReg = a >= b;
+    resReg.store(result.data());
+
+    EXPECT_TRUE(isEqualBitwise(static_cast<float>(0), result[0]));
+    EXPECT_TRUE(isEqualBitwise(static_cast<float>(0), result[1]));
+    EXPECT_TRUE(isEqualBitwise(static_cast<float>(0), result[2]));
+    EXPECT_TRUE(isEqualBitwise(getAllOnes<float>(), result[3]));
+    EXPECT_TRUE(isEqualBitwise(getAllOnes<float>(), result[4]));
+    EXPECT_TRUE(isEqualBitwise(static_cast<float>(0), result[5]));
+    EXPECT_TRUE(isEqualBitwise(getAllOnes<float>(), result[6]));
+    EXPECT_TRUE(isEqualBitwise(static_cast<float>(0), result[7]));
+}
 
 
-// TEST(Simd256ComparisonTests, LessThanOperator_ReturnFalseForNaNComparisons)
-// {
-//     constexpr std::array<float, 8> lhsData{ NaN, 1.0f, NaN, 1.0f, 1.0f, NaN, 3.0f, 4.0f };
-//     constexpr std::array<float, 8> rhsData{ 1.0f, NaN, NaN, 3.0f, 7.0f, 2.0f, 6.0f, NaN };
-//     flcn::Simd256_t<float, 8> a{}, b{};
-//     a.load(lhsData.data());
-//     b.load(rhsData.data());
-//
-//     std::array<float, 8> result{};
-//     const auto resReg = a < b;
-//     resReg.store(result.data());
-//
-//
-//     EXPECT_TRUE(isEqualBitwise(static_cast<float>(0), result[0]));
-//     EXPECT_TRUE(isEqualBitwise(static_cast<float>(0), result[1]));
-//     EXPECT_TRUE(isEqualBitwise(static_cast<float>(0), result[2]));
-//     EXPECT_TRUE(isEqualBitwise(getAllOnes<float>(), result[3]));
-//     EXPECT_TRUE(isEqualBitwise(getAllOnes<float>(), result[4]));
-//     EXPECT_TRUE(isEqualBitwise(static_cast<float>(0), result[5]));
-//     EXPECT_TRUE(isEqualBitwise(getAllOnes<float>(), result[6]));
-//     EXPECT_TRUE(isEqualBitwise(static_cast<float>(0), result[7]));
-// }
-//
-//
-// TEST(Simd256ComparisonTests, LessThanOrEqualsOperator_ReturnFalseForNaNComparisons)
-// {
-//     constexpr std::array<float, 8> lhsData{ NaN, 1.0f, NaN, 1.0f, 1.0f, NaN, 3.0f, 4.0f };
-//     constexpr std::array<float, 8> rhsData{ 1.0f, NaN, NaN, 1.0f, 1.0f, 2.0f, 3.0f, NaN };
-//     flcn::Simd256_t<float, 8> a{}, b{};
-//     a.load(lhsData.data());
-//     b.load(rhsData.data());
-//
-//     std::array<float, 8> result{};
-//     const auto resReg = a <= b;
-//     resReg.store(result.data());
-//
-//
-//     EXPECT_TRUE(isEqualBitwise(static_cast<float>(0), result[0]));
-//     EXPECT_TRUE(isEqualBitwise(static_cast<float>(0), result[1]));
-//     EXPECT_TRUE(isEqualBitwise(static_cast<float>(0), result[2]));
-//     EXPECT_TRUE(isEqualBitwise(getAllOnes<float>(), result[3]));
-//     EXPECT_TRUE(isEqualBitwise(getAllOnes<float>(), result[4]));
-//     EXPECT_TRUE(isEqualBitwise(static_cast<float>(0), result[5]));
-//     EXPECT_TRUE(isEqualBitwise(getAllOnes<float>(), result[6]));
-//     EXPECT_TRUE(isEqualBitwise(static_cast<float>(0), result[7]));
-// }
+TEST(Simd256ComparisonTests, LessThanOperator_ReturnFalseForNaNComparisons)
+{
+    constexpr std::array<float, 8> lhsData{ NaN, 1.0f, NaN, 1.0f, 1.0f, NaN, 3.0f, 4.0f };
+    constexpr std::array<float, 8> rhsData{ 1.0f, NaN, NaN, 3.0f, 7.0f, 2.0f, 6.0f, NaN };
+    flcn::Simd256_t<float, 8> a{}, b{};
+    a.load(lhsData.data());
+    b.load(rhsData.data());
+
+    std::array<float, 8> result{};
+    const auto resReg = a < b;
+    resReg.store(result.data());
+
+
+    EXPECT_TRUE(isEqualBitwise(static_cast<float>(0), result[0]));
+    EXPECT_TRUE(isEqualBitwise(static_cast<float>(0), result[1]));
+    EXPECT_TRUE(isEqualBitwise(static_cast<float>(0), result[2]));
+    EXPECT_TRUE(isEqualBitwise(getAllOnes<float>(), result[3]));
+    EXPECT_TRUE(isEqualBitwise(getAllOnes<float>(), result[4]));
+    EXPECT_TRUE(isEqualBitwise(static_cast<float>(0), result[5]));
+    EXPECT_TRUE(isEqualBitwise(getAllOnes<float>(), result[6]));
+    EXPECT_TRUE(isEqualBitwise(static_cast<float>(0), result[7]));
+}
+
+
+TEST(Simd256ComparisonTests, LessThanOrEqualsOperator_ReturnFalseForNaNComparisons)
+{
+    constexpr std::array<float, 8> lhsData{ NaN, 1.0f, NaN, 1.0f, 1.0f, NaN, 3.0f, 4.0f };
+    constexpr std::array<float, 8> rhsData{ 1.0f, NaN, NaN, 1.0f, 1.0f, 2.0f, 3.0f, NaN };
+    flcn::Simd256_t<float, 8> a{}, b{};
+    a.load(lhsData.data());
+    b.load(rhsData.data());
+
+    std::array<float, 8> result{};
+    const auto resReg = a <= b;
+    resReg.store(result.data());
+
+
+    EXPECT_TRUE(isEqualBitwise(static_cast<float>(0), result[0]));
+    EXPECT_TRUE(isEqualBitwise(static_cast<float>(0), result[1]));
+    EXPECT_TRUE(isEqualBitwise(static_cast<float>(0), result[2]));
+    EXPECT_TRUE(isEqualBitwise(getAllOnes<float>(), result[3]));
+    EXPECT_TRUE(isEqualBitwise(getAllOnes<float>(), result[4]));
+    EXPECT_TRUE(isEqualBitwise(static_cast<float>(0), result[5]));
+    EXPECT_TRUE(isEqualBitwise(getAllOnes<float>(), result[6]));
+    EXPECT_TRUE(isEqualBitwise(static_cast<float>(0), result[7]));
+}
 
 
 TEST(Simd256ComparisonTests, NotEqualsOperator_ReturnTrueForNaNComparisons)

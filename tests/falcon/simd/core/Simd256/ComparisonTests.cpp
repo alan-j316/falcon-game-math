@@ -133,23 +133,23 @@ TYPED_TEST(Simd256ComparisonTests, GreaterThanOperator_ReturnsAValidMask)
 }
 
 
-// TYPED_TEST(Simd256ComparisonTests, GreaterThanOrEqualsOperator_ReturnsAValidMask)
-// {
-//     using Type = typename TypeParam::Type;
-//     flcn::Simd256_t<Type, TypeParam::VALUE> a{}, b{};
-//     a.load(this->lhsData.data());
-//     b.load(this->rhsData.data());
-//
-//     std::array<Type, TypeParam::VALUE> result{};
-//     auto resReg = a >= b;
-//     resReg.store(result.data());
-//     for (size_t i = 0; i < TypeParam::VALUE; ++i)
-//     {
-//         EXPECT_TRUE(isEqualBitwise(this->gteMask[i], result[i]))
-//             << "Equality mismatch at index " << i << "\nExpected: " << this->gteMask[i] << "\nGot: " << result[i]
-//             << "\nLHS: " << this->lhsData[i] << "\nRHS: " << this->rhsData[i] << '\n';
-//     }
-// }
+TYPED_TEST(Simd256ComparisonTests, GreaterThanOrEqualsOperator_ReturnsAValidMask)
+{
+    using Type = typename TypeParam::Type;
+    flcn::Simd256_t<Type, TypeParam::VALUE> a{}, b{};
+    a.load(this->lhsData.data());
+    b.load(this->rhsData.data());
+
+    std::array<Type, TypeParam::VALUE> result{};
+    auto resReg = a >= b;
+    resReg.store(result.data());
+    for (size_t i = 0; i < TypeParam::VALUE; ++i)
+    {
+        EXPECT_TRUE(isEqualBitwise(this->gteMask[i], result[i]))
+            << "Equality mismatch at index " << i << "\nExpected: " << this->gteMask[i] << "\nGot: " << result[i]
+            << "\nLHS: " << this->lhsData[i] << "\nRHS: " << this->rhsData[i] << '\n';
+    }
+}
 
 
 TYPED_TEST(Simd256ComparisonTests, LessThanOperator_ReturnsAValidMask)

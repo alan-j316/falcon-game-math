@@ -518,7 +518,7 @@ namespace flcn
 
         [[nodiscard]] constexpr Simd256 operator>(Simd256 other) const noexcept;
 
-        // [[nodiscard]] constexpr Simd256 operator>=(Simd256 other) const noexcept;
+        [[nodiscard]] constexpr Simd256 operator>=(Simd256 other) const noexcept;
 
         [[nodiscard]] constexpr Simd256 operator<(Simd256 other) const noexcept;
 

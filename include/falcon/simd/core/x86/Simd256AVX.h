@@ -543,25 +543,25 @@ namespace flcn
         [[nodiscard]] constexpr Simd256 operator<<(uint32_t count) const noexcept;
 
 
-        //     /**
-        //      * @brief Perform a logical left shift on this register by @p count in-place.
-        //      *
-        //      * @warning If @p count is known at compile time then it is recommended to use
-        //      *          @ref shiftLeft<uint32_t> as it is faster.
-        //      *
-        //      * @return A reference to this register.
-        //      *
-        //      * @relatedalso operator<<(uint32_t)
-        //      * @relatedalso operator>>(uint32_t)
-        //      * @relatedalso operator>>=(uint32_t)
-        //      * @relatedalso shiftRightLogical(uint32_t)
-        //      * @relatedalso shiftLeft<uint32_t>()
-        //      * @relatedalso shiftRightArithmetic<uint32_t>()
-        //      * @relatedalso shiftRightLogical<uint32_t>()
-        //      */
-        //     constexpr Simd256& operator<<=(uint32_t count) noexcept;
-        //
-        //
+        /**
+         * @brief Perform a logical left shift on this register by @p count in-place.
+         *
+         * @warning If @p count is known at compile time then it is recommended to use
+         *          @ref shiftLeft<uint32_t> as it is faster.
+         *
+         * @return A reference to this register.
+         *
+         * @relatedalso operator<<(uint32_t)
+         * @relatedalso operator>>(uint32_t)
+         * @relatedalso operator>>=(uint32_t)
+         * @relatedalso shiftRightLogical(uint32_t)
+         * @relatedalso shiftLeft<uint32_t>()
+         * @relatedalso shiftRightArithmetic<uint32_t>()
+         * @relatedalso shiftRightLogical<uint32_t>()
+         */
+        constexpr Simd256& operator<<=(uint32_t count) noexcept;
+
+
         //     /**
         //      * @brief Perform a arithmetic/logical(type dependent) right shift by @p count and return a new register.
         //      *

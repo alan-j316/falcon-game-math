@@ -1371,15 +1371,15 @@ namespace flcn
     }
 
 
-    // template <typename DataType, size_t Lane>
-    // FALCON_INLINE constexpr Simd256<SimdBackend::ARCH_AVX, DataType, Lane>& Simd256<
-    //     SimdBackend::ARCH_AVX, DataType, Lane>::operator<<=(uint32_t count) noexcept
-    // {
-    //     *this = *this << count;
-    //     return *this;
-    // }
-    //
-    //
+    template <typename DataType, size_t Lane>
+    FALCON_INLINE constexpr Simd256<SimdBackend::ARCH_AVX, DataType, Lane>& Simd256<
+        SimdBackend::ARCH_AVX, DataType, Lane>::operator<<=(uint32_t count) noexcept
+    {
+        *this = *this << count;
+        return *this;
+    }
+
+
     // template <typename DataType, size_t Lane>
     // FALCON_INLINE constexpr Simd256<SimdBackend::ARCH_AVX, DataType, Lane> Simd256<
     //     SimdBackend::ARCH_AVX, DataType, Lane>::operator>>(uint32_t count) const noexcept

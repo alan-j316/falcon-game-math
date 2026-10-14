@@ -2142,9 +2142,9 @@ namespace flcn
         // and for unsigned int, it's from 0 to 255, but by biasing by -128(0x80),
         // we have changed it to -128 to 127, and thus we can use signed comparison
         // For details see: https://fgiesen.wordpress.com/2016/04/03/sse-mind-the-gap/
-
         else if constexpr (types::IsUQWord<DataType>)
         {
+            // TODO: Update docs
             // For unsigned integers we need to bias both lower lanes and upper lanes, since both expect a signed
             // bit of for 31st bits
             const auto bias            = _mm_set1_epi32(static_cast<uint32_t>(0x80000000));

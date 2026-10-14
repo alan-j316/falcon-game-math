@@ -1236,15 +1236,56 @@ namespace flcn
     // template <typename DataType, size_t Lane>
     // FALCON_INLINE constexpr Simd256<SimdBackend::ARCH_AVX, DataType, Lane> Simd256<
     //     SimdBackend::ARCH_AVX, DataType, Lane>::operator>=(const Simd256 other) const noexcept
-    // { return Simd256(_lower >= other._lower, _upper >= other._upper); }
-    //
-    //
-    // template <typename DataType, size_t Lane>
-    // FALCON_INLINE constexpr Simd256<SimdBackend::ARCH_AVX, DataType, Lane> Simd256<
-    //     SimdBackend::ARCH_AVX, DataType, Lane>::operator<(const Simd256 other) const noexcept
-    // { return Simd256(_lower < other._lower, _upper < other._upper); }
-    //
-    //
+    // { if constexpr (_FALCON_SIMD256_SUPPORT_NATIVE_INTRINSIC(DataType))
+    //     {
+    //         if constexpr (types::IsFP64<DataType>)
+    //         {
+    //             return Simd256(_mm256_cmp_pd(_reg, *other, _CMP_GE_OQ));
+    //         }
+    //         else if constexpr (types::IsFP32<DataType>)
+    //         {
+    //             return Simd256(_mm256_cmp_ps(_reg, *other, _CMP_GE_OQ));
+    //         }
+    //         else
+    //         {
+    //             // A >= B == ~(A < B)
+    //             return ~(*this < other);
+    //         }
+    //     }
+    //     else
+    //     {
+    //         return Simd256(_reg >= *other);
+    //     }
+    // }
+
+
+    template <typename DataType, size_t Lane>
+    FALCON_INLINE constexpr Simd256<SimdBackend::ARCH_AVX, DataType, Lane> Simd256<
+        SimdBackend::ARCH_AVX, DataType, Lane>::operator<(const Simd256 other) const noexcept
+    {
+        if constexpr (_FALCON_SIMD256_SUPPORT_NATIVE_INTRINSIC(DataType))
+        {
+            if constexpr (types::IsFP64<DataType>)
+            {
+                return Simd256(_mm256_cmp_pd(_reg, *other, _CMP_LT_OQ));
+            }
+            else if constexpr (types::IsFP32<DataType>)
+            {
+                return Simd256(_mm256_cmp_ps(_reg, *other, _CMP_LT_OQ));
+            }
+            else
+            {
+                // A < B == B > A
+                return other > *this;
+            }
+        }
+        else
+        {
+            return Simd256(_reg < *other);
+        }
+    }
+
+
     // template <typename DataType, size_t Lane>
     // FALCON_INLINE constexpr Simd256<SimdBackend::ARCH_AVX, DataType, Lane> Simd256<
     //     SimdBackend::ARCH_AVX, DataType, Lane>::operator<=(const Simd256 other) const noexcept

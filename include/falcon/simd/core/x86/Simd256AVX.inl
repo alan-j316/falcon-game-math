@@ -1410,7 +1410,7 @@ namespace flcn
             {
                 return Simd256(_mm256_sra_epi16(_reg, countReg));
             }
-            else if constexpr (types::IsWord<DataType>)
+            else if constexpr (types::IsByte<DataType>)
             {
                 // Hacker Delight Ch.2 (2-7)
                 // t = -(x >> 7)

@@ -303,7 +303,6 @@ namespace flcn::intrin
             const auto loShifted = _mm256_castsi128_si256(_mm_sll_epi32(loReg, count));
             const auto hiShifted = _mm_sll_epi32(hiReg, count);
             return _mm256_inserti128_si256(loShifted, hiShifted, 1);
-            return _mm256_inserti128_si256(loShifted, hiShifted, 1);
         }
     }
 
@@ -367,7 +366,6 @@ namespace flcn::intrin
             const auto loShifted = _mm256_castsi128_si256(_mm_srl_epi32(loReg, count));
             const auto hiShifted = _mm_srl_epi32(hiReg, count);
             return _mm256_inserti128_si256(loShifted, hiShifted, 1);
-            return _mm256_inserti128_si256(loShifted, hiShifted, 1);
         }
     }
 
@@ -397,56 +395,41 @@ namespace flcn::intrin
     /// @brief Perform an arithmetic right shift on the 256-bit register composed of Quad Word values.
     FALCON_INLINE __m256i _mm256_sra_epi64_custom(const __m256i reg, const __m128i count) noexcept
     {
-        const auto loReg     = _mm256_castsi256_si128(reg);
-        const auto hiReg     = _mm256_extracti128_si256(reg, 1);
-        const auto loShifted = _mm256_castsi128_si256(_mm_sra_epi64_custom(loReg, count));
-        const auto hiShifted = _mm_sra_epi64_custom(hiReg, count);
-        return _mm256_inserti128_si256(loShifted, hiShifted, 1);
-        // if constexpr (CURRENT_SIMD_BACKEND >= SimdBackend::ARCH_AVX2)
-        // {
-        //     return _mm256_sra_epi64(reg, count);
-        // }
-        // else
-        // {
-        //     // AVX doesn't have integral shifts so we have to extract them
-        //     // and perform 2 128-bit shifts, insert, and cast back.
-        //     const auto loReg = _mm256_castsi256_si128(reg);
-        //     const auto hiReg = _mm256_extracti128_si256(reg, 1);
-        //
-        //     const auto loShifted = _mm256_castsi128_si256(_mm_srl_epi64(loReg, count));
-        //     const auto hiShifted = _mm_srl_epi64(hiReg, count);
-        //     return _mm256_inserti128_si256(loShifted, hiShifted, 1);
-        // }
+        if constexpr (CURRENT_SIMD_BACKEND >= SimdBackend::ARCH_AVX512EX)
+        {
+            return _mm256_sra_epi64(reg, count);
+        }
+        else
+        {
+            // AVX doesn't have integral shifts so we have to extract them
+            // and perform 2 128-bit shifts, insert, and cast back.
+            const auto loReg     = _mm256_castsi256_si128(reg);
+            const auto hiReg     = _mm256_extracti128_si256(reg, 1);
+            const auto loShifted = _mm256_castsi128_si256(_mm_sra_epi64_custom(loReg, count));
+            const auto hiShifted = _mm_sra_epi64_custom(hiReg, count);
+            return _mm256_inserti128_si256(loShifted, hiShifted, 1);
+        }
     }
 
 
     /// @brief Perform an arithmetic right shift on the 256-bit register composed of Double Word values.
     FALCON_INLINE __m256i _mm256_sra_epi32_custom(const __m256i reg, const __m128i count) noexcept
     {
+        if constexpr (CURRENT_SIMD_BACKEND >= SimdBackend::ARCH_AVX2)
+        {
+            return _mm256_sra_epi32(reg, count);
+        }
+        else
+        {
+            // AVX doesn't have integral shifts so we have to extract them
+            // and perform 2 128-bit shifts, insert, and cast back.
+            const auto loReg = _mm256_castsi256_si128(reg);
+            const auto hiReg = _mm256_extracti128_si256(reg, 1);
 
-        const auto loReg = _mm256_castsi256_si128(reg);
-        const auto hiReg = _mm256_extracti128_si256(reg, 1);
-
-        const auto loShifted = _mm256_castsi128_si256(_mm_sra_epi32(loReg, count));
-        const auto hiShifted = _mm_sra_epi32(hiReg, count);
-        return _mm256_inserti128_si256(loShifted, hiShifted, 1);
-        return _mm256_inserti128_si256(loShifted, hiShifted, 1);
-        // if constexpr (CURRENT_SIMD_BACKEND >= SimdBackend::ARCH_AVX2)
-        // {
-        //     return _mm256_sra_epi32(reg, count);
-        // }
-        // else
-        // {
-        //     // AVX doesn't have integral shifts so we have to extract them
-        //     // and perform 2 128-bit shifts, insert, and cast back.
-        //     const auto loReg = _mm256_castsi256_si128(reg);
-        //     const auto hiReg = _mm256_extracti128_si256(reg, 1);
-        //
-        //     const auto loShifted = _mm256_castsi128_si256(_mm_srl_epi32(loReg, count));
-        //     const auto hiShifted = _mm_srl_epi32(hiReg, count);
-        //     return _mm256_inserti128_si256(loShifted, hiShifted, 1);
-        //     return _mm256_inserti128_si256(loShifted, hiShifted, 1);
-        // }
+            const auto loShifted = _mm256_castsi128_si256(_mm_sra_epi32(loReg, count));
+            const auto hiShifted = _mm_sra_epi32(hiReg, count);
+            return _mm256_inserti128_si256(loShifted, hiShifted, 1);
+        }
     }
 
 

@@ -73,7 +73,7 @@ namespace flcn
     {
         if constexpr (_FALCON_SIMD256_SUPPORT_NATIVE_INTRINSIC(DataType))
         {
-            alignas(32) DataType _data[MaxLaneCount]{ std::forward<Args>(args)... };
+            alignas(Alignment) DataType _data[MaxLaneCount]{ std::forward<Args>(args)... };
             if constexpr (types::IsFP64<DataType>)
             {
                 _reg = _mm256_load_pd(_data);
@@ -327,7 +327,7 @@ namespace flcn
             }
             else
             {
-                alignas(32) DataType buffer[Lane]{};
+                alignas(Alignment) DataType buffer[Lane]{};
                 store(buffer);
                 return buffer[index];
             }
@@ -912,7 +912,7 @@ namespace flcn
             {
                 // The only possible combination lane count is 4(since we forbids initializing a 64x4 Simd256).
                 // so we can manually calculate the division for 4 integers without loops
-                alignas(32) DataType a[Lane]{}, b[Lane]{};
+                alignas(Alignment) DataType a[Lane]{}, b[Lane]{};
                 storeAligned(a);
                 other.storeAligned(b);
                 a[0] /= b[0];
@@ -970,7 +970,7 @@ namespace flcn
                 else
                 {
                     // Use stack spill and perform division
-                    alignas(32) DataType a[Lane]{}, b[Lane]{};
+                    alignas(Alignment) DataType a[Lane]{}, b[Lane]{};
                     storeAligned(a);
                     other.storeAligned(b);
                     a[0] /= b[0];

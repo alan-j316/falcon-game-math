@@ -170,7 +170,7 @@ namespace flcn
     {
         constexpr auto MaxLanes = 128 / sizeof(DataType);
         // By packing to a compile time array and adding values
-        alignas(16) const DataType data[MaxLanes]{ args... };
+        alignas(Alignment) const DataType data[MaxLanes]{ args... };
         loadAligned(data);
 
         return *this;
@@ -530,7 +530,7 @@ namespace flcn
         }
         else
         {
-            alignas(16) DataType buffer[Lane]{};
+            alignas(Alignment) DataType buffer[Lane]{};
             store(buffer);
             return buffer[index];
         }
@@ -551,7 +551,7 @@ namespace flcn
         // for compile-indexing, we can only store the data from register, update the value
         // and then load the updated value.
         // Due to stack-spilling it is not recommended to use this setter unless absolutely necessary.
-        alignas(16) DataType buffer[Lane]{};
+        alignas(Alignment) DataType buffer[Lane]{};
         storeAligned(buffer);
         buffer[index] = value;
         loadAligned(buffer);
@@ -1436,7 +1436,7 @@ namespace flcn
             {
                 // The only possible combination for b lane is 2.
                 // so we can manually calculate the division for 2 integers without loops
-                alignas(16) DataType a[Lane]{}, b[Lane]{};
+                alignas(Alignment) DataType a[Lane]{}, b[Lane]{};
                 store(a);
                 other.store(b);
 
@@ -1500,7 +1500,7 @@ namespace flcn
                 }
                 else
                 {
-                    alignas(16) DataType a[Lane]{}, b[Lane]{};
+                    alignas(Alignment) DataType a[Lane]{}, b[Lane]{};
                     store(a);
                     other.store(b);
                     for (size_t i = 0; i < Lane; ++i)
@@ -2803,17 +2803,17 @@ namespace flcn
                 // two categories for SSE, anything below SSE4.2 will use the SSE2 fallback.
                 if constexpr (CURRENT_SIMD_BACKEND >= SimdBackend::ARCH_SSE4)
                 {
-                    alignas(16) constexpr DataType mask[Lane]{ ShuffleIdx... };
+                    alignas(Alignment) constexpr DataType mask[Lane]{ ShuffleIdx... };
                     const Simd128 maskReg{ mask };
                     return Simd128(_mm_shuffle_epi8(_register, *maskReg));
                 }
                 else
                 {
                     // Store the data into an stack-array
-                    alignas(16) DataType stored[Lane]{};
+                    alignas(Alignment) DataType stored[Lane]{};
                     store(stored);
                     // Create a new array using shuffleIdx and parameter unpacking
-                    alignas(16) const DataType res[Lane]{ stored[ShuffleIdx]... };
+                    alignas(Alignment) const DataType res[Lane]{ stored[ShuffleIdx]... };
                     // Loading it into a new register and return it.
                     return Simd128(res);
                 }
@@ -3163,7 +3163,7 @@ namespace flcn
         else if constexpr (sizeof(DataType) == 8)
         {
             // There must only 2 lanes for 64-bit integrals
-            alignas(16) DataType array[2]{};
+            alignas(Alignment) DataType array[2]{};
             if constexpr (std::is_signed_v<DataType>)
             {
                 // For signed integrals we must clamp to zero to prevent negative integral square roots

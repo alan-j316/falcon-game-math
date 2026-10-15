@@ -527,13 +527,23 @@ namespace flcn::intrin
         }
         else
         {
-            // AVX doesn't have integral shifts so we have to extract them
-            // and perform 2 128-bit shifts, insert, and cast back.
-            const auto loReg     = _mm256_castsi256_si128(reg);
-            const auto hiReg     = _mm256_extracti128_si256(reg, 1);
-            const auto loShifted = _mm256_castsi128_si256(_mm_sra_epi64_custom(loReg, count));
-            const auto hiShifted = _mm_sra_epi64_custom(hiReg, count);
-            return _mm256_inserti128_si256(loShifted, hiShifted, 1);
+            // Hacker Delight Ch.2 (2-7)
+            // ((x + 0x8000..00) u>> n) - (0x8000.000 u>> n)
+            // For signed shift we need to first remove the sign bit or add it (if its a positive number)
+            // and then we shift both the sum and the sign by the shifted amount.
+            // Finally subtracting the sign will remove the sign if it was a unsigned number(or positive signed
+            // number) or if it was a negative number, it will cause an signed overflow since we are subtracting a
+            // smaller number from a larger number(sign will be larger), which will fill all the shifted spaces with 1.
+            // -7(1101) >> 2 = -1(1111)                          | 5(0101) >> 2 = 1(0001)                        |
+            // 1101 + 1000 = 0101 (Overflow)                     | 0101 + 1000  = 1101                           |
+            // 0101 >> 2   = 0001                                | 1101 >> 2    = 0011                           |
+            // 1000 >> 2   = 0010                                | 1000 >> 2    = 0010                           |
+            // 0001 - 0010 = 1111 (Borrowed bit signed overflow) | 0011 - 0010  = 0001                           |
+            const auto signReg        = _mm256_set1_epi64x(0x8000000000000000ULL);
+            const auto sumReg         = _mm256_add_epi64(reg, signReg);
+            const auto shiftedSumReg  = _mm256_srl_epi64(sumReg, count);
+            const auto shiftedSignReg = _mm256_srl_epi64(signReg, count);
+            return _mm256_sub_epi64(shiftedSumReg, shiftedSignReg);
         }
     }
 
@@ -589,7 +599,6 @@ namespace flcn::intrin
             const auto shiftedSumReg  = _mm256_srli_epi64(sumReg, Count);
             const auto shiftedSignReg = _mm256_srli_epi64(signReg, Count);
             return _mm256_sub_epi64(shiftedSumReg, shiftedSignReg);
-            // TODO: Update sra(256) with the same logic
         }
     }
 
@@ -600,28 +609,21 @@ namespace flcn::intrin
     template<uint32_t Count>
     FALCON_INLINE __m256i _mm256_srai_epi32_custom(const __m256i reg) noexcept
     {
+        if constexpr (CURRENT_SIMD_BACKEND >= SimdBackend::ARCH_AVX2)
+        {
+            return _mm256_srai_epi32(reg, Count);
+        }
+        else
+        {
+            // AVX doesn't have integral shifts so we have to extract them
+            // and perform 2 128-bit shifts, insert, and cast back.
+            const auto loReg = _mm256_castsi256_si128(reg);
+            const auto hiReg = _mm256_extracti128_si256(reg, 1);
 
-        const auto loReg = _mm256_castsi256_si128(reg);
-        const auto hiReg = _mm256_extracti128_si256(reg, 1);
-
-        const auto loShifted = _mm256_castsi128_si256(_mm_srai_epi32(loReg, Count));
-        const auto hiShifted = _mm_srai_epi32(hiReg, Count);
-        return _mm256_inserti128_si256(loShifted, hiShifted, 1);
-        // if constexpr (CURRENT_SIMD_BACKEND >= SimdBackend::ARCH_AVX2)
-        // {
-        //     return _mm256_srli_epi32(reg, Count);
-        // }
-        // else
-        // {
-        //     // AVX doesn't have integral shifts so we have to extract them
-        //     // and perform 2 128-bit shifts, insert, and cast back.
-        //     const auto loReg = _mm256_castsi256_si128(reg);
-        //     const auto hiReg = _mm256_extracti128_si256(reg, 1);
-        //
-        //     const auto loShifted = _mm256_castsi128_si256(_mm_srli_epi32(loReg, Count));
-        //     const auto hiShifted = _mm_srli_epi32(hiReg, Count);
-        //     return _mm256_inserti128_si256(loShifted, hiShifted, 1);
-        // }
+            const auto loShifted = _mm256_castsi128_si256(_mm_srai_epi32(loReg, Count));
+            const auto hiShifted = _mm_srai_epi32(hiReg, Count);
+            return _mm256_inserti128_si256(loShifted, hiShifted, 1);
+        }
     }
 
 } // namespace flcn::intrin

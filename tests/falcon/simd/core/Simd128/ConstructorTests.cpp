@@ -12,6 +12,8 @@
 
 #include <array>
 #include <bit>
+#include <memory_resource>
+
 
 // TODO: Remove Preprocessor after implementing individual simd paths
 #if defined(FALCON_ENABLE_AVX512) || defined(FALCON_ENABLE_AVX2) || defined(FALCON_ENABLE_AVX) ||                      \
@@ -37,13 +39,13 @@ namespace
 using namespace simd::testing;
 
 
-TYPED_TEST(Simd128CtorTests, Simd128_CanBeInitializedWithAStdVector)
+TYPED_TEST(Simd128CtorTests, Simd128_CanBeInitializedWithAlignedVector)
 {
     using Type            = TypeParam::Type;
     constexpr size_t Lane = TypeParam::VALUE;
 
-    alignas(16) std::vector<Type> data{};
-    data.resize(Lane);
+    std::pmr::synchronized_pool_resource mem({ .max_blocks_per_chunk = 0, .largest_required_pool_block = 16 });
+    std::pmr::vector<Type> data(Lane, &mem);
 
     for (size_t i = 0; i < Lane; ++i)
     {
@@ -127,9 +129,9 @@ TYPED_TEST(Simd128CtorTests, Simd128_CanBeInitializedWithACStyleArray)
             constexpr size_t size = sizeof(inputData) / sizeof(DataType);                                              \
             DataType outputData[Lanes]{};                                                                              \
             auto getSimd = [](auto... args) {                                                                          \
-                return flcn::Simd128_t<DataType, Lanes>{ static_cast<DataType>(args)... };                           \
+                return flcn::Simd128_t<DataType, Lanes>{ static_cast<DataType>(args)... };                             \
             };                                                                                                         \
-            flcn::Simd128_t<DataType, Lanes> reg = getSimd(__VA_ARGS__);                                             \
+            flcn::Simd128_t<DataType, Lanes> reg = getSimd(__VA_ARGS__);                                               \
             reg.store(outputData);                                                                                     \
                                                                                                                        \
             for (size_t i = 0; i < size; ++i)                                                                          \
@@ -251,7 +253,7 @@ TEST_SIMD128_VARG_CTOR(FP64_2Lanes_2Arguments, FP64, 2, max<FP64>, min<FP64>)
         TEST(Simd128SingleArgCtorTests, InitializesWith_##TestNameSuffix)                                              \
         {                                                                                                              \
             DataType outputData[Lanes]{};                                                                              \
-            flcn::Simd128_t<DataType, Lanes> reg{ Data };                                                            \
+            flcn::Simd128_t<DataType, Lanes> reg{ Data };                                                              \
             reg.store(outputData);                                                                                     \
                                                                                                                        \
             for (size_t i = 0; i < Lanes; ++i)                                                                         \

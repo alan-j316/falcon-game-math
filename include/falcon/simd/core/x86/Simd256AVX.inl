@@ -1537,49 +1537,105 @@ namespace flcn
     }
 
 
-    // template <typename DataType, size_t Lane>
-    // template <uint32_t Count>
-    // FALCON_INLINE constexpr Simd256<SimdBackend::ARCH_AVX, DataType, Lane> Simd256<
-    //     SimdBackend::ARCH_AVX, DataType, Lane>::shiftRightArithmetic() const noexcept
-    // { return Simd256(_lower.template shiftRightArithmetic<Count>(), _upper.template
-    // shiftRightArithmetic<Count>()); }
-    //
-    //
+    template <typename DataType, size_t Lane>
+    template <uint32_t Count>
+    FALCON_INLINE constexpr Simd256<SimdBackend::ARCH_AVX, DataType, Lane> Simd256<
+        SimdBackend::ARCH_AVX, DataType, Lane>::shiftRightArithmetic() const noexcept
+    {
+        if constexpr (_FALCON_SIMD256_SUPPORT_NATIVE_INTRINSIC(DataType))
+        {
+            if constexpr (types::IsFP64<DataType>)
+            {
+                const auto intReg     = _mm256_castpd_si256(_reg);
+                const auto shiftedReg = intrin::_mm256_srai_epi64_custom<Count>(intReg);
+                return Simd256(_mm256_castsi256_pd(shiftedReg));
+            }
+            else if constexpr (types::IsFP32<DataType>)
+            {
+                const auto intReg     = _mm256_castps_si256(_reg);
+                const auto shiftedReg = intrin::_mm256_srai_epi32_custom<Count>(intReg);
+                return Simd256(_mm256_castsi256_ps(shiftedReg));
+            }
+            else if constexpr (types::IsQWord<DataType>)
+            {
+                return Simd256(intrin::_mm256_srai_epi64_custom<Count>(_reg));
+            }
+            else if constexpr (types::IsDWord<DataType>)
+            {
+                return Simd256(intrin::_mm256_srai_epi32_custom<Count>(_reg));
+            }
+            else if constexpr (types::IsWord<DataType>)
+            {
+                return Simd256(_mm256_srai_epi16(_reg, Count));
+            }
+            else if constexpr (types::IsByte<DataType>)
+            {
+                // Hacker Delight Ch.2 (2-7)
+                // t = -(x >> 7)
+                // ((x xor t) >> n) xor t)
+                // For positive number all the shifts t results in a zero which when xored returns the same result.
+                // But for negative number, the first xor converts it to a positive number and the next one undoes
+                // that converting the positive shifted number to a negative.
+                // -7(1101) >> 2 = -1(1111)  | 5(0101) >>  2 = 1(0001)   |
+                // 1101 >>     3 = 0001      | 0101 >>     3 = 0000      |
+                // 0000  -  0001 = 1111 (t)  | 0000 -   0000 = 0000 (t)  |
+                // 1101 xor 1111 = 0010      | 0101 xor 0000 = 0101      |
+                // 0011 >>     3 = 0000      | 0101 >>     3 = 0001      |
+                // 0000 xor 1111 = 1111      | 0000 xor 0001 = 0001      |
+                const auto isolatedSignBit = intrin::_mm256_srli_epi8_custom<7>(_reg);
+                const auto tReg            = _mm256_sub_epi8(_mm256_setzero_si256(), isolatedSignBit);
+                const auto xXorTReg        = _mm256_xor_si256(_reg, tReg);
+                const auto shiftedXor      = intrin::_mm256_srli_epi8_custom<Count>(xXorTReg);
+                return Simd256(_mm256_xor_si256(shiftedXor, tReg));
+            }
+            else // if (std::is_unsigned_v<DataType>)
+            {
+                return shiftRightLogical<Count>();
+            }
+        }
+        else
+        {
+            return Simd256(_reg.template shiftRightArithmetic<Count>());
+        }
+    }
+
+
     template <typename DataType, size_t Lane>
     template <uint32_t Count>
     FALCON_INLINE constexpr Simd256<SimdBackend::ARCH_AVX, DataType, Lane> Simd256<
         SimdBackend::ARCH_AVX, DataType, Lane>::shiftRightLogical() const noexcept
-    { if constexpr (_FALCON_SIMD256_SUPPORT_NATIVE_INTRINSIC(DataType))
     {
-        if constexpr (types::IsFP64<DataType>)
+        if constexpr (_FALCON_SIMD256_SUPPORT_NATIVE_INTRINSIC(DataType))
         {
-            const auto intReg     = _mm256_castpd_si256(_reg);
-            const auto shiftedReg = intrin::_mm256_srli_epi64_custom<Count>(intReg);
-            return Simd256(_mm256_castsi256_pd(shiftedReg));
+            if constexpr (types::IsFP64<DataType>)
+            {
+                const auto intReg     = _mm256_castpd_si256(_reg);
+                const auto shiftedReg = intrin::_mm256_srli_epi64_custom<Count>(intReg);
+                return Simd256(_mm256_castsi256_pd(shiftedReg));
+            }
+            else if constexpr (types::IsFP32<DataType>)
+            {
+                const auto intReg     = _mm256_castps_si256(_reg);
+                const auto shiftedReg = intrin::_mm256_srli_epi32_custom<Count>(intReg);
+                return Simd256(_mm256_castsi256_ps(shiftedReg));
+            }
+            else if constexpr (sizeof(DataType) == 8)
+            {
+                return Simd256(intrin::_mm256_srli_epi64_custom<Count>(_reg));
+            }
+            else if constexpr (sizeof(DataType) == 4)
+            {
+                return Simd256(intrin::_mm256_srli_epi32_custom<Count>(_reg));
+            }
+            else if constexpr (sizeof(DataType) == 2)
+            {
+                return Simd256(_mm256_srli_epi16(_reg, Count));
+            }
+            else // if constexpr (sizeof(DataType) == 1)
+            {
+                return Simd256(intrin::_mm256_srli_epi8_custom<Count>(_reg));
+            }
         }
-        else if constexpr (types::IsFP32<DataType>)
-        {
-            const auto intReg     = _mm256_castps_si256(_reg);
-            const auto shiftedReg = intrin::_mm256_srli_epi32_custom<Count>(intReg);
-            return Simd256(_mm256_castsi256_ps(shiftedReg));
-        }
-        else if constexpr (sizeof(DataType) == 8)
-        {
-            return Simd256(intrin::_mm256_srli_epi64_custom<Count>(_reg));
-        }
-        else if constexpr (sizeof(DataType) == 4)
-        {
-            return Simd256(intrin::_mm256_srli_epi32_custom<Count>(_reg));
-        }
-        else if constexpr (sizeof(DataType) == 2)
-        {
-            return Simd256(_mm256_srli_epi16(_reg, Count));
-        }
-        else // if constexpr (sizeof(DataType) == 1)
-        {
-            return Simd256(intrin::_mm256_srli_epi8_custom<Count>(_reg));
-        }
-    }
         else
         {
             return Simd256(_reg.template shiftRightLogical<Count>());

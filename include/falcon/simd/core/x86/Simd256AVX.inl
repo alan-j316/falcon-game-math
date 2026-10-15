@@ -1643,6 +1643,10 @@ namespace flcn
     }
 
 
+    /// +-------------------------------------------------------------------------------------------------------------+
+    /// |                                           BLENDING AND SHUFFLING                                            |
+    /// +-------------------------------------------------------------------------------------------------------------+
+
     template <typename DataType, size_t Lane>
     FALCON_INLINE constexpr Simd256<SimdBackend::ARCH_AVX, DataType, Lane> Simd256<
         SimdBackend::ARCH_AVX, DataType, Lane>::blend(const Simd256 other, const Simd256 mask) const noexcept

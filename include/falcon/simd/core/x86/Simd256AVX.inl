@@ -1398,19 +1398,19 @@ namespace flcn
                 const auto shiftedReg = intrin::_mm256_sra_epi32_custom(intReg, countReg);
                 return Simd256(_mm256_castsi256_ps(shiftedReg));
             }
-            else if constexpr (sizeof(DataType) == 8)
+            else if constexpr (types::IsQWord<DataType>)
             {
                 return Simd256(intrin::_mm256_sra_epi64_custom(_reg, countReg));
             }
-            else if constexpr (sizeof(DataType) == 4)
+            else if constexpr (types::IsDWord<DataType>)
             {
                 return Simd256(intrin::_mm256_sra_epi32_custom(_reg, countReg));
             }
-            else if constexpr (sizeof(DataType) == 2)
+            else if constexpr (types::IsWord<DataType>)
             {
                 return Simd256(_mm256_sra_epi16(_reg, countReg));
             }
-            else // if constexpr (sizeof(DataType) == 1)
+            else if constexpr (types::IsWord<DataType>)
             {
                 // Hacker Delight Ch.2 (2-7)
                 // t = -(x >> 7)
@@ -1429,6 +1429,10 @@ namespace flcn
                 const auto xXorTReg        = _mm256_xor_si256(_reg, tReg);
                 const auto shiftedXor      = intrin::_mm256_srl_epi8_custom(xXorTReg, count);
                 return Simd256(_mm256_xor_si256(shiftedXor, tReg));
+            }
+            else // if (std::is_unsigned_v<DataType>)
+            {
+                return shiftRightLogical(count);
             }
         }
         else

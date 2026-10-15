@@ -234,6 +234,10 @@ namespace flcn
     FALCON_INLINE constexpr void Simd128<SimdBackend::ARCH_SSE2, DataType, Lane>::loadAligned(
         const DataType* data) noexcept
     {
+        // TODO: Add death tests
+        FALCON_ASSERT_MSG(
+            (reinterpret_cast<uintptr_t>(data) & Alignment - 1) == 0,
+            "[Falcon Simd]: Loading from unaligned memory when aligned address was expected. Use load() instead.");
         // We are using sizes for loading integers since we are storing both signed and unsigned types into the
         // register as bits, with packing.
         if constexpr (types::IsFP64<DataType>)
@@ -437,6 +441,10 @@ namespace flcn
     FALCON_INLINE constexpr void Simd128<SimdBackend::ARCH_SSE2, DataType, Lane>::storeAligned(
         DataType* pBuffer) const noexcept
     {
+        // TODO: Add death tests
+        FALCON_ASSERT_MSG(
+            (reinterpret_cast<uintptr_t>(pBuffer) & Alignment - 1) == 0,
+            "[Falcon Simd]: Storing to unaligned memory when a aligned one was expected. Use store() instead.");
         if constexpr (types::IsFP64<DataType>)
         {
             _mm_store_pd(pBuffer, _register);

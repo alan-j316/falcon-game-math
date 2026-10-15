@@ -96,6 +96,10 @@ namespace flcn
     FALCON_INLINE constexpr void Simd256<SimdBackend::ARCH_SSE2, DataType, Lane>::loadAligned(
         const DataType* data) noexcept
     {
+        // TODO: Add death tests
+        FALCON_ASSERT_MSG(
+            (reinterpret_cast<uintptr_t>(data) & Alignment - 1) == 0,
+            "[Falcon Simd]: Loading from unaligned memory when aligned address was expected. Use load() instead.");
         _lower.loadAligned(data);
         _upper.loadAligned(data + LOWER_LANE_COUNT);
     }
@@ -145,6 +149,10 @@ namespace flcn
     FALCON_INLINE constexpr void Simd256<SimdBackend::ARCH_SSE2, DataType, Lane>::storeAligned(
         DataType* pBuffer) const noexcept
     {
+        // TODO: Add death tests
+        FALCON_ASSERT_MSG(
+            (reinterpret_cast<uintptr_t>(pBuffer) & Alignment - 1) == 0,
+            "[Falcon Simd]: Storing to unaligned memory when a aligned one was expected. Use store() instead.");
         _lower.storeAligned(pBuffer);
         _upper.storeAligned(pBuffer + LOWER_LANE_COUNT);
     }

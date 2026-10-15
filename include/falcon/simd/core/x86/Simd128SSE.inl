@@ -154,7 +154,7 @@ namespace flcn
 
     template <typename DataType, size_t Lane>
     FALCON_INLINE constexpr Simd128<SimdBackend::ARCH_SSE2, DataType, Lane>::Simd128(
-        std::span<const DataType> values) noexcept
+        const std::span<const DataType> values) noexcept
     { loadAligned(values.data()); }
 
     template <typename DataType, size_t Lane>
@@ -170,8 +170,8 @@ namespace flcn
     {
         constexpr auto MaxLanes = 128 / sizeof(DataType);
         // By packing to a compile time array and adding values
-        alignas(16) std::array<DataType, MaxLanes> data{ args... };
-        loadAligned(data.data());
+        alignas(16) const DataType data[MaxLanes]{ args... };
+        loadAligned(data);
 
         return *this;
     }
@@ -530,8 +530,8 @@ namespace flcn
         }
         else
         {
-            alignas(16) std::array<DataType, Lane> buffer{};
-            store(buffer.data());
+            alignas(16) DataType buffer[Lane]{};
+            store(buffer);
             return buffer[index];
         }
     }
@@ -551,10 +551,10 @@ namespace flcn
         // for compile-indexing, we can only store the data from register, update the value
         // and then load the updated value.
         // Due to stack-spilling it is not recommended to use this setter unless absolutely necessary.
-        alignas(16) std::array<DataType, Lane> interArray{};
-        storeAligned(interArray.data());
-        interArray[index] = value;
-        loadAligned(interArray.data());
+        alignas(16) DataType buffer[Lane]{};
+        storeAligned(buffer);
+        buffer[index] = value;
+        loadAligned(buffer);
     }
 
 
@@ -1436,9 +1436,9 @@ namespace flcn
             {
                 // The only possible combination for b lane is 2.
                 // so we can manually calculate the division for 2 integers without loops
-                alignas(16) std::array<DataType, Lane> a{}, b{};
-                store(a.data());
-                other.store(b.data());
+                alignas(16) DataType a[Lane]{}, b[Lane]{};
+                store(a);
+                other.store(b);
 
                 a[0] /= b[0];
                 a[1] /= b[1];
@@ -1500,9 +1500,9 @@ namespace flcn
                 }
                 else
                 {
-                    alignas(16) std::array<DataType, Lane> a{}, b{};
-                    store(a.data());
-                    other.store(b.data());
+                    alignas(16) DataType a[Lane]{}, b[Lane]{};
+                    store(a);
+                    other.store(b);
                     for (size_t i = 0; i < Lane; ++i)
                     {
                         a[i] /= b[i];
@@ -1568,15 +1568,15 @@ namespace flcn
                 else
                 {
                     // TODO: Add Simd if possible
-                    std::array<DataType, Lane> a{}, b{}, result{};
-                    store(a.data());
-                    other.store(b.data());
+                    DataType a[Lane]{}, b[Lane]{};
+                    store(a);
+                    other.store(b);
                     for (size_t i = 0; i < Lane; ++i)
                     {
-                        result[i] = a[i] / b[i];
+                        a[i] /= b[i];
                     }
                     Simd128 reg;
-                    reg.load(result.data());
+                    reg.load(a);
                     return reg;
                 }
             }
@@ -2317,8 +2317,8 @@ namespace flcn
 
 
     template <typename DataType, size_t Lane>
-    constexpr Simd128<SimdBackend::ARCH_SSE2, DataType, Lane> Simd128<SimdBackend::ARCH_SSE2, DataType,
-                                                                      Lane>::operator>>(const uint32_t count) const noexcept
+    constexpr Simd128<SimdBackend::ARCH_SSE2, DataType, Lane> Simd128<
+        SimdBackend::ARCH_SSE2, DataType, Lane>::operator>>(const uint32_t count) const noexcept
     {
         const auto countReg = _mm_cvtsi32_si128(count);
         // For floating point numbers we need to convert them to integral of similar Lane width
@@ -2326,7 +2326,7 @@ namespace flcn
         if constexpr (types::IsFP64<DataType>)
         {
             auto integralReg = _mm_castpd_si128(_register);
-            auto shifted = intrin::_mm_sra_epi64_custom(integralReg, countReg);
+            auto shifted     = intrin::_mm_sra_epi64_custom(integralReg, countReg);
             return Simd128(_mm_castsi128_pd(shifted));
         }
         else if constexpr (types::IsFP32<DataType>)
@@ -2679,7 +2679,7 @@ namespace flcn
         // and this can be used to remove conditions since the unoccupied values by pack expansion will be zero.
         constexpr size_t MaxLanes = 16 / sizeof(DataType);
         // Since packed indexing is not support until C++26, we need to use this workaround
-        constexpr std::array<uint8_t, MaxLanes> indices{ { ShuffleIdx... } };
+        constexpr uint8_t indices[MaxLanes]{ ShuffleIdx... };
 
         if constexpr (types::IsFP64<DataType>)
         {
@@ -2803,17 +2803,17 @@ namespace flcn
                 // two categories for SSE, anything below SSE4.2 will use the SSE2 fallback.
                 if constexpr (CURRENT_SIMD_BACKEND >= SimdBackend::ARCH_SSE4)
                 {
-                    alignas(16) std::array<DataType, Lane> mask{ ShuffleIdx... };
+                    alignas(16) constexpr DataType mask[Lane]{ ShuffleIdx... };
                     const Simd128 maskReg{ mask };
                     return Simd128(_mm_shuffle_epi8(_register, *maskReg));
                 }
                 else
                 {
                     // Store the data into an stack-array
-                    alignas(16) std::array<DataType, Lane> stored{};
-                    store(stored.data());
+                    alignas(16) DataType stored[Lane]{};
+                    store(stored);
                     // Create a new array using shuffleIdx and parameter unpacking
-                    alignas(16) std::array<DataType, Lane> res{ stored[ShuffleIdx]... };
+                    alignas(16) const DataType res[Lane]{ stored[ShuffleIdx]... };
                     // Loading it into a new register and return it.
                     return Simd128(res);
                 }
@@ -3163,17 +3163,17 @@ namespace flcn
         else if constexpr (sizeof(DataType) == 8)
         {
             // There must only 2 lanes for 64-bit integrals
-            alignas(16) std::array<DataType, 2> array{};
+            alignas(16) DataType array[2]{};
             if constexpr (std::is_signed_v<DataType>)
             {
                 // For signed integrals we must clamp to zero to prevent negative integral square roots
                 // And we need to clamp to zero.
                 const auto clamped = *max(*this, Simd128(_mm_setzero_si128()));
-                _mm_store_si128(reinterpret_cast<__m128i*>(array.data()), clamped);
+                _mm_store_si128(reinterpret_cast<__m128i*>(array), clamped);
             }
             else
             {
-                storeAligned(array.data());
+                storeAligned(array);
             }
             return Simd128(static_cast<DataType>(std::sqrt(array[0])), static_cast<DataType>(std::sqrt(array[1])));
         }

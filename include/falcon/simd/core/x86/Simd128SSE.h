@@ -49,6 +49,7 @@ namespace flcn
         using ValueType                      = DataType; ///< The internal data type of this Register.
         static constexpr size_t LaneCount    = Lane;     ///< Number of Lanes of current SIMD128 Register
         static constexpr size_t MaxLaneCount = BufferWidth / (sizeof(DataType) * 8); /// Maximum Lanes in this register.
+        static constexpr size_t Alignment    = 16;                                   ///< Required alignment.
 
         static_assert(sizeof(DataType) * 8 * Lane <= BufferWidth && "Invalid size.");
         static_assert(std::has_single_bit(Lane) && Lane > 1 &&

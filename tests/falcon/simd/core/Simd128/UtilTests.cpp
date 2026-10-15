@@ -128,7 +128,7 @@ using namespace simd::testing;
     #define SIMD128_HAS_NAN_TESTS_FP(TestName, Type, Lane, Data, Expected)                                             \
         TEST(Simd128_HasNaNTests, ReturnsValidMaskGiven_##TestName)                                                    \
         {                                                                                                              \
-            flcn::Simd128_t<Type, Lane> regA{ Data };                                                                  \
+            flcn::Simd128_t<Type, Lane> regA{ Data };                                                          \
                                                                                                                        \
             alignas(16) std::array<Type, Lane> resultMask{};                                                           \
             auto regRes = regA.hasNan();                                                                               \

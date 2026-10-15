@@ -55,7 +55,7 @@ namespace flcn
 
     template <typename DataType, size_t Lane>
     FALCON_INLINE constexpr Simd256<SimdBackend::ARCH_AVX, DataType, Lane>::Simd256(
-        std::span<const DataType> values) noexcept
+        const std::span<const DataType> values) noexcept
     { loadAligned(values.data()); }
 
 
@@ -73,18 +73,18 @@ namespace flcn
     {
         if constexpr (_FALCON_SIMD256_SUPPORT_NATIVE_INTRINSIC(DataType))
         {
-            alignas(32) std::array<DataType, MaxLaneCount> _data{ std::forward<Args>(args)... };
+            alignas(32) DataType _data[MaxLaneCount]{ std::forward<Args>(args)... };
             if constexpr (types::IsFP64<DataType>)
             {
-                _reg = _mm256_load_pd(_data.data());
+                _reg = _mm256_load_pd(_data);
             }
             else if constexpr (types::IsFP32<DataType>)
             {
-                _reg = _mm256_load_ps(_data.data());
+                _reg = _mm256_load_ps(_data);
             }
             else
             {
-                _reg = _mm256_load_si256(reinterpret_cast<__m256i*>(_data.data()));
+                _reg = _mm256_load_si256(reinterpret_cast<__m256i*>(_data));
             }
         }
         else
@@ -96,7 +96,7 @@ namespace flcn
         return *this;
     }
 
-
+    // FIXME : Alignment and assert alignment in load aligned
     template <typename DataType, size_t Lane>
     FALCON_INLINE constexpr void Simd256<SimdBackend::ARCH_AVX, DataType, Lane>::loadAligned(
         const DataType* data) noexcept
@@ -327,8 +327,8 @@ namespace flcn
             }
             else
             {
-                alignas(32) std::array<DataType, Lane> buffer{};
-                store(buffer.data());
+                alignas(32) DataType buffer[Lane]{};
+                store(buffer);
                 return buffer[index];
             }
         }
@@ -912,9 +912,9 @@ namespace flcn
             {
                 // The only possible combination lane count is 4(since we forbids initializing a 64x4 Simd256).
                 // so we can manually calculate the division for 4 integers without loops
-                alignas(32) std::array<DataType, Lane> a{}, b{};
-                storeAligned(a.data());
-                other.storeAligned(b.data());
+                alignas(32) DataType a[Lane]{}, b[Lane]{};
+                storeAligned(a);
+                other.storeAligned(b);
                 a[0] /= b[0];
                 a[1] /= b[1];
                 a[2] /= b[2];
@@ -970,9 +970,9 @@ namespace flcn
                 else
                 {
                     // Use stack spill and perform division
-                    alignas(32) std::array<DataType, Lane> a{}, b{};
-                    storeAligned(a.data());
-                    other.storeAligned(b.data());
+                    alignas(32) DataType a[Lane]{}, b[Lane]{};
+                    storeAligned(a);
+                    other.storeAligned(b);
                     a[0] /= b[0];
                     a[1] /= b[1];
                     a[2] /= b[2];
@@ -1507,12 +1507,12 @@ namespace flcn
     //     // Packed indexing is not support until C++26, we need to use this workaround
     //     // For shuffling with two indices we need to transform the array values(indices)
     //     // to be between 0 - MAX_LANE_COUNT(exclusive)
-    //     constexpr std::array<uint8_t, MaxLaneCount> normalizedIndices{ { (
+    //     constexpr uint8_t normalizedIndices[MaxLaneCount]{ { (
     //         static_cast<uint8_t>(ShuffleIndex % Max128BitLaneCount))... } };
     //
     //     // Masks for selecting values for the upper and lower 128-bit lanes.
     //     const auto makeMask = [&]<size_t Offset, size_t... Index>(std::index_sequence<Index...>) {
-    //         constexpr std::array<uint8_t, MaxLaneCount> ShuffleIndices{ { ShuffleIndex... } };
+    //         constexpr uint8_t ShuffleIndices[MaxLaneCount]{ { ShuffleIndex... } };
     //         return simd::makeBlendMask32<Max128BitLaneCount,
     //                                      (ShuffleIndices[Offset + Index] >= Max128BitLaneCount)...>();
     //     };

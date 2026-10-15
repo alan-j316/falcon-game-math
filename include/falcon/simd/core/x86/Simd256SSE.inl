@@ -48,7 +48,7 @@ namespace flcn
 
     template <typename DataType, size_t Lane>
     FALCON_INLINE constexpr Simd256<SimdBackend::ARCH_SSE2, DataType, Lane>::Simd256(
-        std::span<const DataType> values) noexcept
+        const std::span<const DataType> values) noexcept
     { loadAligned(values.data()); }
 
 
@@ -507,12 +507,12 @@ namespace flcn
         // Packed indexing is not support until C++26, we need to use this workaround
         // For shuffling with two indices we need to transform the array values(indices)
         // to be between 0 - MAX_LANE_COUNT(exclusive)
-        constexpr std::array<uint8_t, MaxLaneCount> normalizedIndices{ { (
+        constexpr uint8_t normalizedIndices[MaxLaneCount]{ { (
             static_cast<uint8_t>(ShuffleIndex % Max128BitLaneCount))... } };
 
         // Masks for selecting values for the upper and lower 128-bit lanes.
         const auto makeMask = [&]<size_t Offset, size_t... Index>(std::index_sequence<Index...>) {
-            constexpr std::array<uint8_t, MaxLaneCount> ShuffleIndices{ { ShuffleIndex... } };
+            constexpr uint8_t ShuffleIndices[MaxLaneCount]{ { ShuffleIndex... } };
             return simd::makeBlendMask32<Max128BitLaneCount,
                                          (ShuffleIndices[Offset + Index] >= Max128BitLaneCount)...>();
         };

@@ -620,23 +620,23 @@ namespace flcn
         [[nodiscard]] constexpr Simd256 shiftRightLogical(uint32_t count) const noexcept;
 
 
-        //     /**
-        //      * @brief Perform a logical left shift on this register by a compile time constant, @p Count.
-        //      *
-        //      * @tparam Count The shift amount.
-        //      *
-        //      * @relatedalso operator<<(uint32_t)
-        //      * @relatedalso operator<<=(uint32_t)
-        //      * @relatedalso operator>>(uint32_t)
-        //      * @relatedalso operator>>=(uint32_t)
-        //      * @relatedalso shiftRightLogical(uint32_t)
-        //      * @relatedalso shiftRightArithmetic<uint32_t>()
-        //      * @relatedalso shiftRightLogical<uint32_t>()
-        //      */
-        //     template <uint32_t Count>
-        //     [[nodiscard]] constexpr Simd256 shiftLeft() const noexcept;
-        //
-        //
+        /**
+         * @brief Perform a logical left shift on this register by a compile time constant, @p Count.
+         *
+         * @tparam Count The shift amount.
+         *
+         * @relatedalso operator<<(uint32_t)
+         * @relatedalso operator<<=(uint32_t)
+         * @relatedalso operator>>(uint32_t)
+         * @relatedalso operator>>=(uint32_t)
+         * @relatedalso shiftRightLogical(uint32_t)
+         * @relatedalso shiftRightArithmetic<uint32_t>()
+         * @relatedalso shiftRightLogical<uint32_t>()
+         */
+        template <uint32_t Count>
+        [[nodiscard]] constexpr Simd256 shiftLeft() const noexcept;
+
+
         //     /**
         //      * @brief Perform a arithmetic right shift on this register by a compile time constant, @p Count.
         //      *

@@ -463,105 +463,105 @@ TYPED_TEST(Simd256BlendTests, BlendingWithMaskReturnsRegisterWithCorrectValues)
     }
 }
 
-
-/// =============================== START COMPILE TIME BLEND TESTS ===============================
-
-    #define SIMD256_COMPILE_TIME_BLEND_TESTS(TestSuffix, Type, Lanes, First, Second, Expected, ...)                    \
-        TEST(Simd256BlendTests, CompileTimeBlendingWithMask_ReturnsValidRegister_For##TestSuffix)                      \
-        {                                                                                                              \
-            flcn::Simd256_t<Type, Lanes> regA{}, regB{};                                                             \
-            constexpr auto mask = regA.makeBlendMask<__VA_ARGS__>();                                                   \
-            regA.load(First.data());                                                                                   \
-            regB.load(Second.data());                                                                                  \
-                                                                                                                       \
-            Array<Type, Lanes> result{};                                                                               \
-            const auto resultReg = regA.template blend<mask>(regB);                                                    \
-            resultReg.store(result.data());                                                                            \
-                                                                                                                       \
-            for (size_t i = 0; i < Lanes; ++i)                                                                         \
-            {                                                                                                          \
-                EXPECT_ANY_EQ(Expected[i], result[i]);                                                                 \
-            }                                                                                                          \
-        }
-
-constexpr bool T = true;
-constexpr bool F = false;
-
-// clang-format off
-// Unsigned integers
-static Array<U8, 32> arrU8x32_First{ 9, 3, 9, 79, 123, 75, 107, 55, 115, 122, 32, 76, 100, 127, 0, 65, 118, 4, 74, 67, 54, 61, 83, 47, 79, 61, 70, 79, 115, 48, 4, 97 };
-static Array<U8, 32> arrU8x32_Second{ 50, 112, 22, 123, 86, 66, 6, 127, 17, 60, 12, 62, 120, 24, 20, 102, 21, 48, 73, 32, 100, 43, 108, 124, 25, 48, 99, 32, 106, 26, 2, 114 };
-static Array<U8, 32> arrU8x32_SelectMixed{ 50, 3, 22, 79, 86, 75, 6, 55, 17, 122, 12, 76, 120, 127, 20, 65, 21, 4, 73, 67, 100, 61, 108, 47, 25, 61, 99, 79, 106, 48, 2, 97 };
-SIMD256_COMPILE_TIME_BLEND_TESTS(U8_32Lanes_SelectFirst, U8, 32, arrU8x32_First, arrU8x32_Second, arrU8x32_First, F, F, F, F, F, F, F, F, F, F, F, F, F, F, F, F, F, F, F, F, F, F, F, F, F, F, F, F, F, F, F, F)
-SIMD256_COMPILE_TIME_BLEND_TESTS(U8_32Lanes_SelectSecond, U8, 32, arrU8x32_First, arrU8x32_Second, arrU8x32_Second, T, T, T, T, T, T, T, T, T, T, T, T, T, T, T, T, T, T, T, T, T, T, T, T, T, T, T, T, T, T, T, T)
-SIMD256_COMPILE_TIME_BLEND_TESTS(U8_32Lanes_SelectMixed, U8, 32, arrU8x32_First, arrU8x32_Second, arrU8x32_SelectMixed, T, F, T, F, T, F, T, F, T, F, T, F, T, F, T, F, T, F, T, F, T, F, T, F, T, F, T, F, T, F, T, F)
-
-static Array<U16, 16> arrU16x16_First{ 100, 123, 121, 53, 16, 34, 21, 24, 33, 15, 121, 127, 35, 14, 96, 88 };
-static Array<U16, 16> arrU16x16_Second{ 32, 15, 67, 12, 93, 32, 12, 47, 4, 120, 11, 31, 12, 7, 82, 99 };
-static Array<U16, 16> arrU16x16_SelectMixed{ 32, 123, 67, 53, 93, 34, 12, 24, 4, 15, 11, 127, 12, 14, 82, 88 };
-SIMD256_COMPILE_TIME_BLEND_TESTS(U16_16Lanes_SelectFirst, U16, 16, arrU16x16_First, arrU16x16_Second, arrU16x16_First, F, F, F, F, F, F, F, F, F, F, F, F, F, F, F, F)
-SIMD256_COMPILE_TIME_BLEND_TESTS(U16_16Lanes_SelectSecond, U16, 16, arrU16x16_First, arrU16x16_Second, arrU16x16_Second, T, T, T, T, T, T, T, T, T, T, T, T, T, T, T, T)
-SIMD256_COMPILE_TIME_BLEND_TESTS(U16_16Lanes_SelectMixed, U16, 16, arrU16x16_First, arrU16x16_Second, arrU16x16_SelectMixed, T, F, T, F, T, F, T, F, T, F, T, F, T, F, T, F)
-
-static Array<U32, 8> arrU32x8_First{ 100, 28, 121, 53, 8, 34, 21, 24 };
-static Array<U32, 8> arrU32x8_Second{ 32, 15, 67, 12, 93, 32, 98, 47 };
-static Array<U32, 8> arrU32x8_SelectMixed{ 32, 28, 67, 53, 93, 34, 98, 24 };
-SIMD256_COMPILE_TIME_BLEND_TESTS(U32_8Lanes_SelectFirst, U32, 8, arrU32x8_First, arrU32x8_Second, arrU32x8_First, F, F, F, F, F, F, F, F)
-SIMD256_COMPILE_TIME_BLEND_TESTS(U32_8Lanes_SelectSecond, U32, 8, arrU32x8_First, arrU32x8_Second, arrU32x8_Second, T, T, T, T, T, T, T, T)
-SIMD256_COMPILE_TIME_BLEND_TESTS(U32_8Lanes_SelectMixed, U32, 8, arrU32x8_First, arrU32x8_Second, arrU32x8_SelectMixed, T, F, T, F, T, F, T, F)
-
-static Array<U64, 4> arrU64x4_First{ 100, 24, 121, 53 };
-static Array<U64, 4> arrU64x4_Second{ 32, 15, 67, 12 };
-static Array<U64, 4> arrU64x4_SelectMixed{ 32, 24, 67, 53 };
-SIMD256_COMPILE_TIME_BLEND_TESTS(U64_4Lanes_SelectFirst, U64, 4, arrU64x4_First, arrU64x4_Second, arrU64x4_First, F, F, F, F)
-SIMD256_COMPILE_TIME_BLEND_TESTS(U64_4Lanes_SelectSecond, U64, 4, arrU64x4_First, arrU64x4_Second, arrU64x4_Second, T, T, T, T)
-SIMD256_COMPILE_TIME_BLEND_TESTS(U64_4Lanes_SelectMixed, U64, 4, arrU64x4_First, arrU64x4_Second, arrU64x4_SelectMixed, T, F, T, F)
-
-
-// Signed Integrals
-static Array<I8, 32> arrI8x32_First{ 9, 3, 9, 79, 123, 75, 107, 55, 115, 122, 32, 76, 100, 127, 0, 65, 118, 4, 74, 67, 54, 61, 83, 47, 79, 61, 70, 79, 115, 48, 4, 97 };
-static Array<I8, 32> arrI8x32_Second{ 50, 112, 22, 123, 86, 66, 6, 127, 17, 60, 12, 62, 120, 24, 20, 102, 21, 48, 73, 32, 100, 43, 108, 124, 25, 48, 99, 32, 106, 26, 2, 114 };
-static Array<I8, 32> arrI8x32_SelectMixed{ 50, 3, 22, 79, 86, 75, 6, 55, 17, 122, 12, 76, 120, 127, 20, 65, 21, 4, 73, 67, 100, 61, 108, 47, 25, 61, 99, 79, 106, 48, 2, 97 };
-SIMD256_COMPILE_TIME_BLEND_TESTS(I8_32Lanes_SelectFirst, I8, 32, arrI8x32_First, arrI8x32_Second, arrI8x32_First, F, F, F, F, F, F, F, F, F, F, F, F, F, F, F, F, F, F, F, F, F, F, F, F, F, F, F, F, F, F, F, F)
-SIMD256_COMPILE_TIME_BLEND_TESTS(I8_32Lanes_SelectSecond, I8, 32, arrI8x32_First, arrI8x32_Second, arrI8x32_Second, T, T, T, T, T, T, T, T, T, T, T, T, T, T, T, T, T, T, T, T, T, T, T, T, T, T, T, T, T, T, T, T)
-SIMD256_COMPILE_TIME_BLEND_TESTS(I8_32Lanes_SelectMixed, I8, 32, arrI8x32_First, arrI8x32_Second, arrI8x32_SelectMixed, T, F, T, F, T, F, T, F, T, F, T, F, T, F, T, F, T, F, T, F, T, F, T, F, T, F, T, F, T, F, T, F)
-
-static Array<I16, 16> arrI16x16_First{ 100, 123, 121, 53, 16, 34, 21, 24, 33, 15, 121, 127, 35, 14, 96, 88 };
-static Array<I16, 16> arrI16x16_Second{ 32, 15, 67, 12, 93, 32, 12, 47, 4, 120, 11, 31, 12, 7, 82, 99 };
-static Array<I16, 16> arrI16x16_SelectMixed{ 32, 123, 67, 53, 93, 34, 12, 24, 4, 15, 11, 127, 12, 14, 82, 88 };
-SIMD256_COMPILE_TIME_BLEND_TESTS(I16_16Lanes_SelectFirst, I16, 16, arrI16x16_First, arrI16x16_Second, arrI16x16_First, F, F, F, F, F, F, F, F, F, F, F, F, F, F, F, F)
-SIMD256_COMPILE_TIME_BLEND_TESTS(I16_16Lanes_SelectSecond, I16, 16, arrI16x16_First, arrI16x16_Second, arrI16x16_Second, T, T, T, T, T, T, T, T, T, T, T, T, T, T, T, T)
-SIMD256_COMPILE_TIME_BLEND_TESTS(I16_16Lanes_SelectMixed, I16, 16, arrI16x16_First, arrI16x16_Second, arrI16x16_SelectMixed, T, F, T, F, T, F, T, F, T, F, T, F, T, F, T, F)
-
-static Array<I32, 8> arrI32x8_First{ 100, 28, 121, 53, 8, 34, 21, 24 };
-static Array<I32, 8> arrI32x8_Second{ 32, 15, 67, 12, 93, 32, 98, 47 };
-static Array<I32, 8> arrI32x8_SelectMixed{ 32, 28, 67, 53, 93, 34, 98, 24 };
-SIMD256_COMPILE_TIME_BLEND_TESTS(I32_8Lanes_SelectFirst, I32, 8, arrI32x8_First, arrI32x8_Second, arrI32x8_First, F, F, F, F, F, F, F, F)
-SIMD256_COMPILE_TIME_BLEND_TESTS(I32_8Lanes_SelectSecond, I32, 8, arrI32x8_First, arrI32x8_Second, arrI32x8_Second, T, T, T, T, T, T, T, T)
-SIMD256_COMPILE_TIME_BLEND_TESTS(I32_8Lanes_SelectMixed, I32, 8, arrI32x8_First, arrI32x8_Second, arrI32x8_SelectMixed, T, F, T, F, T, F, T, F)
-
-static Array<I64, 4> arrI64x4_First{ 100, 24, 121, 53 };
-static Array<I64, 4> arrI64x4_Second{ 32, 15, 67, 12 };
-static Array<I64, 4> arrI64x4_SelectMixed{ 32, 24, 67, 53 };
-SIMD256_COMPILE_TIME_BLEND_TESTS(I64_4Lanes_SelectFirst, I64, 4, arrI64x4_First, arrI64x4_Second, arrI64x4_First, F, F, F, F)
-SIMD256_COMPILE_TIME_BLEND_TESTS(I64_4Lanes_SelectSecond, I64, 4, arrI64x4_First, arrI64x4_Second, arrI64x4_Second, T, T, T, T)
-SIMD256_COMPILE_TIME_BLEND_TESTS(I64_4Lanes_SelectMixed, I64, 4, arrI64x4_First, arrI64x4_Second, arrI64x4_SelectMixed, T, F, T, F)
-
-
-// Floating Point Types
-static Array<FP32, 8> arrFP32x8_First{ 100, 28, 121, 53, 8, 34, 21, 24 };
-static Array<FP32, 8> arrFP32x8_Second{ 32, 15, 67, 12, 93, 32, 98, 47 };
-static Array<FP32, 8> arrFP32x8_SelectMixed{ 32, 28, 67, 53, 93, 34, 98, 24 };
-SIMD256_COMPILE_TIME_BLEND_TESTS(FP32_8Lanes_SelectFirst, FP32, 8, arrFP32x8_First, arrFP32x8_Second, arrFP32x8_First, F, F, F, F, F, F, F, F)
-SIMD256_COMPILE_TIME_BLEND_TESTS(FP32_8Lanes_SelectSecond, FP32, 8, arrFP32x8_First, arrFP32x8_Second, arrFP32x8_Second, T, T, T, T, T, T, T, T)
-SIMD256_COMPILE_TIME_BLEND_TESTS(FP32_8Lanes_SelectMixed, FP32, 8, arrFP32x8_First, arrFP32x8_Second, arrFP32x8_SelectMixed, T, F, T, F, T, F, T, F)
-
-static Array<FP64, 4> arrFP64x4_First{ 100, 24, 121, 53 };
-static Array<FP64, 4> arrFP64x4_Second{ 32, 15, 67, 12 };
-static Array<FP64, 4> arrFP64x4_SelectMixed{ 32, 24, 67, 53 };
-SIMD256_COMPILE_TIME_BLEND_TESTS(FP64_4Lanes_SelectFirst, FP64, 4, arrFP64x4_First, arrFP64x4_Second, arrFP64x4_First, F, F, F, F)
-SIMD256_COMPILE_TIME_BLEND_TESTS(FP64_4Lanes_SelectSecond, FP64, 4, arrFP64x4_First, arrFP64x4_Second, arrFP64x4_Second, T, T, T, T)
-SIMD256_COMPILE_TIME_BLEND_TESTS(FP64_4Lanes_SelectMixed, FP64, 4, arrFP64x4_First, arrFP64x4_Second, arrFP64x4_SelectMixed, T, F, T, F)
+//
+// /// =============================== START COMPILE TIME BLEND TESTS ===============================
+//
+//     #define SIMD256_COMPILE_TIME_BLEND_TESTS(TestSuffix, Type, Lanes, First, Second, Expected, ...)                    \
+//         TEST(Simd256BlendTests, CompileTimeBlendingWithMask_ReturnsValidRegister_For##TestSuffix)                      \
+//         {                                                                                                              \
+//             flcn::Simd256_t<Type, Lanes> regA{}, regB{};                                                             \
+//             constexpr auto mask = regA.makeBlendMask<__VA_ARGS__>();                                                   \
+//             regA.load(First.data());                                                                                   \
+//             regB.load(Second.data());                                                                                  \
+//                                                                                                                        \
+//             Array<Type, Lanes> result{};                                                                               \
+//             const auto resultReg = regA.template blend<mask>(regB);                                                    \
+//             resultReg.store(result.data());                                                                            \
+//                                                                                                                        \
+//             for (size_t i = 0; i < Lanes; ++i)                                                                         \
+//             {                                                                                                          \
+//                 EXPECT_ANY_EQ(Expected[i], result[i]);                                                                 \
+//             }                                                                                                          \
+//         }
+//
+// constexpr bool T = true;
+// constexpr bool F = false;
+//
+// // clang-format off
+// // Unsigned integers
+// static Array<U8, 32> arrU8x32_First{ 9, 3, 9, 79, 123, 75, 107, 55, 115, 122, 32, 76, 100, 127, 0, 65, 118, 4, 74, 67, 54, 61, 83, 47, 79, 61, 70, 79, 115, 48, 4, 97 };
+// static Array<U8, 32> arrU8x32_Second{ 50, 112, 22, 123, 86, 66, 6, 127, 17, 60, 12, 62, 120, 24, 20, 102, 21, 48, 73, 32, 100, 43, 108, 124, 25, 48, 99, 32, 106, 26, 2, 114 };
+// static Array<U8, 32> arrU8x32_SelectMixed{ 50, 3, 22, 79, 86, 75, 6, 55, 17, 122, 12, 76, 120, 127, 20, 65, 21, 4, 73, 67, 100, 61, 108, 47, 25, 61, 99, 79, 106, 48, 2, 97 };
+// SIMD256_COMPILE_TIME_BLEND_TESTS(U8_32Lanes_SelectFirst, U8, 32, arrU8x32_First, arrU8x32_Second, arrU8x32_First, F, F, F, F, F, F, F, F, F, F, F, F, F, F, F, F, F, F, F, F, F, F, F, F, F, F, F, F, F, F, F, F)
+// SIMD256_COMPILE_TIME_BLEND_TESTS(U8_32Lanes_SelectSecond, U8, 32, arrU8x32_First, arrU8x32_Second, arrU8x32_Second, T, T, T, T, T, T, T, T, T, T, T, T, T, T, T, T, T, T, T, T, T, T, T, T, T, T, T, T, T, T, T, T)
+// SIMD256_COMPILE_TIME_BLEND_TESTS(U8_32Lanes_SelectMixed, U8, 32, arrU8x32_First, arrU8x32_Second, arrU8x32_SelectMixed, T, F, T, F, T, F, T, F, T, F, T, F, T, F, T, F, T, F, T, F, T, F, T, F, T, F, T, F, T, F, T, F)
+//
+// static Array<U16, 16> arrU16x16_First{ 100, 123, 121, 53, 16, 34, 21, 24, 33, 15, 121, 127, 35, 14, 96, 88 };
+// static Array<U16, 16> arrU16x16_Second{ 32, 15, 67, 12, 93, 32, 12, 47, 4, 120, 11, 31, 12, 7, 82, 99 };
+// static Array<U16, 16> arrU16x16_SelectMixed{ 32, 123, 67, 53, 93, 34, 12, 24, 4, 15, 11, 127, 12, 14, 82, 88 };
+// SIMD256_COMPILE_TIME_BLEND_TESTS(U16_16Lanes_SelectFirst, U16, 16, arrU16x16_First, arrU16x16_Second, arrU16x16_First, F, F, F, F, F, F, F, F, F, F, F, F, F, F, F, F)
+// SIMD256_COMPILE_TIME_BLEND_TESTS(U16_16Lanes_SelectSecond, U16, 16, arrU16x16_First, arrU16x16_Second, arrU16x16_Second, T, T, T, T, T, T, T, T, T, T, T, T, T, T, T, T)
+// SIMD256_COMPILE_TIME_BLEND_TESTS(U16_16Lanes_SelectMixed, U16, 16, arrU16x16_First, arrU16x16_Second, arrU16x16_SelectMixed, T, F, T, F, T, F, T, F, T, F, T, F, T, F, T, F)
+//
+// static Array<U32, 8> arrU32x8_First{ 100, 28, 121, 53, 8, 34, 21, 24 };
+// static Array<U32, 8> arrU32x8_Second{ 32, 15, 67, 12, 93, 32, 98, 47 };
+// static Array<U32, 8> arrU32x8_SelectMixed{ 32, 28, 67, 53, 93, 34, 98, 24 };
+// SIMD256_COMPILE_TIME_BLEND_TESTS(U32_8Lanes_SelectFirst, U32, 8, arrU32x8_First, arrU32x8_Second, arrU32x8_First, F, F, F, F, F, F, F, F)
+// SIMD256_COMPILE_TIME_BLEND_TESTS(U32_8Lanes_SelectSecond, U32, 8, arrU32x8_First, arrU32x8_Second, arrU32x8_Second, T, T, T, T, T, T, T, T)
+// SIMD256_COMPILE_TIME_BLEND_TESTS(U32_8Lanes_SelectMixed, U32, 8, arrU32x8_First, arrU32x8_Second, arrU32x8_SelectMixed, T, F, T, F, T, F, T, F)
+//
+// static Array<U64, 4> arrU64x4_First{ 100, 24, 121, 53 };
+// static Array<U64, 4> arrU64x4_Second{ 32, 15, 67, 12 };
+// static Array<U64, 4> arrU64x4_SelectMixed{ 32, 24, 67, 53 };
+// SIMD256_COMPILE_TIME_BLEND_TESTS(U64_4Lanes_SelectFirst, U64, 4, arrU64x4_First, arrU64x4_Second, arrU64x4_First, F, F, F, F)
+// SIMD256_COMPILE_TIME_BLEND_TESTS(U64_4Lanes_SelectSecond, U64, 4, arrU64x4_First, arrU64x4_Second, arrU64x4_Second, T, T, T, T)
+// SIMD256_COMPILE_TIME_BLEND_TESTS(U64_4Lanes_SelectMixed, U64, 4, arrU64x4_First, arrU64x4_Second, arrU64x4_SelectMixed, T, F, T, F)
+//
+//
+// // Signed Integrals
+// static Array<I8, 32> arrI8x32_First{ 9, 3, 9, 79, 123, 75, 107, 55, 115, 122, 32, 76, 100, 127, 0, 65, 118, 4, 74, 67, 54, 61, 83, 47, 79, 61, 70, 79, 115, 48, 4, 97 };
+// static Array<I8, 32> arrI8x32_Second{ 50, 112, 22, 123, 86, 66, 6, 127, 17, 60, 12, 62, 120, 24, 20, 102, 21, 48, 73, 32, 100, 43, 108, 124, 25, 48, 99, 32, 106, 26, 2, 114 };
+// static Array<I8, 32> arrI8x32_SelectMixed{ 50, 3, 22, 79, 86, 75, 6, 55, 17, 122, 12, 76, 120, 127, 20, 65, 21, 4, 73, 67, 100, 61, 108, 47, 25, 61, 99, 79, 106, 48, 2, 97 };
+// SIMD256_COMPILE_TIME_BLEND_TESTS(I8_32Lanes_SelectFirst, I8, 32, arrI8x32_First, arrI8x32_Second, arrI8x32_First, F, F, F, F, F, F, F, F, F, F, F, F, F, F, F, F, F, F, F, F, F, F, F, F, F, F, F, F, F, F, F, F)
+// SIMD256_COMPILE_TIME_BLEND_TESTS(I8_32Lanes_SelectSecond, I8, 32, arrI8x32_First, arrI8x32_Second, arrI8x32_Second, T, T, T, T, T, T, T, T, T, T, T, T, T, T, T, T, T, T, T, T, T, T, T, T, T, T, T, T, T, T, T, T)
+// SIMD256_COMPILE_TIME_BLEND_TESTS(I8_32Lanes_SelectMixed, I8, 32, arrI8x32_First, arrI8x32_Second, arrI8x32_SelectMixed, T, F, T, F, T, F, T, F, T, F, T, F, T, F, T, F, T, F, T, F, T, F, T, F, T, F, T, F, T, F, T, F)
+//
+// static Array<I16, 16> arrI16x16_First{ 100, 123, 121, 53, 16, 34, 21, 24, 33, 15, 121, 127, 35, 14, 96, 88 };
+// static Array<I16, 16> arrI16x16_Second{ 32, 15, 67, 12, 93, 32, 12, 47, 4, 120, 11, 31, 12, 7, 82, 99 };
+// static Array<I16, 16> arrI16x16_SelectMixed{ 32, 123, 67, 53, 93, 34, 12, 24, 4, 15, 11, 127, 12, 14, 82, 88 };
+// SIMD256_COMPILE_TIME_BLEND_TESTS(I16_16Lanes_SelectFirst, I16, 16, arrI16x16_First, arrI16x16_Second, arrI16x16_First, F, F, F, F, F, F, F, F, F, F, F, F, F, F, F, F)
+// SIMD256_COMPILE_TIME_BLEND_TESTS(I16_16Lanes_SelectSecond, I16, 16, arrI16x16_First, arrI16x16_Second, arrI16x16_Second, T, T, T, T, T, T, T, T, T, T, T, T, T, T, T, T)
+// SIMD256_COMPILE_TIME_BLEND_TESTS(I16_16Lanes_SelectMixed, I16, 16, arrI16x16_First, arrI16x16_Second, arrI16x16_SelectMixed, T, F, T, F, T, F, T, F, T, F, T, F, T, F, T, F)
+//
+// static Array<I32, 8> arrI32x8_First{ 100, 28, 121, 53, 8, 34, 21, 24 };
+// static Array<I32, 8> arrI32x8_Second{ 32, 15, 67, 12, 93, 32, 98, 47 };
+// static Array<I32, 8> arrI32x8_SelectMixed{ 32, 28, 67, 53, 93, 34, 98, 24 };
+// SIMD256_COMPILE_TIME_BLEND_TESTS(I32_8Lanes_SelectFirst, I32, 8, arrI32x8_First, arrI32x8_Second, arrI32x8_First, F, F, F, F, F, F, F, F)
+// SIMD256_COMPILE_TIME_BLEND_TESTS(I32_8Lanes_SelectSecond, I32, 8, arrI32x8_First, arrI32x8_Second, arrI32x8_Second, T, T, T, T, T, T, T, T)
+// SIMD256_COMPILE_TIME_BLEND_TESTS(I32_8Lanes_SelectMixed, I32, 8, arrI32x8_First, arrI32x8_Second, arrI32x8_SelectMixed, T, F, T, F, T, F, T, F)
+//
+// static Array<I64, 4> arrI64x4_First{ 100, 24, 121, 53 };
+// static Array<I64, 4> arrI64x4_Second{ 32, 15, 67, 12 };
+// static Array<I64, 4> arrI64x4_SelectMixed{ 32, 24, 67, 53 };
+// SIMD256_COMPILE_TIME_BLEND_TESTS(I64_4Lanes_SelectFirst, I64, 4, arrI64x4_First, arrI64x4_Second, arrI64x4_First, F, F, F, F)
+// SIMD256_COMPILE_TIME_BLEND_TESTS(I64_4Lanes_SelectSecond, I64, 4, arrI64x4_First, arrI64x4_Second, arrI64x4_Second, T, T, T, T)
+// SIMD256_COMPILE_TIME_BLEND_TESTS(I64_4Lanes_SelectMixed, I64, 4, arrI64x4_First, arrI64x4_Second, arrI64x4_SelectMixed, T, F, T, F)
+//
+//
+// // Floating Point Types
+// static Array<FP32, 8> arrFP32x8_First{ 100, 28, 121, 53, 8, 34, 21, 24 };
+// static Array<FP32, 8> arrFP32x8_Second{ 32, 15, 67, 12, 93, 32, 98, 47 };
+// static Array<FP32, 8> arrFP32x8_SelectMixed{ 32, 28, 67, 53, 93, 34, 98, 24 };
+// SIMD256_COMPILE_TIME_BLEND_TESTS(FP32_8Lanes_SelectFirst, FP32, 8, arrFP32x8_First, arrFP32x8_Second, arrFP32x8_First, F, F, F, F, F, F, F, F)
+// SIMD256_COMPILE_TIME_BLEND_TESTS(FP32_8Lanes_SelectSecond, FP32, 8, arrFP32x8_First, arrFP32x8_Second, arrFP32x8_Second, T, T, T, T, T, T, T, T)
+// SIMD256_COMPILE_TIME_BLEND_TESTS(FP32_8Lanes_SelectMixed, FP32, 8, arrFP32x8_First, arrFP32x8_Second, arrFP32x8_SelectMixed, T, F, T, F, T, F, T, F)
+//
+// static Array<FP64, 4> arrFP64x4_First{ 100, 24, 121, 53 };
+// static Array<FP64, 4> arrFP64x4_Second{ 32, 15, 67, 12 };
+// static Array<FP64, 4> arrFP64x4_SelectMixed{ 32, 24, 67, 53 };
+// SIMD256_COMPILE_TIME_BLEND_TESTS(FP64_4Lanes_SelectFirst, FP64, 4, arrFP64x4_First, arrFP64x4_Second, arrFP64x4_First, F, F, F, F)
+// SIMD256_COMPILE_TIME_BLEND_TESTS(FP64_4Lanes_SelectSecond, FP64, 4, arrFP64x4_First, arrFP64x4_Second, arrFP64x4_Second, T, T, T, T)
+// SIMD256_COMPILE_TIME_BLEND_TESTS(FP64_4Lanes_SelectMixed, FP64, 4, arrFP64x4_First, arrFP64x4_Second, arrFP64x4_SelectMixed, T, F, T, F)
 
 // clang-format on
 

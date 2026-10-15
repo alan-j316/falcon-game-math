@@ -696,27 +696,27 @@ namespace flcn
         //         requires(std::has_single_bit(sizeof...(Mask)) && sizeof...(Mask) >= 2 && sizeof...(Mask) <= Lane)
         //     static constexpr BlendMask32_t makeBlendMask() noexcept
         //     { return simd::makeBlendMask32<MaxLaneCount, Mask...>(); }
-        //
-        //
-        //     /**
-        //      * @brief Selectively blend values from this register and @p other using the @p mask.
-        //      *
-        //      * @code
-        //      * // Masking sample
-        //      * this  -> 0x ff 23 15 81
-        //      * other -> 0x 32 3f ed 55
-        //      * mask  -> 0x ff 00 ff 00
-        //      * ret   -> 0x 32 23 ed 81
-        //      * @endcode
-        //      *
-        //      * @param other The register whose values are selected when mask is 0b11..11 or 0xf..f.
-        //      * @param mask  The mask to use for blending.
-        //      *
-        //      * @return Return a new register with blended values.
-        //      */
-        //     [[nodiscard]] constexpr Simd256 blend(Simd256 other, Simd256 mask) const noexcept;
-        //
-        //
+
+
+        /**
+         * @brief Selectively blend values from this register and @p other using the @p mask.
+         *
+         * @code
+         * // Masking sample
+         * this  -> 0x ff 23 15 81
+         * other -> 0x 32 3f ed 55
+         * mask  -> 0x ff 00 ff 00
+         * ret   -> 0x 32 23 ed 81
+         * @endcode
+         *
+         * @param other The register whose values are selected when mask is 0b11..11 or 0xf..f.
+         * @param mask  The mask to use for blending.
+         *
+         * @return Return a new register with blended values.
+         */
+        [[nodiscard]] constexpr Simd256 blend(Simd256 other, Simd256 mask) const noexcept;
+
+
         //     /**
         //      * @brief Selectively blend values from this register and @p other using the compile-time @p Mask.
         //      * @tparam Mask The mask to use for blending.

@@ -1643,12 +1643,32 @@ namespace flcn
     }
 
 
-    // template <typename DataType, size_t Lane>
-    // FALCON_INLINE constexpr Simd256<SimdBackend::ARCH_AVX, DataType, Lane> Simd256<
-    //     SimdBackend::ARCH_AVX, DataType, Lane>::blend(const Simd256 other, Simd256 mask) const noexcept
-    // { return Simd256{ _lower.blend(other._lower, mask._lower), _upper.blend(other._upper, mask._upper) }; }
-    //
-    //
+    template <typename DataType, size_t Lane>
+    FALCON_INLINE constexpr Simd256<SimdBackend::ARCH_AVX, DataType, Lane> Simd256<
+        SimdBackend::ARCH_AVX, DataType, Lane>::blend(const Simd256 other, const Simd256 mask) const noexcept
+    {
+        if constexpr (_FALCON_SIMD256_SUPPORT_NATIVE_INTRINSIC(DataType))
+        {
+            if constexpr (types::IsFP64<DataType>)
+            {
+                return Simd256(_mm256_blendv_pd(_reg, *other, *mask));
+            }
+            else if constexpr (types::IsFP32<DataType>)
+            {
+                return Simd256(_mm256_blendv_ps(_reg, *other, *mask));
+            }
+            else
+            {
+                return Simd256(_mm256_blendv_epi8(_reg, *other, *mask));
+            }
+        }
+        else
+        {
+            return Simd256(_reg.blend(other, mask));
+        }
+    }
+
+
     // template <typename DataType, size_t Lane>
     // template <BlendMask32_t Mask>
     // FALCON_INLINE constexpr Simd256<SimdBackend::ARCH_AVX, DataType, Lane> Simd256<

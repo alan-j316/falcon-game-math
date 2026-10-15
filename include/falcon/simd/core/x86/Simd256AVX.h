@@ -601,25 +601,25 @@ namespace flcn
         constexpr Simd256& operator>>=(uint32_t count) noexcept;
 
 
-        //     /**
-        //      * @brief Perform a logical right shift (zero extension) on this register and return a new register.
-        //      *
-        //      * @warning If @p count is known at compile time then it is recommended to use
-        //      *          @ref shiftRightLogical<uint32_t> as it is faster.
-        //      *
-        //      * @return A new 256-bit register with shifted values.
-        //      *
-        //      * @relatedalso operator<<(uint32_t)
-        //      * @relatedalso operator<<=(uint32_t)
-        //      * @relatedalso operator>>(uint32_t)
-        //      * @relatedalso operator>>=(uint32_t)
-        //      * @relatedalso shiftLeft<uint32_t>()
-        //      * @relatedalso shiftRightArithmetic<uint32_t>()
-        //      * @relatedalso shiftRightLogical<uint32_t>()
-        //      */
-        //     [[nodiscard]] constexpr Simd256 shiftRightLogical(uint32_t count) const noexcept;
-        //
-        //
+        /**
+         * @brief Perform a logical right shift (zero extension) on this register and return a new register.
+         *
+         * @warning If @p count is known at compile time then it is recommended to use
+         *          @ref shiftRightLogical<uint32_t> as it is faster.
+         *
+         * @return A new 256-bit register with shifted values.
+         *
+         * @relatedalso operator<<(uint32_t)
+         * @relatedalso operator<<=(uint32_t)
+         * @relatedalso operator>>(uint32_t)
+         * @relatedalso operator>>=(uint32_t)
+         * @relatedalso shiftLeft<uint32_t>()
+         * @relatedalso shiftRightArithmetic<uint32_t>()
+         * @relatedalso shiftRightLogical<uint32_t>()
+         */
+        [[nodiscard]] constexpr Simd256 shiftRightLogical(uint32_t count) const noexcept;
+
+
         //     /**
         //      * @brief Perform a logical left shift on this register by a compile time constant, @p Count.
         //      *

@@ -1545,14 +1545,48 @@ namespace flcn
     // shiftRightArithmetic<Count>()); }
     //
     //
-    // template <typename DataType, size_t Lane>
-    // template <uint32_t Count>
-    // FALCON_INLINE constexpr Simd256<SimdBackend::ARCH_AVX, DataType, Lane> Simd256<
-    //     SimdBackend::ARCH_AVX, DataType, Lane>::shiftRightLogical() const noexcept
-    // { return Simd256(_lower.template shiftRightLogical<Count>(), _upper.template shiftRightLogical<Count>());
-    // }
-    //
-    //
+    template <typename DataType, size_t Lane>
+    template <uint32_t Count>
+    FALCON_INLINE constexpr Simd256<SimdBackend::ARCH_AVX, DataType, Lane> Simd256<
+        SimdBackend::ARCH_AVX, DataType, Lane>::shiftRightLogical() const noexcept
+    { if constexpr (_FALCON_SIMD256_SUPPORT_NATIVE_INTRINSIC(DataType))
+    {
+        if constexpr (types::IsFP64<DataType>)
+        {
+            const auto intReg     = _mm256_castpd_si256(_reg);
+            const auto shiftedReg = intrin::_mm256_srli_epi64_custom<Count>(intReg);
+            return Simd256(_mm256_castsi256_pd(shiftedReg));
+        }
+        else if constexpr (types::IsFP32<DataType>)
+        {
+            const auto intReg     = _mm256_castps_si256(_reg);
+            const auto shiftedReg = intrin::_mm256_srli_epi32_custom<Count>(intReg);
+            return Simd256(_mm256_castsi256_ps(shiftedReg));
+        }
+        else if constexpr (sizeof(DataType) == 8)
+        {
+            return Simd256(intrin::_mm256_srli_epi64_custom<Count>(_reg));
+        }
+        else if constexpr (sizeof(DataType) == 4)
+        {
+            return Simd256(intrin::_mm256_srli_epi32_custom<Count>(_reg));
+        }
+        else if constexpr (sizeof(DataType) == 2)
+        {
+            return Simd256(_mm256_srli_epi16(_reg, Count));
+        }
+        else // if constexpr (sizeof(DataType) == 1)
+        {
+            return Simd256(intrin::_mm256_srli_epi8_custom<Count>(_reg));
+        }
+    }
+        else
+        {
+            return Simd256(_reg.template shiftRightLogical<Count>());
+        }
+    }
+
+
     // template <typename DataType, size_t Lane>
     // FALCON_INLINE constexpr Simd256<SimdBackend::ARCH_AVX, DataType, Lane> Simd256<
     //     SimdBackend::ARCH_AVX, DataType, Lane>::blend(const Simd256 other, Simd256 mask) const noexcept

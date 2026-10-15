@@ -334,27 +334,21 @@ namespace flcn::intrin
     template<uint32_t Count>
     FALCON_INLINE __m256i _mm256_slli_epi64_custom(const __m256i reg) noexcept
     {
-        const auto loReg = _mm256_castsi256_si128(reg);
-        const auto hiReg = _mm256_extracti128_si256(reg, 1);
+        if constexpr (CURRENT_SIMD_BACKEND >= SimdBackend::ARCH_AVX2)
+        {
+            return _mm256_slli_epi64(reg, Count);
+        }
+        else
+        {
+            // AVX doesn't have integral shifts so we have to extract them
+            // and perform 2 128-bit shifts, insert, and cast back.
+            const auto loReg = _mm256_castsi256_si128(reg);
+            const auto hiReg = _mm256_extracti128_si256(reg, 1);
 
-        const auto loShifted = _mm256_castsi128_si256(_mm_slli_epi64(loReg, Count));
-        const auto hiShifted = _mm_slli_epi64(hiReg, Count);
-        return _mm256_inserti128_si256(loShifted, hiShifted, 1);
-        // if constexpr (CURRENT_SIMD_BACKEND >= SimdBackend::ARCH_AVX2)
-        // {
-        //     return _mm256_slli_epi64(reg, Count);
-        // }
-        // else
-        // {
-        //     // AVX doesn't have integral shifts so we have to extract them
-        //     // and perform 2 128-bit shifts, insert, and cast back.
-        //     const auto loReg = _mm256_castsi256_si128(reg);
-        //     const auto hiReg = _mm256_extracti128_si256(reg, 1);
-        //
-        //     const auto loShifted = _mm256_castsi128_si256(_mm_slli_epi64(loReg, Count));
-        //     const auto hiShifted = _mm_slli_epi64(hiReg, Count);
-        //     return _mm256_inserti128_si256(loShifted, hiShifted, 1);
-        // }
+            const auto loShifted = _mm256_castsi128_si256(_mm_slli_epi64(loReg, Count));
+            const auto hiShifted = _mm_slli_epi64(hiReg, Count);
+            return _mm256_inserti128_si256(loShifted, hiShifted, 1);
+        }
     }
 
 
@@ -364,27 +358,21 @@ namespace flcn::intrin
     template<uint32_t Count>
     FALCON_INLINE __m256i _mm256_slli_epi32_custom(const __m256i reg) noexcept
     {
-        const auto loReg = _mm256_castsi256_si128(reg);
-        const auto hiReg = _mm256_extracti128_si256(reg, 1);
+        if constexpr (CURRENT_SIMD_BACKEND >= SimdBackend::ARCH_AVX2)
+        {
+            return _mm256_slli_epi32(reg, Count);
+        }
+        else
+        {
+            // AVX doesn't have integral shifts so we have to extract them
+            // and perform 2 128-bit shifts, insert, and cast back.
+            const auto loReg = _mm256_castsi256_si128(reg);
+            const auto hiReg = _mm256_extracti128_si256(reg, 1);
 
-        const auto loShifted = _mm256_castsi128_si256(_mm_slli_epi32(loReg, Count));
-        const auto hiShifted = _mm_slli_epi32(hiReg, Count);
-        return _mm256_inserti128_si256(loShifted, hiShifted, 1);
-        // if constexpr (CURRENT_SIMD_BACKEND >= SimdBackend::ARCH_AVX2)
-        // {
-        //     return _mm256_slli_epi32(reg, Count);
-        // }
-        // else
-        // {
-        //     // AVX doesn't have integral shifts so we have to extract them
-        //     // and perform 2 128-bit shifts, insert, and cast back.
-        //     const auto loReg = _mm256_castsi256_si128(reg);
-        //     const auto hiReg = _mm256_extracti128_si256(reg, 1);
-        //
-        //     const auto loShifted = _mm256_castsi128_si256(_mm_slli_epi32(loReg, Count));
-        //     const auto hiShifted = _mm_slli_epi32(hiReg, Count);
-        //     return _mm256_inserti128_si256(loShifted, hiShifted, 1);
-        // }
+            const auto loShifted = _mm256_castsi128_si256(_mm_slli_epi32(loReg, Count));
+            const auto hiShifted = _mm_slli_epi32(hiReg, Count);
+            return _mm256_inserti128_si256(loShifted, hiShifted, 1);
+        }
     }
 
 
@@ -446,6 +434,67 @@ namespace flcn::intrin
     }
 
 
+    /// @brief Perform a logical right shift on the 256-bit register composed of Quad Word values
+    ///        with a compile time constant.
+    /// @tparam Count The shift amount.
+    template<uint32_t Count>
+    FALCON_INLINE __m256i _mm256_srli_epi64_custom(const __m256i reg) noexcept
+    {
+
+        const auto loReg = _mm256_castsi256_si128(reg);
+        const auto hiReg = _mm256_extracti128_si256(reg, 1);
+
+        const auto loShifted = _mm256_castsi128_si256(_mm_srli_epi64(loReg, Count));
+        const auto hiShifted = _mm_srli_epi64(hiReg, Count);
+        return _mm256_inserti128_si256(loShifted, hiShifted, 1);
+        // if constexpr (CURRENT_SIMD_BACKEND >= SimdBackend::ARCH_AVX2)
+        // {
+        //     return _mm256_srli_epi64(reg, Count);
+        // }
+        // else
+        // {
+        //     // AVX doesn't have integral shifts so we have to extract them
+        //     // and perform 2 128-bit shifts, insert, and cast back.
+        //     const auto loReg = _mm256_castsi256_si128(reg);
+        //     const auto hiReg = _mm256_extracti128_si256(reg, 1);
+        //
+        //     const auto loShifted = _mm256_castsi128_si256(_mm_srli_epi64(loReg, Count));
+        //     const auto hiShifted = _mm_srli_epi64(hiReg, Count);
+        //     return _mm256_inserti128_si256(loShifted, hiShifted, 1);
+        // }
+    }
+
+
+    /// @brief Perform a logical right shift on the 256-bit register composed of Double Word values
+    ///        with a compile time constant.
+    /// @tparam Count The shift amount.
+    template<uint32_t Count>
+    FALCON_INLINE __m256i _mm256_srli_epi32_custom(const __m256i reg) noexcept
+    {
+        const auto loReg = _mm256_castsi256_si128(reg);
+        const auto hiReg = _mm256_extracti128_si256(reg, 1);
+
+        const auto loShifted = _mm256_castsi128_si256(_mm_srli_epi32(loReg, Count));
+        const auto hiShifted = _mm_srli_epi32(hiReg, Count);
+        return _mm256_inserti128_si256(loShifted, hiShifted, 1);
+        // if constexpr (CURRENT_SIMD_BACKEND >= SimdBackend::ARCH_AVX2)
+        // {
+        //     return _mm256_srli_epi32(reg, Count);
+        // }
+        // else
+        // {
+        //     // AVX doesn't have integral shifts so we have to extract them
+        //     // and perform 2 128-bit shifts, insert, and cast back.
+        //     const auto loReg = _mm256_castsi256_si128(reg);
+        //     const auto hiReg = _mm256_extracti128_si256(reg, 1);
+        //
+        //     const auto loShifted = _mm256_castsi128_si256(_mm_srli_epi32(loReg, Count));
+        //     const auto hiShifted = _mm_srli_epi32(hiReg, Count);
+        //     return _mm256_inserti128_si256(loShifted, hiShifted, 1);
+        // }
+    }
+
+
     /// @brief Perform a logical right shift on the 256-bit register composed of Byte values.
     FALCON_INLINE __m256i _mm256_srl_epi8_custom(const __m256i reg, const uint32_t count) noexcept
     {
@@ -467,6 +516,20 @@ namespace flcn::intrin
     }
 
 
+    /// @brief Perform a logical right shift on the 256-bit register composed of Byte values
+    ///        with a compile time constant.
+    /// @tparam Count The shift amount.
+    template <uint32_t Count>
+    FALCON_INLINE __m256i _mm256_srli_epi8_custom(const __m256i reg) noexcept
+    {
+        // There is no native shifts for epi8
+        // so we need to mask the bits that will be zeroed out
+        // and shift using epi16
+        constexpr auto mask = static_cast<uint8_t>(0xff << Count);
+        const auto maskReg  = _mm256_set1_epi8(mask);
+        const auto andReg   = _mm256_and_si256(reg, maskReg);
+        return _mm256_srli_epi16(andReg, Count);
+    }
 
     /// @brief Perform an arithmetic right shift on the 256-bit register composed of Quad Word values.
     FALCON_INLINE __m256i _mm256_sra_epi64_custom(const __m256i reg, const __m128i count) noexcept
@@ -507,22 +570,5 @@ namespace flcn::intrin
             return _mm256_inserti128_si256(loShifted, hiShifted, 1);
         }
     }
-
-
-    /// @brief Perform a logical right shift on the 256-bit register composed of Byte values
-    ///        with a compile time constant.
-    /// @tparam Count The shift amount.
-    template <uint32_t Count>
-    FALCON_INLINE __m256i _mm256_srli_epi8_custom(const __m256i reg) noexcept
-    {
-        // There is no native shifts for epi8
-        // so we need to mask the bits that will be zeroed out
-        // and shift using epi16
-        constexpr auto mask = static_cast<uint8_t>(0xff << Count);
-        const auto maskReg  = _mm256_set1_epi8(mask);
-        const auto andReg   = _mm256_and_si256(reg, maskReg);
-        return _mm256_srli_epi16(andReg, Count);
-    }
-
 
 } // namespace flcn::intrin

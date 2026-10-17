@@ -801,7 +801,7 @@ namespace flcn
          * @brief Compute the square root value of each entry in this register.
          *
          * @note For integral square roots less than zero, this will generate a zero value.
-         *       For floating-point number, the function follow standard behavior of return a NaN for negatives.
+         *       For floating-point number, the function follow standard behavior of returning a NaN for negatives.
          *
          * @return A Simd256 register with square root of values, rounded to the same target type.
          */

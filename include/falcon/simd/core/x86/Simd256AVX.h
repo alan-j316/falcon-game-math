@@ -4,7 +4,7 @@
  * @author Alan Abraham P Kochumon
  * @date Created on: October 10, 2026
  *
- * @brief AVX+ implementation for Simd256.
+ * @brief Simd256 implementation for AVX and above.
  *
  * @details 256-bit SIMD register wrapper for x64-based systems.
  *
@@ -799,7 +799,7 @@ namespace flcn
         //      * @brief Compute the square root value of each entry in this register.
         //      *
         //      * @note For integral square roots less than zero, this will generate a zero value.
-        //      *       For floating-point number, the function follow standard behavior of return a NaN for negatives.
+        //      *       For floating-point number, the function follow standard behavior of returning a NaN for negatives.
         //      *
         //      * @return A Simd256 register with square root of values, rounded to the same target type.
         //      */

@@ -69,7 +69,7 @@ namespace flcn
      * @brief Compute the square root of each entry in the register.
      *
      * @note For integral square roots less than zero, this will generate a zero value.
-     *       For floating-point number, the function follow standard behavior of return a NaN for negatives.
+     *       For floating-point number, the function follow standard behavior of returning a NaN for negatives.
      *
      * @tparam DataType The data type of the Simd256 register.
      * @tparam Lane     The number of lanes of the Simd256 register.

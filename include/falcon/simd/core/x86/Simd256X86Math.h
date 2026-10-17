@@ -110,6 +110,22 @@ namespace flcn
                                                              _REG_256_AVX<DataType, Lane> b) noexcept;
 
 
+    /**
+     * @brief Get the maximum values from both the registers, packed into a single register.
+     *
+     * @tparam DataType The data type of the Simd256 register.
+     * @tparam Lane     The number of lanes of the Simd256 register.
+     *
+     * @param a The first register.
+     * @param b The second register.
+     *
+     * @return A Simd256 register with maximum values taken from both the registers.
+     */
+    template <typename DataType, size_t Lane>
+    [[nodiscard]] constexpr _REG_256_AVX<DataType, Lane> max(_REG_256_AVX<DataType, Lane> a,
+                                                             _REG_256_AVX<DataType, Lane> b) noexcept;
+
+
 } // namespace flcn
 
 #include "Simd256X86Math.inl"

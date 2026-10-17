@@ -115,5 +115,80 @@ namespace flcn
     }
 
 
+    template <typename DataType, size_t Lane>
+    FALCON_INLINE constexpr _REG_256_AVX<DataType, Lane> max(_REG_256_AVX<DataType, Lane> a,
+                                                             _REG_256_AVX<DataType, Lane> b) noexcept
+    {
+        if constexpr (_FALCON_SIMD256_SUPPORT_NATIVE_INTRINSIC(DataType))
+        {
+            if constexpr (types::IsFP64<DataType>)
+            {
+                return _REG_256_AVX<DataType, Lane>(_mm256_max_pd(*a, *b));
+            }
+            else if constexpr (types::IsFP32<DataType>)
+            {
+                return _REG_256_AVX<DataType, Lane>(_mm256_max_ps(*a, *b));
+            }
+            // Signed types
+            else if constexpr (types::IsQWord<DataType>)
+            {
+                if constexpr (CURRENT_SIMD_BACKEND >= SimdBackend::ARCH_AVX512EX) // AVX512F + VL
+                {
+                    return _REG_256_AVX<DataType, Lane>(_mm256_max_epi64(*a, *b));
+                }
+                else
+                {
+                    // A > B ? A : B
+                    const auto mask = a > b;
+                    return b.blend(a, mask);
+                }
+            }
+            else if constexpr (types::IsDWord<DataType>)
+            {
+                return _REG_256_AVX<DataType, Lane>(_mm256_max_epi32(*a, *b));
+            }
+            else if constexpr (types::IsWord<DataType>)
+            {
+                return _REG_256_AVX<DataType, Lane>(_mm256_max_epi16(*a, *b));
+            }
+            else if constexpr (types::IsByte<DataType>)
+            {
+                return _REG_256_AVX<DataType, Lane>(_mm256_max_epi8(*a, *b));
+            }
+            // Unsigned types
+            else if constexpr (types::IsUQWord<DataType>)
+            {
+                if constexpr (CURRENT_SIMD_BACKEND >= SimdBackend::ARCH_AVX512EX) // AVX512F + VL
+                {
+                    return _REG_256_AVX<DataType, Lane>(_mm256_max_epu64(*a, *b));
+                }
+                else
+                {
+                    // A > B ? A : B
+                    const auto mask = a > b;
+                    return b.blend(a, mask);
+                }
+            }
+            else if constexpr (types::IsUDWord<DataType>)
+            {
+                return _REG_256_AVX<DataType, Lane>(_mm256_max_epu32(*a, *b));
+            }
+            else if constexpr (types::IsUWord<DataType>)
+            {
+                return _REG_256_AVX<DataType, Lane>(_mm256_max_epu16(*a, *b));
+            }
+            else // if constexpr (types::IsUByte<DataType>)
+            {
+                return _REG_256_AVX<DataType, Lane>(_mm256_max_epu8(*a, *b));
+            }
+        }
+        else
+        {
+            // Emulated Register will `set` the correct values so we don't need to assign.
+            return flcn::max(*a, *b);
+        }
+    }
+
+
 #undef _FALCON_SIMD256_SUPPORT_NATIVE_INTRINSIC
 } // namespace flcn

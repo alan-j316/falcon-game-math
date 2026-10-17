@@ -93,7 +93,7 @@ namespace flcn
          *
          * @param values The values to fill the register with.
          *
-         * @warning The container must be aligned to 16-byte boundary. For unaligned data,
+         * @warning The container's storage address must be aligned to 16-byte boundary. For unaligned data,
          *          use @ref load to load data manually.
          */
         constexpr explicit Simd128(std::span<const DataType> values) noexcept;

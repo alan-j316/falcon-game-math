@@ -236,7 +236,7 @@ namespace flcn
     {
         // TODO: Add death tests
         FALCON_ASSERT_MSG(
-            (reinterpret_cast<uintptr_t>(data) & Alignment - 1) == 0,
+            (reinterpret_cast<uintptr_t>(data) & (Alignment - 1)) == 0,
             "[Falcon Simd]: Loading from unaligned memory when aligned address was expected. Use load() instead.");
         // We are using sizes for loading integers since we are storing both signed and unsigned types into the
         // register as bits, with packing.
@@ -443,7 +443,7 @@ namespace flcn
     {
         // TODO: Add death tests
         FALCON_ASSERT_MSG(
-            (reinterpret_cast<uintptr_t>(pBuffer) & Alignment - 1) == 0,
+            (reinterpret_cast<uintptr_t>(pBuffer) & (Alignment - 1)) == 0,
             "[Falcon Simd]: Storing to unaligned memory when a aligned one was expected. Use store() instead.");
         if constexpr (types::IsFP64<DataType>)
         {
@@ -1405,7 +1405,7 @@ namespace flcn
                 }
                 else
                 {
-                    const auto mask = Simd128(_mm_set1_epi16(0xFF00));
+                    const auto mask = Simd128(_mm_set1_epi16(static_cast<uint16_t>(0xFF00)));
                     return Simd128(evenProduct).blend(Simd128(oddProduct), mask);
                 }
             }

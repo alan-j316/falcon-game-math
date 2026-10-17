@@ -66,6 +66,8 @@ namespace flcn
 
 
         // // TODO: Add test
+        // // TODO: Add upper, and lower
+        // // TODO: Add register creation from upper and lower values
         // /// @brief Cast a register from @p DataType to @p T.
         // /// @tparam T The destination data type.
         // template <typename T>
@@ -85,7 +87,7 @@ namespace flcn
          *
          * @param values The values to fill the register with.
          *
-         * @warning The container must be aligned to 32-byte boundary. For unaligned data,
+         * @warning The container's storage address must be aligned to 32-byte boundary. For unaligned data,
          *          use @ref load to load data manually.
          */
         constexpr explicit Simd256(std::span<const DataType> values) noexcept;
@@ -799,7 +801,8 @@ namespace flcn
         //      * @brief Compute the square root value of each entry in this register.
         //      *
         //      * @note For integral square roots less than zero, this will generate a zero value.
-        //      *       For floating-point number, the function follow standard behavior of returning a NaN for negatives.
+        //      *       For floating-point number, the function follow standard behavior of returning a NaN for
+        //      negatives.
         //      *
         //      * @return A Simd256 register with square root of values, rounded to the same target type.
         //      */

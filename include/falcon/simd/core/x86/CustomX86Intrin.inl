@@ -23,7 +23,7 @@ namespace flcn::intrin
     ///+=+=+=+=+=+=+=+=+=+=+=
 
     /// @brief Perform a logical right shift on the 128-bit register composed of Byte values.
-    FALCON_INLINE constexpr __m128i _mm_srl_epi8_custom(const __m128i reg, const uint32_t count) noexcept
+    FALCON_INLINE __m128i _mm_srl_epi8_custom(const __m128i reg, const uint32_t count) noexcept
     {
         // Since there is no direct shift operation for 8-bit integers
         // we need to shift using epi16 and apply a mask to the overflow
@@ -45,7 +45,7 @@ namespace flcn::intrin
 
 
     /// @brief Perform a arithmetic right shift on the 128-bit register composed of Quad Word (64-bit integral) values.
-    FALCON_INLINE constexpr __m128i _mm_sra_epi64_custom(const __m128i reg, const __m128i count) noexcept
+    FALCON_INLINE __m128i _mm_sra_epi64_custom(const __m128i reg, const __m128i count) noexcept
     {
         if constexpr (CURRENT_SIMD_BACKEND >= SimdBackend::ARCH_AVX512EX) // AVX512F + VL
         {
@@ -78,7 +78,7 @@ namespace flcn::intrin
     ///        at compile time.
     /// @tparam Count The shift amount.
     template <uint32_t Count>
-    FALCON_INLINE constexpr __m128i _mm_slli_epi8_custom(const __m128i reg) noexcept
+    FALCON_INLINE __m128i _mm_slli_epi8_custom(const __m128i reg) noexcept
     {
         // 8-bit integrals have no right or left shift operations so, we need to mask out the overflow bits
         // and then do a shift using the epi16 intrinsic.
@@ -94,7 +94,7 @@ namespace flcn::intrin
     ///        by a constant known at compile time.
     /// @tparam Count The shift amount.
     template <uint32_t Count>
-    FALCON_INLINE constexpr __m128i _mm_srai_epi64_custom(const __m128i reg) noexcept
+    FALCON_INLINE __m128i _mm_srai_epi64_custom(const __m128i reg) noexcept
     {
         // Until AVX512F + VL there is no dedicated srai function so, we need to use xor to convert the signed
         // values to unsigned and then shifted and the sign bits.
@@ -120,7 +120,7 @@ namespace flcn::intrin
     ///        at compile time.
     /// @tparam Count The shift amount.
     template <uint32_t Count>
-    FALCON_INLINE constexpr __m128i _mm_srli_epi8_custom(const __m128i reg) noexcept
+    FALCON_INLINE __m128i _mm_srli_epi8_custom(const __m128i reg) noexcept
     {
         // Since we don't have 8-bit integral logical right shift intrinsic we need to use masks to mask out all the
         // bits that are not overflown, and then use epi16 shifts.
@@ -138,7 +138,7 @@ namespace flcn::intrin
     ///        at compile time.
     /// @tparam Count The shift amount.
     template <uint32_t Count>
-    FALCON_INLINE constexpr __m128i _mm_srai_epi8_custom(const __m128i reg) noexcept
+    FALCON_INLINE __m128i _mm_srai_epi8_custom(const __m128i reg) noexcept
     {
         // For arithmetic shifts we can use the XOR trick from Hackers Delight explained in operator>> or
         // _mm_srai_epi64_custom implementation.
@@ -155,7 +155,7 @@ namespace flcn::intrin
     ///        with sign saturation.
     /// @note This has no effect on the 64-bit integrals.
     template <typename DataType>
-    FALCON_INLINE constexpr __m128i _mm_unpacklo_saturated_custom(const __m128i reg) noexcept
+    FALCON_INLINE __m128i _mm_unpacklo_saturated_custom(const __m128i reg) noexcept
     {
         // NOTE: Floats are not handled.
         // For unpacking signed numbers, we need to unpack a number with itself and
@@ -209,7 +209,7 @@ namespace flcn::intrin
     ///        with sign saturation.
     /// @note This has no effect on the 64-bit integrals.
     template <typename DataType>
-    FALCON_INLINE constexpr __m128i _mm_unpackhi_saturated_custom(const __m128i reg) noexcept
+    FALCON_INLINE __m128i _mm_unpackhi_saturated_custom(const __m128i reg) noexcept
     {
         // NOTE: Floats are not handled.
         // For unpacking signed numbers, we need to unpack a number with itself and
@@ -320,7 +320,7 @@ namespace flcn::intrin
         // And Reg  = 1011 1101 & 0011 0011
         //          = 0011 0001
         // 0011 0001 8<< 2 1100 0100
-        const auto mask     = 0xff >> count;
+        const auto mask     = static_cast<uint8_t>(0xff >> count);
         const auto maskReg  = _mm256_set1_epi8(mask);
         const auto countReg = _mm_cvtsi32_si128(count);
         const auto andReg   = _mm256_and_si256(reg, maskReg);
@@ -331,7 +331,7 @@ namespace flcn::intrin
     /// @brief Perform a logical left shift on the 256-bit register composed of Quad Word values
     ///        with a compile time constant.
     /// @tparam Count The shift amount.
-    template<uint32_t Count>
+    template <uint32_t Count>
     FALCON_INLINE __m256i _mm256_slli_epi64_custom(const __m256i reg) noexcept
     {
         if constexpr (CURRENT_SIMD_BACKEND >= SimdBackend::ARCH_AVX2)
@@ -355,7 +355,7 @@ namespace flcn::intrin
     /// @brief Perform a logical left shift on the 256-bit register composed of Double Word values
     ///        with a compile time constant.
     /// @tparam Count The shift amount.
-    template<uint32_t Count>
+    template <uint32_t Count>
     FALCON_INLINE __m256i _mm256_slli_epi32_custom(const __m256i reg) noexcept
     {
         if constexpr (CURRENT_SIMD_BACKEND >= SimdBackend::ARCH_AVX2)
@@ -437,7 +437,7 @@ namespace flcn::intrin
     /// @brief Perform a logical right shift on the 256-bit register composed of Quad Word values
     ///        with a compile time constant.
     /// @tparam Count The shift amount.
-    template<uint32_t Count>
+    template <uint32_t Count>
     FALCON_INLINE __m256i _mm256_srli_epi64_custom(const __m256i reg) noexcept
     {
         if constexpr (CURRENT_SIMD_BACKEND >= SimdBackend::ARCH_AVX2)
@@ -461,7 +461,7 @@ namespace flcn::intrin
     /// @brief Perform a logical right shift on the 256-bit register composed of Double Word values
     ///        with a compile time constant.
     /// @tparam Count The shift amount.
-    template<uint32_t Count>
+    template <uint32_t Count>
     FALCON_INLINE __m256i _mm256_srli_epi32_custom(const __m256i reg) noexcept
     {
         if constexpr (CURRENT_SIMD_BACKEND >= SimdBackend::ARCH_AVX2)
@@ -495,7 +495,7 @@ namespace flcn::intrin
         // And Reg  = 1011 1101 & 1100 1100
         //          = 1000 1100
         // 1000 1100 8>> 2 0010 1111
-        const auto mask     = 0xff << count;
+        const auto mask     = static_cast<uint8_t>(0xff << count);
         const auto maskReg  = _mm256_set1_epi8(mask);
         const auto countReg = _mm_cvtsi32_si128(count);
         const auto andReg   = _mm256_and_si256(reg, maskReg);
@@ -573,7 +573,7 @@ namespace flcn::intrin
     /// @brief Perform an arithmetic right shift on the 256-bit register composed of Quad Word values
     ///        with a compile time constant.
     /// @tparam Count The shift amount.
-    template<uint32_t Count>
+    template <uint32_t Count>
     FALCON_INLINE __m256i _mm256_srai_epi64_custom(const __m256i reg) noexcept
     {
         if constexpr (CURRENT_SIMD_BACKEND >= SimdBackend::ARCH_AVX512EX)
@@ -606,7 +606,7 @@ namespace flcn::intrin
     /// @brief Perform an arithmetic right shift on the 256-bit register composed of Double Word values
     ///        with a compile time constant.
     /// @tparam Count The shift amount.
-    template<uint32_t Count>
+    template <uint32_t Count>
     FALCON_INLINE __m256i _mm256_srai_epi32_custom(const __m256i reg) noexcept
     {
         if constexpr (CURRENT_SIMD_BACKEND >= SimdBackend::ARCH_AVX2)

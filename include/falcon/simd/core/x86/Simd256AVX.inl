@@ -103,7 +103,7 @@ namespace flcn
     {
         // TODO: Add death tests
         FALCON_ASSERT_MSG(
-            (reinterpret_cast<uintptr_t>(data) & Alignment - 1) == 0,
+            (reinterpret_cast<uintptr_t>(data) & (Alignment - 1)) == 0,
             "[Falcon Simd]: Loading from unaligned memory when aligned address was expected. Use load() instead.");
         if constexpr (_FALCON_SIMD256_SUPPORT_NATIVE_INTRINSIC(DataType))
         {
@@ -249,7 +249,7 @@ namespace flcn
     {
         // TODO: Add death tests
         FALCON_ASSERT_MSG(
-            (reinterpret_cast<uintptr_t>(pBuffer) & Alignment - 1) == 0,
+            (reinterpret_cast<uintptr_t>(pBuffer) & (Alignment - 1)) == 0,
             "[Falcon Simd]: Storing to unaligned memory when a aligned one was expected. Use store() instead.");
         if constexpr (_FALCON_SIMD256_SUPPORT_NATIVE_INTRINSIC(DataType))
         {
@@ -1220,14 +1220,14 @@ namespace flcn
             }
             else if constexpr (types::IsUWord<DataType>)
             {
-                const auto bias    = _mm256_set1_epi16(0x8000);
+                const auto bias    = _mm256_set1_epi16(static_cast<uint16_t>(0x8000));
                 const auto biasedA = _mm256_sub_epi16(_reg, bias);
                 const auto biasedB = _mm256_sub_epi16(*other, bias);
                 return Simd256(_mm256_cmpgt_epi16(biasedA, biasedB));
             }
             else // if constexpr (types::IsUByte<DataType>)
             {
-                const auto bias    = _mm256_set1_epi8(0x80);
+                const auto bias    = _mm256_set1_epi8(static_cast<uint8_t>(0x80));
                 const auto biasedA = _mm256_sub_epi8(_reg, bias);
                 const auto biasedB = _mm256_sub_epi8(*other, bias);
                 return Simd256(_mm256_cmpgt_epi8(biasedA, biasedB));

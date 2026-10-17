@@ -85,211 +85,211 @@ TYPED_TEST(Simd256BasicMathTests, Min_ReturnsARegisterWithMinimumValuesFromEithe
         EXPECT_ANY_EQ(expected[i], result[i]);
     }
 }
-
-
-TYPED_TEST(Simd256BasicMathTests, Max_ReturnsARegisterWithMaximumValuesFromEitherRegister)
-{
-    using Type            = TypeParam::Type;
-    constexpr size_t Lane = TypeParam::VALUE;
-
-    alignas(32) std::array<Type, Lane> lhs{}, rhs{}, expected{}, result{};
-    for (size_t i = 0; i < Lane; ++i)
-    {
-        lhs[i]      = this->a[i];
-        rhs[i]      = this->b[i];
-        expected[i] = std::max(lhs[i], rhs[i]);
-    }
-
-    flcn::Simd256_t<Type, Lane> regA, regB;
-    regA.loadAligned(lhs.data());
-    regB.loadAligned(rhs.data());
-
-    auto regRes = flcn::max(regA, regB);
-
-    regRes.storeAligned(result.data());
-
-    for (size_t i = 0; i < Lane; ++i)
-    {
-        EXPECT_ANY_EQ(expected[i], result[i]);
-    }
-}
-
-
-TYPED_TEST(Simd256BasicMathTests, MemberAbsFunction_ReturnsARegisterWithAbsoluteValues)
-{
-    using Type            = TypeParam::Type;
-    constexpr size_t Lane = TypeParam::VALUE;
-
-    alignas(32) std::array<Type, Lane> data{}, expected{}, result{};
-    for (size_t i = 0; i < Lane; ++i)
-    {
-        data[i] = this->absData[i];
-
-        if constexpr (std::is_unsigned_v<Type>)
-        {
-            expected[i] = data[i];
-        }
-        else
-        {
-            expected[i] = data[i] < 0 ? data[i] * -1 : data[i];
-        }
-    }
-
-    flcn::Simd256_t<Type, Lane> reg;
-    reg.loadAligned(data.data());
-
-    auto regRes = reg.abs();
-
-    regRes.storeAligned(result.data());
-
-    for (size_t i = 0; i < Lane; ++i)
-    {
-        EXPECT_ANY_EQ(expected[i], result[i]);
-    }
-}
-
-
-/// @test Verify that abs return the absolute value of data types from the register.
-/// @note For unsigned types, it just return a copy of the same register.
-TYPED_TEST(Simd256BasicMathTests, Abs_ReturnsARegisterWithAbsoluteValues)
-{
-    using Type            = TypeParam::Type;
-    constexpr size_t Lane = TypeParam::VALUE;
-
-    alignas(32) std::array<Type, Lane> data{}, expected{}, result{};
-    for (size_t i = 0; i < Lane; ++i)
-    {
-        data[i] = this->absData[i];
-
-        if constexpr (std::is_unsigned_v<Type>)
-        {
-            expected[i] = data[i];
-        }
-        else
-        {
-            expected[i] = data[i] < 0 ? data[i] * -1 : data[i];
-        }
-    }
-
-    flcn::Simd256_t<Type, Lane> reg;
-    reg.loadAligned(data.data());
-
-    auto regRes = flcn::abs(reg);
-
-    regRes.storeAligned(result.data());
-
-    for (size_t i = 0; i < Lane; ++i)
-    {
-        EXPECT_ANY_EQ(expected[i], result[i]);
-    }
-}
-
-
-TYPED_TEST(Simd256BasicMathTests, MemberSqrtFunction_ReturnsARegisterWithSquareRootValues)
-{
-    using Type            = TypeParam::Type;
-    constexpr size_t Lane = TypeParam::VALUE;
-
-    alignas(32) std::array<Type, Lane> data{}, expected{}, result{};
-    for (size_t i = 0; i < Lane; ++i)
-    {
-        data[i] = this->a[i];
-        // For our simd sqrt, we clamp the values for integrals to zero
-        auto clampedVal = data[i];
-        if constexpr (std::is_integral_v<Type>)
-        {
-            clampedVal = std::max(Type(0), data[i]);
-        }
-        expected[i] = static_cast<Type>(std::sqrt(clampedVal));
-    }
-
-    flcn::Simd256_t<Type, Lane> reg;
-    reg.loadAligned(data.data());
-
-    auto regRes = reg.sqrt();
-    regRes.storeAligned(result.data());
-
-    for (size_t i = 0; i < Lane; ++i)
-    {
-        EXPECT_ANY_EQ(expected[i], result[i]);
-    }
-}
-
-
-/// @test Verify that the non member variant of sqrt function returns the sqrt of the register values.
-TYPED_TEST(Simd256BasicMathTests, Sqrt_ReturnsARegisterWithSquareRootValues)
-{
-    using Type            = TypeParam::Type;
-    constexpr size_t Lane = TypeParam::VALUE;
-
-    alignas(32) std::array<Type, Lane> data{}, expected{}, result{};
-    for (size_t i = 0; i < Lane; ++i)
-    {
-        data[i] = this->a[i];
-        // For our simd sqrt, we clamp the values for integrals to zero
-        auto clampedVal = data[i];
-        if constexpr (std::is_integral_v<Type>)
-        {
-            clampedVal = std::max(Type(0), data[i]);
-        }
-        expected[i] = static_cast<Type>(std::sqrt(clampedVal));
-    }
-
-    flcn::Simd256_t<Type, Lane> reg;
-    reg.loadAligned(data.data());
-
-    auto regRes = flcn::sqrt(reg);
-    regRes.storeAligned(result.data());
-
-    for (size_t i = 0; i < Lane; ++i)
-    {
-        EXPECT_ANY_EQ(expected[i], result[i]);
-    }
-}
-
-
-/// @test Verify that horizontal max return the maximum element from the register.
-TYPED_TEST(Simd256BasicMathTests, HorizontalMax_ReturnsTheMaxValueFromTheRegister)
-{
-    using Type            = TypeParam::Type;
-    constexpr size_t Lane = TypeParam::VALUE;
-
-    alignas(32) std::array<Type, Lane> data{};
-    Type max = std::numeric_limits<Type>::min();
-    for (size_t i = 0; i < Lane; ++i)
-    {
-        data[i] = this->absData[i];
-        max     = std::max(max, data[i]);
-    }
-
-    flcn::Simd256_t<Type, Lane> reg{ data };
-
-    auto res = reg.horizontalMax();
-
-    EXPECT_ANY_EQ(max, res);
-}
-
-
-/// @test Verify that horizontal min return the minimum element from the register.
-TYPED_TEST(Simd256BasicMathTests, HorizontalMin_ReturnsTheMaxValueFromTheRegister)
-{
-    using Type            = TypeParam::Type;
-    constexpr size_t Lane = TypeParam::VALUE;
-
-    alignas(32) std::array<Type, Lane> data{};
-    Type min = std::numeric_limits<Type>::max();
-    for (size_t i = 0; i < Lane; ++i)
-    {
-        data[i] = this->absData[i];
-        min     = std::min(min, data[i]);
-    }
-
-    flcn::Simd256_t<Type, Lane> reg{ data };
-
-    auto res = reg.horizontalMin();
-
-    EXPECT_ANY_EQ(min, res);
-}
+//
+//
+// TYPED_TEST(Simd256BasicMathTests, Max_ReturnsARegisterWithMaximumValuesFromEitherRegister)
+// {
+//     using Type            = TypeParam::Type;
+//     constexpr size_t Lane = TypeParam::VALUE;
+//
+//     alignas(32) std::array<Type, Lane> lhs{}, rhs{}, expected{}, result{};
+//     for (size_t i = 0; i < Lane; ++i)
+//     {
+//         lhs[i]      = this->a[i];
+//         rhs[i]      = this->b[i];
+//         expected[i] = std::max(lhs[i], rhs[i]);
+//     }
+//
+//     flcn::Simd256_t<Type, Lane> regA, regB;
+//     regA.loadAligned(lhs.data());
+//     regB.loadAligned(rhs.data());
+//
+//     auto regRes = flcn::max(regA, regB);
+//
+//     regRes.storeAligned(result.data());
+//
+//     for (size_t i = 0; i < Lane; ++i)
+//     {
+//         EXPECT_ANY_EQ(expected[i], result[i]);
+//     }
+// }
+//
+//
+// TYPED_TEST(Simd256BasicMathTests, MemberAbsFunction_ReturnsARegisterWithAbsoluteValues)
+// {
+//     using Type            = TypeParam::Type;
+//     constexpr size_t Lane = TypeParam::VALUE;
+//
+//     alignas(32) std::array<Type, Lane> data{}, expected{}, result{};
+//     for (size_t i = 0; i < Lane; ++i)
+//     {
+//         data[i] = this->absData[i];
+//
+//         if constexpr (std::is_unsigned_v<Type>)
+//         {
+//             expected[i] = data[i];
+//         }
+//         else
+//         {
+//             expected[i] = data[i] < 0 ? data[i] * -1 : data[i];
+//         }
+//     }
+//
+//     flcn::Simd256_t<Type, Lane> reg;
+//     reg.loadAligned(data.data());
+//
+//     auto regRes = reg.abs();
+//
+//     regRes.storeAligned(result.data());
+//
+//     for (size_t i = 0; i < Lane; ++i)
+//     {
+//         EXPECT_ANY_EQ(expected[i], result[i]);
+//     }
+// }
+//
+//
+// /// @test Verify that abs return the absolute value of data types from the register.
+// /// @note For unsigned types, it just return a copy of the same register.
+// TYPED_TEST(Simd256BasicMathTests, Abs_ReturnsARegisterWithAbsoluteValues)
+// {
+//     using Type            = TypeParam::Type;
+//     constexpr size_t Lane = TypeParam::VALUE;
+//
+//     alignas(32) std::array<Type, Lane> data{}, expected{}, result{};
+//     for (size_t i = 0; i < Lane; ++i)
+//     {
+//         data[i] = this->absData[i];
+//
+//         if constexpr (std::is_unsigned_v<Type>)
+//         {
+//             expected[i] = data[i];
+//         }
+//         else
+//         {
+//             expected[i] = data[i] < 0 ? data[i] * -1 : data[i];
+//         }
+//     }
+//
+//     flcn::Simd256_t<Type, Lane> reg;
+//     reg.loadAligned(data.data());
+//
+//     auto regRes = flcn::abs(reg);
+//
+//     regRes.storeAligned(result.data());
+//
+//     for (size_t i = 0; i < Lane; ++i)
+//     {
+//         EXPECT_ANY_EQ(expected[i], result[i]);
+//     }
+// }
+//
+//
+// TYPED_TEST(Simd256BasicMathTests, MemberSqrtFunction_ReturnsARegisterWithSquareRootValues)
+// {
+//     using Type            = TypeParam::Type;
+//     constexpr size_t Lane = TypeParam::VALUE;
+//
+//     alignas(32) std::array<Type, Lane> data{}, expected{}, result{};
+//     for (size_t i = 0; i < Lane; ++i)
+//     {
+//         data[i] = this->a[i];
+//         // For our simd sqrt, we clamp the values for integrals to zero
+//         auto clampedVal = data[i];
+//         if constexpr (std::is_integral_v<Type>)
+//         {
+//             clampedVal = std::max(Type(0), data[i]);
+//         }
+//         expected[i] = static_cast<Type>(std::sqrt(clampedVal));
+//     }
+//
+//     flcn::Simd256_t<Type, Lane> reg;
+//     reg.loadAligned(data.data());
+//
+//     auto regRes = reg.sqrt();
+//     regRes.storeAligned(result.data());
+//
+//     for (size_t i = 0; i < Lane; ++i)
+//     {
+//         EXPECT_ANY_EQ(expected[i], result[i]);
+//     }
+// }
+//
+//
+// /// @test Verify that the non member variant of sqrt function returns the sqrt of the register values.
+// TYPED_TEST(Simd256BasicMathTests, Sqrt_ReturnsARegisterWithSquareRootValues)
+// {
+//     using Type            = TypeParam::Type;
+//     constexpr size_t Lane = TypeParam::VALUE;
+//
+//     alignas(32) std::array<Type, Lane> data{}, expected{}, result{};
+//     for (size_t i = 0; i < Lane; ++i)
+//     {
+//         data[i] = this->a[i];
+//         // For our simd sqrt, we clamp the values for integrals to zero
+//         auto clampedVal = data[i];
+//         if constexpr (std::is_integral_v<Type>)
+//         {
+//             clampedVal = std::max(Type(0), data[i]);
+//         }
+//         expected[i] = static_cast<Type>(std::sqrt(clampedVal));
+//     }
+//
+//     flcn::Simd256_t<Type, Lane> reg;
+//     reg.loadAligned(data.data());
+//
+//     auto regRes = flcn::sqrt(reg);
+//     regRes.storeAligned(result.data());
+//
+//     for (size_t i = 0; i < Lane; ++i)
+//     {
+//         EXPECT_ANY_EQ(expected[i], result[i]);
+//     }
+// }
+//
+//
+// /// @test Verify that horizontal max return the maximum element from the register.
+// TYPED_TEST(Simd256BasicMathTests, HorizontalMax_ReturnsTheMaxValueFromTheRegister)
+// {
+//     using Type            = TypeParam::Type;
+//     constexpr size_t Lane = TypeParam::VALUE;
+//
+//     alignas(32) std::array<Type, Lane> data{};
+//     Type max = std::numeric_limits<Type>::min();
+//     for (size_t i = 0; i < Lane; ++i)
+//     {
+//         data[i] = this->absData[i];
+//         max     = std::max(max, data[i]);
+//     }
+//
+//     flcn::Simd256_t<Type, Lane> reg{ data };
+//
+//     auto res = reg.horizontalMax();
+//
+//     EXPECT_ANY_EQ(max, res);
+// }
+//
+//
+// /// @test Verify that horizontal min return the minimum element from the register.
+// TYPED_TEST(Simd256BasicMathTests, HorizontalMin_ReturnsTheMaxValueFromTheRegister)
+// {
+//     using Type            = TypeParam::Type;
+//     constexpr size_t Lane = TypeParam::VALUE;
+//
+//     alignas(32) std::array<Type, Lane> data{};
+//     Type min = std::numeric_limits<Type>::max();
+//     for (size_t i = 0; i < Lane; ++i)
+//     {
+//         data[i] = this->absData[i];
+//         min     = std::min(min, data[i]);
+//     }
+//
+//     flcn::Simd256_t<Type, Lane> reg{ data };
+//
+//     auto res = reg.horizontalMin();
+//
+//     EXPECT_ANY_EQ(min, res);
+// }
 
 
 #endif

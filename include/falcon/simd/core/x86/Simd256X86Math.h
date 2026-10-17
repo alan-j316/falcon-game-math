@@ -14,6 +14,10 @@
 
 namespace flcn
 {
+    /// +=============================================================================================================+
+    /// |                                             SSE(EMULATED)                                                   |
+    /// +=============================================================================================================+
+
     template <typename DataType, size_t Lane>
     using _REG_256_SSE = Simd256<SimdBackend::ARCH_SSE2, DataType, Lane>;
 
@@ -80,6 +84,31 @@ namespace flcn
      */
     template <typename DataType, size_t Lane>
     [[nodiscard]] constexpr _REG_256_SSE<DataType, Lane> sqrt(_REG_256_SSE<DataType, Lane> reg) noexcept;
+
+
+
+    /// +=============================================================================================================+
+    /// |                                                 AVX                                                         |
+    /// +=============================================================================================================+
+
+    template <typename DataType, size_t Lane>
+    using _REG_256_AVX = Simd256<SimdBackend::ARCH_AVX, DataType, Lane>;
+
+    /**
+     * @brief Get the minimum values from both the registers, packed into a single register.
+     *
+     * @tparam DataType The data type of the Simd256 register.
+     * @tparam Lane     The number of lanes of the Simd256 register.
+     *
+     * @param a The first register.
+     * @param b The second register.
+     *
+     * @return A Simd256 register with minimum values taken from both the registers.
+     */
+    template <typename DataType, size_t Lane>
+    [[nodiscard]] constexpr _REG_256_AVX<DataType, Lane> min(_REG_256_AVX<DataType, Lane> a,
+                                                             _REG_256_AVX<DataType, Lane> b) noexcept;
+
 
 } // namespace flcn
 

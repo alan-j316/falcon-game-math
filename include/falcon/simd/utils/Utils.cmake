@@ -1,8 +1,0 @@
-include_guard()
-
-set(FALCON_SIMD_UTILS_DIR "utils/")
-set(FALCON_SIMD_UTILS_HEADERS
-        SIMDUtils.h TypeTraits.h SimdTraits.h
-)
-# TODO: REMOVE
-list(TRANSFORM FALCON_SIMD_UTILS_HEADERS PREPEND ${FALCON_SIMD_UTILS_DIR})

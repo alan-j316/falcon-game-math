@@ -342,7 +342,9 @@ function(AddCompilerFlag Target Visibility Config)
 
         # Set FMA Compiler flags
         if (FMA_Config STREQUAL FALCON_ENABLE_FMA)
-            string(APPEND CompilerFlag ";-march=native")
+            # string(APPEND CompilerFlag ";-march=native")
+            # NOTE: The above code gives invalid combination error in CI/CD
+            string(APPEND CompilerFlag ";-mfma")
         elseif (FMA_Config STREQUAL FALCON_ENABLE_FMA3)
             string(APPEND CompilerFlag ";-mfma")
         elseif (FMA_Config STREQUAL FALCON_ENABLE_FMA4)

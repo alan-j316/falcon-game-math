@@ -1163,9 +1163,144 @@ namespace flcn
                     return _mm_cvtss_f32(sum3);
                 }
             }
-            else
+            else if constexpr (sizeof(DataType) == 8)
             {
-                return 0;
+                // Extract the upper and lower lanes and sum them
+                const auto lower = _mm256_castsi256_si128(_reg);      // [A2, A1]
+                const auto upper = _mm256_extracti128_si256(_reg, 1); // [A4, A3]
+                const auto sum1  = _mm_add_epi64(lower, upper);       // [A2 + A4, A1 + A3]
+                // Then, shift the upper terms(A4 + A2) into the lower lanes.
+                const auto shifted = _mm_srli_si128(sum1, 8); // [_, A2 + A4]
+                // Add the results together
+                const auto sum2 = _mm_add_epi64(sum1, shifted); // [_, A1 + A2 + A3 + A4]
+                // Extract the lowest lane
+                return std::bit_cast<DataType>(_mm_cvtsi128_si64x(sum2));
+            }
+            else if constexpr (sizeof(DataType) == 4)
+            {
+                // [A8, A7, A6, A5, A4, A3, A2, A1]
+                if constexpr (FALCON_ENABLE_HADD_INTRINSIC)
+                {
+                    // [A8 + A7, A8 + A7, A6 + A5, A6 + A5 | A4 + A3, A4 + A3, A2 + A1, A2 + A1]
+                    // The sums can be rewritten as S<n>
+                    //   3   2   1   0    3   2   1   0 (Shuffle Index)
+                    // [S4, S4, S3, S3 | S2, S2, S1, S1]
+                    const auto hSum1 = _mm256_hadd_epi32(_reg, _reg);
+                    //   3   3   3   3    3   3   3   3 (Shuffle Index)
+                    // [S4, S4, S4, S4 | S2, S2, S2, S2]
+                    const auto shuffled = _mm256_shuffle_epi32(hSum1, _MM_SHUFFLE(3, 3, 3, 3));
+                    // [_, _, S3 + S4, S3 + S4 | _, _, S1 + S2, S1 + S2]
+                    const auto hSum2 = _mm256_hadd_epi32(hSum1, shuffled);
+                    // Extract the lower and upper lanes and sum the values in the lowest lanes
+                    const auto lower = _mm256_castsi256_si128(hSum2);      // [_, _, S3 + S4, S3 + S4]
+                    const auto upper = _mm256_extracti128_si256(hSum2, 1); // [_, _, S1 + S2, S1 + S2]
+                    return _mm_cvtsi128_si32(lower) + _mm_cvtsi128_si32(upper);
+                }
+                else
+                {
+                    // Extract the lower and upper 128-bit lanes and add them
+                    const auto lower = _mm256_castsi256_si128(_reg);
+                    const auto upper = _mm256_extracti128_si256(_reg, 1);
+                    // [A8 + A4, A7 + A3, A6 + A2, A5 + A1]
+                    // [S4, S3, S2, S1]
+                    const auto sum1 = _mm_add_epi32(lower, upper);
+                    // Shuffle the upper two lanes into lower lanes and sum them
+                    // [_, _, S4, S3]
+                    const auto shuffle1 = _mm_shuffle_epi32(sum1, _MM_SHUFFLE(2, 3, 2, 3));
+                    // Add the shuffled sum with the sum
+                    // [_, _, S2 + S4, S1 + S3]
+                    const auto sum2 = _mm_add_epi32(sum1, shuffle1);
+                    // Shuffle the second lane to the lowest lane
+                    // [_, _, _, S2 + S4]
+                    const auto shuffle2 = _mm_shuffle_epi32(sum2, _MM_SHUFFLE(1, 1, 1, 1));
+                    // Sum it and return the value in the lowest lane
+                    const auto sum3 = _mm_add_epi32(sum2, shuffle2);
+                    return std::bit_cast<DataType>(_mm_cvtsi128_si32(sum3));
+                }
+            }
+            else if constexpr (sizeof(DataType) == 2)
+            {
+                // [A16, A15, A14, A13, A12, A11, A10, A9, A8, A7, A6, A5, A4, A3, A2, A1]
+                if constexpr (FALCON_ENABLE_HADD_INTRINSIC)
+                {
+                    // [A16 + A15, A14 + A13, A12 + A11, A10 + A9, A16 + A15, A14 + A13, A12 + A11, A10 + A9 |
+                    //  A8 + A7, A6 + A5, A4 + A3, A2 + A1, A8 + A7, A6 + A5, A4 + A3, A2 + A1 ]
+                    // [S8, S7, S6, S5, S8, S7, S6, S5 | S4, S3, S2, S1, S4, S3, S2, S1 ]
+                    const auto sum1 = _mm256_hadd_epi16(_reg, _reg);
+
+                    // Extract the lower and upper lanes
+                    const auto lower = _mm256_castsi256_si128(sum1);      // [ S4, S3, S2, S1, S4, S3, S2, S1 ]
+                    const auto upper = _mm256_extracti128_si256(sum1, 1); // [S8, S7, S6, S5, S8, S7, S6, S5 ]
+
+                    // Perform horizontal add with the 128 bit registers
+                    // [S8 + S7, S6 + S5, S8 + S7, S6 + S5, S4 + S3, S2 + S1, S4 + S3, S2 + S1]
+                    const auto sum2 = _mm_hadd_epi16(lower, upper);
+                    // Shift the upper 2 sums to the lower two lanes
+                    const auto shifted1 = _mm_srli_si128(sum2, 12); // [_, _, _, _, _, _, S8 + S7, S6 + S5]
+
+                    // Perform horizontal add
+                    // [_, _, _, S8 + S7 + S6 + S5, _, _, _, S4 + S3 + S2 + S1]
+                    const auto sum3 = _mm_hadd_epi16(sum2, shifted1);
+                    // Shift the sum to the lowest lane and extract and add the two sums
+                    const auto shifted2 = _mm_srli_si128(sum3, 8);
+                    return static_cast<DataType>(_mm_cvtsi128_si32(sum3)) +
+                        static_cast<DataType>(_mm_cvtsi128_si32(shifted2));
+                }
+                else
+                {
+                    // Extract the lower and upper 128-bit lanes and add them
+                    const auto lower = _mm256_castsi256_si128(_reg);
+                    const auto upper = _mm256_extracti128_si256(_reg, 1);
+                    // [A16 + A15, A14 + A13, A12 + A11, A10 + A9, A8 + A4, A7 + A3, A6 + A2, A5 + A1]
+                    // [S8, S7, S6, S5, S4, S3, S2, S1]
+                    const auto sum1 = _mm_add_epi16(lower, upper);
+                    // Shift the upper 4 lanes into lower lanes and sum them
+                    // [_, _, _, _, S8, S7, S6, S5]
+                    const auto shifted1 = _mm_srli_si128(sum1, 8);
+                    // Add the shuffled sum with the sum
+                    // [_, _, _, _, S4 + S8, S3 + S7, S2 + S6, S1 + S5]
+                    const auto sum2 = _mm_add_epi16(sum1, shifted1);
+                    // Shuffle the upper 2 lanes to the lowest lane
+                    // [_, _, _, _, _, _, S4 + S8, S3 + S7]
+                    const auto shifted2 = _mm_srli_si128(sum2, 4);
+                    // Sum it and return the value in the lowest lane
+                    // [_, _, _, _, _, _, S2 + S6 + S4 + S8, S1 + S5 + S3 + S7]
+                    const auto sum3 = _mm_add_epi16(sum2, shifted2);
+                    // Shuffle the 2nd to lowest lane to the lowest lane and take the sum with sum3
+                    const auto shifted3 = _mm_srli_si128(sum3, 2);
+                    const auto sum4 = _mm_add_epi16(sum3, shifted3);
+                    return static_cast<DataType>(_mm_cvtsi128_si32(sum4));
+                }
+            }
+            else // if constexpr (sizeof(DataType) == 1)
+            {
+                // Extract the lower and upper 128-bit lanes and add them
+                const auto lower = _mm256_castsi256_si128(_reg);
+                const auto upper = _mm256_extracti128_si256(_reg, 1);
+                // [A32 + A31, A30 + A29, ...., A6 + A2, A5 + A1]
+                // [S16, S15, S14, ..., S3, S2, S1]
+                const auto sum1 = _mm_add_epi8(lower, upper);
+                // Shift the upper 8 lanes into lower lanes and sum them
+                // [_, _, _, _, _, _, _, _, S16, S15, S14, S13, S12, S11, S10, S9]
+                const auto shifted1 = _mm_srli_si128(sum1, 8);
+                // Add the shifted sum with the sum
+                // [_, _, _, _, _, _, _, _, S8 + S16, S7 + S15, S6 + S14, ..., S3 + S11, S2 + S10, S1 + S9]
+                const auto sum2 = _mm_add_epi8(sum1, shifted1);
+                // Shift the upper 4 lanes to the lowest lane
+                // [_, _, _, _, _, _, _, _, S8 + S16, S7 + S15, S6 + S14, S5 + S13]
+                const auto shifted2 = _mm_srli_si128(sum2, 4);
+                // Sum it and return the value in the lowest lane
+                // [_, ..., S8 + S16 + S4 + S12, S3 + S11 + S7 + S15, S2 + S10 + S6 + S14, S1 + S9 + S5 + S13]
+                const auto sum3 = _mm_add_epi8(sum2, shifted2);
+                // Shift the upper 4 lanes to lowest lane
+                // [_, ..., S8 + S16 + S4 + S12, S3 + S11 + S7 + S15]
+                const auto shifted3 = _mm_srli_si128(sum3, 2);
+                // [_, ..., S8 + S16 + S4 + S12 + S2 + S10 + S6 + S14, S3 + S11 + S7 + S15 + S1 + S9 + S5 + S13]
+                const auto sum4 = _mm_add_epi8(sum3, shifted3);
+                // Shift the 2nd lowest lane to the lowest lane and sum
+                const auto shifted4 = _mm_srli_si128(sum4, 1);
+                const auto sum5 = _mm_add_epi8(sum4, shifted4);
+                return static_cast<DataType>(_mm_cvtsi128_si32(sum5));
             }
         }
         else

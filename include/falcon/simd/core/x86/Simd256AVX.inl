@@ -1088,12 +1088,93 @@ namespace flcn
         }
     }
 
+    template <typename DataType, size_t Lane>
+    FALCON_INLINE constexpr DataType Simd256<SimdBackend::ARCH_AVX, DataType, Lane>::horizontalAdd() const noexcept
+    {
+        if constexpr (_FALCON_SIMD256_SUPPORT_NATIVE_INTRINSIC(DataType))
+        {
+            if constexpr (types::IsFP64<DataType>)
+            {
+                // [A4, A3, A2, A1]
+                if constexpr (FALCON_ENABLE_HADD_INTRINSIC)
+                {
+                    // [A4 + A3, A4 + A3, A2 + A1, A2 + A1]
+                    const auto hSum = _mm256_hadd_pd(_reg, _reg);
 
-    // template <typename DataType, size_t Lane>
-    // FALCON_INLINE constexpr DataType Simd256<SimdBackend::ARCH_AVX, DataType, Lane>::horizontalAdd() const
-    // noexcept { return _lower.horizontalAdd() + _upper.horizontalAdd(); }
-    //
-    //
+                    // Extract the lower lanes from both the registers; add and return.
+                    const auto lower       = _mm256_castpd256_pd128(hSum);   // [A2 + A1, A2 + A1]
+                    const auto upper       = _mm256_extractf128_pd(hSum, 1); // [A4 + A3, A4 + A3]
+                    const auto lowerScalar = _mm_cvtsd_f64(lower);           // A2 + A1
+                    const auto upperScalar = _mm_cvtsd_f64(upper);           // A4 + A3
+                    return lowerScalar + upperScalar;
+                }
+                else
+                {
+                    // Extract the upper and lower lanes and sum them
+                    const auto lower = _mm256_castpd256_pd128(_reg);   // [A2, A1]
+                    const auto upper = _mm256_extractf128_pd(_reg, 1); // [A4, A3]
+                    const auto sum1  = _mm_add_pd(lower, upper);       // [A2 + A4, A1 + A3]
+                    // Then, shuffle the upper terms(A4 + A2) to the lower lane.
+                    const auto shifted = _mm_shuffle_pd(sum1, sum1, 1); // [A2 + A4, A2 + A4]
+                    // Add the results together
+                    const auto sum2 = _mm_add_pd(sum1, shifted); // [_, A1 + A2 + A3 + A4]
+                    // Extract the lowest lane
+                    return _mm_cvtsd_f64(sum2);
+                }
+            }
+            else if constexpr (types::IsFP32<DataType>)
+            {
+
+                // [A8, A7, A6, A5, A4, A3, A2, A1]
+                if constexpr (FALCON_ENABLE_HADD_INTRINSIC)
+                {
+                    // [A8 + A7, A8 + A7, A6 + A5, A6 + A5, A4 + A3, A4 + A3, A2 + A1, A2 + A1]
+                    // The sums can be rewritten as S<n>
+                    // [S4, S4, S3, S3, S2, S2, S1, S1]
+                    const auto hSum1 = _mm256_hadd_ps(_reg, _reg);
+                    // [S4, S4, S4, S4, S2, S2, S2, S2]
+                    const auto shuffled = _mm256_shuffle_ps(hSum1, hSum1, _MM_SHUFFLE(1, 3, 1, 3));
+                    // [_, _, S3 + S4, S3 + S4, _, _, S1 + S2, S1 + S2]
+                    const auto hSum2 = _mm256_hadd_ps(hSum1, shuffled);
+                    // Extract the lower and upper lanes and sum the values in the lowest lanes
+                    const auto lower = _mm256_castps256_ps128(hSum2);   // [_, _, S3 + S4, S3 + S4]
+                    const auto upper = _mm256_extractf128_ps(hSum2, 1); // [_, _, S1 + S2, S1 + S2]
+                    return _mm_cvtss_f32(lower) + _mm_cvtss_f32(upper);
+                }
+                else
+                {
+                    // Extract the lower and upper 128-bit lanes and add them
+                    const auto lower = _mm256_castps256_ps128(_reg);
+                    const auto upper = _mm256_extractf128_ps(_reg, 1);
+                    // [A8 + A4, A7 + A3, A6 + A2, A5 + A1]
+                    // [S4, S3, S2, S1]
+                    const auto sum1 = _mm_add_ps(lower, upper);
+                    // Shuffle the upper two lanes into lower lanes and sum them
+                    // [_, _, S4, S3]
+                    const auto shuffle1 = _mm_shuffle_ps(sum1, sum1, _MM_SHUFFLE(2, 3, 2, 3));
+                    // Add the shuffled sum with the sum
+                    // [_, _, S2 + S4, S1 + S3]
+                    const auto sum2 = _mm_add_ps(sum1, shuffle1);
+                    // Shuffle the second lane to the lowest lane
+                    // [_, _, _, S2 + S4]
+                    const auto shuffle2 = _mm_shuffle_ps(sum2, sum2, _MM_SHUFFLE(1, 1, 1, 1));
+                    // Sum it and return the value in the lowest lane
+                    const auto sum3 = _mm_add_ps(sum2, shuffle2);
+                    return _mm_cvtss_f32(sum3);
+                }
+            }
+            else
+            {
+                return 0;
+            }
+        }
+        else
+        {
+            return Simd256(_reg.hadd());
+        }
+    }
+
+
     // template <typename DataType, size_t Lane>
     // FALCON_INLINE constexpr DataType Simd256<SimdBackend::ARCH_AVX, DataType, Lane>::horizontalSub() const
     // noexcept

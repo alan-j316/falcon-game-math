@@ -657,28 +657,28 @@ TYPED_TEST(Simd256ArithmeticTests, FMA_ReturnsAValidResult)
 }
 
 
-// TYPED_TEST(Simd256ArithmeticTests, HorizontalAdd_ReturnsAValidResult)
-// {
-//     using Type            = TypeParam::Type;
-//     constexpr size_t Lane = TypeParam::VALUE;
-//
-//     // We are swapping for the largest and smallest for the first two indices
-//     // since we have at least 2 lanes(256 / 64(max data type size)) we can safely inject those values
-//     alignas(32) std::array<Type, Lane> a{};
-//     Type sum = 0;
-//     for (size_t i = 0; i < Lane; ++i)
-//     {
-//         a[i] = this->haddData[i];
-//         sum += a[i];
-//     }
-//     sum = static_cast<Type>(sum);
-//
-//     flcn::Simd256_t<Type, Lane> regA{ a };
-//     const auto result = regA.horizontalAdd();
-//     EXPECT_ANY_EQ(sum, result);
-// }
-//
-//
+TYPED_TEST(Simd256ArithmeticTests, HorizontalAdd_ReturnsAValidResult)
+{
+    using Type            = TypeParam::Type;
+    constexpr size_t Lane = TypeParam::VALUE;
+
+    // We are swapping for the largest and smallest for the first two indices
+    // since we have at least 2 lanes(256 / 64(max data type size)) we can safely inject those values
+    alignas(32) std::array<Type, Lane> a{};
+    Type sum = 0;
+    for (size_t i = 0; i < Lane; ++i)
+    {
+        a[i] = this->haddData[i];
+        sum += a[i];
+    }
+    sum = static_cast<Type>(sum);
+
+    flcn::Simd256_t<Type, Lane> regA{ a };
+    const auto result = regA.horizontalAdd();
+    EXPECT_ANY_EQ(sum, result);
+}
+
+
 // TYPED_TEST(Simd256ArithmeticTests, HorizontalSub_ReturnsAValidResult)
 // {
 //     using Type            = TypeParam::Type;

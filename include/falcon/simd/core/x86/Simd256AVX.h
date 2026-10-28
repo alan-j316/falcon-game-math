@@ -501,14 +501,14 @@ namespace flcn
         [[nodiscard]] constexpr DataType horizontalAdd() const noexcept;
 
 
-        //     /**
-        //      * @brief Subtract upper lane elements from the lower lanes of the current register.
-        //      * @return The difference between elements in all the lanes.
-        //      */
-        //     [[nodiscard]] constexpr DataType horizontalSub() const noexcept;
-        //
-        //
-        //     //     // TODO: Add masked variants comparison AVX512(__mmask) and emulate
+        /**
+         * @brief Subtract upper lane elements from the lower lanes of the current register.
+         * @return The difference between elements in all the lanes.
+         */
+        [[nodiscard]] constexpr DataType horizontalSub() const noexcept;
+
+
+        // TODO: Add masked variants comparison AVX512(__mmask) and emulate
 
 
         ///+=+=+=+=+=+=+=+=+=+=+=+=+=

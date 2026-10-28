@@ -1268,7 +1268,7 @@ namespace flcn
                     const auto sum3 = _mm_add_epi16(sum2, shifted2);
                     // Shuffle the 2nd to lowest lane to the lowest lane and take the sum with sum3
                     const auto shifted3 = _mm_srli_si128(sum3, 2);
-                    const auto sum4 = _mm_add_epi16(sum3, shifted3);
+                    const auto sum4     = _mm_add_epi16(sum3, shifted3);
                     return static_cast<DataType>(_mm_cvtsi128_si32(sum4));
                 }
             }
@@ -1299,7 +1299,7 @@ namespace flcn
                 const auto sum4 = _mm_add_epi8(sum3, shifted3);
                 // Shift the 2nd lowest lane to the lowest lane and sum
                 const auto shifted4 = _mm_srli_si128(sum4, 1);
-                const auto sum5 = _mm_add_epi8(sum4, shifted4);
+                const auto sum5     = _mm_add_epi8(sum4, shifted4);
                 return static_cast<DataType>(_mm_cvtsi128_si32(sum5));
             }
         }
@@ -1310,16 +1310,57 @@ namespace flcn
     }
 
 
-    // template <typename DataType, size_t Lane>
-    // FALCON_INLINE constexpr DataType Simd256<SimdBackend::ARCH_AVX, DataType, Lane>::horizontalSub() const
-    // noexcept
-    // {
-    //     // NOTE: For horizontal sub to work like A - B - C - D
-    //     //       We need to use a horizontal sub and horizontal add
-    //     //       and take the difference of the results.
-    //     //       A - B - (C + D)
-    //     return _lower.horizontalSub() - _upper.horizontalAdd();
-    // }
+    template <typename DataType, size_t Lane>
+    FALCON_INLINE constexpr DataType Simd256<SimdBackend::ARCH_AVX, DataType, Lane>::horizontalSub() const noexcept
+    {
+        if constexpr (_FALCON_SIMD256_SUPPORT_NATIVE_INTRINSIC(DataType))
+        {
+            if constexpr (types::IsFP64<DataType>)
+            {
+                // NOTE: A is stored in the lowest lane.
+                // To perform A-B-C-D, we can invert the flag bits of B, C, and D.
+                // A + (-B) + (-C) + (-D)
+                constexpr auto zero   = 0x0000000000000000ULL;
+                constexpr auto sign   = 0x8000000000000000ULL;
+                const auto flipMask   = _mm256_castsi256_pd(_mm256_setr_epi64x(zero, sign, sign, sign));
+                const auto flippedReg = _mm256_xor_pd(_reg, flipMask);
+                return Simd256(flippedReg).horizontalAdd();
+            }
+            else if constexpr (types::IsFP32<DataType>)
+            {
+                // NOTE: A is stored in the lowest lane.
+                // To perform A-B-C-D, we can invert the flag bits of B, C, and D.
+                // A + (-B) + (-C) + (-D)
+                constexpr auto zero = 0x00000000ULL;
+                constexpr auto sign = 0x80000000ULL;
+                const auto flipMask =
+                    _mm256_castsi256_ps(_mm256_setr_epi32(zero, sign, sign, sign, sign, sign, sign, sign));
+                const auto flippedReg = _mm256_xor_ps(_reg, flipMask);
+                return Simd256(flippedReg).horizontalAdd();
+            }
+            else if constexpr (sizeof(DataType) == 8)
+            {
+                // NOTE: A is stored in the lowest lane.
+                // For integrals we can use 2A - (A + B + C + D) to get A - B - C - D
+                const auto a = _mm256_cvtsi256_si64(_reg);
+                return (2 * a) - horizontalAdd();
+            }
+            else if constexpr (sizeof(DataType) == 4)
+            {
+                const auto a = std::bit_cast<DataType>(_mm256_cvtsi256_si32(_reg));
+                return (2 * a) - horizontalAdd();
+            }
+            else // if constexpr (sizeof(DataType) == 2)
+            {
+                const auto a = static_cast<DataType>(_mm256_cvtsi256_si32(_reg));
+                return (2 * a) - horizontalAdd();
+            }
+        }
+        else
+        {
+            return Simd256(_reg.hsub());
+        }
+    }
 
 
     template <typename DataType, size_t Lane>

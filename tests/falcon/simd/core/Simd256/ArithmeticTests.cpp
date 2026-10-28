@@ -679,31 +679,31 @@ TYPED_TEST(Simd256ArithmeticTests, HorizontalAdd_ReturnsAValidResult)
 }
 
 
-// TYPED_TEST(Simd256ArithmeticTests, HorizontalSub_ReturnsAValidResult)
-// {
-//     using Type            = TypeParam::Type;
-//     constexpr size_t Lane = TypeParam::VALUE;
-//
-//     alignas(32) std::array<Type, Lane> a{};
-//     Type difference = 0;
-//     for (size_t i = 0; i < Lane; ++i)
-//     {
-//         a[i] = this->haddData[i];
-//         if (i == 0)
-//         {
-//             difference = a[i];
-//         }
-//         else
-//         {
-//             difference -= a[i];
-//         }
-//     }
-//     difference = static_cast<Type>(difference);
-//
-//     flcn::Simd256_t<Type, Lane> regA{ a };
-//     const auto result = regA.horizontalSub();
-//     EXPECT_ANY_EQ(difference, result);
-// }
+TYPED_TEST(Simd256ArithmeticTests, HorizontalSub_ReturnsAValidResult)
+{
+    using Type            = TypeParam::Type;
+    constexpr size_t Lane = TypeParam::VALUE;
+
+    alignas(32) std::array<Type, Lane> a{};
+    Type difference = 0;
+    for (size_t i = 0; i < Lane; ++i)
+    {
+        a[i] = this->haddData[i];
+        if (i == 0)
+        {
+            difference = a[i];
+        }
+        else
+        {
+            difference -= a[i];
+        }
+    }
+    difference = static_cast<Type>(difference);
+
+    flcn::Simd256_t<Type, Lane> regA{ a };
+    const auto result = regA.horizontalSub();
+    EXPECT_ANY_EQ(difference, result);
+}
 
 
 #endif

@@ -48,4 +48,12 @@ namespace flcn
         uint64_t lower;
     };
 
+
+    /// Structure for holding 256-bit integers.
+    struct u256
+    {
+        // Quad3 is the most significant part and Quad0 the least.
+        uint64_t quad3, quad2, quad1, quad0;
+    };
+
 } // namespace flcn

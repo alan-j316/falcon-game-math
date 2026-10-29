@@ -179,6 +179,34 @@ namespace flcn::simd
                           .lower = expandByFour(0, std::make_index_sequence<16>{}) };
     }
 
+    /**
+     * @brief Expand a 32-bit BlendMask into 256-bit integer by performing bit expansion.
+     *        For e.g: When `10` is expanded, we get `1111 0000`.
+     *
+     * @param mask The 32-bit mask to expand/unfold.
+     * @return A custom @ref u256 type with the expanded values.
+     */
+    constexpr u256 expandEightFold(BlendMask32_t mask)
+    {
+        const auto expandByEight = [&]<size_t... Index>(size_t Offset, std::index_sequence<Index...>) -> size_t {
+            constexpr size_t trueMask  = 0xFF;
+            constexpr size_t falseMask = 0x00;
+// For performing the expansion we can mask extract each bit and expand the bit value by 8,
+// and shift it into place.
+#define __FLCN_EXP8_MASKED_EXTRACT (0b1ULL << (Index + Offset))
+            return ((((mask & __FLCN_EXP8_MASKED_EXTRACT) == __FLCN_EXP8_MASKED_EXTRACT ? trueMask : falseMask)
+                     << (Index * 8)) |
+                    ...);
+#undef __FLCN_EXP8_MASKED_EXTRACT
+        };
+
+        // Take each 8 bit(8 iterations index sequence) and offset each by 8 bits to get the next quad part.
+        return u256{ .quad3 = expandByEight(8, std::make_index_sequence<8>{}),
+                     .quad2 = expandByEight(8, std::make_index_sequence<8>{}),
+                     .quad1 = expandByEight(8, std::make_index_sequence<8>{}),
+                     .quad0 = expandByEight(8, std::make_index_sequence<8>{}) };
+    }
+
 
     /**
      * @brief Expand a Blend32_t into Blend64_t by performing bit expansion.

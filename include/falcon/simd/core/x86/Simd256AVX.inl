@@ -687,22 +687,17 @@ namespace flcn
             }
             else if constexpr (types::IsFP32<DataType>)
             {
-                // Extract the lower and upper 128-bit lanes and or them
                 const auto lower = _mm256_castps256_ps128(_reg);
                 const auto upper = _mm256_extractf128_ps(_reg, 1);
                 // [A8 | A4, A7 | A3, A6 | A2, A5 | A1]
                 // [S4, S3, S2, S1]
                 const auto disjunct1 = _mm_or_ps(lower, upper);
-                // Shuffle the upper two lanes into lower lanes and disjunct them
                 // [_, _, S4, S3]
                 const auto shuffle1 = _mm_shuffle_ps(disjunct1, disjunct1, _MM_SHUFFLE(2, 3, 2, 3));
-                // Or the shuffled disjunct with the disjunct
                 // [_, _, S2 | S4, S1 | S3]
                 const auto disjunct2 = _mm_or_ps(disjunct1, shuffle1);
-                // Shuffle the second lane to the lowest lane
                 // [_, _, _, S2 | S4]
-                const auto shuffle2 = _mm_shuffle_ps(disjunct2, disjunct2, _MM_SHUFFLE(1, 1, 1, 1));
-                // Perform logical OR and return the value in the lowest lane
+                const auto shuffle2  = _mm_shuffle_ps(disjunct2, disjunct2, _MM_SHUFFLE(1, 1, 1, 1));
                 const auto disjunct3 = _mm_or_ps(disjunct2, shuffle2);
                 return _mm_cvtss_f32(disjunct3);
             }
@@ -712,84 +707,70 @@ namespace flcn
                 const auto lower     = _mm256_castsi256_si128(_reg);      // [A2, A1]
                 const auto upper     = _mm256_extracti128_si256(_reg, 1); // [A4, A3]
                 const auto disjunct1 = _mm_or_si128(lower, upper);        // [A2 | A4, A1 | A3]
-                // Then, shift the upper terms(A4 | A2) into the lower lanes.
-                const auto shifted = _mm_srli_si128(disjunct1, 8); // [_, A2 | A4]
-                // Or the results together
-                const auto disjunct2 = _mm_or_si128(disjunct1, shifted); // [_, A1 | A2 | A3 | A4]
-                // Extract the lowest lane
+                const auto shifted   = _mm_srli_si128(disjunct1, 8);      // [_, A2 | A4]
+                const auto disjunct2 = _mm_or_si128(disjunct1, shifted);  // [_, A1 | A2 | A3 | A4]
                 return std::bit_cast<DataType>(_mm_cvtsi128_si64x(disjunct2));
             }
             else if constexpr (sizeof(DataType) == 4)
             {
-                // Extract the lower and upper 128-bit lanes and OR them
                 const auto lower = _mm256_castsi256_si128(_reg);
                 const auto upper = _mm256_extracti128_si256(_reg, 1);
                 // [A8 | A4, A7 | A3, A6 | A2, A5 | A1]
                 // [S4, S3, S2, S1]
                 const auto disjunct1 = _mm_or_si128(lower, upper);
-                // Shuffle the upper two lanes into lower lanes and OR them
                 // [_, _, S4, S3]
                 const auto shuffle1 = _mm_shuffle_epi32(disjunct1, _MM_SHUFFLE(2, 3, 2, 3));
-                // Or the shuffled disjunct with the disjunction result
                 // [_, _, S2 | S4, S1 | S3]
                 const auto disjunct2 = _mm_or_si128(disjunct1, shuffle1);
-                // Shuffle the second lane to the lowest lane
                 // [_, _, _, S2 | S4]
                 const auto shuffle2 = _mm_shuffle_epi32(disjunct2, _MM_SHUFFLE(1, 1, 1, 1));
-                // Perform the final logical OR and return the value in the lowest lane
+                // [_, _, _, S2 | S4 | S1 | S3]
                 const auto disjunct3 = _mm_or_si128(disjunct2, shuffle2);
                 return std::bit_cast<DataType>(_mm_cvtsi128_si32(disjunct3));
             }
             else if constexpr (sizeof(DataType) == 2)
             {
-                // Extract the lower and upper 128-bit lanes and or them
                 const auto lower = _mm256_castsi256_si128(_reg);
                 const auto upper = _mm256_extracti128_si256(_reg, 1);
                 // [A16 | A15, A14 | A13, A12 | A11, A10 | A9, A8 | A4, A7 | A3, A6 | A2, A5 | A1]
                 // [S8, S7, S6, S5, S4, S3, S2, S1]
                 const auto disjunct1 = _mm_or_si128(lower, upper);
-                // Shift the upper 4 lanes into lower lanes and disjunct them
                 // [_, _, _, _, S8, S7, S6, S5]
                 const auto shifted1 = _mm_srli_si128(disjunct1, 8);
-                // Or the shuffled disjunct with the disjunct
                 // [_, _, _, _, S4 | S8, S3 | S7, S2 | S6, S1 | S5]
                 const auto disjunct2 = _mm_or_si128(disjunct1, shifted1);
-                // Shuffle the upper 2 lanes to the lowest lane
                 // [_, _, _, _, _, _, S4 | S8, S3 | S7]
                 const auto shifted2 = _mm_srli_si128(disjunct2, 4);
                 // [_, _, _, _, _, _, S2 | S6 | S4 | S8, S1 | S5 | S3 | S7]
                 const auto disjunct3 = _mm_or_si128(disjunct2, shifted2);
-                // Shuffle the 2nd to lowest lane to the lowest lane and perform logical OR with disjunct3
-                const auto shifted3  = _mm_srli_si128(disjunct3, 2);
+                // [_, _, _, _, _, _, _, S2 | S6 | S4 | S8]
+                const auto shifted3 = _mm_srli_si128(disjunct3, 2);
+                // [_, _, _, _, _, _, _, S2 | S6 | S4 | S8 | S1 | S5 | S3 | S7]
                 const auto disjunct4 = _mm_or_si128(disjunct3, shifted3);
                 return static_cast<DataType>(_mm_cvtsi128_si32(disjunct4));
             }
             else // if constexpr (sizeof(DataType) == 1)
             {
-                // Extract the lower and upper 128-bit lanes and OR them
                 const auto lower = _mm256_castsi256_si128(_reg);
                 const auto upper = _mm256_extracti128_si256(_reg, 1);
                 // [A32 | A31, A30 | A29, ...., A6 | A2, A5 | A1]
                 // [S16, S15, S14, ..., S3, S2, S1]
                 const auto disjunct1 = _mm_or_si128(lower, upper);
-                // Shift the upper 8 lanes into lower lanes and disjunct them
                 // [_, _, _, _, _, _, _, _, S16, S15, S14, S13, S12, S11, S10, S9]
                 const auto shifted1 = _mm_srli_si128(disjunct1, 8);
-                // Perform a logical OR on the shifted disjunction with the initial disjunction result
                 // [_, _, _, _, _, _, _, _, S8 | S16, S7 | S15, S6 | S14, ..., S3 | S11, S2 | S10, S1 | S9]
                 const auto disjunct2 = _mm_or_si128(disjunct1, shifted1);
-                // Shift the upper 4 lanes to the lowest lane
                 // [_, _, _, _, _, _, _, _, S8 | S16, S7 | S15, S6 | S14, S5 | S13]
                 const auto shifted2 = _mm_srli_si128(disjunct2, 4);
                 // [_, ..., S8 | S16 | S4 | S12, S3 | S11 | S7 | S15, S2 | S10 | S6 | S14, S1 | S9 | S5 | S13]
                 const auto disjunct3 = _mm_or_si128(disjunct2, shifted2);
-                // Shift the upper 4 lanes to lowest lane
                 // [_, ..., S8 | S16 | S4 | S12, S3 | S11 | S7 | S15]
                 const auto shifted3 = _mm_srli_si128(disjunct3, 2);
                 // [_, ..., S8 | S16 | S4 | S12 | S2 | S10 | S6 | S14, S3 | S11 | S7 | S15 | S1 | S9 | S5 | S13]
                 const auto disjunct4 = _mm_or_si128(disjunct3, shifted3);
-                // Shift the 2nd lowest lane to the lowest lane and perform the final disjunction
-                const auto shifted4  = _mm_srli_si128(disjunct4, 1);
+                // [_, ..., _, S8 | S16 | S4 | S12 | S2 | S10 | S6 | S14]
+                const auto shifted4 = _mm_srli_si128(disjunct4, 1);
+                // [_, ..., S8 | S16 | S4 | S12 | S2 | S10 | S6 | S14 | S3 | S11 | S7 | S15 | S1 | S9 | S5 | S13]
                 const auto disjunct5 = _mm_or_si128(disjunct4, shifted4);
                 return static_cast<DataType>(_mm_cvtsi128_si32(disjunct5));
             }
@@ -1310,6 +1291,7 @@ namespace flcn
         }
     }
 
+
     template <typename DataType, size_t Lane>
     FALCON_INLINE constexpr DataType Simd256<SimdBackend::ARCH_AVX, DataType, Lane>::horizontalAdd() const noexcept
     {
@@ -1381,6 +1363,7 @@ namespace flcn
                     // [_, _, _, S2 + S4]
                     const auto shuffle2 = _mm_shuffle_ps(sum2, sum2, _MM_SHUFFLE(1, 1, 1, 1));
                     // Sum it and return the value in the lowest lane
+                    // [_, _, _, S2 + S4 + S1 + S3]
                     const auto sum3 = _mm_add_ps(sum2, shuffle2);
                     return _mm_cvtss_f32(sum3);
                 }
@@ -1436,6 +1419,7 @@ namespace flcn
                     // [_, _, _, S2 + S4]
                     const auto shuffle2 = _mm_shuffle_epi32(sum2, _MM_SHUFFLE(1, 1, 1, 1));
                     // Sum it and return the value in the lowest lane
+                    // [_, _, S2 + S4 + S1 + S3]
                     const auto sum3 = _mm_add_epi32(sum2, shuffle2);
                     return std::bit_cast<DataType>(_mm_cvtsi128_si32(sum3));
                 }
@@ -1464,64 +1448,56 @@ namespace flcn
                     // [_, _, _, S8 + S7 + S6 + S5, _, _, _, S4 + S3 + S2 + S1]
                     const auto sum3 = _mm_hadd_epi16(sum2, shifted1);
                     // Shift the sum to the lowest lane and extract and add the two sums
+                    // [_, _, _, _, _, _, _, S8 + S7 + S6 + S5]
                     const auto shifted2 = _mm_srli_si128(sum3, 8);
                     return static_cast<DataType>(_mm_cvtsi128_si32(sum3)) +
                         static_cast<DataType>(_mm_cvtsi128_si32(shifted2));
                 }
                 else
                 {
-                    // Extract the lower and upper 128-bit lanes and add them
                     const auto lower = _mm256_castsi256_si128(_reg);
                     const auto upper = _mm256_extracti128_si256(_reg, 1);
                     // [A16 + A15, A14 + A13, A12 + A11, A10 + A9, A8 + A4, A7 + A3, A6 + A2, A5 + A1]
                     // [S8, S7, S6, S5, S4, S3, S2, S1]
                     const auto sum1 = _mm_add_epi16(lower, upper);
-                    // Shift the upper 4 lanes into lower lanes and sum them
                     // [_, _, _, _, S8, S7, S6, S5]
                     const auto shifted1 = _mm_srli_si128(sum1, 8);
-                    // Add the shuffled sum with the sum
                     // [_, _, _, _, S4 + S8, S3 + S7, S2 + S6, S1 + S5]
                     const auto sum2 = _mm_add_epi16(sum1, shifted1);
-                    // Shuffle the upper 2 lanes to the lowest lane
                     // [_, _, _, _, _, _, S4 + S8, S3 + S7]
                     const auto shifted2 = _mm_srli_si128(sum2, 4);
-                    // Sum it and return the value in the lowest lane
                     // [_, _, _, _, _, _, S2 + S6 + S4 + S8, S1 + S5 + S3 + S7]
                     const auto sum3 = _mm_add_epi16(sum2, shifted2);
-                    // Shuffle the 2nd to lowest lane to the lowest lane and take the sum with sum3
+                    // [_, _, _, _, _, _, _, S2 + S6 + S4 + S8]
                     const auto shifted3 = _mm_srli_si128(sum3, 2);
-                    const auto sum4     = _mm_add_epi16(sum3, shifted3);
+                    // [_, _, _, _, _, _, _, S2 + S6 + S4 + S8 + S1 + S5 + S3 + S7]
+                    const auto sum4 = _mm_add_epi16(sum3, shifted3);
                     return static_cast<DataType>(_mm_cvtsi128_si32(sum4));
                 }
             }
             else // if constexpr (sizeof(DataType) == 1)
             {
-                // Extract the lower and upper 128-bit lanes and add them
                 const auto lower = _mm256_castsi256_si128(_reg);
                 const auto upper = _mm256_extracti128_si256(_reg, 1);
                 // [A32 + A31, A30 + A29, ...., A6 + A2, A5 + A1]
                 // [S16, S15, S14, ..., S3, S2, S1]
                 const auto sum1 = _mm_add_epi8(lower, upper);
-                // Shift the upper 8 lanes into lower lanes and sum them
                 // [_, _, _, _, _, _, _, _, S16, S15, S14, S13, S12, S11, S10, S9]
                 const auto shifted1 = _mm_srli_si128(sum1, 8);
-                // Add the shifted sum with the sum
                 // [_, _, _, _, _, _, _, _, S8 + S16, S7 + S15, S6 + S14, ..., S3 + S11, S2 + S10, S1 + S9]
                 const auto sum2 = _mm_add_epi8(sum1, shifted1);
-                // Shift the upper 4 lanes to the lowest lane
                 // [_, _, _, _, _, _, _, _, S8 + S16, S7 + S15, S6 + S14, S5 + S13]
                 const auto shifted2 = _mm_srli_si128(sum2, 4);
-                // Sum it and return the value in the lowest lane
                 // [_, ..., S8 + S16 + S4 + S12, S3 + S11 + S7 + S15, S2 + S10 + S6 + S14, S1 + S9 + S5 + S13]
                 const auto sum3 = _mm_add_epi8(sum2, shifted2);
-                // Shift the upper 4 lanes to lowest lane
                 // [_, ..., S8 + S16 + S4 + S12, S3 + S11 + S7 + S15]
                 const auto shifted3 = _mm_srli_si128(sum3, 2);
                 // [_, ..., S8 + S16 + S4 + S12 + S2 + S10 + S6 + S14, S3 + S11 + S7 + S15 + S1 + S9 + S5 + S13]
                 const auto sum4 = _mm_add_epi8(sum3, shifted3);
-                // Shift the 2nd lowest lane to the lowest lane and sum
+                // [_, ..., _, S8 + S16 + S4 + S12 + S2 + S10 + S6 + S14]
                 const auto shifted4 = _mm_srli_si128(sum4, 1);
-                const auto sum5     = _mm_add_epi8(sum4, shifted4);
+                // [_, ..., _, S8 + S16 + S4 + S12 + S2 + S10 + S6 + S14 + S3 + S11 + S7 + S15 + S1 + S9 + S5 + S13]
+                const auto sum5 = _mm_add_epi8(sum4, shifted4);
                 return static_cast<DataType>(_mm_cvtsi128_si32(sum5));
             }
         }

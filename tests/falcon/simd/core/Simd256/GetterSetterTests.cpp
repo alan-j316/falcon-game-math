@@ -190,27 +190,27 @@ TYPED_TEST(Simd256GetterSetterTests, ExtractFirst_ReturnsTheValueAtZerothIndex)
 
 
 
-// /// @test Verifies that store function stores a data in the appropriate index
-// /// @note Due to amount of combinations, we are using the typed test combined
-// ///       with loop to test each index corresponding to matrix type, although
-// ///       not recommended due to single assert per test, writing all the tests
-// ///       manually will be wasteful in terms of resources.
-// TYPED_TEST(Simd256GetterSetterTests, SetAt_SetsTheValueAtAppropriateIndex)
-// {
-//     using Type            = TypeParam::Type;
-//     constexpr size_t Lane = TypeParam::VALUE;
-//
-//     flcn::Simd256_t<Type, Lane> reg;
-//     reg.setZero();
-//
-//     for (size_t i = 0; i < Lane; ++i)
-//     {
-//         reg.setAt(i, this->max);
-//         EXPECT_ANY_EQ(this->max, reg.getAt(i));
-//     }
-// }
-//
-//
+/// @test Verifies that store function stores a data in the appropriate index
+/// @note Due to amount of combinations, we are using the typed test combined
+///       with loop to test each index corresponding to matrix type, although
+///       not recommended due to single assert per test, writing all the tests
+///       manually will be wasteful in terms of resources.
+TYPED_TEST(Simd256GetterSetterTests, SetAt_SetsTheValueAtAppropriateIndex)
+{
+    using Type            = TypeParam::Type;
+    constexpr size_t Lane = TypeParam::VALUE;
+
+    flcn::Simd256_t<Type, Lane> reg;
+    reg.setZero();
+
+    for (size_t i = 0; i < Lane; ++i)
+    {
+        reg.setAt(i, this->max);
+        EXPECT_ANY_EQ(this->max, reg.getAt(i));
+    }
+}
+
+
 // TEST(Simd256GetterSetterTests, Integrals_Naive_ReturnsDefaultRegister)
 // {
 //     flcn::Simd256_t<int32_t, 8> reg{ 1, 2, 3, 4, 5, 6, 7, 8 };

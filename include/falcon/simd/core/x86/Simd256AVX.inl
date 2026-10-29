@@ -347,13 +347,23 @@ namespace flcn
     }
 
 
-    // template <typename DataType, size_t Lane>
-    // FALCON_INLINE constexpr void Simd256<SimdBackend::ARCH_AVX, DataType, Lane>::setAt(size_t index,
-    //                                                                                     DataType value) noexcept
-    // {
-    //     // TODO: Optimize with masks
-    //     index >= LOWER_LANE_COUNT ? _upper.setAt(index - LOWER_LANE_COUNT, value) : _lower.setAt(index, value);
-    // }
+    template <typename DataType, size_t Lane>
+    FALCON_INLINE constexpr void Simd256<SimdBackend::ARCH_AVX, DataType, Lane>::setAt(const size_t index,
+                                                                                       const DataType value) noexcept
+    {
+        if constexpr (_FALCON_SIMD256_SUPPORT_NATIVE_INTRINSIC(DataType))
+        {
+            // Stack spill and insert
+            alignas(Alignment) DataType data[Lane]{};
+            storeAligned(data);
+            data[index] = value;
+            loadAligned(data);
+        }
+        else
+        {
+            return _reg.setAt(index, value);
+        }
+    }
 
 
     template <typename DataType, size_t Lane>

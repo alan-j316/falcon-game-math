@@ -262,20 +262,20 @@ namespace flcn
         [[nodiscard]] constexpr DataType getAt(size_t index) const noexcept;
 
 
-        //     /**
-        //      * @brief Set the value at @p index to @p value.
-        //      *
-        //      * @param index The index of the register. Must be between 0 and Lane - 1.
-        //      * @param value The value to set.
-        //      *
-        //      * @note For indices known at compile-time, use set<Index>(value) as it is faster
-        //      *       due to the availability of direct hardware intrinsic.
-        //      *
-        //      * @relatedalso getAt(size_t)
-        //      * @relatedalso getAt<size_t>()
-        //      * @relatedalso setAt<size_t>(DataType)
-        //      */
-        //     constexpr void setAt(size_t index, DataType value) noexcept;
+        /**
+         * @brief Set the value at @p index to @p value.
+         *
+         * @param index The index of the register. Must be between 0 and Lane - 1.
+         * @param value The value to set.
+         *
+         * @note For indices known at compile-time, use set<Index>(value) as it is faster
+         *       due to the availability of direct hardware intrinsic.
+         *
+         * @relatedalso getAt(size_t)
+         * @relatedalso getAt<size_t>()
+         * @relatedalso setAt<size_t>(DataType)
+         */
+        constexpr void setAt(size_t index, DataType value) noexcept;
 
 
         /**

@@ -658,10 +658,8 @@ namespace flcn
     template <typename DataType, size_t Lane>
     template <size_t Index>
         requires(Index < Lane)
-    FALCON_INLINE constexpr void Simd128<SimdBackend::ARCH_SSE2, DataType, Lane>::setAt(
-        [[maybe_unused]] const DataType value) noexcept
+    FALCON_INLINE constexpr void Simd128<SimdBackend::ARCH_SSE2, DataType, Lane>::setAt(const DataType value) noexcept
     {
-        // TODO: Remove may be unused.
         if constexpr (types::IsFP64<DataType>)
         {
             // There is no insert instruction for pd so we need to use our knowledge of indices at compile and

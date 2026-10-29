@@ -290,41 +290,40 @@ TYPED_TEST(Simd256BitwiseOperationTests, HorizontalOR_ReturnsAValidScalar)
 }
 
 
+/// @test Verifies that horizontal AND returns a scalar with bitwise AND applied.
+TYPED_TEST(Simd256BitwiseOperationTests, HorizontalAND_ReturnsAValidScalar)
+{
+    using Type            = TypeParam::Type;
+    constexpr size_t Lane = TypeParam::VALUE;
 
-// /// @test Verifies that horizontal AND returns a scalar with bitwise AND applied.
-// TYPED_TEST(Simd256BitwiseOperationTests, HorizontalAND_ReturnsAValidScalar)
-// {
-//     using Type            = TypeParam::Type;
-//     constexpr size_t Lane = TypeParam::VALUE;
-//
-//     alignas(32) std::array<Type, Lane> data{};
-//     Type expected{};
-//     for (size_t i = 0; i < Lane; ++i)
-//     {
-//         data[i] = this->lhsData[i];
-//         // Since float and doubles don't have a NOT supported we need to bit cast it to integral types
-//         // and cast it back.
-//         if constexpr (std::is_same_v<double, Type>)
-//         {
-//             expected =
-//                 std::bit_cast<double>(std::bit_cast<uint64_t>(this->lhsData[i]) & std::bit_cast<uint64_t>(expected));
-//         }
-//         else if constexpr (std::is_same_v<float, Type>)
-//         {
-//             expected =
-//                 std::bit_cast<float>(std::bit_cast<uint32_t>(this->lhsData[i]) & std::bit_cast<uint32_t>(expected));
-//         }
-//         else
-//         {
-//             expected &= this->lhsData[i];
-//         }
-//     }
-//
-//     flcn::Simd256_t<Type, Lane> reg(data);
-//
-//     auto result = reg.horizontalAnd();
-//     EXPECT_ANY_EQ(expected, result);
-// }
+    alignas(32) std::array<Type, Lane> data{};
+    Type expected{};
+    for (size_t i = 0; i < Lane; ++i)
+    {
+        data[i] = this->lhsData[i];
+        // Since float and doubles don't have a NOT supported we need to bit cast it to integral types
+        // and cast it back.
+        if constexpr (std::is_same_v<double, Type>)
+        {
+            expected =
+                std::bit_cast<double>(std::bit_cast<uint64_t>(this->lhsData[i]) & std::bit_cast<uint64_t>(expected));
+        }
+        else if constexpr (std::is_same_v<float, Type>)
+        {
+            expected =
+                std::bit_cast<float>(std::bit_cast<uint32_t>(this->lhsData[i]) & std::bit_cast<uint32_t>(expected));
+        }
+        else
+        {
+            expected &= this->lhsData[i];
+        }
+    }
+
+    flcn::Simd256_t<Type, Lane> reg(data);
+
+    auto result = reg.horizontalAnd();
+    EXPECT_ANY_EQ(expected, result);
+}
 
 
 

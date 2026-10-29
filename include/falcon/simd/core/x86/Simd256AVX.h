@@ -336,9 +336,9 @@ namespace flcn
 
         /// @brief Perform an OR operation on the entire vector, horizontally.
         [[nodiscard]] constexpr DataType horizontalOr() const noexcept;
-        //
-        //     /// @brief Perform an AND operation on the entire vector, horizontally.
-        //     [[nodiscard]] constexpr DataType horizontalAnd() const noexcept;
+
+        /// @brief Perform an AND operation on the entire vector, horizontally.
+        [[nodiscard]] constexpr DataType horizontalAnd() const noexcept;
 
 
 

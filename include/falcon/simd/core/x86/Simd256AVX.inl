@@ -801,24 +801,121 @@ namespace flcn
     }
 
 
-    // template <typename DataType, size_t Lane>
-    // FALCON_INLINE constexpr DataType Simd256<SimdBackend::ARCH_AVX, DataType, Lane>::horizontalAnd() const noexcept
-    // {
-    //     const auto lower = _lower.horizontalAnd();
-    //     const auto upper = _upper.horizontalAnd();
-    //     if constexpr (std::is_same_v<DataType, double>)
-    //     {
-    //         return std::bit_cast<double>(std::bit_cast<uint64_t>(lower) & std::bit_cast<uint64_t>(upper));
-    //     }
-    //     else if constexpr (std::is_same_v<DataType, float>)
-    //     {
-    //         return std::bit_cast<float>(std::bit_cast<uint32_t>(lower) & std::bit_cast<uint32_t>(upper));
-    //     }
-    //     else
-    //     {
-    //         return lower & upper;
-    //     }
-    // }
+    template <typename DataType, size_t Lane>
+    FALCON_INLINE constexpr DataType Simd256<SimdBackend::ARCH_AVX, DataType, Lane>::horizontalAnd() const noexcept
+    {
+        if constexpr (_FALCON_SIMD256_SUPPORT_NATIVE_INTRINSIC(DataType))
+        {
+            if constexpr (types::IsFP64<DataType>)
+            {
+                // [A4, A3, A2, A1]
+                // Extract the upper and lower lanes and AND them
+                const auto lower     = _mm256_castpd256_pd128(_reg);   // [A2, A1]
+                const auto upper     = _mm256_extractf128_pd(_reg, 1); // [A4, A3]
+                const auto conjunct1 = _mm_and_pd(lower, upper);       // [A2 & A4, A1 & A3]
+                // Then, shuffle the upper terms(A4 & A2) to the lower lane.
+                const auto shifted = _mm_shuffle_pd(conjunct1, conjunct1, 1); // [A2 & A4, A2 & A4]
+                // Perform logical AND
+                const auto conjunct2 = _mm_and_pd(conjunct1, shifted); // [_, A1 & A2 & A3 & A4]
+                // Extract the lowest lane
+                return _mm_cvtsd_f64(conjunct2);
+            }
+            else if constexpr (types::IsFP32<DataType>)
+            {
+                const auto lower = _mm256_castps256_ps128(_reg);
+                const auto upper = _mm256_extractf128_ps(_reg, 1);
+                // [A8 & A4, A7 & A3, A6 & A2, A5 & A1]
+                // [S4, S3, S2, S1]
+                const auto conjunct1 = _mm_and_ps(lower, upper);
+                // [_, _, S4, S3]
+                const auto shuffle1 = _mm_shuffle_ps(conjunct1, conjunct1, _MM_SHUFFLE(2, 3, 2, 3));
+                // [_, _, S2 & S4, S1 & S3]
+                const auto conjunct2 = _mm_and_ps(conjunct1, shuffle1);
+                // [_, _, _, S2 & S4]
+                const auto shuffle2 = _mm_shuffle_ps(conjunct2, conjunct2, _MM_SHUFFLE(1, 1, 1, 1));
+                // [_, _, _, S2 & S4 & S1 & S3]
+                const auto conjunct3 = _mm_and_ps(conjunct2, shuffle2);
+                return _mm_cvtss_f32(conjunct3);
+            }
+            else if constexpr (sizeof(DataType) == 8)
+            {
+                const auto lower     = _mm256_castsi256_si128(_reg);      // [A2, A1]
+                const auto upper     = _mm256_extracti128_si256(_reg, 1); // [A4, A3]
+                const auto conjunct1 = _mm_and_si128(lower, upper);       // [A2 & A4, A1 & A3]
+                const auto shifted   = _mm_srli_si128(conjunct1, 8);      // [_, A2 & A4]
+                // Or the results together
+                const auto conjunct2 = _mm_and_si128(conjunct1, shifted); // [_, A1 & A2 & A3 & A4]
+                return std::bit_cast<DataType>(_mm_cvtsi128_si64x(conjunct2));
+            }
+            else if constexpr (sizeof(DataType) == 4)
+            {
+                const auto lower = _mm256_castsi256_si128(_reg);
+                const auto upper = _mm256_extracti128_si256(_reg, 1);
+                // [A8 & A4, A7 & A3, A6 & A2, A5 & A1]
+                // [S4, S3, S2, S1]
+                const auto conjunct1 = _mm_and_si128(lower, upper);
+                // [_, _, S4, S3]
+                const auto shuffle1 = _mm_shuffle_epi32(conjunct1, _MM_SHUFFLE(2, 3, 2, 3));
+                // [_, _, S2 & S4, S1 & S3]
+                const auto conjunct2 = _mm_and_si128(conjunct1, shuffle1);
+                // [_, _, _, S2 & S4]
+                const auto shuffle2 = _mm_shuffle_epi32(conjunct2, _MM_SHUFFLE(1, 1, 1, 1));
+                // [_, _, _, S2 & S4 & S1 & S3]
+                const auto conjunct3 = _mm_and_si128(conjunct2, shuffle2);
+                return std::bit_cast<DataType>(_mm_cvtsi128_si32(conjunct3));
+            }
+            else if constexpr (sizeof(DataType) == 2)
+            {
+                const auto lower = _mm256_castsi256_si128(_reg);
+                const auto upper = _mm256_extracti128_si256(_reg, 1);
+                // [A16 & A15, A14 & A13, A12 & A11, A10 & A9, A8 & A4, A7 & A3, A6 & A2, A5 & A1]
+                // [S8, S7, S6, S5, S4, S3, S2, S1]
+                const auto conjunct1 = _mm_and_si128(lower, upper);
+                // [_, _, _, _, S8, S7, S6, S5]
+                const auto shifted1 = _mm_srli_si128(conjunct1, 8);
+                // [_, _, _, _, S4 & S8, S3 & S7, S2 & S6, S1 & S5]
+                const auto conjunct2 = _mm_and_si128(conjunct1, shifted1);
+                // [_, _, _, _, _, _, S4 & S8, S3 & S7]
+                const auto shifted2 = _mm_srli_si128(conjunct2, 4);
+                // [_, _, _, _, _, _, S2 & S6 & S4 & S8, S1 & S5 & S3 & S7]
+                const auto conjunct3 = _mm_and_si128(conjunct2, shifted2);
+                // [_, _, _, _, _, _, _, S2 & S6 & S4 & S8]
+                const auto shifted3 = _mm_srli_si128(conjunct3, 2);
+                // [_, _, _, _, _, _, _, S2 & S6 & S4 & S8 & S1 & S5 & S3 & S7]
+                const auto conjunct4 = _mm_and_si128(conjunct3, shifted3);
+                return static_cast<DataType>(_mm_cvtsi128_si32(conjunct4));
+            }
+            else // if constexpr (sizeof(DataType) == 1)
+            {
+                const auto lower = _mm256_castsi256_si128(_reg);
+                const auto upper = _mm256_extracti128_si256(_reg, 1);
+                // [A32 & A31, A30 & A29, ...., A6 & A2, A5 & A1]
+                // [S16, S15, S14, ..., S3, S2, S1]
+                const auto conjunct1 = _mm_and_si128(lower, upper);
+                // [_, _, _, _, _, _, _, _, S16, S15, S14, S13, S12, S11, S10, S9]
+                const auto shifted1 = _mm_srli_si128(conjunct1, 8);
+                // [_, _, _, _, _, _, _, _, S8 & S16, S7 & S15, S6 & S14, ..., S3 & S11, S2 & S10, S1 & S9]
+                const auto conjunct2 = _mm_and_si128(conjunct1, shifted1);
+                // [_, _, _, _, _, _, _, _, S8 & S16, S7 & S15, S6 & S14, S5 & S13]
+                const auto shifted2 = _mm_srli_si128(conjunct2, 4);
+                // [_, ..., S8 & S16 & S4 & S12, S3 & S11 & S7 & S15, S2 & S10 & S6 & S14, S1 & S9 & S5 & S13]
+                const auto conjunct3 = _mm_and_si128(conjunct2, shifted2);
+                // [_, ..., S8 & S16 & S4 & S12, S3 & S11 & S7 & S15]
+                const auto shifted3 = _mm_srli_si128(conjunct3, 2);
+                // [_, ..., S8 & S16 & S4 & S12 & S2 & S10 & S6 & S14, S3 & S11 & S7 & S15 & S1 & S9 & S5 & S13]
+                const auto conjunct4 = _mm_and_si128(conjunct3, shifted3);
+                // [_, ..., _, S8 & S16 & S4 & S12 & S2 & S10 & S6 & S14]
+                const auto shifted4 = _mm_srli_si128(conjunct4, 1);
+                // [_, ..., S8 & S16 & S4 & S12 & S2 & S10 & S6 & S14 & S3 & S11 & S7 & S15 & S1 & S9 & S5 & S13]
+                const auto conjunct5 = _mm_and_si128(conjunct4, shifted4);
+                return static_cast<DataType>(_mm_cvtsi128_si32(conjunct5));
+            }
+        }
+        else
+        {
+            return Simd256(_reg.horizontalAnd());
+        }
+    }
 
 
 

@@ -10,6 +10,7 @@
  */
 
 
+#include "Simd256AVX.h"
 #include "falcon/simd/utils/SIMDUtils.h"
 
 #include <immintrin.h>
@@ -2128,20 +2129,71 @@ namespace flcn
     }
 
 
-    // template <typename DataType, size_t Lane>
-    // template <BlendMask32_t Mask>
-    // FALCON_INLINE constexpr Simd256<SimdBackend::ARCH_AVX, DataType, Lane> Simd256<
-    //     SimdBackend::ARCH_AVX, DataType, Lane>::blend(const Simd256 other) const noexcept
-    // {
-    //     // Lower Mask only takes into account the lower 16-bits(expanded to 32-bits).
-    //     // Upper mask the upper 16-bits but shifted to to the lower lane(expanded to 32-bits).
-    //     constexpr auto lowerMask = static_cast<BlendMask32_t>(simd::expandTwoFold(Mask & 0x0000FFFF));
-    //     constexpr auto upperMask = static_cast<BlendMask32_t>(simd::expandTwoFold(Mask >> 16));
-    //     return Simd256(_lower.template blend<lowerMask>(other._lower), _upper.template
-    //     blend<upperMask>(other._upper));
-    // }
-    //
-    //
+    template <typename DataType, size_t Lane>
+    template <BlendMask32_t Mask>
+    FALCON_INLINE constexpr Simd256<SimdBackend::ARCH_AVX, DataType, Lane> Simd256<
+        SimdBackend::ARCH_AVX, DataType, Lane>::blend(const Simd256 other) const noexcept
+    {
+        if constexpr (_FALCON_SIMD256_SUPPORT_NATIVE_INTRINSIC(DataType))
+        {
+            if constexpr (types::IsFP64<DataType>)
+            {
+                constexpr auto Imm8 = simd::packToNBits<4>(Mask);
+                return Simd256(_mm256_blend_pd(_reg, *other, Imm8));
+            }
+            else if constexpr (types::IsFP32<DataType>)
+            {
+                constexpr auto Imm8 = simd::packToNBits<8>(Mask);
+                return Simd256(_mm256_blend_ps(_reg, *other, Imm8));
+            }
+            else if constexpr (sizeof(DataType) == 8)
+            {
+                constexpr auto Imm8 = simd::packToNBits<4>(Mask);
+                const auto dblReg1  = _mm256_castsi256_pd(_reg);
+                const auto dblReg2  = _mm256_castsi256_pd(*other);
+                return Simd256(_mm256_castpd_si256(_mm256_blend_pd(dblReg1, dblReg2, Imm8)));
+            }
+            else if constexpr (sizeof(DataType) == 4)
+            {
+                constexpr auto Imm8 = simd::packToNBits<8>(Mask);
+                return Simd256(_mm256_blend_epi32(_reg, *other, Imm8));
+            }
+            else if constexpr (sizeof(DataType) == 2)
+            {
+                // _mm256_blend only works on 128-bits using the same mask for lower and upper lanes
+                // so we will need to split the masks and do 2 blends on the upper and lower lanes
+                // and then combine them.
+                // NOTE: We need to pack these to 16 bits and not 8 because packing to 8 bits means we take the LSB
+                //       from groups of 4 and not groups of 2, essentially cutting the mask information in half.
+                //       0000 00000 0000 0000 1111 1100 1111 0011, if we pack to 8 then we would get 0000 1011,
+                //       but the mask value needs to be 1110 1101(LSB from groups of 2)
+                constexpr auto Imm8Lower = simd::packToNBits<16>(Mask & 0x0000FFFF);
+                constexpr auto Imm8Upper = simd::packToNBits<16>(Mask >> 16);
+                // Perform the blending
+                const auto lowerBlend = _mm256_blend_epi16(_reg, *other, Imm8Lower);
+                // Cast the lower portion to a 128-bit register to insert it into the upper blended register.
+                const auto lowerCast  = _mm256_castsi256_si128(lowerBlend);
+                const auto upperBlend = _mm256_blend_epi16(_reg, *other, Imm8Upper);
+                // Blend the lower lanes of the register
+                return Simd256(_mm256_inserti128_si256(upperBlend, lowerCast, 0));
+            }
+            else // if constexpr (sizeof(DataType) == 1)
+            {
+                // const auto [upper, lower] = simd::expandEightFold(Mask);
+
+                // Simd256 maskReg = _mm256_set_epi64x(upper, lower);
+                // return maskReg.andNot(*this) | (other & maskReg);
+                // TODO:
+                return Simd256();
+            }
+        }
+        else
+        {
+            return Simd256(_reg.template blend<Mask>(other));
+        }
+    }
+
+
     // template <typename DataType, size_t Lane>
     // template <uint8_t... ShuffleIndex>
     // FALCON_INLINE constexpr Simd256<SimdBackend::ARCH_AVX, DataType, Lane> Simd256<SimdBackend::ARCH_AVX,

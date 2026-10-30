@@ -10,7 +10,6 @@
  */
 
 
-#include "Simd256AVX.h"
 #include "falcon/simd/utils/SIMDUtils.h"
 
 #include <immintrin.h>
@@ -329,7 +328,7 @@ namespace flcn
                 else // if constexpr (sizeof(DataType) == 1)
                 {
                     // Note: epi8 version of maskz_compress require __mmask32 and there is no standalone
-                    //       variant of cvtsi128 for converting to 8-bit integral
+                    //       variant of cvtsi256 for converting to 8-bit integral
                     auto reg = _mm256_maskz_compress_epi8(static_cast<__mmask32>(1u << index), _reg);
                     return static_cast<DataType>(_mm_cvtsi256_si32(reg));
                 }
@@ -2220,79 +2219,148 @@ namespace flcn
     }
 
 
-    // template <typename DataType, size_t Lane>
-    // template <uint8_t... ShuffleIndex>
-    // FALCON_INLINE constexpr Simd256<SimdBackend::ARCH_AVX, DataType, Lane> Simd256<SimdBackend::ARCH_AVX,
-    // DataType,
-    //                                                                                 Lane>::shuffle() const
-    //                                                                                 noexcept
-    // {
-    //     static_assert(sizeof...(ShuffleIndex) == Lane && "There must be <Lane> shuffle indices.");
-    //     static_assert(((ShuffleIndex < Lane) && ...) && "Indices must be between 0(inclusive) and
-    //     <Lane>(exclusive).");
-    //
-    //     // For shuffling we need to perform a normalized shuffle(range between 0 - Max_128_Lane_Count)
-    //     // and then use a mask to select values from appropriate register lanes.
-    //
-    //     // Packed indexing is not support until C++26, we need to use this workaround
-    //     // For shuffling with two indices we need to transform the array values(indices)
-    //     // to be between 0 - MAX_LANE_COUNT(exclusive)
-    //     constexpr uint8_t normalizedIndices[MaxLaneCount]{ { (
-    //         static_cast<uint8_t>(ShuffleIndex % Max128BitLaneCount))... } };
-    //
-    //     // Masks for selecting values for the upper and lower 128-bit lanes.
-    //     const auto makeMask = [&]<size_t Offset, size_t... Index>(std::index_sequence<Index...>) {
-    //         constexpr uint8_t ShuffleIndices[MaxLaneCount]{ { ShuffleIndex... } };
-    //         return simd::makeBlendMask32<Max128BitLaneCount,
-    //                                      (ShuffleIndices[Offset + Index] >= Max128BitLaneCount)...>();
-    //     };
-    //     // [up_mask1, up_mask0, lo_mask1, lo_mask0]
-    //     constexpr BlendMask32_t upperMask =
-    //         makeMask.template operator()<Max128BitLaneCount>(std::make_index_sequence<Max128BitLaneCount>{});
-    //     constexpr BlendMask32_t lowerMask =
-    //         makeMask.template operator()<0>(std::make_index_sequence<Max128BitLaneCount>{});
-    //
-    //     // low          hi
-    //     // | a1 | b1 | | c1 | d1 |
-    //     // -----------------------
-    //     // lolo | a1 | b1 | <--
-    //     // lohi | a1 | b1 |    | <===
-    //     // hilo | c1 | d1 | <--     |
-    //     // hihi | c1 | d1 |      <===
-    //     // Select hilo if Mask[i] is true and lolo otherwise
-    //     // Select hihi if Mask[i] is true and lohi otherwise
-    //
-    //     // NOTE: Lambda needs to invoked using .template operator() since the compiler can get confused
-    //     //       by the <0> as less operator.
-    //
-    //     // Upper part of the register with lower and upper indices(hilo, lohi)
-    //     auto shuffleUpper = [&]<size_t Offset, size_t... Index>(std::index_sequence<Index...>) {
-    //         return _upper.template shuffle<normalizedIndices[Offset + Index]...>();
-    //     };
-    //     auto upperShuffledWithUpperIndices =
-    //         shuffleUpper.template
-    //         operator()<Max128BitLaneCount>(std::make_index_sequence<UPPER_LANE_COUNT>{});
-    //     auto upperShuffledWithLowerIndices =
-    //         shuffleUpper.template operator()<0>(std::make_index_sequence<UPPER_LANE_COUNT>{});
-    //
-    //     // Lower part of register with lower and upper indices (lolo, lohi)
-    //     auto shuffleLower = [&]<size_t Offset, size_t... Index>(std::index_sequence<Index...>) {
-    //         return _lower.template shuffle<normalizedIndices[Offset + Index]...>();
-    //     };
-    //     auto lowerShuffledWithUpperIndices =
-    //         shuffleLower.template
-    //         operator()<Max128BitLaneCount>(std::make_index_sequence<LOWER_LANE_COUNT>{});
-    //     auto lowerShuffledWithLowerIndices =
-    //         shuffleLower.template operator()<0>(std::make_index_sequence<LOWER_LANE_COUNT>{});
-    //
-    //     // select(lolo, hilo, mask), select(lohi, hihi, mask)
-    //     return Simd256{ lowerShuffledWithLowerIndices.template
-    //     blend<lowerMask>(upperShuffledWithLowerIndices),
-    //                     lowerShuffledWithUpperIndices.template
-    //                     blend<upperMask>(upperShuffledWithUpperIndices) };
-    // }
-    //
-    //
+    template <typename DataType, size_t Lane>
+    template <uint8_t... ShuffleIndex>
+    FALCON_INLINE constexpr Simd256<SimdBackend::ARCH_AVX, DataType, Lane> Simd256<SimdBackend::ARCH_AVX, DataType,
+                                                                                   Lane>::shuffle() const noexcept
+    {
+
+
+        if constexpr (_FALCON_SIMD256_SUPPORT_NATIVE_INTRINSIC(DataType))
+        {
+            constexpr uint8_t shuffleIndices[sizeof...(ShuffleIndex)]{ ShuffleIndex... };
+
+            /// We can assert if the permute are in-bounds i.e they must be less than the lane count.
+            // constexpr auto inBounds = [&]<size_t... Index>(std::index_sequence<Index...>) {
+            //     return ((shuffleIndices[Index] < Lane) && ...);
+            // };
+            constexpr bool inBounds = ((ShuffleIndex < Lane) && ...);
+            static_assert(inBounds && "Invalid Shuffle Index. Must be between 0 and <Lane - 1>");
+
+            /// No permute is required if the indices are in ascending order
+            constexpr auto requireNoPermute = [&]<size_t... Index>(std::index_sequence<Index...>) constexpr {
+                return ((shuffleIndices[Index] == Index) && ...);
+            }(std::make_index_sequence<sizeof...(ShuffleIndex)>());
+
+            /// There is no lane cross over if the indices for the upper half are above the middle index(inclusive)
+            /// and for the lower half are below the middle index.
+            /// For example for a register with 8 lanes, the middle boundary is 4
+            /// So all the indices in the lower 4 lanes must be less than 4 and in the upper lanes must be greater
+            /// than 4.
+            constexpr auto noLaneCross = [&]<size_t... Index>(std::index_sequence<Index...>) constexpr {
+                constexpr auto middleBoundary = Lane / 2;
+                return (((Index < middleBoundary && shuffleIndices[Index] < middleBoundary) ||
+                         (Index >= middleBoundary && shuffleIndices[Index] >= middleBoundary)) &&
+                        ...);
+            }(std::make_index_sequence<sizeof...(ShuffleIndex)>());
+            // TODO: Remove
+            std::cout << "No lane cross: " << noLaneCross << '\n';
+
+            if constexpr (requireNoPermute)
+            {
+                return *this;
+            }
+            else if constexpr (noLaneCross)
+            {
+                // If the boundary is not crossed then perform simple shuffles
+                if constexpr (types::IsFP64<DataType>)
+                {
+                    return Simd256(_mm256_setzero_pd());
+                }
+                else if constexpr (types::IsFP32<DataType>)
+                {
+                    return Simd256(_mm256_setzero_ps());
+                }
+                else
+                {
+                    return Simd256(_mm256_setzero_si256());
+                }
+            }
+            else
+            {
+                // If the boundary has been crossed then do shuffling
+                if constexpr (types::IsFP64<DataType>)
+                {
+                    return Simd256(_mm256_setzero_pd());
+                }
+                else if constexpr (types::IsFP32<DataType>)
+                {
+                    return Simd256(_mm256_setzero_ps());
+                }
+                else
+                {
+                    return Simd256(_mm256_setzero_si256());
+                }
+            }
+        }
+        else
+        {
+            return Simd256(_reg.template shuffle<ShuffleIndex...>());
+        }
+
+        ////===========================REMOVE================================
+        // static_assert(sizeof...(ShuffleIndex) == Lane && "There must be <Lane> shuffle indices.");
+        // static_assert(((ShuffleIndex < Lane) && ...) && "Indices must be between 0(inclusive) and
+        // <Lane>(exclusive).");
+        //
+        // // For shuffling we need to perform a normalized shuffle(range between 0 - Max_128_Lane_Count)
+        // // and then use a mask to select values from appropriate register lanes.
+        //
+        // // Packed indexing is not support until C++26, we need to use this workaround
+        // // For shuffling with two indices we need to transform the array values(indices)
+        // // to be between 0 - MAX_LANE_COUNT(exclusive)
+        // constexpr uint8_t normalizedIndices[MaxLaneCount]{ { (
+        //     static_cast<uint8_t>(ShuffleIndex % Max128BitLaneCount))... } };
+        //
+        // // Masks for selecting values for the upper and lower 128-bit lanes.
+        // const auto makeMask = [&]<size_t Offset, size_t... Index>(std::index_sequence<Index...>) {
+        //     constexpr uint8_t ShuffleIndices[MaxLaneCount]{ { ShuffleIndex... } };
+        //     return simd::makeBlendMask32<Max128BitLaneCount,
+        //                                  (ShuffleIndices[Offset + Index] >= Max128BitLaneCount)...>();
+        // };
+        // // [up_mask1, up_mask0, lo_mask1, lo_mask0]
+        // constexpr BlendMask32_t upperMask =
+        //     makeMask.template operator()<Max128BitLaneCount>(std::make_index_sequence<Max128BitLaneCount>{});
+        // constexpr BlendMask32_t lowerMask =
+        //     makeMask.template operator()<0>(std::make_index_sequence<Max128BitLaneCount>{});
+        //
+        // // low          hi
+        // // | a1 | b1 | | c1 | d1 |
+        // // -----------------------
+        // // lolo | a1 | b1 | <--
+        // // lohi | a1 | b1 |    | <===
+        // // hilo | c1 | d1 | <--     |
+        // // hihi | c1 | d1 |      <===
+        // // Select hilo if Mask[i] is true and lolo otherwise
+        // // Select hihi if Mask[i] is true and lohi otherwise
+        //
+        // // NOTE: Lambda needs to invoked using .template operator() since the compiler can get confused
+        // //       by the <0> as less operator.
+        //
+        // // Upper part of the register with lower and upper indices(hilo, lohi)
+        // auto shuffleUpper = [&]<size_t Offset, size_t... Index>(std::index_sequence<Index...>) {
+        //     return _upper.template shuffle<normalizedIndices[Offset + Index]...>();
+        // };
+        // auto upperShuffledWithUpperIndices =
+        //     shuffleUpper.template operator()<Max128BitLaneCount>(std::make_index_sequence<UPPER_LANE_COUNT>{});
+        // auto upperShuffledWithLowerIndices =
+        //     shuffleUpper.template operator()<0>(std::make_index_sequence<UPPER_LANE_COUNT>{});
+        //
+        // // Lower part of register with lower and upper indices (lolo, lohi)
+        // auto shuffleLower = [&]<size_t Offset, size_t... Index>(std::index_sequence<Index...>) {
+        //     return _lower.template shuffle<normalizedIndices[Offset + Index]...>();
+        // };
+        // auto lowerShuffledWithUpperIndices =
+        //     shuffleLower.template operator()<Max128BitLaneCount>(std::make_index_sequence<LOWER_LANE_COUNT>{});
+        // auto lowerShuffledWithLowerIndices =
+        //     shuffleLower.template operator()<0>(std::make_index_sequence<LOWER_LANE_COUNT>{});
+        //
+        // // select(lolo, hilo, mask), select(lohi, hihi, mask)
+        // return Simd256{ lowerShuffledWithLowerIndices.template blend<lowerMask>(upperShuffledWithLowerIndices),
+        //                 lowerShuffledWithUpperIndices.template blend<upperMask>(upperShuffledWithUpperIndices) };
+    }
+
+
     // template <typename DataType, size_t Lane>
     // FALCON_INLINE constexpr DataType Simd256<SimdBackend::ARCH_AVX, DataType, Lane>::horizontalMin() const
     // noexcept { return std::min(_lower.horizontalMin(), _upper.horizontalMin()); }

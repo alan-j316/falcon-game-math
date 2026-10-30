@@ -317,7 +317,6 @@ namespace flcn
         ///+=+=+=+=+=+=+=+=+=+=+=+=+=
         ///    BITWISE OPERATIONS
         ///+=+=+=+=+=+=+=+=+=+=+=+=+=
-        // TODO: Add bitwise |=, &= ^= etc.
         /// @brief Perform bitwise NOT on the entire register.
         [[nodiscard]] constexpr Simd256 operator~() const noexcept;
 
@@ -333,10 +332,10 @@ namespace flcn
         /// @brief Perform bitwise OR between this register and @p other in-place.
         constexpr Simd256& operator|=(Simd256 other) noexcept;
 
-        /// @brief Perform bitwise OR between this register and @p other.
+        /// @brief Perform bitwise XOR between this register and @p other.
         [[nodiscard]] constexpr Simd256 operator^(Simd256 other) const noexcept;
 
-        /// @brief Perform bitwise OR between this register and @p other in-place.
+        /// @brief Perform bitwise XOR between this register and @p other in-place.
         constexpr Simd256& operator^=(Simd256 other) noexcept;
 
         /// @brief Perform a bitwise `and_not` combination between this register and @p other.
@@ -758,18 +757,18 @@ namespace flcn
         [[nodiscard]] constexpr Simd256 blend(Simd256 other) const noexcept;
 
 
-        //     /**
-        //      * Shuffle the values as per given index.
-        //      *
-        //      * @tparam ShuffleIndex The indices to use for shuffling. Only accepts values from 0 to Lane - 1.
-        //      *                      Must be specified from lower index to higher index,
-        //      *                      i.e, <0, 1, 2, 3> returns a copy of the same register.
-        //      *
-        //      * @return A new Simd register with shuffled values.
-        //      */
-        //     template <uint8_t... ShuffleIndex>
-        //     [[nodiscard]] constexpr Simd256 shuffle() const noexcept;
-        //
+        /**
+         * Shuffle the values as per given index.
+         *
+         * @tparam ShuffleIndex The indices to use for shuffling. Only accepts values from 0 to Lane - 1.
+         *                      Must be specified from lower index to higher index,
+         *                      i.e, <0, 1, 2, 3> returns a copy of the same register.
+         *
+         * @return A new Simd register with shuffled values.
+         */
+        template <uint8_t... ShuffleIndex>
+        [[nodiscard]] constexpr Simd256 shuffle() const noexcept;
+
 
 
         /// @brief Get the internal register used by Simd256.

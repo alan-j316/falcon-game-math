@@ -334,11 +334,14 @@ namespace flcn
         /// @brief Perform bitwise OR between this register and @p other.
         [[nodiscard]] constexpr Simd256 operator|(Simd256 other) const noexcept;
 
-        /// @brief Perform bitwise OR between this register and @p other.
+        /// @brief Perform bitwise OR between this register and @p other in-place.
         constexpr Simd256& operator|=(Simd256 other) noexcept;
 
         /// @brief Perform bitwise XOR between this register and @p other.
         [[nodiscard]] constexpr Simd256 operator^(Simd256 other) const noexcept;
+
+        /// @brief Perform bitwise XOR between this register and @p other in-place.
+        [[nodiscard]] constexpr Simd256 operator^=(Simd256 other) noexcept;
 
         /// @brief Perform a bitwise `and_not` combination between this register and @p other.
         /// @note  Faster than manually doing (~RegA & RegB) since this executes only a single SIMD instruction.

@@ -330,6 +330,9 @@ namespace flcn
         /// @brief Perform bitwise OR between this register and @p other.
         [[nodiscard]] constexpr Simd256 operator|(Simd256 other) const noexcept;
 
+        /// @brief Perform bitwise OR between this register and @p other in-place.
+        constexpr Simd256& operator|=(Simd256 other) noexcept;
+
         /// @brief Perform bitwise OR between this register and @p other.
         [[nodiscard]] constexpr Simd256 operator^(Simd256 other) const noexcept;
 

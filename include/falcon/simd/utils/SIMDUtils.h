@@ -161,7 +161,7 @@ namespace flcn::simd
      * @param mask The 32-bit mask to expand/unfold.
      * @return A custom @ref uint128_t type with the expanded values.
      */
-    constexpr uint128_t expandFourFold(BlendMask32_t mask)
+    constexpr u128 expandFourFold(BlendMask32_t mask)
     {
         const auto expandByFour = [&]<size_t... Index>(size_t Offset, std::index_sequence<Index...>) -> size_t {
             constexpr size_t trueMask  = 0b1111ULL;
@@ -175,7 +175,7 @@ namespace flcn::simd
 #undef __FLCN_EXP4_MASKED_EXTRACT
         };
 
-        return uint128_t{ .upper = expandByFour(16, std::make_index_sequence<16>{}),
+        return u128{ .upper = expandByFour(16, std::make_index_sequence<16>{}),
                           .lower = expandByFour(0, std::make_index_sequence<16>{}) };
     }
 

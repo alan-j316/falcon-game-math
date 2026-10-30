@@ -42,7 +42,7 @@ namespace flcn
 
     //========================== CUSTOM INTEGRAL TYPES ==========================
     /// Structure for holding 128-bit integers(Emulated)
-    struct uint128_t
+    struct u128
     {
         uint64_t upper;
         uint64_t lower;

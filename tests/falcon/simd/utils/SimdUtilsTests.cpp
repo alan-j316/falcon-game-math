@@ -38,22 +38,22 @@ namespace
     {};
 
     /// @brief Test fixture for @ref flcn::expandFourFolds.
-    class ExpandFourFoldTests: public testing::TestWithParam<std::pair<flcn::BlendMask32_t, flcn::uint128_t>>
+    class ExpandFourFoldTests: public testing::TestWithParam<std::pair<flcn::BlendMask32_t, flcn::u128>>
     {};
 
     INSTANTIATE_TEST_SUITE_P(
         ExpandFourFoldTests, ExpandFourFoldTests,
         testing::Values(
-            std::make_pair(0x0000FFFF, flcn::uint128_t{ .upper = 0x0000000000000000, .lower = 0xFFFFFFFFFFFFFFFF }),
-            std::make_pair(0xFFFFFFFF, flcn::uint128_t{ .upper = 0xFFFFFFFFFFFFFFFF, .lower = 0xFFFFFFFFFFFFFFFF }),
-            std::make_pair(0x00000000, flcn::uint128_t{ .upper = 0x0000000000000000, .lower = 0x0000000000000000 }),
-            std::make_pair(0xFFFF0000, flcn::uint128_t{ .upper = 0xFFFFFFFFFFFFFFFF, .lower = 0x0000000000000000 }),
-            std::make_pair(0x0F0F0F0F, flcn::uint128_t{ .upper = 0x0000FFFF0000FFFF, .lower = 0x0000FFFF0000FFFF }),
-            std::make_pair(0xF0F0F0F0, flcn::uint128_t{ .upper = 0xFFFF0000FFFF0000, .lower = 0xFFFF0000FFFF0000 }),
-            std::make_pair(0x79151FEE, flcn::uint128_t{ .upper = 0x0FFFF00F000F0F0F, .lower = 0x000FFFFFFFF0FFF0 }),
-            std::make_pair(0x2AC1FC11, flcn::uint128_t{ .upper = 0x00F0F0F0FF00000F, .lower = 0xFFFFFF00000F000F }),
-            std::make_pair(0xB8A6A044, flcn::uint128_t{ .upper = 0xF0FFF000F0F00FF0, .lower = 0xF0F000000F000F00 }),
-            std::make_pair(0xFE8D8D40, flcn::uint128_t{ .upper = 0xFFFFFFF0F000FF0F, .lower = 0xF000FF0F0F000000 })));
+            std::make_pair(0x0000FFFF, flcn::u128{ .upper = 0x0000000000000000, .lower = 0xFFFFFFFFFFFFFFFF }),
+            std::make_pair(0xFFFFFFFF, flcn::u128{ .upper = 0xFFFFFFFFFFFFFFFF, .lower = 0xFFFFFFFFFFFFFFFF }),
+            std::make_pair(0x00000000, flcn::u128{ .upper = 0x0000000000000000, .lower = 0x0000000000000000 }),
+            std::make_pair(0xFFFF0000, flcn::u128{ .upper = 0xFFFFFFFFFFFFFFFF, .lower = 0x0000000000000000 }),
+            std::make_pair(0x0F0F0F0F, flcn::u128{ .upper = 0x0000FFFF0000FFFF, .lower = 0x0000FFFF0000FFFF }),
+            std::make_pair(0xF0F0F0F0, flcn::u128{ .upper = 0xFFFF0000FFFF0000, .lower = 0xFFFF0000FFFF0000 }),
+            std::make_pair(0x79151FEE, flcn::u128{ .upper = 0x0FFFF00F000F0F0F, .lower = 0x000FFFFFFFF0FFF0 }),
+            std::make_pair(0x2AC1FC11, flcn::u128{ .upper = 0x00F0F0F0FF00000F, .lower = 0xFFFFFF00000F000F }),
+            std::make_pair(0xB8A6A044, flcn::u128{ .upper = 0xF0FFF000F0F00FF0, .lower = 0xF0F000000F000F00 }),
+            std::make_pair(0xFE8D8D40, flcn::u128{ .upper = 0xFFFFFFF0F000FF0F, .lower = 0xF000FF0F0F000000 })));
 
     template <typename>
     class GetAllOnesTests: public testing::Test

@@ -288,7 +288,7 @@ TYPED_TEST(Simd128BitwiseOperationTests, BitwiseXor_ReturnsAValidResult)
 }
 
 
-TYPED_TEST(Simd128BitwiseOperationTests, BitwiseXorEquals_PerformsOROperationInPlace)
+TYPED_TEST(Simd128BitwiseOperationTests, BitwiseXorEquals_PerformsXOROperationInPlace)
 {
     using Type            = TypeParam::Type;
     constexpr size_t Lane = TypeParam::VALUE;

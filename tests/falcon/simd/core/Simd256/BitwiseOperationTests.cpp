@@ -39,8 +39,10 @@ namespace
         {
             constexpr auto max = std::numeric_limits<typename T::Type>::max();
             constexpr auto min = std::numeric_limits<typename T::Type>::min();
-            lhsData            = { max, min, min, max, 5, 11, 15, 3, 1, 2, 5, 12, 14, 3, 15, 12, max, min, min, max, 5, 11, 15, 3, 1, 2, 5, 12, 14, 3, 15, 12 };
-            rhsData            = { min, max, min, max, 5, 11, 3, 28, 2, 7, 5, 6, 4, 11, 4, 6,  min, max, min, max, 5, 11, 3, 28, 2, 7, 5, 6, 4, 11, 4, 6 };
+            lhsData            = { max, min, min, max, 5, 11, 15, 3, 1, 2, 5, 12, 14, 3, 15, 12,
+                                   max, min, min, max, 5, 11, 15, 3, 1, 2, 5, 12, 14, 3, 15, 12 };
+            rhsData            = { min, max, min, max, 5, 11, 3, 28, 2, 7, 5, 6, 4, 11, 4, 6,
+                                   min, max, min, max, 5, 11, 3, 28, 2, 7, 5, 6, 4, 11, 4, 6 };
         }
     };
     TYPED_TEST_SUITE(Simd256BitwiseOperationTests, Simd256RegisterTypeHints);
@@ -129,6 +131,46 @@ TYPED_TEST(Simd256BitwiseOperationTests, BitwiseAnd_ReturnsAValidResult)
     }
 }
 
+//
+// TYPED_TEST(Simd256BitwiseOperationTests, BitwiseAndEquals_PerformsANDOperationInPlace)
+// {
+//     using Type            = TypeParam::Type;
+//     constexpr size_t Lane = TypeParam::VALUE;
+//
+//     alignas(32) std::array<Type, Lane> lhs{}, rhs{}, expected{}, result{};
+//     for (size_t i = 0; i < Lane; ++i)
+//     {
+//         lhs[i] = this->lhsData[i];
+//         rhs[i] = this->rhsData[i];
+//         // Since float and doubles don't have a NOT supported we need to bit cast it to integral types
+//         // and cast it back.
+//         if constexpr (std::is_same_v<double, Type>)
+//         {
+//             expected[i] = std::bit_cast<double>(std::bit_cast<uint64_t>(lhs[i]) & std::bit_cast<uint64_t>(rhs[i]));
+//         }
+//         else if constexpr (std::is_same_v<float, Type>)
+//         {
+//             expected[i] = std::bit_cast<float>(std::bit_cast<uint32_t>(lhs[i]) & std::bit_cast<uint32_t>(rhs[i]));
+//         }
+//         else
+//         {
+//             expected[i] = lhs[i] & rhs[i];
+//         }
+//     }
+//
+//     flcn::Simd256_t<Type, Lane> regA{}, regB{};
+//     regA.loadAligned(lhs.data());
+//     regB.loadAligned(rhs.data());
+//     regA &= regB;
+//
+//     regA.storeAligned(result.data());
+//
+//     for (size_t i = 0; i < Lane; ++i)
+//     {
+//         EXPECT_ANY_EQ(expected[i], result[i]);
+//     }
+// }
+
 
 TYPED_TEST(Simd256BitwiseOperationTests, BitwiseOr_ReturnsAValidResult)
 {
@@ -171,6 +213,46 @@ TYPED_TEST(Simd256BitwiseOperationTests, BitwiseOr_ReturnsAValidResult)
 }
 
 
+// TYPED_TEST(Simd256BitwiseOperationTests, BitwiseOrEquals_PerformsOROperationInPlace)
+// {
+//     using Type            = TypeParam::Type;
+//     constexpr size_t Lane = TypeParam::VALUE;
+//
+//     alignas(32) std::array<Type, Lane> lhs{}, rhs{}, expected{}, result{};
+//     for (size_t i = 0; i < Lane; ++i)
+//     {
+//         lhs[i] = this->lhsData[i];
+//         rhs[i] = this->rhsData[i];
+//         // Since float and doubles don't have a NOT supported we need to bit cast it to integral types
+//         // and cast it back.
+//         if constexpr (std::is_same_v<double, Type>)
+//         {
+//             expected[i] = std::bit_cast<double>(std::bit_cast<uint64_t>(lhs[i]) | std::bit_cast<uint64_t>(rhs[i]));
+//         }
+//         else if constexpr (std::is_same_v<float, Type>)
+//         {
+//             expected[i] = std::bit_cast<float>(std::bit_cast<uint32_t>(lhs[i]) | std::bit_cast<uint32_t>(rhs[i]));
+//         }
+//         else
+//         {
+//             expected[i] = lhs[i] | rhs[i];
+//         }
+//     }
+//
+//     flcn::Simd256_t<Type, Lane> regA{}, regB{};
+//     regA.loadAligned(lhs.data());
+//     regB.loadAligned(rhs.data());
+//     regA |= regB;
+//
+//     regA.storeAligned(result.data());
+//
+//     for (size_t i = 0; i < Lane; ++i)
+//     {
+//         EXPECT_ANY_EQ(expected[i], result[i]);
+//     }
+// }
+
+
 TYPED_TEST(Simd256BitwiseOperationTests, BitwiseXor_ReturnsAValidResult)
 {
     using Type            = TypeParam::Type;
@@ -210,6 +292,46 @@ TYPED_TEST(Simd256BitwiseOperationTests, BitwiseXor_ReturnsAValidResult)
         EXPECT_ANY_EQ(expected[i], result[i]);
     }
 }
+
+
+// TYPED_TEST(Simd256BitwiseOperationTests, BitwiseXorEquals_PerformsXOROperationInPlace)
+// {
+//     using Type            = TypeParam::Type;
+//     constexpr size_t Lane = TypeParam::VALUE;
+//
+//     alignas(32) std::array<Type, Lane> lhs{}, rhs{}, expected{}, result{};
+//     for (size_t i = 0; i < Lane; ++i)
+//     {
+//         lhs[i] = this->lhsData[i];
+//         rhs[i] = this->rhsData[i];
+//         // Since float and doubles don't have a NOT supported we need to bit cast it to integral types
+//         // and cast it back.
+//         if constexpr (std::is_same_v<double, Type>)
+//         {
+//             expected[i] = std::bit_cast<double>(std::bit_cast<uint64_t>(lhs[i]) ^ std::bit_cast<uint64_t>(rhs[i]));
+//         }
+//         else if constexpr (std::is_same_v<float, Type>)
+//         {
+//             expected[i] = std::bit_cast<float>(std::bit_cast<uint32_t>(lhs[i]) ^ std::bit_cast<uint32_t>(rhs[i]));
+//         }
+//         else
+//         {
+//             expected[i] = lhs[i] ^ rhs[i];
+//         }
+//     }
+//
+//     flcn::Simd256_t<Type, Lane> regA{}, regB{};
+//     regA.loadAligned(lhs.data());
+//     regB.loadAligned(rhs.data());
+//     regA ^= regB;
+//
+//     regA.storeAligned(result.data());
+//
+//     for (size_t i = 0; i < Lane; ++i)
+//     {
+//         EXPECT_ANY_EQ(expected[i], result[i]);
+//     }
+// }
 
 
 /// @test Verify that bitwise andnot(~a & b) returns a valid vector(register).
@@ -369,7 +491,7 @@ TYPED_TEST(Simd256BitwiseOperationTests, HorizontalAND_ReturnsAValidScalar)
                 }                                                                                                      \
             }                                                                                                          \
                                                                                                                        \
-            flcn::Simd256_t<Type, Lane> reg{ data };                                                                 \
+            flcn::Simd256_t<Type, Lane> reg{ data };                                                                   \
                                                                                                                        \
             auto regRes = reg << ShiftAmount;                                                                          \
             regRes.storeAligned(result.data());                                                                        \
@@ -419,7 +541,7 @@ TEST_SIMD256_SHIFT_LEFT_WITH_DIFFERENT_SHIFT_SIZES(31)
                 }                                                                                                      \
             }                                                                                                          \
                                                                                                                        \
-            flcn::Simd256_t<Type, Lane> reg{ data };                                                                 \
+            flcn::Simd256_t<Type, Lane> reg{ data };                                                                   \
                                                                                                                        \
             reg <<= ShiftAmount;                                                                                       \
             reg.storeAligned(result.data());                                                                           \
@@ -468,7 +590,7 @@ TEST_SIMD256_SHIFT_LEFT_EQUALS_WITH_DIFFERENT_SHIFT_SIZES(31)
                 }                                                                                                      \
             }                                                                                                          \
                                                                                                                        \
-            flcn::Simd256_t<Type, Lane> reg{ data };                                                                 \
+            flcn::Simd256_t<Type, Lane> reg{ data };                                                                   \
                                                                                                                        \
             auto regRes = reg >> ShiftAmount;                                                                          \
             regRes.storeAligned(result.data());                                                                        \
@@ -522,7 +644,7 @@ TEST_SIMD256_SHIFT_RIGHT_ARITHMETIC_WITH_DIFFERENT_SHIFT_SIZES(31)
                 }                                                                                                      \
             }                                                                                                          \
                                                                                                                        \
-            flcn::Simd256_t<Type, Lane> reg{ data };                                                                 \
+            flcn::Simd256_t<Type, Lane> reg{ data };                                                                   \
                                                                                                                        \
             reg >>= ShiftAmount;                                                                                       \
             reg.storeAligned(result.data());                                                                           \
@@ -576,7 +698,7 @@ TEST_SIMD256_SHIFT_RIGHT_EQUALS_ARITHMETIC_WITH_DIFFERENT_SHIFT_SIZES(31)
                 }                                                                                                      \
             }                                                                                                          \
                                                                                                                        \
-            flcn::Simd256_t<Type, Lane> reg{ data };                                                                 \
+            flcn::Simd256_t<Type, Lane> reg{ data };                                                                   \
                                                                                                                        \
             auto resultReg = reg.shiftRightLogical(ShiftAmount);                                                       \
             resultReg.storeAligned(result.data());                                                                     \
@@ -626,7 +748,7 @@ TEST_SIMD256_SHIFT_RIGHT_LOGICAL_WITH_DIFFERENT_SHIFT_SIZES(31)
                 }                                                                                                      \
             }                                                                                                          \
                                                                                                                        \
-            flcn::Simd256_t<Type, Lane> reg{ data };                                                                 \
+            flcn::Simd256_t<Type, Lane> reg{ data };                                                                   \
                                                                                                                        \
             auto regRes = reg.template shiftLeft<ShiftAmount>();                                                       \
             regRes.storeAligned(result.data());                                                                        \
@@ -676,7 +798,7 @@ TEST_SIMD256_CONST_SHIFT_LEFT_WITH_DIFFERENT_SHIFT_SIZES(31)
                 }                                                                                                      \
             }                                                                                                          \
                                                                                                                        \
-            flcn::Simd256_t<Type, Lane> reg{ data };                                                                 \
+            flcn::Simd256_t<Type, Lane> reg{ data };                                                                   \
                                                                                                                        \
             auto regRes = reg.template shiftRightArithmetic<ShiftAmount>();                                            \
             regRes.storeAligned(result.data());                                                                        \
@@ -731,7 +853,7 @@ TEST_SIMD256_CONST_SHIFT_RIGHT_ARITHMETIC_WITH_DIFFERENT_SHIFT_SIZES(31)
                 }                                                                                                      \
             }                                                                                                          \
                                                                                                                        \
-            flcn::Simd256_t<Type, Lane> reg{ data };                                                                 \
+            flcn::Simd256_t<Type, Lane> reg{ data };                                                                   \
                                                                                                                        \
             auto resultReg = reg.template shiftRightLogical<ShiftAmount>();                                            \
             resultReg.storeAligned(result.data());                                                                     \

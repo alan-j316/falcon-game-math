@@ -288,42 +288,42 @@ TYPED_TEST(Simd128BitwiseOperationTests, BitwiseXor_ReturnsAValidResult)
 }
 
 
-// TYPED_TEST(Simd128BitwiseOperationTests, BitwiseXorEquals_PerformsOROperationInPlace)
-// {
-//     using Type            = TypeParam::Type;
-//     constexpr size_t Lane = TypeParam::VALUE;
-//
-//     alignas(16) std::array<Type, Lane> lhs{}, rhs{}, expected{}, result{};
-//     for (size_t i = 0; i < Lane; ++i)
-//     {
-//         lhs[i] = this->lhsData[i];
-//         rhs[i] = this->rhsData[i];
-//         // Since float and doubles don't have a NOT supported we need to bit cast it to integral types
-//         // and cast it back.
-//         if constexpr (std::is_same_v<double, Type>)
-//         {
-//             expected[i] = std::bit_cast<double>(std::bit_cast<uint64_t>(lhs[i]) ^ std::bit_cast<uint64_t>(rhs[i]));
-//         }
-//         else if constexpr (std::is_same_v<float, Type>)
-//         {
-//             expected[i] = std::bit_cast<float>(std::bit_cast<uint32_t>(lhs[i]) ^ std::bit_cast<uint32_t>(rhs[i]));
-//         }
-//         else
-//         {
-//             expected[i] = lhs[i] ^ rhs[i];
-//         }
-//     }
-//
-//     flcn::Simd128_t<Type, Lane> regA{lhs}, regB{rhs};
-//     regA ^= regB;
-//
-//     regA.storeAligned(result.data());
-//
-//     for (size_t i = 0; i < Lane; ++i)
-//     {
-//         EXPECT_ANY_EQ(expected[i], result[i]);
-//     }
-// }
+TYPED_TEST(Simd128BitwiseOperationTests, BitwiseXorEquals_PerformsOROperationInPlace)
+{
+    using Type            = TypeParam::Type;
+    constexpr size_t Lane = TypeParam::VALUE;
+
+    alignas(16) std::array<Type, Lane> lhs{}, rhs{}, expected{}, result{};
+    for (size_t i = 0; i < Lane; ++i)
+    {
+        lhs[i] = this->lhsData[i];
+        rhs[i] = this->rhsData[i];
+        // Since float and doubles don't have a NOT supported we need to bit cast it to integral types
+        // and cast it back.
+        if constexpr (std::is_same_v<double, Type>)
+        {
+            expected[i] = std::bit_cast<double>(std::bit_cast<uint64_t>(lhs[i]) ^ std::bit_cast<uint64_t>(rhs[i]));
+        }
+        else if constexpr (std::is_same_v<float, Type>)
+        {
+            expected[i] = std::bit_cast<float>(std::bit_cast<uint32_t>(lhs[i]) ^ std::bit_cast<uint32_t>(rhs[i]));
+        }
+        else
+        {
+            expected[i] = lhs[i] ^ rhs[i];
+        }
+    }
+
+    flcn::Simd128_t<Type, Lane> regA{lhs}, regB{rhs};
+    regA ^= regB;
+
+    regA.storeAligned(result.data());
+
+    for (size_t i = 0; i < Lane; ++i)
+    {
+        EXPECT_ANY_EQ(expected[i], result[i]);
+    }
+}
 
 
 /// @test Verify that bitwise andnot(~a & b) returns a valid vector(register).

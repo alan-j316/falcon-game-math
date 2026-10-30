@@ -892,6 +892,15 @@ namespace flcn
 
 
     template <typename DataType, size_t Lane>
+    FALCON_INLINE constexpr Simd128<SimdBackend::ARCH_SSE2, DataType, Lane>& Simd128<
+        SimdBackend::ARCH_SSE2, DataType, Lane>::operator^=(Simd128 other) noexcept
+    {
+        *this = *this ^ other;
+        return *this;
+    }
+
+
+    template <typename DataType, size_t Lane>
     constexpr Simd128<SimdBackend::ARCH_SSE2, DataType, Lane> Simd128<SimdBackend::ARCH_SSE2, DataType, Lane>::andNot(
         const Simd128 other) const noexcept
     {

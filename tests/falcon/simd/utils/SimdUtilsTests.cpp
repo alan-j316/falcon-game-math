@@ -11,12 +11,15 @@
 #include "CommonSetup.h"
 
 #include <falcon/simd/utils/SIMDUtils.h>
+#include <format>
 #include <gtest/gtest.h>
+
 
 /**
  * @addtogroup T_SIMD_Utils
  * @{
  */
+
 
 namespace
 {
@@ -37,9 +40,16 @@ namespace
     class PackedSizeCalculatorTests: public testing::TestWithParam<TestPackingParams>
     {};
 
-    /// @brief Test fixture for @ref flcn::expandFourFolds.
+
+
+    /// +-----------------------------------------------------------------------------------------------------------+
+    /// |                                   EXPAND BY FOUR TESTS                                                    |
+    /// +-----------------------------------------------------------------------------------------------------------+
+
+    /// @brief Test fixture for @ref flcn::expandFourFold.
     class ExpandFourFoldTests: public testing::TestWithParam<std::pair<flcn::BlendMask32_t, flcn::u128>>
     {};
+
 
     INSTANTIATE_TEST_SUITE_P(
         ExpandFourFoldTests, ExpandFourFoldTests,
@@ -53,7 +63,46 @@ namespace
             std::make_pair(0x79151FEE, flcn::u128{ .upper = 0x0FFFF00F000F0F0F, .lower = 0x000FFFFFFFF0FFF0 }),
             std::make_pair(0x2AC1FC11, flcn::u128{ .upper = 0x00F0F0F0FF00000F, .lower = 0xFFFFFF00000F000F }),
             std::make_pair(0xB8A6A044, flcn::u128{ .upper = 0xF0FFF000F0F00FF0, .lower = 0xF0F000000F000F00 }),
-            std::make_pair(0xFE8D8D40, flcn::u128{ .upper = 0xFFFFFFF0F000FF0F, .lower = 0xF000FF0F0F000000 })));
+            std::make_pair(0xFE8D8D40, flcn::u128{ .upper = 0xFFFFFFF0F000FF0F, .lower = 0xF000FF0F0F000000 })),
+        [](const testing::TestParamInfo<ExpandFourFoldTests::ParamType>& info) {
+            const auto inParam = info.param.first;
+            const auto upper   = info.param.second.upper;
+            const auto lower   = info.param.second.lower;
+            return std::format("{:#010X}_Returns_{:#018X}{:016X}", inParam, upper, lower);
+        });
+
+
+    /// +-----------------------------------------------------------------------------------------------------------+
+    /// |                                  EXPAND BY EIGHT TESTS                                                    |
+    /// +-----------------------------------------------------------------------------------------------------------+
+
+    /// @brief Test fixture for @ref flcn::expandEightFold.
+    class ExpandEightFoldTests: public testing::TestWithParam<std::pair<flcn::BlendMask32_t, flcn::u256>>
+    {};
+
+    INSTANTIATE_TEST_SUITE_P(ExpandEightFoldTests, ExpandEightFoldTests,
+                             // clang-format off
+        testing::Values(
+            std::make_pair(0x0000FFFF, flcn::u256{ .quad3 = 0x0000000000000000, .quad2 = 0x0000000000000000, .quad1 = 0xFFFFFFFFFFFFFFFF, .quad0 = 0xFFFFFFFFFFFFFFFF }),
+            std::make_pair(0xFFFFFFFF, flcn::u256{ .quad3 = 0xFFFFFFFFFFFFFFFF, .quad2 = 0xFFFFFFFFFFFFFFFF, .quad1 = 0xFFFFFFFFFFFFFFFF, .quad0 = 0xFFFFFFFFFFFFFFFF }),
+            std::make_pair(0x00000000, flcn::u256{ .quad3 = 0x0000000000000000, .quad2 = 0x0000000000000000, .quad1 = 0x0000000000000000, .quad0 = 0x0000000000000000 }),
+            std::make_pair(0xFFFF0000, flcn::u256{ .quad3 = 0xFFFFFFFFFFFFFFFF, .quad2 = 0xFFFFFFFFFFFFFFFF, .quad1 = 0x0000000000000000, .quad0 = 0x0000000000000000 }),
+            std::make_pair(0x0F0F0F0F, flcn::u256{ .quad3 = 0x00000000FFFFFFFF, .quad2 = 0x00000000FFFFFFFF, .quad1 = 0x00000000FFFFFFFF, .quad0 = 0x00000000FFFFFFFF }),
+            std::make_pair(0xF0F0F0F0, flcn::u256{ .quad3 = 0xFFFFFFFF00000000, .quad2 = 0xFFFFFFFF00000000, .quad1 = 0xFFFFFFFF00000000, .quad0 = 0xFFFFFFFF00000000 }),
+            std::make_pair(0xC467E58A, flcn::u256{ .quad3 = 0xFFFF000000FF0000, .quad2 = 0x00FFFF0000FFFFFF, .quad1 = 0xFFFFFF0000FF00FF, .quad0 = 0xFF000000FF00FF00 }),
+            std::make_pair(0xF2289174, flcn::u256{ .quad3 = 0xFFFFFFFF0000FF00, .quad2 = 0x0000FF00FF000000, .quad1 = 0xFF0000FF000000FF, .quad0 = 0x00FFFFFF00FF0000 }),
+            std::make_pair(0x8AA344C7, flcn::u256{ .quad3 = 0xFF000000FF00FF00, .quad2 = 0xFF00FF000000FFFF, .quad1 = 0x00FF000000FF0000, .quad0 = 0xFFFF000000FFFFFF }),
+            std::make_pair(0xAC728129, flcn::u256{ .quad3 = 0xFF00FF00FFFF0000, .quad2 = 0x00FFFFFF0000FF00, .quad1 = 0xFF000000000000FF, .quad0 = 0x0000FF00FF0000FF })),
+            [](const testing::TestParamInfo<ExpandEightFoldTests::ParamType>& info) {
+                const auto inParam = info.param.first;
+                const auto quad3   = info.param.second.quad3;
+                const auto quad2   = info.param.second.quad2;
+                const auto quad1   = info.param.second.quad1;
+                const auto quad0   = info.param.second.quad0;
+                return std::format("{:#010X}_Returns_{:#018X}{:016X}{:016X}{:016X}", inParam, quad3, quad2, quad1, quad0);
+        });
+    // clang-format on
+
 
     template <typename>
     class GetAllOnesTests: public testing::Test
@@ -95,13 +144,27 @@ namespace
                                       F, T, F, T, F, T>() == 0xAAAAAAAA);
 
 
-        /// @test Verify that @ref flcn::simd::expandFourFold returns a valid value expanded four fold
+        /// @test Verify that @ref flcn::simd::expandFourFold returns a valid value expanded four folds
         static_assert(expandFourFold(0x79151FEE).upper == 0x0FFFF00F000F0F0F);
         static_assert(expandFourFold(0x79151FEE).lower == 0x000FFFFFFFF0FFF0);
         static_assert(expandFourFold(0x0000FFFF).upper == 0x0000000000000000);
         static_assert(expandFourFold(0x0000FFFF).lower == 0xFFFFFFFFFFFFFFFF);
         static_assert(expandFourFold(0xFFFF0000).upper == 0xFFFFFFFFFFFFFFFF);
         static_assert(expandFourFold(0xFFFF0000).lower == 0x0000000000000000);
+
+        /// @test Verify that @ref flcn::simd::expandEightFold returns a valid value expanded eight folds
+        static_assert(expandEightFold(0xC467E58A).quad3 == 0xFFFF000000FF0000);
+        static_assert(expandEightFold(0xC467E58A).quad2 == 0x00FFFF0000FFFFFF);
+        static_assert(expandEightFold(0xC467E58A).quad1 == 0xFFFFFF0000FF00FF);
+        static_assert(expandEightFold(0xC467E58A).quad0 == 0xFF000000FF00FF00);
+        static_assert(expandEightFold(0x0000FFFF).quad3 == 0x0000000000000000);
+        static_assert(expandEightFold(0x0000FFFF).quad2 == 0x0000000000000000);
+        static_assert(expandEightFold(0x0000FFFF).quad1 == 0xFFFFFFFFFFFFFFFF);
+        static_assert(expandEightFold(0x0000FFFF).quad0 == 0xFFFFFFFFFFFFFFFF);
+        static_assert(expandEightFold(0xFFFF0000).quad3 == 0xFFFFFFFFFFFFFFFF);
+        static_assert(expandEightFold(0xFFFF0000).quad2 == 0xFFFFFFFFFFFFFFFF);
+        static_assert(expandEightFold(0xFFFF0000).quad1 == 0x0000000000000000);
+        static_assert(expandEightFold(0xFFFF0000).quad0 == 0x0000000000000000);
 
     } // namespace static_tests
 
@@ -195,6 +258,15 @@ TEST_P(ExpandFourFoldTests, ExpandsEachBitBy4TimesAndReturnsAValidPair)
 }
 
 
+TEST_P(ExpandEightFoldTests, ExpandsEachBitBy8TimesAndReturnsAValidPair)
+{
+    const auto [blendMask, expectedValue] = GetParam();
+    const auto value                      = flcn::simd::expandEightFold(blendMask);
+    EXPECT_EQ(expectedValue.quad3, value.quad3);
+    EXPECT_EQ(expectedValue.quad2, value.quad2);
+    EXPECT_EQ(expectedValue.quad1, value.quad1);
+    EXPECT_EQ(expectedValue.quad0, value.quad0);
+}
 
 /// =============================== START MAKE_BLEND_MASK_32 ===============================
 
@@ -252,8 +324,8 @@ TEST_SIMD_UTILS_MAKE_BLEND_MASK(SixteenLanes_EightBoolsWithAlternatingTrueFalse,
 TEST_SIMD_UTILS_MAKE_BLEND_MASK(SixteenLanes_EightBoolsWithAlternatingFalseTrue, 0x0000CCCC, 16, F, T, F, T, F, T, F, T)
 TEST_SIMD_UTILS_MAKE_BLEND_MASK(SixteenLanes_EightBoolsWithAllFalse, 0x00000000, 16, F, F, F, F, F, F, F, F)
 
-TEST_SIMD_UTILS_MAKE_BLEND_MASK(SixteenLanes_SixteenBoolsWithAllTrue, 0xFFFFFFFF, 16, T, T, T, T, T, T, T, T, T, T, T, T,
-                                T, T, T, T)
+TEST_SIMD_UTILS_MAKE_BLEND_MASK(SixteenLanes_SixteenBoolsWithAllTrue, 0xFFFFFFFF, 16, T, T, T, T, T, T, T, T, T, T, T,
+                                T, T, T, T, T)
 TEST_SIMD_UTILS_MAKE_BLEND_MASK(SixteenLanes_SixteenBoolsWithAlternatingTrueFalse, 0x33333333, 16, T, F, T, F, T, F, T,
                                 F, T, F, T, F, T, F, T, F)
 TEST_SIMD_UTILS_MAKE_BLEND_MASK(SixteenLanes_SixteenBoolsWithAlternatingFalseTrue, 0xCCCCCCCC, 16, F, T, F, T, F, T, F,
@@ -305,7 +377,7 @@ TEST_SIMD_UTILS_MAKE_BLEND_MASK(ThirtyTwo_ThirtyTwoBoolsWithAllFalse, 0x00000000
 #define TEST_SIMD_UTILS_PACK_TO_N_BITS(TestSuffix, BitCount, InputMask, ExpectedValue)                                 \
     TEST(PackToNBitsTests, ReturnsValidMask_WhenCompressedTo##TestSuffix)                                              \
     {                                                                                                                  \
-        const auto packed = flcn::simd::packToNBits<BitCount>(InputMask);                                            \
+        const auto packed = flcn::simd::packToNBits<BitCount>(InputMask);                                              \
         EXPECT_EQ(ExpectedValue, packed);                                                                              \
     }
 

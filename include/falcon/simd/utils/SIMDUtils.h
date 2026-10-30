@@ -201,10 +201,10 @@ namespace flcn::simd
         };
 
         // Take each 8 bit(8 iterations index sequence) and offset each by 8 bits to get the next quad part.
-        return u256{ .quad3 = expandByEight(8, std::make_index_sequence<8>{}),
-                     .quad2 = expandByEight(8, std::make_index_sequence<8>{}),
+        return u256{ .quad3 = expandByEight(24, std::make_index_sequence<8>{}),
+                     .quad2 = expandByEight(16, std::make_index_sequence<8>{}),
                      .quad1 = expandByEight(8, std::make_index_sequence<8>{}),
-                     .quad0 = expandByEight(8, std::make_index_sequence<8>{}) };
+                     .quad0 = expandByEight(0, std::make_index_sequence<8>{}) };
     }
 
 

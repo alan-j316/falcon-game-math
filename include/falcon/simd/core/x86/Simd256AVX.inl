@@ -2179,12 +2179,11 @@ namespace flcn
             }
             else // if constexpr (sizeof(DataType) == 1)
             {
-                // const auto [upper, lower] = simd::expandEightFold(Mask);
-
-                // Simd256 maskReg = _mm256_set_epi64x(upper, lower);
-                // return maskReg.andNot(*this) | (other & maskReg);
-                // TODO:
-                return Simd256();
+                // Expand the mask in a 256 bit register
+                constexpr auto mask = simd::expandEightFold(Mask);
+                const auto maskReg  = _mm256_set_epi64x(mask.quad3, mask.quad2, mask.quad1, mask.quad0);
+                // Blend using blendv
+                return Simd256(_mm256_blendv_epi8(_reg, *other, maskReg));
             }
         }
         else

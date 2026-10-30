@@ -338,6 +338,9 @@ namespace flcn
         /// @brief Perform bitwise AND between this register and @p other.
         [[nodiscard]] constexpr Simd128 operator&(Simd128 other) const noexcept;
 
+        /// @brief Perform bitwise AND between this register and @p other in-place.
+        constexpr Simd128& operator&=(Simd128 other) noexcept;
+
         /// @brief Perform bitwise OR between this register and @p other.
         [[nodiscard]] constexpr Simd128 operator|(Simd128 other) const noexcept;
 

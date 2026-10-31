@@ -28,8 +28,7 @@ namespace flcn
      *
      * @tparam DataType The word-width/data type of the register.
      * @tparam Lane     The number of data lanes. Must be a power of 2 and the total width in bits(size * Lane) must
-     be
-     *                  less than 256.
+     *                  be less than 256.
      */
     template <typename DataType, size_t Lane>
     struct alignas(32) Simd256<SimdBackend::ARCH_AVX, DataType, Lane>
@@ -767,6 +766,7 @@ namespace flcn
          * @return A new Simd register with shuffled values.
          */
         template <uint8_t... ShuffleIndex>
+            requires(sizeof...(ShuffleIndex) == Lane)
         [[nodiscard]] constexpr Simd256 shuffle() const noexcept;
 
 

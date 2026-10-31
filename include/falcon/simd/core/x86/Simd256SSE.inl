@@ -530,6 +530,7 @@ namespace flcn
 
     template <typename DataType, size_t Lane>
     template <uint8_t... ShuffleIndex>
+        requires(sizeof...(ShuffleIndex) == Lane)
     FALCON_INLINE constexpr Simd256<SimdBackend::ARCH_SSE2, DataType, Lane> Simd256<SimdBackend::ARCH_SSE2, DataType,
                                                                                     Lane>::shuffle() const noexcept
     {

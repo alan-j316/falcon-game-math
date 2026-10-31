@@ -770,6 +770,7 @@ namespace flcn
          * @return A new Simd register with shuffled values.
          */
         template <uint8_t... ShuffleIndex>
+            requires(sizeof...(ShuffleIndex) == Lane)
         [[nodiscard]] constexpr Simd256 shuffle() const noexcept;
 
 

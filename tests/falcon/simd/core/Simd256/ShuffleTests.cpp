@@ -113,57 +113,71 @@ namespace
         //     Array<U16, 16>{ { max<U16>, min<U16>, 13, 15, 32, 15, 71, 44, max<U16>, min<U16>, 13, 15, 32, 15, 71, 44 } },
         //     0, 1, 2, 3, 4, 5, 6, 7, 8, 9, 10, 11, 12, 13, 14, 15
         // >,
-        // Simd256ShuffleTestParam<
-        //     U32, 8,
-        //     Array<U32, 8>{ { max<U32>, min<U32>, 13, 15, 32, 15, 71, 44 } },
-        //     Array<U32, 8>{ { max<U32>, max<U32>, max<U32>, max<U32>, max<U32>, max<U32>, max<U32>, max<U32> } },
-        //     0, 0, 0, 0, 0, 0, 0, 0
-        // >,
-        // // Within the 128-bit lanes
-        // Simd256ShuffleTestParam<
-        //     U32, 8,
-        //     Array<U32, 8>{ { max<U32>, min<U32>, 13, 15, 32, 15, 71, 44 } },
-        //     Array<U32, 8>{ { 15, 13, min<U32>, max<U32> , 44, 71, 15, 32 } },
-        //     3, 2, 1, 0, 7, 6, 5, 4
-        // >,
-        // Simd256ShuffleTestParam<
-        //     U32, 8,
-        //     Array<U32, 8>{ { max<U32>, min<U32>, 13, 15, 32, 15, 71, 44 } },
-        //     Array<U32, 8>{ { 44, 44, 44, 44, 44, 44, 44, 44 } },
-        //     7, 7, 7, 7, 7, 7, 7, 7
-        // >,
-        // Simd256ShuffleTestParam<
-        //     U32, 8,
-        //     Array<U32, 8>{ { max<U32>, min<U32>, 13, 15, 32, 15, 71, 44 } },
-        //     Array<U32, 8>{ { 44, 71, 15, 32, 15, 13, min<U32>, max<U32> } },
-        //     7, 6, 5, 4, 3, 2, 1, 0
-        // >,
-        // Simd256ShuffleTestParam<
-        //     U64, 4,
-        //     Array<U64, 4>{ { max<U64>, min<U64>, 13, 15 } },
-        //     Array<U64, 4>{ { max<U64>, max<U64>, max<U64>, max<U64> } },
-        //     0, 0, 0, 0
-        // >,
-        // // Within the 128-bit lanes
-        // Simd256ShuffleTestParam<
-        //     U64, 4,
-        //     Array<U64, 4>{ { max<U64>, min<U64>, 13, 15 } },
-        //     Array<U64, 4>{ { min<U64>, max<U64>, 15, 13 } },
-        //     1, 0, 3, 2
-        // >,
-        // Simd256ShuffleTestParam<
-        //     U64, 4,
-        //     Array<U64, 4>{ { max<U64>, min<U64>, 13, 15 } },
-        //     Array<U64, 4>{ { 15, 13, min<U64>, max<U64> } },
-        //     3, 2, 1, 0
-        // >,
-        // Simd256ShuffleTestParam<
-        //     U64, 4,
-        //     Array<U64, 4>{ { max<U64>, min<U64>, 13, 15 } },
-        //     Array<U64, 4>{ { max<U64>, min<U64>, 13, 15 } },
-        //     0, 1, 2, 3
-        // >,
-        //
+        Simd256ShuffleTestParam<
+            U32, 8,
+            Array<U32, 8>{ { max<U32>, min<U32>, 13, 15, 32, 15, 71, 44 } },
+            Array<U32, 8>{ { max<U32>, max<U32>, max<U32>, max<U32>, max<U32>, max<U32>, max<U32>, max<U32> } },
+            0, 0, 0, 0, 0, 0, 0, 0
+        >,
+        // Within the 128-bit lanes
+        Simd256ShuffleTestParam<
+            U32, 8,
+            Array<U32, 8>{ { max<U32>, min<U32>, 13, 15, 32, 15, 71, 44 } },
+            Array<U32, 8>{ { 15, 13, min<U32>, max<U32> , 44, 71, 15, 32 } },
+            3, 2, 1, 0, 7, 6, 5, 4
+        >,
+        // Within the 128-bit lanes but different indices
+        Simd256ShuffleTestParam<
+            U32, 8,
+            Array<U32, 8>{ { max<U32>, min<U32>, 13, 15, 32, 15, 71, 44 } },
+            Array<U32, 8>{ { 15, 13, min<U32>, max<U32> , 15, 32, 44, 71 } },
+            3, 2, 1, 0, 5, 4, 7, 6
+        >,
+        Simd256ShuffleTestParam<
+            U32, 8,
+            Array<U32, 8>{ { max<U32>, min<U32>, 13, 15, 32, 15, 71, 44 } },
+            Array<U32, 8>{ { 44, 44, 44, 44, 44, 44, 44, 44 } },
+            7, 7, 7, 7, 7, 7, 7, 7
+        >,
+        Simd256ShuffleTestParam<
+            U32, 8,
+            Array<U32, 8>{ { max<U32>, min<U32>, 13, 15, 32, 15, 71, 44 } },
+            Array<U32, 8>{ { 44, 71, 15, 32, 15, 13, min<U32>, max<U32> } },
+            7, 6, 5, 4, 3, 2, 1, 0
+        >,
+        Simd256ShuffleTestParam<
+            U64, 4,
+            Array<U64, 4>{ { max<U64>, min<U64>, 13, 15 } },
+            Array<U64, 4>{ { max<U64>, max<U64>, max<U64>, max<U64> } },
+            0, 0, 0, 0
+        >,
+        // Within the 128-bit lanes
+        Simd256ShuffleTestParam<
+            U64, 4,
+            Array<U64, 4>{ { max<U64>, min<U64>, 13, 15 } },
+            Array<U64, 4>{ { min<U64>, max<U64>, 15, 13 } },
+            1, 0, 3, 2
+        >,
+        // Within the 128-bit lanes
+        Simd256ShuffleTestParam<
+            U64, 4,
+            Array<U64, 4>{ { max<U64>, min<U64>, 13, 15 } },
+            Array<U64, 4>{ { min<U64>, max<U64>, 13, 15 } },
+            1, 0, 2, 3
+        >,
+        Simd256ShuffleTestParam<
+            U64, 4,
+            Array<U64, 4>{ { max<U64>, min<U64>, 13, 15 } },
+            Array<U64, 4>{ { 15, 13, min<U64>, max<U64> } },
+            3, 2, 1, 0
+        >,
+        Simd256ShuffleTestParam<
+            U64, 4,
+            Array<U64, 4>{ { max<U64>, min<U64>, 13, 15 } },
+            Array<U64, 4>{ { max<U64>, min<U64>, 13, 15 } },
+            0, 1, 2, 3
+        >,
+
         // // Signed types
         // Simd256ShuffleTestParam<
         //     I8, 32,
@@ -222,56 +236,70 @@ namespace
         //     Array<I16, 16>{ { max<I16>, min<I16>, 13, 15, 32, 15, 71, 44, max<I16>, min<I16>, 13, 15, 32, 15, 71, 44 } },
         //     0, 1, 2, 3, 4, 5, 6, 7, 8, 9, 10, 11, 12, 13, 14, 15
         // >,
-        // Simd256ShuffleTestParam<
-        //     I32, 8,
-        //     Array<I32, 8>{ { max<I32>, min<I32>, 13, 15, 32, 15, 71, 44 } },
-        //     Array<I32, 8>{ { max<I32>, max<I32>, max<I32>, max<I32>, max<I32>, max<I32>, max<I32>, max<I32> } },
-        //     0, 0, 0, 0, 0, 0, 0, 0
-        // >,
-        // // Within the 128-bit lanes
-        // Simd256ShuffleTestParam<
-        //     I32, 8,
-        //     Array<I32, 8>{ { max<I32>, min<I32>, 13, 15, 32, 15, 71, 44 } },
-        //     Array<I32, 8>{ { 15, 13, min<I32>, max<I32> , 44, 71, 15, 32 } },
-        //     3, 2, 1, 0, 7, 6, 5, 4
-        // >,
-        // Simd256ShuffleTestParam<
-        //     I32, 8,
-        //     Array<I32, 8>{ { max<I32>, min<I32>, 13, 15, 32, 15, 71, 44 } },
-        //     Array<I32, 8>{ { 44, 44, 44, 44, 44, 44, 44, 44 } },
-        //     7, 7, 7, 7, 7, 7, 7, 7
-        // >,
-        // Simd256ShuffleTestParam<
-        //     I32, 8,
-        //     Array<I32, 8>{ { max<I32>, min<I32>, 13, 15, 32, 15, 71, 44 } },
-        //     Array<I32, 8>{ { 44, 71, 15, 32, 15, 13, min<I32>, max<I32> } },
-        //     7, 6, 5, 4, 3, 2, 1, 0
-        // >,
-        // Simd256ShuffleTestParam<
-        //     I64, 4,
-        //     Array<I64, 4>{ { max<I64>, min<I64>, 13, 15 } },
-        //     Array<I64, 4>{ { max<I64>, max<I64>, max<I64>, max<I64> } },
-        //     0, 0, 0, 0
-        // >,
-        // // Within the 128-bit lanes
-        // Simd256ShuffleTestParam<
-        //     I64, 4,
-        //     Array<I64, 4>{ { max<I64>, min<I64>, 13, 15 } },
-        //     Array<I64, 4>{ { min<I64>, max<I64>, 15, 13 } },
-        //     1, 0, 3, 2
-        // >,
-        // Simd256ShuffleTestParam<
-        //     I64, 4,
-        //     Array<I64, 4>{ { max<I64>, min<I64>, 13, 15 } },
-        //     Array<I64, 4>{ { 15, 13, min<I64>, max<I64> } },
-        //     3, 2, 1, 0
-        // >,
-        // Simd256ShuffleTestParam<
-        //     I64, 4,
-        //     Array<I64, 4>{ { max<I64>, min<I64>, 13, 15 } },
-        //     Array<I64, 4>{ { max<I64>, min<I64>, 13, 15 } },
-        //     0, 1, 2, 3
-        // >,
+        Simd256ShuffleTestParam<
+            I32, 8,
+            Array<I32, 8>{ { max<I32>, min<I32>, 13, 15, 32, 15, 71, 44 } },
+            Array<I32, 8>{ { max<I32>, max<I32>, max<I32>, max<I32>, max<I32>, max<I32>, max<I32>, max<I32> } },
+            0, 0, 0, 0, 0, 0, 0, 0
+        >,
+        // Within the 128-bit lanes
+        Simd256ShuffleTestParam<
+            I32, 8,
+            Array<I32, 8>{ { max<I32>, min<I32>, 13, 15, 32, 15, 71, 44 } },
+            Array<I32, 8>{ { 15, 13, min<I32>, max<I32> , 44, 71, 15, 32 } },
+            3, 2, 1, 0, 7, 6, 5, 4
+        >,
+        // Within the 128-bit lanes but different indices
+        Simd256ShuffleTestParam<
+            I32, 8,
+            Array<I32, 8>{ { max<I32>, min<I32>, 13, 15, 32, 15, 71, 44 } },
+            Array<I32, 8>{ { 15, 13, min<I32>, max<I32> , 15, 32, 44, 71 } },
+            3, 2, 1, 0, 5, 4, 7, 6
+        >,
+        Simd256ShuffleTestParam<
+            I32, 8,
+            Array<I32, 8>{ { max<I32>, min<I32>, 13, 15, 32, 15, 71, 44 } },
+            Array<I32, 8>{ { 44, 44, 44, 44, 44, 44, 44, 44 } },
+            7, 7, 7, 7, 7, 7, 7, 7
+        >,
+        Simd256ShuffleTestParam<
+            I32, 8,
+            Array<I32, 8>{ { max<I32>, min<I32>, 13, 15, 32, 15, 71, 44 } },
+            Array<I32, 8>{ { 44, 71, 15, 32, 15, 13, min<I32>, max<I32> } },
+            7, 6, 5, 4, 3, 2, 1, 0
+        >,
+        Simd256ShuffleTestParam<
+            I64, 4,
+            Array<I64, 4>{ { max<I64>, min<I64>, 13, 15 } },
+            Array<I64, 4>{ { max<I64>, max<I64>, max<I64>, max<I64> } },
+            0, 0, 0, 0
+        >,
+        // Within the 128-bit lanes
+        Simd256ShuffleTestParam<
+            I64, 4,
+            Array<I64, 4>{ { max<I64>, min<I64>, 13, 15 } },
+            Array<I64, 4>{ { min<I64>, max<I64>, 15, 13 } },
+            1, 0, 3, 2
+        >,
+        // Within the 128-bit lanes but with different indices
+        Simd256ShuffleTestParam<
+            I64, 4,
+            Array<I64, 4>{ { max<I64>, min<I64>, 13, 15 } },
+            Array<I64, 4>{ { min<I64>, max<I64>, 13, 15 } },
+            1, 0, 2, 3
+        >,
+        Simd256ShuffleTestParam<
+            I64, 4,
+            Array<I64, 4>{ { max<I64>, min<I64>, 13, 15 } },
+            Array<I64, 4>{ { 15, 13, min<I64>, max<I64> } },
+            3, 2, 1, 0
+        >,
+        Simd256ShuffleTestParam<
+            I64, 4,
+            Array<I64, 4>{ { max<I64>, min<I64>, 13, 15 } },
+            Array<I64, 4>{ { max<I64>, min<I64>, 13, 15 } },
+            0, 1, 2, 3
+        >,
 
         // Floating point types
         Simd256ShuffleTestParam<

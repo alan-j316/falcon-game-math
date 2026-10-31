@@ -2262,6 +2262,7 @@ namespace flcn
 
 
             // TODO: Remove
+            std::cout << "No change: " << requireNoPermute << '\n';
             std::cout << "No lane cross: " << noLaneCross << '\n';
             std::cout << "Same upper lower index: " << hasSameUpperAndLowerIndices << '\n';
 
@@ -2295,8 +2296,24 @@ namespace flcn
                         {
                             // Only first 4 indices are used since we can assume there is lane crossing
                             constexpr auto SHUFFLE_IDX = _MM_SHUFFLE(indices[3], indices[2], indices[1], indices[0]);
-                            // (indices[3] % 2) << 3 | (indices[2] % 2) << 2 | indices[1] << 1 | indices[0];
                             return Simd256(_mm256_permute_ps(_reg, SHUFFLE_IDX));
+                        }
+                        else if constexpr (sizeof(DataType) == 8)
+                        {
+                            // Since there is not shuffle for epi64 we can "stitch" together a epi32 shuffle
+                            // by shuffle the two adjacent 32-bit block to ith index and (i + 1)th index.
+                            // But since we are dealing with 2-bit imm8 we we need to multiply the indices by 2
+                            // So for moving from 0 -> 1, our final offset should be (1 * 2) + 1 and 1 * 2 or 3, 2.
+                            // [--1--, --0--] int64
+                            // [3, 2,   1, 0] int32
+                            constexpr auto SHUFFLE_IDX =
+                                _MM_SHUFFLE(indices[1] * 2 + 1, indices[1] * 2, indices[0] * 2 + 1, indices[0] * 2);
+                            return Simd256(_mm256_shuffle_epi32(_reg, SHUFFLE_IDX));
+                        }
+                        else if constexpr (sizeof(DataType) == 4)
+                        {
+                            constexpr auto SHUFFLE_IDX = _MM_SHUFFLE(indices[3], indices[2], indices[1], indices[0]);
+                            return Simd256(_mm256_shuffle_epi32(_reg, SHUFFLE_IDX));
                         }
                         else
                         {
@@ -2313,6 +2330,19 @@ namespace flcn
                                                               indices[3], indices[2], indices[1], indices[0]);
                             return Simd256(_mm256_permutevar8x32_ps(_reg, idx));
                         }
+                        else if constexpr (sizeof(DataType) == 8)
+                        {
+                            // TODO: May not be the optimal way
+                            constexpr auto SHUFFLE_IDX = _MM_SHUFFLE(indices[3], indices[2], indices[1], indices[0]);
+                            return Simd256(_mm256_permute4x64_epi64(_reg, SHUFFLE_IDX));
+                        }
+                        else if constexpr (sizeof(DataType) == 4)
+                        {
+                            // TODO: May not be the optimal way
+                            const auto idx = _mm256_set_epi32(indices[7], indices[6], indices[5], indices[4], indices[3],
+                                                              indices[2], indices[1], indices[0]);
+                            return Simd256(_mm256_permutevar8x32_epi32(_reg, idx));
+                        }
                         else
                         {
                             return Simd256(_mm256_setzero_si256());
@@ -2323,6 +2353,8 @@ namespace flcn
             else
             {
                 // If the boundary has been crossed then do shuffling
+                // NOTE: Mixed naming convention used to hint that one is fully
+                //       compile-time evaluated and one is runtime.
                 if constexpr (types::IsFP64<DataType>)
                 {
                     constexpr auto SHUFFLE_IDX = _MM_SHUFFLE(indices[3], indices[2], indices[1], indices[0]);
@@ -2333,6 +2365,17 @@ namespace flcn
                     const auto idx = _mm256_set_epi32(indices[7], indices[6], indices[5], indices[4], indices[3],
                                                       indices[2], indices[1], indices[0]);
                     return Simd256(_mm256_permutevar8x32_ps(_reg, idx));
+                }
+                else if constexpr (sizeof(DataType) == 8)
+                {
+                    constexpr auto SHUFFLE_IDX = _MM_SHUFFLE(indices[3], indices[2], indices[1], indices[0]);
+                    return Simd256(_mm256_permute4x64_epi64(_reg, SHUFFLE_IDX));
+                }
+                else if constexpr (sizeof(DataType) == 4)
+                {
+                    const auto idx = _mm256_set_epi32(indices[7], indices[6], indices[5], indices[4], indices[3],
+                                                      indices[2], indices[1], indices[0]);
+                    return Simd256(_mm256_permutevar8x32_epi32(_reg, idx));
                 }
                 else
                 {

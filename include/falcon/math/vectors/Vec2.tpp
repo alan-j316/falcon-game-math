@@ -661,7 +661,7 @@ namespace flcn
         requires SignedStrictArithmetic<T>
     {
         // Ax*By - Ay*Bx
-        const auto shuffled = rhs._data.template shuffle<1, 0>(); // [By, Bx]
+        const auto shuffled = rhs._data.template permute<1, 0>(); // [By, Bx]
         const auto product  = _data * shuffled;                   // [Ax*By, Ay*Bx]
         return product.horizontalSub();                           // Ax*By - Ay*Bx
     }

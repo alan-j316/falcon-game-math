@@ -770,16 +770,16 @@ namespace flcn
 
 
         /**
-         * Shuffle the values as per given index.
+         * @brief Permutates the values as per given indices.
          *
-         * @tparam ShuffleIndex The indices to use for shuffling. Only accepts values from 0 to Lane - 1.
+         * @tparam ShuffleIndex The indices to use for permutation. Only accepts values from 0 to Lane - 1.
          *                      Must be specified from lower index to higher index,
          *                      i.e, <0, 1, 2, 3> returns the same register.
          *
-         * @return A new Simd register with shuffled values.
+         * @return A new Simd register with permuted values.
          */
         template <uint8_t... ShuffleIndex>
-        [[nodiscard]] constexpr Simd128 shuffle() const noexcept;
+        [[nodiscard]] constexpr Simd128 permute() const noexcept;
 
 
         /// @brief Get the internal register used by Simd128.

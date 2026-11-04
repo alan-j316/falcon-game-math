@@ -532,9 +532,9 @@ namespace flcn
     template <uint8_t... ShuffleIndex>
         requires(sizeof...(ShuffleIndex) == Lane)
     FALCON_INLINE constexpr Simd256<SimdBackend::ARCH_SSE2, DataType, Lane> Simd256<SimdBackend::ARCH_SSE2, DataType,
-                                                                                    Lane>::shuffle() const noexcept
+                                                                                    Lane>::permute() const noexcept
     {
-        static_assert(sizeof...(ShuffleIndex) == Lane && "There must be <Lane> shuffle indices.");
+        static_assert(sizeof...(ShuffleIndex) == Lane && "There must be <Lane> permute indices.");
         static_assert(((ShuffleIndex < Lane) && ...) && "Indices must be between 0(inclusive) and <Lane>(exclusive).");
 
         // For shuffling we need to perform a normalized shuffle(range between 0 - Max_128_Lane_Count)
@@ -573,7 +573,7 @@ namespace flcn
 
         // Upper part of the register with lower and upper indices(hilo, lohi)
         auto shuffleUpper = [&]<size_t Offset, size_t... Index>(std::index_sequence<Index...>) {
-            return _upper.template shuffle<normalizedIndices[Offset + Index]...>();
+            return _upper.template permute<normalizedIndices[Offset + Index]...>();
         };
         auto upperShuffledWithUpperIndices =
             shuffleUpper.template operator()<Max128BitLaneCount>(std::make_index_sequence<UPPER_LANE_COUNT>{});
@@ -582,7 +582,7 @@ namespace flcn
 
         // Lower part of register with lower and upper indices (lolo, lohi)
         auto shuffleLower = [&]<size_t Offset, size_t... Index>(std::index_sequence<Index...>) {
-            return _lower.template shuffle<normalizedIndices[Offset + Index]...>();
+            return _lower.template permute<normalizedIndices[Offset + Index]...>();
         };
         auto lowerShuffledWithUpperIndices =
             shuffleLower.template operator()<Max128BitLaneCount>(std::make_index_sequence<LOWER_LANE_COUNT>{});

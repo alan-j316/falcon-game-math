@@ -20,7 +20,7 @@
 
 
 /**
- * @addtogroup T_SIMD128_Shuffle
+ * @addtogroup T_SIMD128_Permute
  * @{
  */
 

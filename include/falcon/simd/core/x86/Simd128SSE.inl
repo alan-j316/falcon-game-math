@@ -2700,12 +2700,12 @@ namespace flcn
     template <typename DataType, size_t Lane>
     template <uint8_t... ShuffleIdx>
     FALCON_INLINE constexpr Simd128<SimdBackend::ARCH_SSE2, DataType, Lane> Simd128<SimdBackend::ARCH_SSE2, DataType,
-                                                                                    Lane>::shuffle() const noexcept
+                                                                                    Lane>::permute() const noexcept
     {
         // NOTE: Shuffle mask must be evaluated as a separate const-expression since GCC
         //       is very strict about the immediate value being constexpr, which is guaranteed for constexpr lvalues.
         // NOTE: _MM_SHUFFLE takes indices in the opposite order
-        static_assert(sizeof...(ShuffleIdx) == Lane && "There must be <Lane> shuffle indices.");
+        static_assert(sizeof...(ShuffleIdx) == Lane && "There must be <Lane> permute indices.");
         static_assert(((ShuffleIdx < Lane) && ...) && "Indices must be between 0(inclusive) and <Lane>(exclusive).");
 
         // 128(16 bytes) / sizeof bits give the maximum lanes possible

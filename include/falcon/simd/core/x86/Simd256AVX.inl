@@ -10,7 +10,6 @@
  */
 
 
-#include "Simd256AVX.h"
 #include "falcon/simd/utils/SIMDUtils.h"
 #include "internal/MaskHelpers.h"
 
@@ -2227,7 +2226,7 @@ namespace flcn
     template <uint8_t... ShuffleIndex>
         requires(sizeof...(ShuffleIndex) == Lane)
     FALCON_INLINE constexpr Simd256<SimdBackend::ARCH_AVX, DataType, Lane> Simd256<SimdBackend::ARCH_AVX, DataType,
-                                                                                   Lane>::shuffle() const noexcept
+                                                                                   Lane>::permute() const noexcept
     {
         if constexpr (_FALCON_SIMD256_SUPPORT_NATIVE_INTRINSIC(DataType))
         {
@@ -2264,12 +2263,6 @@ namespace flcn
                 return ((indices[Index] == (indices[offset + Index] % offset)) && ...);
             }(std::make_index_sequence<sizeof...(ShuffleIndex) / 2>());
 
-
-            // TODO: Remove
-            std::cout << "No change: " << requireNoPermute << '\n';
-            std::cout << "No lane cross: " << noLaneCross << '\n';
-            std::cout << "Same upper lower index: " << hasSameUpperAndLowerIndices << '\n';
-
             if constexpr (requireNoPermute)
             {
                 return *this;
@@ -2286,9 +2279,9 @@ namespace flcn
                     //       arithmetic to ensure the upper indices are written in-terms of them.
                     //       For example, 3 would be the 1st index of the upper lane.
                     //       [3, 2 | 1, 0] -> [1, 0 | 1, 0]
-                    constexpr auto SHUFFLE_IDX =
+                    constexpr auto PERMUTE_IDX =
                         (indices[3] % 2) << 3 | (indices[2] % 2) << 2 | indices[1] << 1 | indices[0];
-                    return Simd256(_mm256_permute_pd(_reg, SHUFFLE_IDX));
+                    return Simd256(_mm256_permute_pd(_reg, PERMUTE_IDX));
                 }
                 else if constexpr (sizeof(DataType) == 2)
                 {
@@ -2326,8 +2319,8 @@ namespace flcn
                         if constexpr (types::IsFP32<DataType>)
                         {
                             // Only first 4 indices are used since we can assume there is lane crossing
-                            constexpr auto SHUFFLE_IDX = _MM_SHUFFLE(indices[3], indices[2], indices[1], indices[0]);
-                            return Simd256(_mm256_permute_ps(_reg, SHUFFLE_IDX));
+                            constexpr auto PERMUTE_IDX = _MM_SHUFFLE(indices[3], indices[2], indices[1], indices[0]);
+                            return Simd256(_mm256_permute_ps(_reg, PERMUTE_IDX));
                         }
                         else if constexpr (sizeof(DataType) == 8)
                         {
@@ -2337,14 +2330,14 @@ namespace flcn
                             // So for moving from 0 -> 1, our final offset should be (1 * 2) + 1 and 1 * 2 or 3, 2.
                             // [--1--, --0--] int64
                             // [3, 2,   1, 0] int32
-                            constexpr auto SHUFFLE_IDX =
+                            constexpr auto PERMUTE_IDX =
                                 _MM_SHUFFLE(indices[1] * 2 + 1, indices[1] * 2, indices[0] * 2 + 1, indices[0] * 2);
-                            return Simd256(_mm256_shuffle_epi32(_reg, SHUFFLE_IDX));
+                            return Simd256(_mm256_shuffle_epi32(_reg, PERMUTE_IDX));
                         }
                         else if constexpr (sizeof(DataType) == 4)
                         {
-                            constexpr auto SHUFFLE_IDX = _MM_SHUFFLE(indices[3], indices[2], indices[1], indices[0]);
-                            return Simd256(_mm256_shuffle_epi32(_reg, SHUFFLE_IDX));
+                            constexpr auto PERMUTE_IDX = _MM_SHUFFLE(indices[3], indices[2], indices[1], indices[0]);
+                            return Simd256(_mm256_shuffle_epi32(_reg, PERMUTE_IDX));
                         }
                         else
                         {
@@ -2408,11 +2401,11 @@ namespace flcn
             {
                 // If the boundary has been crossed then do permutation
                 // NOTE: Mixed naming convention used to hint that one is fully
-                //       compile-time evaluated and one is runtime(SHUFFLE_IDX vs idx).
+                //       compile-time evaluated and one is runtime(PERMUTE_IDX vs idx).
                 if constexpr (types::IsFP64<DataType>)
                 {
-                    constexpr auto SHUFFLE_IDX = _MM_SHUFFLE(indices[3], indices[2], indices[1], indices[0]);
-                    return Simd256(_mm256_permute4x64_pd(_reg, SHUFFLE_IDX));
+                    constexpr auto PERMUTE_IDX = _MM_SHUFFLE(indices[3], indices[2], indices[1], indices[0]);
+                    return Simd256(_mm256_permute4x64_pd(_reg, PERMUTE_IDX));
                 }
                 else if constexpr (types::IsFP32<DataType>)
                 {
@@ -2422,8 +2415,8 @@ namespace flcn
                 }
                 else if constexpr (sizeof(DataType) == 8)
                 {
-                    constexpr auto SHUFFLE_IDX = _MM_SHUFFLE(indices[3], indices[2], indices[1], indices[0]);
-                    return Simd256(_mm256_permute4x64_epi64(_reg, SHUFFLE_IDX));
+                    constexpr auto PERMUTE_IDX = _MM_SHUFFLE(indices[3], indices[2], indices[1], indices[0]);
+                    return Simd256(_mm256_permute4x64_epi64(_reg, PERMUTE_IDX));
                 }
                 else if constexpr (sizeof(DataType) == 4)
                 {
@@ -2528,7 +2521,7 @@ namespace flcn
         }
         else
         {
-            return Simd256(_reg.template shuffle<ShuffleIndex...>());
+            return Simd256(_reg.template permute<ShuffleIndex...>());
         }
     }
 

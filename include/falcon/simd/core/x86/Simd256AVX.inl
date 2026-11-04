@@ -2290,7 +2290,6 @@ namespace flcn
                         (indices[3] % 2) << 3 | (indices[2] % 2) << 2 | indices[1] << 1 | indices[0];
                     return Simd256(_mm256_permute_pd(_reg, SHUFFLE_IDX));
                 }
-                // TODO: Apply to all integral types
                 else if constexpr (sizeof(DataType) == 2)
                 {
                     // While there are shuffelo and shufflehi epi16 instructions the immediate values
@@ -2364,16 +2363,37 @@ namespace flcn
                         }
                         else if constexpr (sizeof(DataType) == 8)
                         {
-                            // TODO: May not be the optimal way
-                            constexpr auto SHUFFLE_IDX = _MM_SHUFFLE(indices[3], indices[2], indices[1], indices[0]);
-                            return Simd256(_mm256_permute4x64_epi64(_reg, SHUFFLE_IDX));
+                            // We can stitch together epi8 shuffle to do same lane shuffle with 64-bit integrals
+                            // clang-format off
+                            const auto idx = _mm256_set_epi8(
+                                    (indices[3] * 8 + 7), (indices[3] * 8 + 6), (indices[3] * 8 + 5), (indices[3] * 8 + 4),
+                                    (indices[3] * 8 + 3), (indices[3] * 8 + 2), (indices[3] * 8 + 1), (indices[3] * 8),
+                                    (indices[2] * 8 + 7), (indices[2] * 8 + 6), (indices[2] * 8 + 5), (indices[2] * 8 + 4),
+                                    (indices[2] * 8 + 3), (indices[2] * 8 + 2), (indices[2] * 8 + 1), (indices[2] * 8),
+                                    (indices[1] * 8 + 7), (indices[1] * 8 + 6), (indices[1] * 8 + 5), (indices[1] * 8 + 4),
+                                    (indices[1] * 8 + 3), (indices[1] * 8 + 2), (indices[1] * 8 + 1), (indices[1] * 8),
+                                    (indices[0] * 8 + 7), (indices[0] * 8 + 6), (indices[0] * 8 + 5), (indices[0] * 8 + 4),
+                                    (indices[0] * 8 + 3), (indices[0] * 8 + 2), (indices[0] * 8 + 1), (indices[0] * 8)
+                                );
+                            // clang-format on
+                            return Simd256(_mm256_shuffle_epi8(_reg, idx));
                         }
                         else if constexpr (sizeof(DataType) == 4)
                         {
-                            // TODO: May not be the optimal way
-                            const auto idx = _mm256_set_epi32(indices[7], indices[6], indices[5], indices[4],
-                                                              indices[3], indices[2], indices[1], indices[0]);
-                            return Simd256(_mm256_permutevar8x32_epi32(_reg, idx));
+                            // We can stitch together epi8 shuffle to do same lane shuffle with 32-bit integrals
+                            // clang-format off
+                            const auto idx = _mm256_set_epi8(
+                                    (indices[7] * 4 + 3), (indices[7] * 4 + 2), (indices[7] * 4 + 1), (indices[7] * 4),
+                                    (indices[6] * 4 + 3), (indices[6] * 4 + 2), (indices[6] * 4 + 1), (indices[6] * 4),
+                                    (indices[5] * 4 + 3), (indices[5] * 4 + 2), (indices[5] * 4 + 1), (indices[5] * 4),
+                                    (indices[4] * 4 + 3), (indices[4] * 4 + 2), (indices[4] * 4 + 1), (indices[4] * 4),
+                                    (indices[3] * 4 + 3), (indices[3] * 4 + 2), (indices[3] * 4 + 1), (indices[3] * 4),
+                                    (indices[2] * 4 + 3), (indices[2] * 4 + 2), (indices[2] * 4 + 1), (indices[2] * 4),
+                                    (indices[1] * 4 + 3), (indices[1] * 4 + 2), (indices[1] * 4 + 1), (indices[1] * 4),
+                                    (indices[0] * 4 + 3), (indices[0] * 4 + 2), (indices[0] * 4 + 1), (indices[0] * 4)
+                                );
+                            // clang-format on
+                            return Simd256(_mm256_shuffle_epi8(_reg, idx));
                         }
                         else
                         {

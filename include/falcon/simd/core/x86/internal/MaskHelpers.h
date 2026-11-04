@@ -30,6 +30,27 @@ namespace flcn::simd::internal
         requires(sizeof...(Index) == 16)
     consteval std::pair<std::array<uint8_t, 32>, std::array<uint8_t, 32>> mm256Epi16PermMask() noexcept
     {
+        // To perform a shuffle with _mm256_shuffle_epi8 we need to create 2 masks.
+        // One for in-place shuffle and one for cross-lane shuffle.
+        // In-place shuffles the register elements as is without crossing the 128-bit boundary.
+        // Cross-lane shuffles elements after upper and lower lanes are exchanged.
+        // [3, 2 | 1, 0] -After Exchange-> [1, 0 | 3, 2]
+        //
+        // We put 0x80* in any of the indices where the lanes are crossed.
+        // [   1,    6,    7,    5 |    4,    2,    0,    3]
+        // [0x80,    6,    7,    5 | 0x80,    2,    0,    3] // In-Place
+        // [   1, 0x80, 0x80, 0x80 |    4, 0x80, 0x80, 0x80] // Cross-Lane
+        //
+        // _mm256_shuffle_epi8 expects shuffling 8-bits so a total of 32 indices are required.
+        // We can convert from 16 indices to 32 by using 2n and (2n + 1) as a single index.
+        // Example: 15 -> 30(2n) and 31(2n + 1)
+        //
+        // One other transform we need to do is ensure that each of 16 or 32 index is clamped to only half the size
+        // since the 128-bit registers are independently permuted.
+        // [3, 2, 1, 0 | 3, 2, 1, 0] for a 8 element register.
+        //
+        // *_mm256_shuffle_epi8 does 128-bit same lane shuffle, but it will convert any bytes with 0x80 mask into 0.
+
         constexpr uint8_t indices[]{ Index... };
 
         // In Lane Index  - Shuffling indices of elements in the same lane.
@@ -40,15 +61,14 @@ namespace flcn::simd::internal
 
         for (size_t i = 0; i < sizeof...(Index); ++i)
         {
-            // Lane is crossed if the we are iterating the lower Lane / 2 indices and the index is greater than or
-            // equal to the middle index or if a index less than Lane / 2 is found in the upper portion.
+            // Lane is crossed if the we are iterating the lower half and the index is greater than or
+            // equal to the middle index or if a index less than middle index is found in the upper portion.
             // Example: [1, 7, 5, 4| 2, 3, 6, 0]
             //          Here, 1 crossed the lane since it's greater than 4 (4-7 is the upper lane index).
             //          6 crossed because its greater than 3(0-3 is the lower lane)
             const bool inSameLane =
                 (i >= HalfLane && indices[i] >= HalfLane) || (i < HalfLane && indices[i] < HalfLane);
-            // If the indices are in the same lane, we can just pass it as it is but
-            // switch the permuted to 0x80
+            // If the indices are in the same lane, we can just pass it as it is but switch the permuted to 0x80.
             if (inSameLane)
             {
                 // NOTE: We can only shuffle within the 16 positions so the the positions are split into

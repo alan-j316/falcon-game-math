@@ -2411,23 +2411,26 @@ namespace flcn
                     }
                     else
                     {
+                        //     3,    2 |    1,    0  Index
+                        // [  55,   43 |    4,    6] Register values
+                        // [   0,    2 |    3,    1] Shuffle Index
+                        //
+                        // [0x80,    2 | 0x80,    1] In-lane mask
+                        // [   0, 0x80 |    3, 0x80] Cross-lane mask
+                        //
+                        // [   4,    6 |   55,   43] Upper-Lower exchanged.
+                        //
+                        // After shuffle (epi8)
+                        // [   0,   43 |    0,    4] In-lane shuffle
+                        // [   6,    0 |   55,    0] Cross-lane shuffle
+                        // [   6,   43 |   55,    4] OR result(permuted)
                         // [MaskInLane, MaskPermute]
+                        // Create two masks with in-lane and cross-lane shuffles within the 128-bit boundary.
                         constexpr auto masks  = simd::internal::mm256Epi16PermMask<Lane, ShuffleIndex...>();
                         const auto maskInLane = _mm256_load_si256(reinterpret_cast<__m256i const*>(masks.first.data()));
                         const auto maskPermute =
                             _mm256_load_si256(reinterpret_cast<__m256i const*>(masks.second.data()));
 
-                        std::cout << "Mask In Lane\n";
-                        for (const auto m : masks.first)
-                        {
-                            std::cout << static_cast<int>(m) << ", ";
-                        }
-                        std::cout << "\nMask Cross Lane\n";
-                        for (const auto m : masks.second)
-                        {
-                            std::cout << static_cast<int>(m) << ", ";
-                        }
-                        std::cout << "\n";
                         // Permutate the upper lanes into lower and lower to upper
                         // [1, 0 | 1, 0] -> Relative index of the 64-bit blocks.
                         // [3, 2 | 1, 0]
@@ -2435,9 +2438,12 @@ namespace flcn
                         // The block's relative index to the 128-bit register needs to be preserved.
                         const auto shuffledReg = _mm256_permute4x64_epi64(_reg, _MM_SHUFFLE(1, 0, 3, 2));
 
+                        // Perform the shuffle(any index with 0x80 value will be set to 0)
                         const auto inLanePerm    = _mm256_shuffle_epi8(_reg, maskInLane);
                         const auto crossLanePerm = _mm256_shuffle_epi8(_reg, maskPermute);
 
+                        // Since the shuffles are mutually exclusive we can or the shuffled registers to get the full
+                        // premuted register.
                         return Simd256(_mm256_or_si256(inLanePerm, crossLanePerm));
                     }
                 }

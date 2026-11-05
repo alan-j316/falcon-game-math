@@ -527,7 +527,7 @@ namespace flcn
         return Simd256(_lower.template blend<lowerMask>(other._lower), _upper.template blend<upperMask>(other._upper));
     }
 
-// TODO: Rename ShuffleIndex to Index or PermuteIndex
+    // TODO: Rename ShuffleIndex to Index or PermuteIndex
     template <typename DataType, size_t Lane>
     template <uint8_t... ShuffleIndex>
         requires(sizeof...(ShuffleIndex) == Lane)
@@ -546,7 +546,7 @@ namespace flcn
         constexpr uint8_t normalizedIndices[MaxLaneCount]{ { (
             static_cast<uint8_t>(ShuffleIndex % Max128BitLaneCount))... } };
 
-        constexpr uint8_t ShuffleIndices[MaxLaneCount]{ { ShuffleIndex... } };
+        constexpr uint8_t ShuffleIndices[MaxLaneCount]{ ShuffleIndex... };
         // Masks for selecting values for the upper and lower 128-bit lanes.
         const auto makeMask = [&]<size_t Offset, size_t... Index>(std::index_sequence<Index...>) {
             return simd::makeBlendMask32<Max128BitLaneCount,

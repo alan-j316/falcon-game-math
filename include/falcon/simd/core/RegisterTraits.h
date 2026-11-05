@@ -11,130 +11,141 @@
 
 #include "falcon/simd/utils/SimdTraits.h"
 
+#if defined(FALCON_PLATFORM_X86)
+    #include <emmintrin.h>
+    #include <immintrin.h>
+#elif defined(FALCON_PLATFORM_ARM)
+/// TODO: Add header includes
+#else
+/// TODO: Add header includes
+#endif
+
 /**
  * @addtogroup Falcon_Reg
  * @{
  */
 
-
-#if defined(FALCON_PLATFORM_X86)
-    #include <emmintrin.h>
-    #include <immintrin.h>
-
 /**
  * @brief Defines a SSE(1/2/3/4) Register(128-bit) for a given data type.
  *        @note Use @ref SSERegister_t<type> for a shorter syntax.
  */
-namespace flcn::simd::internal
+namespace flcn
 {
-    // TODO: Update to have a backend type parameter
-    template <typename>
-    struct Simd128Register
-    {
-        using Type = __m128i;
-    };
-
-    template <>
-    struct Simd128Register<float>
-    {
-        using Type = __m128;
-    };
-
-    template <>
-    struct Simd128Register<double>
-    {
-        using Type = __m128d;
-    };
-
-    template <typename T>
-    using Simd128Register_t = Simd128Register<T>::Type;
-
-
-    /**
-     * @brief Defines the internal register type of a 256-bit register, given ISA and the data-type.
-     *        @note Use @ref AVXRegister_t<type> for a shorter syntax.
-     */
-    template <SimdBackend, typename, size_t>
-    struct Simd256Register;
-
-
-    //+=+=+=+=+=+=+=+=+=+=
-    //  x86 Architecture
-    //+=+=+=+=+=+=+=+=+=+=
-
-
     /// Forward Declaration
     template <SimdBackend Backend, typename T, size_t Lane>
     struct Simd256;
 
 
-    template <SimdBackend Backend, typename T, size_t Lane>
-        requires(Backend == SimdBackend::ARCH_AVX)
-    struct Simd256Register<Backend, T, Lane>
+    namespace simd::internal
     {
-        using Type = Simd256<Backend, T, Lane>;
-    };
+#if defined(FALCON_PLATFORM_X86)
+        // TODO: Update to have a backend type parameter
+        template <typename>
+        struct Simd128Register
+        {
+            using Type = __m128i;
+        };
+
+        template <>
+        struct Simd128Register<float>
+        {
+            using Type = __m128;
+        };
+
+        template <>
+        struct Simd128Register<double>
+        {
+            using Type = __m128d;
+        };
+
+        template <typename T>
+        using Simd128Register_t = Simd128Register<T>::Type;
 
 
-    template <SimdBackend Backend, typename T, size_t Lane>
-        requires(Backend >= SimdBackend::ARCH_AVX2)
-    struct Simd256Register<Backend, T, Lane>
-    {
-        using Type = __m256i;
-    };
+        /**
+         * @brief Defines the internal register type of a 256-bit register, given ISA and the data-type.
+         *        @note Use @ref AVXRegister_t<type> for a shorter syntax.
+         */
+        // template <SimdBackend, typename, size_t>
+        // struct Simd256Register;
 
 
-    template <SimdBackend Backend, size_t Lane>
-        requires(Backend >= SimdBackend::ARCH_AVX)
-    struct Simd256Register<Backend, float, Lane>
-    {
-        using Type = __m256;
-    };
+        //+=+=+=+=+=+=+=+=+=+=
+        //  x86 Architecture
+        //+=+=+=+=+=+=+=+=+=+=
+
+        /**
+         * @brief Defines the internal register type of a 256-bit register, given ISA and the data-type.
+         *        @note Use @ref AVXRegister_t<type> for a shorter syntax.
+         * @note  TODO: Scalar and Neon are WIP; Scalar will be the default fallback.
+         */
+        template <SimdBackend Backend, typename T, size_t Lane>
+        struct Simd256Register
+        {
+            using Type = Simd256<SimdBackend::ARCH_SSE2, T, Lane>;
+        };
+
+        /// AVX2 Integral Specialization
+        template <SimdBackend Backend, typename T, size_t Lane>
+            requires(Backend >= SimdBackend::ARCH_AVX2)
+        struct Simd256Register<Backend, T, Lane>
+        {
+            using Type = __m256i;
+        };
+
+        /// AVX Floating Point Specialization
+        template <SimdBackend Backend, size_t Lane>
+            requires(Backend >= SimdBackend::ARCH_AVX)
+        struct Simd256Register<Backend, float, Lane>
+        {
+            using Type = __m256;
+        };
+
+        /// AVX Double(FP64) Specialization
+        template <SimdBackend Backend, size_t Lane>
+            requires(Backend >= SimdBackend::ARCH_AVX)
+        struct Simd256Register<Backend, double, Lane>
+        {
+            using Type = __m256d;
+        };
+
+        /// Simd256Register type alias
+        template <SimdBackend Backend, typename T, size_t Lane>
+        using Simd256Register_t = Simd256Register<Backend, T, Lane>::Type;
 
 
-    template <SimdBackend Backend, size_t Lane>
-        requires(Backend >= SimdBackend::ARCH_AVX)
-    struct Simd256Register<Backend, double, Lane>
-    {
-        using Type = __m256d;
-    };
+        /**
+         * @brief Defines an AVX512 Register(512-bit) for a given data type.
+         *        @note Use @ref AVX512Register_t<type> for a shorter syntax.
+         */
+        template <typename>
+        struct AVX512Register
+        {
+            using Type = __m256i;
+        };
+
+        template <>
+        struct AVX512Register<float>
+        {
+            using Type = __m256;
+        };
+
+        template <>
+        struct AVX512Register<double>
+        {
+            using Type = __m256d;
+        };
+
+        template <typename T>
+        using AVX512Register_t = AVX512Register<T>::Type;
 
 
-    template <SimdBackend Backend, typename T, size_t Lane>
-    using Simd256Register_t = Simd256Register<Backend, T, Lane>::Type;
-
-
-    /**
-     * @brief Defines an AVX512 Register(512-bit) for a given data type.
-     *        @note Use @ref AVX512Register_t<type> for a shorter syntax.
-     */
-    template <typename>
-    struct AVX512Register
-    {
-        using Type = __m256i;
-    };
-
-    template <>
-    struct AVX512Register<float>
-    {
-        using Type = __m256;
-    };
-
-    template <>
-    struct AVX512Register<double>
-    {
-        using Type = __m256d;
-    };
-
-    template <typename T>
-    using AVX512Register_t = AVX512Register<T>::Type;
-} // namespace flcn::simd::internal
 #elif defined(FALCON_PLATFORM_ARM)
-namespace flcn::simd::internal
-{
-    // TODO: Add Neon Intrinsics here
-}
+        // TODO: Add Neon Intrinsics here
 #endif
-// namespace flcn::simd::internal
+    } // namespace simd::internal
+
+} // namespace flcn
+
 
 /** @} */

@@ -33,7 +33,6 @@ namespace flcn
     template <typename DataType, size_t Lane>
     struct alignas(32) Simd256<SimdBackend::ARCH_AVX, DataType, Lane>
     {
-
         static constexpr size_t BufferWidth  = 256;      ///< Width of the register in bits.
         using ValueType                      = DataType; ///< The internal data type of this Register.
         static constexpr size_t LaneCount    = Lane;     ///< Number of Lanes of current SIMD256 Register
@@ -61,7 +60,7 @@ namespace flcn
          */
         template <typename... Args>
             requires(SimdSafeConvertible<Args, DataType> && ...)
-        constexpr explicit Simd256(Args&&... data) noexcept;
+        explicit constexpr Simd256(Args&&... data) noexcept;
 
 
         // // TODO: Add test

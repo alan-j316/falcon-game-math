@@ -110,7 +110,7 @@ namespace flcn
         else
         {
             // Emulated Register will `set` the correct values so we don't need to assign.
-            return flcn::min(*a, *b);
+            return _REG_256_AVX<DataType, Lane>(flcn::min(*a, *b));
         }
     }
 
@@ -185,7 +185,7 @@ namespace flcn
         else
         {
             // Emulated Register will `set` the correct values so we don't need to assign.
-            return flcn::max(*a, *b);
+            return _REG_256_AVX<DataType, Lane>(flcn::max(*a, *b));
         }
     }
 

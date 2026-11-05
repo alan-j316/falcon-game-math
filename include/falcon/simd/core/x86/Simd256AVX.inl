@@ -10,6 +10,7 @@
  */
 
 
+#include "Simd256AVX.h"
 #include "falcon/simd/utils/SIMDUtils.h"
 #include "internal/MaskHelpers.h"
 
@@ -21,6 +22,7 @@ namespace flcn
 #define _FALCON_SIMD256_SUPPORT_NATIVE_INTRINSIC(DataType)                                                             \
     (std::floating_point<DataType> && CURRENT_SIMD_BACKEND >= SimdBackend::ARCH_AVX) ||                                \
         CURRENT_SIMD_BACKEND >= SimdBackend::ARCH_AVX2
+
 
     template <typename DataType, size_t Lane>
     template <typename... Args>
@@ -558,7 +560,7 @@ namespace flcn
         }
         else
         {
-            return ~_reg;
+            return Simd256(~_reg);
         }
     }
 
@@ -584,7 +586,7 @@ namespace flcn
         }
         else
         {
-            return _reg & other._reg;
+            return Simd256(_reg & other._reg);
         }
     }
 
@@ -619,7 +621,7 @@ namespace flcn
         }
         else
         {
-            return _reg | other._reg;
+            return Simd256(_reg | other._reg);
         }
     }
 
@@ -654,7 +656,7 @@ namespace flcn
         }
         else
         {
-            return _reg ^ other._reg;
+            return Simd256(_reg ^ other._reg);
         }
     }
 
@@ -689,7 +691,7 @@ namespace flcn
         }
         else
         {
-            return _reg.andNot(*other);
+            return Simd256(_reg.andNot(*other));
         }
     }
 
@@ -805,7 +807,7 @@ namespace flcn
         }
         else
         {
-            return Simd256(_reg.horizontalOr());
+            return _reg.horizontalOr();
         }
     }
 
@@ -922,7 +924,7 @@ namespace flcn
         }
         else
         {
-            return Simd256(_reg.horizontalAnd());
+            return _reg.horizontalAnd();
         }
     }
 
@@ -965,7 +967,7 @@ namespace flcn
         }
         else
         {
-            return _reg + other._reg;
+            return Simd256(_reg + other._reg);
         }
     }
 
@@ -1012,7 +1014,7 @@ namespace flcn
         }
         else
         {
-            return _reg - other._reg;
+            return Simd256(_reg - other._reg);
         }
     }
 
@@ -1119,7 +1121,7 @@ namespace flcn
         }
         else
         {
-            return _reg * other._reg;
+            return Simd256(_reg * other._reg);
         }
     }
 
@@ -1274,7 +1276,7 @@ namespace flcn
         }
         else
         {
-            return _reg.divReg(*other);
+            return Simd256(_reg.divReg(*other));
         }
     }
 
@@ -1531,7 +1533,7 @@ namespace flcn
         }
         else
         {
-            return Simd256(_reg.horizontalAdd());
+            return _reg.horizontalAdd();
         }
     }
 
@@ -1584,7 +1586,7 @@ namespace flcn
         }
         else
         {
-            return Simd256(_reg.horizontalSub());
+            return _reg.horizontalSub();
         }
     }
 

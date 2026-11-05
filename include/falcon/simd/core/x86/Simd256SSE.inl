@@ -543,8 +543,7 @@ namespace flcn
         // Packed indexing is not support until C++26, we need to use this workaround
         // For shuffling with two indices we need to transform the array values(indices)
         // to be between 0 - MAX_LANE_COUNT(exclusive)
-        constexpr uint8_t normalizedIndices[MaxLaneCount]{ { (
-            static_cast<uint8_t>(ShuffleIndex % Max128BitLaneCount))... } };
+        constexpr uint8_t normalizedIdx[MaxLaneCount]{ (static_cast<uint8_t>(ShuffleIndex % Max128BitLaneCount))... };
 
         constexpr uint8_t ShuffleIndices[MaxLaneCount]{ ShuffleIndex... };
         // Masks for selecting values for the upper and lower 128-bit lanes.
@@ -573,7 +572,7 @@ namespace flcn
 
         // Upper part of the register with lower and upper indices(hilo, lohi)
         auto shuffleUpper = [&]<size_t Offset, size_t... Index>(std::index_sequence<Index...>) {
-            return _upper.template permute<normalizedIndices[Offset + Index]...>();
+            return _upper.template permute<normalizedIdx[Offset + Index]...>();
         };
         auto upperShuffledWithUpperIndices =
             shuffleUpper.template operator()<Max128BitLaneCount>(std::make_index_sequence<UPPER_LANE_COUNT>{});
@@ -582,7 +581,7 @@ namespace flcn
 
         // Lower part of register with lower and upper indices (lolo, lohi)
         auto shuffleLower = [&]<size_t Offset, size_t... Index>(std::index_sequence<Index...>) {
-            return _lower.template permute<normalizedIndices[Offset + Index]...>();
+            return _lower.template permute<normalizedIdx[Offset + Index]...>();
         };
         auto lowerShuffledWithUpperIndices =
             shuffleLower.template operator()<Max128BitLaneCount>(std::make_index_sequence<LOWER_LANE_COUNT>{});

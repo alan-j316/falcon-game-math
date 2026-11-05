@@ -2222,8 +2222,6 @@ namespace flcn
     }
 
 
-
-
     template <typename DataType, size_t Lane>
     template <uint8_t... ShuffleIndex>
         requires(sizeof...(ShuffleIndex) == Lane)
@@ -2352,9 +2350,36 @@ namespace flcn
                         if constexpr (types::IsFP32<DataType>)
                         {
                             // TODO: May not be the optimal way
-                            const auto idx = _mm256_set_epi32(indices[7], indices[6], indices[5], indices[4],
-                                                              indices[3], indices[2], indices[1], indices[0]);
-                            return Simd256(_mm256_permutevar8x32_ps(_reg, idx));
+                            if constexpr (CURRENT_SIMD_BACKEND >= SimdBackend::ARCH_AVX2)
+                            {
+                                const auto idx = _mm256_set_epi32(indices[7], indices[6], indices[5], indices[4],
+                                                                  indices[3], indices[2], indices[1], indices[0]);
+                                return Simd256(_mm256_permutevar8x32_ps(_reg, idx));
+                            }
+                            else
+                            {
+                                return Simd256();
+                                // const auto halfLane = Lane / 2;
+                                // // Create a blend mask to blend all values that have cross the 128-bit boundary
+                                // // with the ones that haven't.
+                                // constexpr auto inLaneBlendMask =
+                                // simd::internal::createInLaneBlendMask<Lane>(indices);
+                                //
+                                // // Normalized the indices to be between 0 and Lane / 2 since we are
+                                // // permuting between the single lane
+                                // constexpr auto normalizedIdx = (indices[3] % halfLane << 3) |
+                                //     (indices[2] % halfLane << 2) | (indices[1] % halfLane << 1) |
+                                //     (indices[0] % halfLane);
+                                //
+                                // // Swap the upper and lower lanes
+                                // // We need to swap upper and lower lane so the flag is 0b00000001
+                                // const auto swapped = _mm256_permute2f128_pd(_reg, _reg, 0x1);
+                                // // Shuffle both registers
+                                // const auto inLane    = _mm256_permute_pd(_reg, normalizedIdx);
+                                // const auto crossLane = _mm256_permute_pd(swapped, normalizedIdx);
+                                // // Blend both the registers by the blend mask.
+                                // return Simd256(_mm256_blend_pd(crossLane, inLane, inLaneBlendMask));
+                            }
                         }
                         else if constexpr (sizeof(DataType) == 8)
                         {
@@ -2406,14 +2431,46 @@ namespace flcn
                 //       compile-time evaluated and one is runtime(PERMUTE_IDX vs idx).
                 if constexpr (types::IsFP64<DataType>)
                 {
-                    constexpr auto PERMUTE_IDX = _MM_SHUFFLE(indices[3], indices[2], indices[1], indices[0]);
-                    return Simd256(_mm256_permute4x64_pd(_reg, PERMUTE_IDX));
+                    if constexpr (CURRENT_SIMD_BACKEND >= SimdBackend::ARCH_AVX2)
+                    {
+                        constexpr auto PERMUTE_IDX = _MM_SHUFFLE(indices[3], indices[2], indices[1], indices[0]);
+                        return Simd256(_mm256_permute4x64_pd(_reg, PERMUTE_IDX));
+                    }
+                    else
+                    {
+                        const auto halfLane = Lane / 2;
+                        // Create a blend mask to blend all values that have cross the 128-bit boundary
+                        // with the ones that haven't.
+                        constexpr auto inLaneBlendMask = simd::internal::createInLaneBlendMask<Lane>(indices);
+
+                        // Normalized the indices to be between 0 and Lane / 2 since we are
+                        // permuting between the single lane
+                        constexpr auto normalizedIdx = (indices[3] % halfLane << 3) | (indices[2] % halfLane << 2) |
+                            (indices[1] % halfLane << 1) | (indices[0] % halfLane);
+
+                        // Swap the upper and lower lanes
+                        // We need to swap upper and lower lane so the flag is 0b00000001
+                        const auto swapped = _mm256_permute2f128_pd(_reg, _reg, 0x1);
+                        // Shuffle both registers
+                        const auto inLane    = _mm256_permute_pd(_reg, normalizedIdx);
+                        const auto crossLane = _mm256_permute_pd(swapped, normalizedIdx);
+                        // Blend both the registers by the blend mask.
+                        return Simd256(_mm256_blend_pd(crossLane, inLane, inLaneBlendMask));
+                    }
                 }
                 else if constexpr (types::IsFP32<DataType>)
                 {
-                    const auto idx = _mm256_set_epi32(indices[7], indices[6], indices[5], indices[4], indices[3],
-                                                      indices[2], indices[1], indices[0]);
-                    return Simd256(_mm256_permutevar8x32_ps(_reg, idx));
+                    if constexpr (CURRENT_SIMD_BACKEND >= SimdBackend::ARCH_AVX2)
+                    {
+                        const auto idx = _mm256_set_epi32(indices[7], indices[6], indices[5], indices[4], indices[3],
+                                                          indices[2], indices[1], indices[0]);
+                        return Simd256(_mm256_permutevar8x32_ps(_reg, idx));
+                    }
+                    else
+                    {
+                        // TODO:
+                        return Simd256();
+                    }
                 }
                 else if constexpr (sizeof(DataType) == 8)
                 {
@@ -2476,42 +2533,56 @@ namespace flcn
                 }
                 else if constexpr (sizeof(DataType) == 1)
                 {
-                    // Same technique as for epi16
-                    // [MaskInLane, MaskPermute]
-                    constexpr auto masks   = simd::internal::mm256Epi8PermMask<Lane, ShuffleIndex...>();
-                    const auto maskInLane  = _mm256_load_si256(reinterpret_cast<__m256i const*>(masks.first.data()));
-                    const auto maskPermute = _mm256_load_si256(reinterpret_cast<__m256i const*>(masks.second.data()));
-                    // std::cout << "Shuffle Index\n";
-                    // for (const auto m : indices)
-                    // {
-                    //     std::cout << static_cast<int>(m) << ", ";
-                    // }
-                    // std::cout << "\nMask In Lane\n";
-                    // for (const auto m : masks.first)
-                    // {
-                    //     std::cout << static_cast<int>(m) << ", ";
-                    // }
-                    // std::cout << "\nCross Lane\n";
-                    // for (const auto m : masks.second)
-                    // {
-                    //     std::cout << static_cast<int>(m) << ", ";
-                    // }
-                    // std::cout << "\n";
+                    if constexpr (CURRENT_SIMD_BACKEND >= SimdBackend::ARCH_AVX512EX) // AVX512VL
+                    {
+                        const auto idx = _mm256_set_epi8(
+                            indices[31], indices[30], indices[29], indices[28], indices[27], indices[26], indices[25],
+                            indices[24], indices[23], indices[22], indices[21], indices[20], indices[19], indices[18],
+                            indices[17], indices[16], indices[15], indices[14], indices[13], indices[12], indices[11],
+                            indices[10], indices[9], indices[8], indices[7], indices[6], indices[5], indices[4],
+                            indices[3], indices[2], indices[1], indices[0]);
+                        return Simd256(_mm256_permutexvar_epi8(idx, _reg));
+                    }
+                    else
+                    {
+                        // Same technique as for epi16
+                        // [MaskInLane, MaskPermute]
+                        constexpr auto masks  = simd::internal::mm256Epi8PermMask<Lane, ShuffleIndex...>();
+                        const auto maskInLane = _mm256_load_si256(reinterpret_cast<__m256i const*>(masks.first.data()));
+                        const auto maskPermute =
+                            _mm256_load_si256(reinterpret_cast<__m256i const*>(masks.second.data()));
+                        // std::cout << "Shuffle Index\n";
+                        // for (const auto m : indices)
+                        // {
+                        //     std::cout << static_cast<int>(m) << ", ";
+                        // }
+                        // std::cout << "\nMask In Lane\n";
+                        // for (const auto m : masks.first)
+                        // {
+                        //     std::cout << static_cast<int>(m) << ", ";
+                        // }
+                        // std::cout << "\nCross Lane\n";
+                        // for (const auto m : masks.second)
+                        // {
+                        //     std::cout << static_cast<int>(m) << ", ";
+                        // }
+                        // std::cout << "\n";
 
-                    // Permutate the upper lanes into lower and lower to upper
-                    // [1, 0 | 1, 0] -> Relative index of the 64-bit blocks.
-                    // [3, 2 | 1, 0]
-                    // [1, 0 | 3, 2]
-                    // The block's relative index to the 128-bit register needs to be preserved.
-                    const auto shuffledReg = _mm256_permute4x64_epi64(_reg, _MM_SHUFFLE(1, 0, 3, 2));
+                        // Permutate the upper lanes into lower and lower to upper
+                        // [1, 0 | 1, 0] -> Relative index of the 64-bit blocks.
+                        // [3, 2 | 1, 0]
+                        // [1, 0 | 3, 2]
+                        // The block's relative index to the 128-bit register needs to be preserved.
+                        const auto shuffledReg = _mm256_permute4x64_epi64(_reg, _MM_SHUFFLE(1, 0, 3, 2));
 
-                    // Perform the shuffle(any index with 0x80 value will be set to 0)
-                    const auto inLanePerm    = _mm256_shuffle_epi8(_reg, maskInLane);
-                    const auto crossLanePerm = _mm256_shuffle_epi8(shuffledReg, maskPermute);
+                        // Perform the shuffle(any index with 0x80 value will be set to 0)
+                        const auto inLanePerm    = _mm256_shuffle_epi8(_reg, maskInLane);
+                        const auto crossLanePerm = _mm256_shuffle_epi8(shuffledReg, maskPermute);
 
-                    // Since the shuffles are mutually exclusive we can or the shuffled registers to get the full
-                    // permuted register.
-                    return Simd256(_mm256_or_si256(inLanePerm, crossLanePerm));
+                        // Since the shuffles are mutually exclusive we can or the shuffled registers to get the full
+                        // permuted register.
+                        return Simd256(_mm256_or_si256(inLanePerm, crossLanePerm));
+                    }
                 }
                 else
                 {

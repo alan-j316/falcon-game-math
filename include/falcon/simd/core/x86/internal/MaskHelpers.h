@@ -165,4 +165,29 @@ namespace flcn::simd::internal
     }
 
 
+    /**
+     * @brief Create an integer blend mask for a set of permute indices for blending based on whether the indices
+     *        cross the half-lane.
+     * @tparam Lane  The lane count.
+     *
+     * @param indices The permute indices.
+     * @return A packed integer bitmask with 1 indicating that the index is in-lane and 0 indicating a boundary cross.
+     */
+    template <size_t Lane, size_t Size>
+    consteval uint32_t createInLaneBlendMask(const uint8_t (&indices)[Size]) noexcept
+    {
+        // [2, 0 | 3, 1]
+        //  1  0   0  1
+        // Mask = 0b000..01001
+        constexpr auto halfLane = Lane / 2;
+        uint32_t mask           = 0;
+        for (size_t i = 0; i < Size; ++i)
+        {
+            const bool inSameLane =
+                (i < halfLane && indices[i] < halfLane) || (i >= halfLane && indices[i] >= halfLane);
+            mask |= static_cast<uint32_t>(inSameLane) << i;
+        }
+        return mask;
+    }
+
 } // namespace flcn::simd::internal

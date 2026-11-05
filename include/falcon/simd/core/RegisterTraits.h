@@ -38,6 +38,13 @@ namespace flcn
 
     namespace simd::internal
     {
+        /**
+         * @brief Defines the internal register type of a 256-bit register, given ISA and the data-type.
+         *        @note Use @ref AVXRegister_t<type> for a shorter syntax.
+         */
+        template <SimdBackend, typename, size_t>
+        struct Simd256Register;
+
 #if defined(FALCON_PLATFORM_X86)
         // TODO: Update to have a backend type parameter
         template <typename>
@@ -62,25 +69,14 @@ namespace flcn
         using Simd128Register_t = Simd128Register<T>::Type;
 
 
-        /**
-         * @brief Defines the internal register type of a 256-bit register, given ISA and the data-type.
-         *        @note Use @ref AVXRegister_t<type> for a shorter syntax.
-         */
-        // template <SimdBackend, typename, size_t>
-        // struct Simd256Register;
-
 
         //+=+=+=+=+=+=+=+=+=+=
         //  x86 Architecture
         //+=+=+=+=+=+=+=+=+=+=
 
-        /**
-         * @brief Defines the internal register type of a 256-bit register, given ISA and the data-type.
-         *        @note Use @ref AVXRegister_t<type> for a shorter syntax.
-         * @note  TODO: Scalar and Neon are WIP; Scalar will be the default fallback.
-         */
         template <SimdBackend Backend, typename T, size_t Lane>
-        struct Simd256Register
+            requires(isX86ISA(Backend))
+        struct Simd256Register<Backend, T, Lane>
         {
             using Type = Simd256<SimdBackend::ARCH_SSE2, T, Lane>;
         };

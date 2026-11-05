@@ -10,6 +10,7 @@
  */
 
 
+#include "falcon/simd/core/x86/Simd256SSE.h"
 #include "falcon/simd/utils/SIMDUtils.h"
 #include "internal/MaskHelpers.h"
 
@@ -1872,7 +1873,6 @@ namespace flcn
             const auto countReg = _mm_cvtsi32_si128(count);
             if constexpr (types::IsFP64<DataType>)
             {
-                std::cout << "Hitting Doubles" << std::endl;
                 const auto intReg     = _mm256_castpd_si256(_reg);
                 const auto shiftedReg = intrin::_mm256_sra_epi64_custom(intReg, countReg);
                 return Simd256(_mm256_castsi256_pd(shiftedReg));
@@ -2153,7 +2153,7 @@ namespace flcn
         }
         else
         {
-            return Simd256(_reg.blend(other, mask));
+            return Simd256(_reg.blend(*other, *mask));
         }
     }
 
@@ -2217,7 +2217,7 @@ namespace flcn
         }
         else
         {
-            return Simd256(_reg.template blend<Mask>(other));
+            return Simd256(_reg.template blend<Mask>(*other));
         }
     }
 

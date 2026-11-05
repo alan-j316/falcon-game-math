@@ -265,6 +265,25 @@ namespace flcn::intrin
     /// MM256(YMM) Registers
     ///+=+=+=+=+=+=+=+=+=+=+=
 
+    /**
+     * @brief Extract a 128-bit integral register from a 256-bit register.
+     * @tparam Lane The lane to extract from. Must be 0 or 1.
+     * @param reg The register to extract the lane from.
+     * @return The 128-bit register at the @p Lane.
+     */
+    template <uint8_t Lane>
+    FALCON_INLINE __m128i _mm256_extracti128_si256_custom(__m256i reg)
+    {
+        if constexpr (CURRENT_SIMD_BACKEND >= SimdBackend::ARCH_AVX2)
+        {
+            return _mm256_extracti128_si256(reg, Lane);
+        }
+        else
+        {
+            return _mm256_extractf128_si256(reg, Lane);
+        }
+    }
+
     /// @brief Perform a logical left shift on the 256-bit register composed of Quad Word values.
     FALCON_INLINE __m256i _mm256_sll_epi64_custom(const __m256i reg, const __m128i count) noexcept
     {
@@ -277,11 +296,11 @@ namespace flcn::intrin
             // AVX doesn't have integral shifts so we have to extract them
             // and perform 2 128-bit shifts, insert, and cast back.
             const auto loReg = _mm256_castsi256_si128(reg);
-            const auto hiReg = _mm256_extracti128_si256(reg, 1);
+            const auto hiReg = _mm256_extractf128_si256(reg, 1);
 
             const auto loShifted = _mm256_castsi128_si256(_mm_sll_epi64(loReg, count));
             const auto hiShifted = _mm_sll_epi64(hiReg, count);
-            return _mm256_inserti128_si256(loShifted, hiShifted, 1);
+            return _mm256_insertf128_si256(loShifted, hiShifted, 1);
         }
     }
 
@@ -298,11 +317,11 @@ namespace flcn::intrin
             // AVX doesn't have integral shifts so we have to extract them
             // and perform 2 128-bit shifts, insert, and cast back.
             const auto loReg = _mm256_castsi256_si128(reg);
-            const auto hiReg = _mm256_extracti128_si256(reg, 1);
+            const auto hiReg = _mm256_extractf128_si256(reg, 1);
 
             const auto loShifted = _mm256_castsi128_si256(_mm_sll_epi32(loReg, count));
             const auto hiShifted = _mm_sll_epi32(hiReg, count);
-            return _mm256_inserti128_si256(loShifted, hiShifted, 1);
+            return _mm256_insertf128_si256(loShifted, hiShifted, 1);
         }
     }
 
@@ -343,11 +362,11 @@ namespace flcn::intrin
             // AVX doesn't have integral shifts so we have to extract them
             // and perform 2 128-bit shifts, insert, and cast back.
             const auto loReg = _mm256_castsi256_si128(reg);
-            const auto hiReg = _mm256_extracti128_si256(reg, 1);
+            const auto hiReg = _mm256_extractf128_si256(reg, 1);
 
             const auto loShifted = _mm256_castsi128_si256(_mm_slli_epi64(loReg, Count));
             const auto hiShifted = _mm_slli_epi64(hiReg, Count);
-            return _mm256_inserti128_si256(loShifted, hiShifted, 1);
+            return _mm256_insertf128_si256(loShifted, hiShifted, 1);
         }
     }
 
@@ -367,11 +386,11 @@ namespace flcn::intrin
             // AVX doesn't have integral shifts so we have to extract them
             // and perform 2 128-bit shifts, insert, and cast back.
             const auto loReg = _mm256_castsi256_si128(reg);
-            const auto hiReg = _mm256_extracti128_si256(reg, 1);
+            const auto hiReg = _mm256_extractf128_si256(reg, 1);
 
             const auto loShifted = _mm256_castsi128_si256(_mm_slli_epi32(loReg, Count));
             const auto hiShifted = _mm_slli_epi32(hiReg, Count);
-            return _mm256_inserti128_si256(loShifted, hiShifted, 1);
+            return _mm256_insertf128_si256(loShifted, hiShifted, 1);
         }
     }
 
@@ -404,11 +423,11 @@ namespace flcn::intrin
             // AVX doesn't have integral shifts so we have to extract them
             // and perform 2 128-bit shifts, insert, and cast back.
             const auto loReg = _mm256_castsi256_si128(reg);
-            const auto hiReg = _mm256_extracti128_si256(reg, 1);
+            const auto hiReg = _mm256_extractf128_si256(reg, 1);
 
             const auto loShifted = _mm256_castsi128_si256(_mm_srl_epi64(loReg, count));
             const auto hiShifted = _mm_srl_epi64(hiReg, count);
-            return _mm256_inserti128_si256(loShifted, hiShifted, 1);
+            return _mm256_insertf128_si256(loShifted, hiShifted, 1);
         }
     }
 
@@ -425,11 +444,11 @@ namespace flcn::intrin
             // AVX doesn't have integral shifts so we have to extract them
             // and perform 2 128-bit shifts, insert, and cast back.
             const auto loReg = _mm256_castsi256_si128(reg);
-            const auto hiReg = _mm256_extracti128_si256(reg, 1);
+            const auto hiReg = _mm256_extractf128_si256(reg, 1);
 
             const auto loShifted = _mm256_castsi128_si256(_mm_srl_epi32(loReg, count));
             const auto hiShifted = _mm_srl_epi32(hiReg, count);
-            return _mm256_inserti128_si256(loShifted, hiShifted, 1);
+            return _mm256_insertf128_si256(loShifted, hiShifted, 1);
         }
     }
 
@@ -449,11 +468,11 @@ namespace flcn::intrin
             // AVX doesn't have integral shifts so we have to extract them
             // and perform 2 128-bit shifts, insert, and cast back.
             const auto loReg = _mm256_castsi256_si128(reg);
-            const auto hiReg = _mm256_extracti128_si256(reg, 1);
+            const auto hiReg = _mm256_extractf128_si256(reg, 1);
 
             const auto loShifted = _mm256_castsi128_si256(_mm_srli_epi64(loReg, Count));
             const auto hiShifted = _mm_srli_epi64(hiReg, Count);
-            return _mm256_inserti128_si256(loShifted, hiShifted, 1);
+            return _mm256_insertf128_si256(loShifted, hiShifted, 1);
         }
     }
 
@@ -473,11 +492,11 @@ namespace flcn::intrin
             // AVX doesn't have integral shifts so we have to extract them
             // and perform 2 128-bit shifts, insert, and cast back.
             const auto loReg = _mm256_castsi256_si128(reg);
-            const auto hiReg = _mm256_extracti128_si256(reg, 1);
+            const auto hiReg = _mm256_extractf128_si256(reg, 1);
 
             const auto loShifted = _mm256_castsi128_si256(_mm_srli_epi32(loReg, Count));
             const auto hiShifted = _mm_srli_epi32(hiReg, Count);
-            return _mm256_inserti128_si256(loShifted, hiShifted, 1);
+            return _mm256_insertf128_si256(loShifted, hiShifted, 1);
         }
     }
 
@@ -525,7 +544,7 @@ namespace flcn::intrin
         {
             return _mm256_sra_epi64(reg, count);
         }
-        else
+        else if constexpr (CURRENT_SIMD_BACKEND >= SimdBackend::ARCH_AVX2)
         {
             // Hacker Delight Ch.2 (2-7)
             // ((x + 0x8000..00) u>> n) - (0x8000.000 u>> n)
@@ -545,6 +564,18 @@ namespace flcn::intrin
             const auto shiftedSignReg = _mm256_srl_epi64(signReg, count);
             return _mm256_sub_epi64(shiftedSumReg, shiftedSignReg);
         }
+        else
+        {
+            // AVX doesn't have integral adds or shifts so we have to extract them
+            // and perform 2 128-bit shifts, and insert.
+            const auto loReg = _mm256_castsi256_si128(reg);
+            const auto hiReg = _mm256_extractf128_si256(reg, 1);
+
+            const auto loShifted = _mm_sra_epi64_custom(loReg, count);
+            const auto hiShifted = _mm256_castsi128_si256(_mm_sra_epi64_custom(hiReg, count));
+
+            return _mm256_insertf128_si256(hiShifted, loShifted, 0);
+        }
     }
 
 
@@ -560,11 +591,11 @@ namespace flcn::intrin
             // AVX doesn't have integral shifts so we have to extract them
             // and perform 2 128-bit shifts, insert, and cast back.
             const auto loReg = _mm256_castsi256_si128(reg);
-            const auto hiReg = _mm256_extracti128_si256(reg, 1);
+            const auto hiReg = _mm256_extractf128_si256(reg, 1);
 
             const auto loShifted = _mm256_castsi128_si256(_mm_sra_epi32(loReg, count));
             const auto hiShifted = _mm_sra_epi32(hiReg, count);
-            return _mm256_inserti128_si256(loShifted, hiShifted, 1);
+            return _mm256_insertf128_si256(loShifted, hiShifted, 1);
         }
     }
 
@@ -580,7 +611,7 @@ namespace flcn::intrin
         {
             return _mm256_srai_epi64(reg, Count);
         }
-        else
+        else if constexpr (CURRENT_SIMD_BACKEND >= SimdBackend::ARCH_AVX2)
         {
             // Hacker Delight Ch.2 (2-7)
             // ((x + 0x8000..00) u>> n) - (0x8000.000 u>> n)
@@ -600,6 +631,18 @@ namespace flcn::intrin
             const auto shiftedSignReg = _mm256_srli_epi64(signReg, Count);
             return _mm256_sub_epi64(shiftedSumReg, shiftedSignReg);
         }
+        else
+        {
+            // AVX doesn't have integral adds or shifts so we have to extract them
+            // and perform 2 128-bit shifts, and insert.
+            const auto loReg = _mm256_castsi256_si128(reg);
+            const auto hiReg = _mm256_extractf128_si256(reg, 1);
+
+            const auto loShifted = _mm_srai_epi64_custom<Count>(loReg);
+            const auto hiShifted = _mm256_castsi128_si256(_mm_srai_epi64_custom<Count>(hiReg));
+
+            return _mm256_insertf128_si256(hiShifted, loShifted, 0);
+        }
     }
 
 
@@ -618,11 +661,11 @@ namespace flcn::intrin
             // AVX doesn't have integral shifts so we have to extract them
             // and perform 2 128-bit shifts, insert, and cast back.
             const auto loReg = _mm256_castsi256_si128(reg);
-            const auto hiReg = _mm256_extracti128_si256(reg, 1);
+            const auto hiReg = _mm256_extractf128_si256(reg, 1);
 
             const auto loShifted = _mm256_castsi128_si256(_mm_srai_epi32(loReg, Count));
             const auto hiShifted = _mm_srai_epi32(hiReg, Count);
-            return _mm256_inserti128_si256(loShifted, hiShifted, 1);
+            return _mm256_insertf128_si256(loShifted, hiShifted, 1);
         }
     }
 

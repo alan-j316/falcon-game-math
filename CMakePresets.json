@@ -96,6 +96,21 @@
       }
     },
     {
+      "name": "Clang-Debug-SSE4",
+      "displayName": "Clang Debug SSE4",
+      "inherits": "windows-base",
+      "cacheVariables": {
+        "CMAKE_BUILD_TYPE": "Debug",
+        "CMAKE_CXX_COMPILER": "clang++",
+        "CMAKE_C_COMPILER": "clang",
+        "CMAKE_CXX_FLAGS": "-target x86_64-pc-windows-msvc",
+        "CMAKE_C_FLAGS": "-target x86_64-pc-windows-msvc",
+        "CMAKE_LINKER": "lld-link",
+        "NONCOMPREHENSIVE": "OFF",
+        "FALCON_SIMD_MODE": "FALCON_ENABLE_SSE4"
+      }
+    },
+    {
       "name": "Clang-Debug",
       "displayName": "Clang Debug",
       "inherits": "windows-base",

@@ -1557,8 +1557,8 @@ namespace flcn
                 // NOTE: A is stored in the lowest lane.
                 // To perform A-B-C-D, we can invert the flag bits of B, C, and D.
                 // A + (-B) + (-C) + (-D)
-                constexpr auto zero = 0x00000000ULL;
-                constexpr auto sign = 0x80000000ULL;
+                constexpr auto zero = static_cast<int>(0x00000000ULL);
+                constexpr auto sign = static_cast<int>(0x80000000ULL);
                 const auto flipMask =
                     _mm256_castsi256_ps(_mm256_setr_epi32(zero, sign, sign, sign, sign, sign, sign, sign));
                 const auto flippedReg = _mm256_xor_ps(_reg, flipMask);

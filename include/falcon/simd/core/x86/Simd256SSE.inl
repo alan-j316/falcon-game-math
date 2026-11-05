@@ -546,9 +546,9 @@ namespace flcn
         constexpr uint8_t normalizedIndices[MaxLaneCount]{ { (
             static_cast<uint8_t>(ShuffleIndex % Max128BitLaneCount))... } };
 
+        constexpr uint8_t ShuffleIndices[MaxLaneCount]{ { ShuffleIndex... } };
         // Masks for selecting values for the upper and lower 128-bit lanes.
         const auto makeMask = [&]<size_t Offset, size_t... Index>(std::index_sequence<Index...>) {
-            constexpr uint8_t ShuffleIndices[MaxLaneCount]{ { ShuffleIndex... } };
             return simd::makeBlendMask32<Max128BitLaneCount,
                                          (ShuffleIndices[Offset + Index] >= Max128BitLaneCount)...>();
         };

@@ -10,7 +10,6 @@
  */
 
 
-#include "Simd256AVX.h"
 #include "falcon/simd/utils/SIMDUtils.h"
 #include "internal/MaskHelpers.h"
 
@@ -21,7 +20,7 @@ namespace flcn
 /// Macro for differentiating SIMD256 pathways based on architectural support.
 #define _FALCON_SIMD256_SUPPORT_NATIVE_INTRINSIC(DataType)                                                             \
     (std::floating_point<DataType> && CURRENT_SIMD_BACKEND >= SimdBackend::ARCH_AVX) ||                                \
-        CURRENT_SIMD_BACKEND >= SimdBackend::ARCH_AVX2
+        (CURRENT_SIMD_BACKEND >= SimdBackend::ARCH_AVX2)
 
 
     template <typename DataType, size_t Lane>
@@ -1873,6 +1872,7 @@ namespace flcn
             const auto countReg = _mm_cvtsi32_si128(count);
             if constexpr (types::IsFP64<DataType>)
             {
+                std::cout << "Hitting Doubles" << std::endl;
                 const auto intReg     = _mm256_castpd_si256(_reg);
                 const auto shiftedReg = intrin::_mm256_sra_epi64_custom(intReg, countReg);
                 return Simd256(_mm256_castsi256_pd(shiftedReg));
@@ -1922,7 +1922,7 @@ namespace flcn
         }
         else
         {
-            return Simd256(_reg << count);
+            return Simd256(_reg >> count);
         }
     }
 

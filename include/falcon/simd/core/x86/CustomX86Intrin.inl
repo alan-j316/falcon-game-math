@@ -571,10 +571,10 @@ namespace flcn::intrin
             const auto loReg = _mm256_castsi256_si128(reg);
             const auto hiReg = _mm256_extractf128_si256(reg, 1);
 
-            const auto loShifted = _mm_sra_epi64_custom(loReg, count);
-            const auto hiShifted = _mm256_castsi128_si256(_mm_sra_epi64_custom(hiReg, count));
+            const auto loShifted = _mm256_castsi128_si256(_mm_sra_epi64_custom(loReg, count));
+            const auto hiShifted = _mm_sra_epi64_custom(hiReg, count);
 
-            return _mm256_insertf128_si256(hiShifted, loShifted, 0);
+            return _mm256_insertf128_si256(loShifted, hiShifted, 1);
         }
     }
 
@@ -638,10 +638,10 @@ namespace flcn::intrin
             const auto loReg = _mm256_castsi256_si128(reg);
             const auto hiReg = _mm256_extractf128_si256(reg, 1);
 
-            const auto loShifted = _mm_srai_epi64_custom<Count>(loReg);
-            const auto hiShifted = _mm256_castsi128_si256(_mm_srai_epi64_custom<Count>(hiReg));
+            const auto loShifted = _mm256_castsi128_si256(_mm_srai_epi64_custom<Count>(loReg));
+            const auto hiShifted = _mm_srai_epi64_custom<Count>(hiReg);
 
-            return _mm256_insertf128_si256(hiShifted, loShifted, 0);
+            return _mm256_insertf128_si256(loShifted, hiShifted, 1);
         }
     }
 

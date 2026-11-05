@@ -737,7 +737,7 @@ namespace flcn
                 const auto disjunct1 = _mm_or_si128(lower, upper);        // [A2 | A4, A1 | A3]
                 const auto shifted   = _mm_srli_si128(disjunct1, 8);      // [_, A2 | A4]
                 const auto disjunct2 = _mm_or_si128(disjunct1, shifted);  // [_, A1 | A2 | A3 | A4]
-                return std::bit_cast<DataType>(_mm_cvtsi128_si64x(disjunct2));
+                return std::bit_cast<DataType>(_mm_cvtsi128_si64(disjunct2));
             }
             else if constexpr (sizeof(DataType) == 4)
             {
@@ -854,7 +854,7 @@ namespace flcn
                 const auto shifted   = _mm_srli_si128(conjunct1, 8);      // [_, A2 & A4]
                 // Or the results together
                 const auto conjunct2 = _mm_and_si128(conjunct1, shifted); // [_, A1 & A2 & A3 & A4]
-                return std::bit_cast<DataType>(_mm_cvtsi128_si64x(conjunct2));
+                return std::bit_cast<DataType>(_mm_cvtsi128_si64(conjunct2));
             }
             else if constexpr (sizeof(DataType) == 4)
             {
@@ -1407,7 +1407,7 @@ namespace flcn
                 // Add the results together
                 const auto sum2 = _mm_add_epi64(sum1, shifted); // [_, A1 + A2 + A3 + A4]
                 // Extract the lowest lane
-                return std::bit_cast<DataType>(_mm_cvtsi128_si64x(sum2));
+                return std::bit_cast<DataType>(_mm_cvtsi128_si64(sum2));
             }
             else if constexpr (sizeof(DataType) == 4)
             {
@@ -1568,7 +1568,7 @@ namespace flcn
             {
                 // NOTE: A is stored in the lowest lane.
                 // For integrals we can use 2A - (A + B + C + D) to get A - B - C - D
-                const auto a = _mm256_cvtsi256_si64(_reg);
+                const auto a = _mm_cvtsi128_si64(_mm256_castsi256_si128(_reg));
                 return (2 * a) - horizontalAdd();
             }
             else if constexpr (sizeof(DataType) == 4)

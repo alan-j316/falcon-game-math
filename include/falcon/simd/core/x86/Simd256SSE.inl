@@ -527,7 +527,7 @@ namespace flcn
         return Simd256(_lower.template blend<lowerMask>(other._lower), _upper.template blend<upperMask>(other._upper));
     }
 
-
+// TODO: Rename ShuffleIndex to Index or PermuteIndex
     template <typename DataType, size_t Lane>
     template <uint8_t... ShuffleIndex>
         requires(sizeof...(ShuffleIndex) == Lane)

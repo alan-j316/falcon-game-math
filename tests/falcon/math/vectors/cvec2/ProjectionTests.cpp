@@ -14,7 +14,7 @@
 
 
 /**
- * @addtogroup T_FALCON_CVec2_Proj
+ * @addtogroup T_Falcon_CVec2_Proj
  * @{
  */
 

@@ -14,7 +14,7 @@
 
 
 /**
- * @addtogroup T_FALCON_Transform4_Inverse
+ * @addtogroup T_Falcon_Transform4_Inverse
  * @{
  */
 

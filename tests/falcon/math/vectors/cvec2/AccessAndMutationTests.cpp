@@ -16,7 +16,7 @@
 
 
 /**
- * @addtogroup T_FALCON_CVec2_Access
+ * @addtogroup T_Falcon_CVec2_Access
  * @{
  */
 

@@ -14,7 +14,7 @@
 
 
 /**
- * @addtogroup T_FALCON_Vec2_Const
+ * @addtogroup T_Falcon_Vec2_Const
  * @{
  */
 

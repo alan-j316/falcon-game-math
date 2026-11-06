@@ -15,7 +15,7 @@
 
 
 /**
- * @addtogroup T_FALCON_Mat4x4_Det
+ * @addtogroup T_Falcon_Mat4x4_Det
  * @{
  */
 

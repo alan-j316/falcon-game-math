@@ -17,7 +17,7 @@
 
 
 /**
- * @addtogroup T_FALCON_Mat4x2_Equality
+ * @addtogroup T_Falcon_Mat4x2_Equality
  * @{
  */
 

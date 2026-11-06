@@ -22,7 +22,7 @@ using namespace testutils;
 
 
 /**
- * @addtogroup T_FALCON_Mat4x3_Geom
+ * @addtogroup T_Falcon_Mat4x3_Geom
  * @{
  */
 

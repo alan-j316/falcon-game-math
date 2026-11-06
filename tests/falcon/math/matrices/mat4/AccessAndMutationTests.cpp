@@ -12,7 +12,7 @@
 #include "Mat4TestSetup.h"
 
 /**
- * @addtogroup T_FALCON_Mat4x4_Access
+ * @addtogroup T_Falcon_Mat4x4_Access
  * @{
  */
 

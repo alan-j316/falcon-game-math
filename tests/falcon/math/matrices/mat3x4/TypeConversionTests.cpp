@@ -14,7 +14,7 @@
 
 
 /**
- * @addtogroup T_FALCON_Mat3x4_Type_Conv
+ * @addtogroup T_Falcon_Mat3x4_Type_Conv
  * @{
  */
 

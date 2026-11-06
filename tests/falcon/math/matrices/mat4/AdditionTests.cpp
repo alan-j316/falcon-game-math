@@ -14,7 +14,7 @@
 
 
 /**
- * @addtogroup T_FALCON_Mat4x4_Addition
+ * @addtogroup T_Falcon_Mat4x4_Addition
  * @{
  */
 

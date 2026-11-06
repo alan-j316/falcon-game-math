@@ -19,7 +19,7 @@
 #ifdef ENABLE_DEBUG_TESTS
 
 /**
- * @addtogroup T_FALCON_Mat4x2_Assertion
+ * @addtogroup T_Falcon_Mat4x2_Assertion
  * @{
  */
 

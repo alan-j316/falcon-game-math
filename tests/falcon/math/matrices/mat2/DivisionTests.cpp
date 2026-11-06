@@ -14,7 +14,7 @@
 
 
 /**
- * @addtogroup T_FALCON_Mat2x2_Division
+ * @addtogroup T_Falcon_Mat2x2_Division
  * @{
  */
 

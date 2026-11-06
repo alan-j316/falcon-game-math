@@ -14,7 +14,7 @@
 
 
 /**
- * @addtogroup T_FALCON_Mat3x2_Init
+ * @addtogroup T_Falcon_Mat3x2_Init
  * @{
  */
 

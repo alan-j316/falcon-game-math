@@ -15,7 +15,7 @@
 
 
 /**
- * @addtogroup T_FALCON_Mat4x2_Subtraction
+ * @addtogroup T_Falcon_Mat4x2_Subtraction
  * @{
  */
 

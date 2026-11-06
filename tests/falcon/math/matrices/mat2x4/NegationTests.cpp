@@ -11,7 +11,7 @@
 
 #include "Mat2x4TestSetup.h"
 /**
- * @addtogroup T_FALCON_Mat2x4_Negation
+ * @addtogroup T_Falcon_Mat2x4_Negation
  * @{
  */
 

@@ -17,7 +17,7 @@
 
 
 /**
- * @addtogroup T_FALCON_Utils
+ * @addtogroup T_Falcon_Utils
  * @{
  */
 

@@ -12,7 +12,7 @@
 #include "include/QuaternionTestSetup.h"
 
 /**
- * @addtogroup T_FALCON_Quaternion_Init
+ * @addtogroup T_Falcon_Quaternion_Init
  * @{
  */
 

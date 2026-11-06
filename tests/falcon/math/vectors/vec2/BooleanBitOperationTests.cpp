@@ -13,7 +13,7 @@
 
 
 /**
- * @addtogroup T_FALCON_Vec2_Bool_Bit
+ * @addtogroup T_Falcon_Vec2_Bool_Bit
  * @{
  */
 

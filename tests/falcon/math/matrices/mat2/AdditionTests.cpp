@@ -12,7 +12,7 @@
 #include "Mat2TestSetup.h"
 
 /**
- * @addtogroup T_FALCON_Mat2x2_Addition
+ * @addtogroup T_Falcon_Mat2x2_Addition
  * @{
  */
 

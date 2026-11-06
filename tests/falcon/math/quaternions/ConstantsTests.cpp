@@ -15,7 +15,7 @@
 
 
 /**
- * @addtogroup T_FALCON_Quaternion_Const
+ * @addtogroup T_Falcon_Quaternion_Const
  * @{
  */
 

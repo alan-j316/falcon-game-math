@@ -17,7 +17,7 @@
 
 
 /**
- * @addtogroup T_FALCON_Vec3_Product
+ * @addtogroup T_Falcon_Vec3_Product
  * @{
  */
 

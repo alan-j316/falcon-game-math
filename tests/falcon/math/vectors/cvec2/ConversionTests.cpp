@@ -12,10 +12,11 @@
 #include "CVec2TestSetup.h"
 
 #include <falcon/math/vectors/CVec2.h>
+#include <falcon/math/vectors/Vec2.h>
 
 
 /**
- * @addtogroup T_FALCON_CVec2_Conv
+ * @addtogroup T_Falcon_CVec2_Conv
  * @{
  */
 

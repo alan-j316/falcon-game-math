@@ -15,7 +15,7 @@
 
 
 /**
- * @addtogroup T_FALCON_Quaternion_Access_Mutate
+ * @addtogroup T_Falcon_Quaternion_Access_Mutate
  * @{
  */
 

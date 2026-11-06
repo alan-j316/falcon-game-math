@@ -15,7 +15,7 @@
 #include <falcon/math/common/Constants.h>
 
 /**
- * @addtogroup T_FALCON_Vec3_Equality
+ * @addtogroup T_Falcon_Vec3_Equality
  * @{
  */
 

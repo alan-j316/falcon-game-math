@@ -14,7 +14,7 @@
 
 
 /**
- * @addtogroup T_FALCON_Point3_Init
+ * @addtogroup T_Falcon_Point3_Init
  * @{
  */
 

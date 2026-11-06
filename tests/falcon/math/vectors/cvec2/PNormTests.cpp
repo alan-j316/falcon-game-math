@@ -13,7 +13,7 @@
 
 
 /**
- * @addtogroup T_FALCON_CVec2_Norm
+ * @addtogroup T_Falcon_CVec2_Norm
  * @{
  */
 

@@ -21,7 +21,7 @@ using namespace testutils;
 
 
 /**
- * @addtogroup T_FALCON_Mat3x2_Comp
+ * @addtogroup T_Falcon_Mat3x2_Comp
  * @{
  */
 

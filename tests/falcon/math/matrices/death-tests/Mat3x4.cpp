@@ -20,7 +20,7 @@
 #ifdef ENABLE_DEBUG_TESTS
 
 /**
- * @addtogroup T_FALCON_Mat3x4_Assertion
+ * @addtogroup T_Falcon_Mat3x4_Assertion
  * @{
  */
 

@@ -13,7 +13,7 @@
 
 
 /**
- * @addtogroup T_FALCON_Transform4_Access
+ * @addtogroup T_Falcon_Transform4_Access
  * @{
  */
 
@@ -128,7 +128,7 @@ TEST_F(Transform4AccessTests, GetTranslation_ReturnsLastColumnAsPoint3)
 
 
 /**
- * @addtogroup T_FALCON_Transform4_Mutation
+ * @addtogroup T_Falcon_Transform4_Mutation
  * @{
  */
 

@@ -10,7 +10,7 @@
  */
 
 #define FORCE_SCALAR
-#define ENABLE_FALCON_SHADER_OPERATORS
+#define ENABLE_Falcon_SHADER_OPERATORS
 
 #include "CommonSetup.h"
 #include "utils/VectorUtils.h"

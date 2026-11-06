@@ -13,7 +13,7 @@
 
 
 /**
- * @addtogroup T_FALCON_Mat3x4_Utils
+ * @addtogroup T_Falcon_Mat3x4_Utils
  * @{
  */
 

@@ -13,7 +13,7 @@
 
 
 /**
- * @addtogroup T_FALCON_Quaternion_Arithmetic
+ * @addtogroup T_Falcon_Quaternion_Arithmetic
  * @{
  */
 

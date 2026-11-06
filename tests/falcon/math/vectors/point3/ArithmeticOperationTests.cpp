@@ -13,7 +13,7 @@
 
 
 /**
- * @addtogroup T_FALCON_Point3_Addition
+ * @addtogroup T_Falcon_Point3_Addition
  * @{
  */
 
@@ -145,7 +145,7 @@ TEST(Point3AdditionTests, PlusEqualsOperator_MixedType_DoesNotPromoteType)
 
 
 /**
- * @addtogroup T_FALCON_Point3_Subtraction
+ * @addtogroup T_Falcon_Point3_Subtraction
  * @{
  */
 

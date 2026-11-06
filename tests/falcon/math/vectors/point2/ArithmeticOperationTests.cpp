@@ -13,7 +13,7 @@
 
 
 /**
- * @addtogroup T_FALCON_Point2_Addition
+ * @addtogroup T_Falcon_Point2_Addition
  * @{
  */
 
@@ -143,7 +143,7 @@ TEST(Point2AdditionTests, PlusEqualsOperator_MixedType_DoesNotPromoteType)
 
 
 /**
- * @addtogroup T_FALCON_Point2_Subtraction
+ * @addtogroup T_Falcon_Point2_Subtraction
  * @{
  */
 

@@ -14,7 +14,7 @@
 
 
 /**
- * @addtogroup T_FALCON_Transform4_Multiplication
+ * @addtogroup T_Falcon_Transform4_Multiplication
  * @{
  */
 

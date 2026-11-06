@@ -12,7 +12,7 @@
 #include "Vec3TestSetup.h"
 
 /**
- * @addtogroup T_FALCON_Vec3_Const
+ * @addtogroup T_Falcon_Vec3_Const
  * @{
  */
 

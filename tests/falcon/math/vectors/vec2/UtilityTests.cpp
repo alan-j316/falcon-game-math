@@ -13,7 +13,7 @@
 
 
 /**
- * @addtogroup T_FALCON_Vec2_Utils
+ * @addtogroup T_Falcon_Vec2_Utils
  * @{
  */
 

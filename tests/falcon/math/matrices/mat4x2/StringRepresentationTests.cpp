@@ -16,7 +16,7 @@
 
 
 /**
- * @addtogroup T_FALCON_Mat4x2_String_Repr
+ * @addtogroup T_Falcon_Mat4x2_String_Repr
  * @{
  */
 

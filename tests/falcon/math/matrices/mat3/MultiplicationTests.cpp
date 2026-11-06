@@ -12,7 +12,7 @@
 #include "Mat3TestSetup.h"
 
 /**
- * @addtogroup T_FALCON_Mat3x3_Multiplication
+ * @addtogroup T_Falcon_Mat3x3_Multiplication
  * @{
  */
 

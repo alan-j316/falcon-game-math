@@ -12,7 +12,7 @@
 #include "Vec2TestSetup.h"
 
 /**
- * @addtogroup T_FALCON_Vec2_Ptr
+ * @addtogroup T_Falcon_Vec2_Ptr
  * @{
  */
 

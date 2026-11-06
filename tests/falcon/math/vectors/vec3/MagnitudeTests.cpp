@@ -14,7 +14,7 @@
 
 
 /**
- * @addtogroup T_FALCON_Vec3_Magnitude
+ * @addtogroup T_Falcon_Vec3_Magnitude
  * @{
  */
 

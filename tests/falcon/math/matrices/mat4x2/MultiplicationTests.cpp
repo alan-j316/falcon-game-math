@@ -13,7 +13,7 @@
 
 
 /**
- * @addtogroup T_FALCON_Mat4x2_Multiplication
+ * @addtogroup T_Falcon_Mat4x2_Multiplication
  * @{
  */
 

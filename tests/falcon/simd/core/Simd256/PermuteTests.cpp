@@ -548,7 +548,7 @@ TYPED_TEST(Simd256PermuteTests, ReturnsRegisterWithCorrectValues)
     // Get all the parameters from the types
     using Type                            = TypeParam::Type;
     constexpr size_t Lanes                = TypeParam::LaneCount;
-    constexpr Array<Type, Lanes> data     = TypeParam::data;
+    alignas(32) constexpr Array<Type, Lanes> data     = TypeParam::data;
     constexpr Array<Type, Lanes> expected = TypeParam::expected;
 
     // Create the register and load them
@@ -563,7 +563,7 @@ TYPED_TEST(Simd256PermuteTests, ReturnsRegisterWithCorrectValues)
     };
 
     // Perform the shuffling
-    Array<Type, Lanes> result{};
+    alignas(32) Array<Type, Lanes> result{};
     auto resultReg = execPermute(typename TypeParam::IndexSequence{});
     resultReg.store(result.data());
 

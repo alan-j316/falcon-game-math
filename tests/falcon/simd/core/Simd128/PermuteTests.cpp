@@ -259,7 +259,7 @@ TYPED_TEST(Simd128PermuteTests, ReturnsRegisterWithCorrectValues)
     // Get all the parameters from the types
     using Type                            = TypeParam::Type;
     constexpr size_t Lanes                = TypeParam::LaneCount;
-    constexpr Array<Type, Lanes> data     = TypeParam::data;
+    alignas(16) constexpr Array<Type, Lanes> data     = TypeParam::data;
     constexpr Array<Type, Lanes> expected = TypeParam::expected;
 
     // Create the register and load them

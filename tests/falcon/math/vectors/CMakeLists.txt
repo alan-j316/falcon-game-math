@@ -22,7 +22,7 @@ add_subdirectory(point3)
 add_subdirectory(cvec2)
 add_subdirectory(vec3)
 add_subdirectory(vec4)
-
+set(FALCON_ENABLE_NEON ON)
 # TODO: REMOVE TEMPORARY
 if (FALCON_ENABLE_NEON OR CMAKE_SYSTEM_PROCESSOR MATCHES "(arm|aarch64|ARM64)")
     message(STATUS "Detected ARM architecture. Disabling SIMD tests")
@@ -39,6 +39,15 @@ if (FALCON_ENABLE_NEON OR CMAKE_SYSTEM_PROCESSOR MATCHES "(arm|aarch64|ARM64)")
             Vec3Tests
             Vec4Tests
     )
+    set_target_properties(
+            Point2Tests
+            Point3Tests
+            CVec2Tests
+            Vec3Tests
+            Vec4Tests
+            PROPERTIES FOLDER "Test Intermediates/FALCON"
+    )
+
 else ()
     # SIMD
     add_subdirectory(vec2)
@@ -57,6 +66,17 @@ else ()
             # SIMD
             Vec2Tests
     )
+    set_target_properties(
+            Point2Tests
+            Point3Tests
+            CVec2Tests
+            Vec3Tests
+            Vec4Tests
+
+            Vec2Tests
+            PROPERTIES FOLDER "Test Intermediates/FALCON"
+    )
+
 endif ()
 
 target_precompile_headers(
@@ -65,16 +85,6 @@ target_precompile_headers(
         FalconMathCommonTests
 )
 
-set_target_properties(
-        Point2Tests
-        Point3Tests
-        CVec2Tests
-        Vec3Tests
-        Vec4Tests
-
-        Vec2Tests
-        PROPERTIES FOLDER "Test Intermediates/FALCON"
-)
 
 ###########################
 ### DEATH TESTS

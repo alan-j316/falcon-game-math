@@ -32,9 +32,9 @@ namespace
      * @brief Test fixture for @ref flcn::utils::diffAbs.
      */
     template <typename>
-    class FALCONDiffAbsTests: public testing::Test
+    class FalconDiffAbsTests: public testing::Test
     {};
-    TYPED_TEST_SUITE(FALCONDiffAbsTests, SupportedArithmeticTypes);
+    TYPED_TEST_SUITE(FalconDiffAbsTests, SupportedArithmeticTypes);
 
 
 
@@ -102,7 +102,7 @@ namespace
  *              DIFF ABS              *
  **************************************/
 
-TYPED_TEST(FALCONDiffAbsTests, ReturnsAbsoluteValueWithUnderflow_WhenAGreaterThanB)
+TYPED_TEST(FalconDiffAbsTests, ReturnsAbsoluteValueWithUnderflow_WhenAGreaterThanB)
 {
     const auto a      = TypeParam(12);
     const auto b      = TypeParam(7);
@@ -111,7 +111,7 @@ TYPED_TEST(FALCONDiffAbsTests, ReturnsAbsoluteValueWithUnderflow_WhenAGreaterTha
 }
 
 
-TYPED_TEST(FALCONDiffAbsTests, ReturnsAbsoluteValueWithUnderflow_WhenBGreaterThanA)
+TYPED_TEST(FalconDiffAbsTests, ReturnsAbsoluteValueWithUnderflow_WhenBGreaterThanA)
 {
     const auto a      = TypeParam(7);
     const auto b      = TypeParam(12);
@@ -120,7 +120,7 @@ TYPED_TEST(FALCONDiffAbsTests, ReturnsAbsoluteValueWithUnderflow_WhenBGreaterTha
 }
 
 
-TYPED_TEST(FALCONDiffAbsTests, ReturnsAbsoluteValueWithUnderflow_WhenAEqualsB)
+TYPED_TEST(FalconDiffAbsTests, ReturnsAbsoluteValueWithUnderflow_WhenAEqualsB)
 {
     const auto a      = TypeParam(12);
     const auto b      = TypeParam(12);

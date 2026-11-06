@@ -93,8 +93,8 @@ target_precompile_headers(FalconMathMatrixDeathTests REUSE_FROM FalconMathCommon
 
 #### GTEST
 if (FALCON_COMBINED_TEST_RUN)
-    add_test(NAME FALCONMatrixTestSuite COMMAND FalconMathMatrixTests)
-    add_test(NAME FALCONMatrixDeathTestSuite COMMAND FalconMathMatrixDeathTests)
+    add_test(NAME FalconMatrixTestSuite COMMAND FalconMathMatrixTests)
+    add_test(NAME FalconMatrixDeathTestSuite COMMAND FalconMathMatrixDeathTests)
 else ()
     gtest_discover_tests(FalconMathMatrixTests DISCOVERY_MODE POST_BUILD DISCOVERY_TIMEOUT 180)
     gtest_discover_tests(FalconMathMatrixDeathTests DISCOVERY_MODE POST_BUILD DISCOVERY_TIMEOUT 180)

@@ -133,8 +133,8 @@ target_precompile_headers(
 include(GoogleTest)
 # Runs the test binary as a single test
 if (FALCON_COMBINED_TEST_RUN)
-    add_test(NAME FALCONVectorTestSuite COMMAND FalconMathVectorTests)
-    add_test(NAME FALCONVectorDeathTestSuite COMMAND FalconMathVectorDeathTests)
+    add_test(NAME FalconVectorTestSuite COMMAND FalconMathVectorTests)
+    add_test(NAME FalconVectorDeathTestSuite COMMAND FalconMathVectorDeathTests)
 else ()
     gtest_discover_tests(FalconMathVectorTests DISCOVERY_MODE POST_BUILD DISCOVERY_TIMEOUT 180)
     gtest_discover_tests(FalconMathVectorDeathTests DISCOVERY_MODE POST_BUILD DISCOVERY_TIMEOUT 180)

@@ -86,8 +86,8 @@ target_precompile_headers(
 
 include(GoogleTest)
 if (FALCON_COMBINED_TEST_RUN)
-    add_test(NAME FALCONQuaternionsTestSuite COMMAND FalconMathQuaternionsTests)
-    add_test(NAME FALCONQuaternionsDeathTestSuite COMMAND FalconMathQuaternionsDeathTests)
+    add_test(NAME FalconQuaternionsTestSuite COMMAND FalconMathQuaternionsTests)
+    add_test(NAME FalconQuaternionsDeathTestSuite COMMAND FalconMathQuaternionsDeathTests)
 else ()
     gtest_discover_tests(FalconMathQuaternionsTests DISCOVERY_MODE POST_BUILD DISCOVERY_TIMEOUT 180)
     gtest_discover_tests(FalconMathQuaternionsDeathTests DISCOVERY_MODE POST_BUILD DISCOVERY_TIMEOUT 180)

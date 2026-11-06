@@ -563,7 +563,7 @@ TYPED_TEST(Simd256PermuteTests, ReturnsRegisterWithCorrectValues)
     };
 
     // Perform the shuffling
-    Array<Type, Lanes> result{};
+    alignas(32) Array<Type, Lanes> result{};
     auto resultReg = execPermute(typename TypeParam::IndexSequence{});
     resultReg.store(result.data());
 

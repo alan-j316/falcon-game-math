@@ -30,6 +30,10 @@ target_include_directories(FalconSIMDCoreTests PRIVATE "${FALCON_SIMD_TEST_ROOT_
 if (MINGW OR (CMAKE_CXX_COMPILER_ID STREQUAL "GNU" AND WIN32))
     target_compile_options(FalconSIMDCoreTests PRIVATE "-Wa,-mbig-obj")
 endif ()
+# Forces stack realignment to prevent 16-byte ABI boundary SEGFAULTs with AVX2 spills
+if (CMAKE_CXX_COMPILER_ID MATCHES "GNU|Clang")
+    target_compile_options(FalconSIMDCoreTests PRIVATE "-mstackrealign")
+endif ()
 
 target_link_libraries(FalconSIMDCoreTests PRIVATE FalconSIMDTestSetup)
 

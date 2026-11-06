@@ -1,5 +1,5 @@
 [![Unit Tests](https://github.com/alanabrahampkochumon-zqict/falcon-game-math/actions/workflows/unit-tests.yml/badge.svg)](https://github.com/alanabrahampkochumon-zqict/falcon-game-math/actions/workflows/unit-tests.yml)
-
+[![Vectorization(SIMD) Tests](https://github.com/alan-j316/falcon-game-math/actions/workflows/vectorization-tests.yml/badge.svg)](https://github.com/alan-j316/falcon-game-math/actions/workflows/vectorization-tests.yml)
 # Falcon Game Math
 
 Modern High Performance Game Math library with SIMD acceleration on supported platforms.

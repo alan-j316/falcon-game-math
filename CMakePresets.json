@@ -92,6 +92,20 @@
       }
     },
     {
+      "name": "Clang-Debug-AVX512F",
+      "displayName": "Clang Debug AVX512F",
+      "inherits": "windows-base",
+      "cacheVariables": {
+        "CMAKE_BUILD_TYPE": "Debug",
+        "CMAKE_CXX_COMPILER": "clang++",
+        "CMAKE_C_COMPILER": "clang",
+        "CMAKE_CXX_FLAGS": "-target x86_64-pc-windows-msvc",
+        "CMAKE_C_FLAGS": "-target x86_64-pc-windows-msvc",
+        "CMAKE_LINKER": "lld-link",
+        "FALCON_SIMD_MODE": "FALCON_ENABLE_AVX512F"
+      }
+    },
+    {
       "name": "Clang-Debug-AVX",
       "displayName": "Clang Debug AVX",
       "inherits": "windows-base",

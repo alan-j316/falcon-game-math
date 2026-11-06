@@ -87,7 +87,13 @@ namespace flcn
          *
          * @param[in] val The value to use broadcast across all vector components.
          */
-        [[nodiscard]] explicit constexpr Vec2(T val) noexcept;
+        [[nodiscard]] explicit constexpr Vec2(T val) noexcept
+            requires(std::is_integral_v<T> || std::is_floating_point_v<T>);
+
+        /**
+         * @brief Initialize a Vec2 with booleans.
+         */
+        [[nodiscard]] explicit constexpr Vec2(bool val) noexcept;
 
 
         /**
@@ -96,7 +102,14 @@ namespace flcn
          * @param[in] v1 The first entry of @ref Vec2.
          * @param[in] v2 The second entry of @ref Vec2.
          */
-        [[nodiscard]] constexpr Vec2(T v1, T v2) noexcept;
+        [[nodiscard]] constexpr Vec2(T v1, T v2) noexcept
+            requires(std::is_integral_v<T> || std::is_floating_point_v<T>);
+
+
+        /**
+         * @brief Initialize @ref Vec2 with passed bool values.
+         */
+        [[nodiscard]] constexpr Vec2(bool v1, bool v2) noexcept;
 
 
         /**

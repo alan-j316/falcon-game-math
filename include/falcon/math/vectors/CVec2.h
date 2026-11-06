@@ -26,6 +26,7 @@
 #include "falcon/math/common/OperationStatus.h"
 #include "falcon/math/common/Types.h"
 
+
 #include <array>
 #include <iomanip>
 #include <type_traits>

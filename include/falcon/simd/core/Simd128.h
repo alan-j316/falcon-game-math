@@ -9,7 +9,7 @@
  * @copyright Copyright (c) 2026 Alan Abraham P Kochumon
  */
 
-#include "../utils/SimdTraits.h"
+#include "falcon/simd/utils/SimdTraits.h"
 
 #include <concepts>
 
@@ -21,7 +21,6 @@
 // TODO: Rename File to SIMD core
 namespace flcn
 {
-
     template <typename SIMDReg, typename T>
     concept IsSIMDLoadable = requires(SIMDReg reg, T* buffer) {
         // { reg.load(buffer) };

@@ -86,7 +86,7 @@ TEST(Vec2AccessTests, NonConstVec_AccessibleAsCompileTimeIndex)
 /** @test Verify that the components can be mutated via named spatial aliases (x, y). */
 TEST(Vec2MutationTests, ElementsCanBeMutatedUsingXY)
 {
-    flcn::Vec2<float> vec;
+    flcn::Vec2<float> vec{ 0.0f };
 
     vec.x() = 3.0f;
     vec.y() = 1.0f;
@@ -99,7 +99,7 @@ TEST(Vec2MutationTests, ElementsCanBeMutatedUsingXY)
 /** @test Verify that the components can be mutated via named spatial aliases (s, t). */
 TEST(Vec2MutationTests, ElementsCanBeMutatedUsingST)
 {
-    flcn::Vec2<float> vec;
+    flcn::Vec2<float> vec{ 0.0f };
 
     vec.s() = 3.0f;
     vec.t() = 1.0f;
@@ -112,7 +112,7 @@ TEST(Vec2MutationTests, ElementsCanBeMutatedUsingST)
 /** @test Verify that the components can be mutated via named spatial aliases (r, g). */
 TEST(Vec2MutationTests, ElementsCanBeMutatedUsingRG)
 {
-    flcn::Vec2<float> vec;
+    flcn::Vec2<float> vec{ 0.0f };
 
     vec.r() = 3.0f;
     vec.g() = 1.0f;
@@ -125,7 +125,7 @@ TEST(Vec2MutationTests, ElementsCanBeMutatedUsingRG)
 /** @test Verify that the components are accessible via subscript indexing for writing. */
 TEST(Vec2MutationTests, ElementsCanBeMutatedUsingIndex)
 {
-    flcn::Vec2<float> vec;
+    flcn::Vec2<float> vec{ 0.0f };
 
     vec[0] = 3.0f;
     vec[1] = 1.0f;
@@ -136,7 +136,7 @@ TEST(Vec2MutationTests, ElementsCanBeMutatedUsingIndex)
 
 TEST(Vec2MutationTests, ElementsCanBeMutatedUsingCompileTimeIndexing)
 {
-    flcn::Vec2<float> vec;
+    flcn::Vec2<float> vec{ 0.0f };
 
     vec.set<0>(3.0f);
     vec.set<1>(1.0f);

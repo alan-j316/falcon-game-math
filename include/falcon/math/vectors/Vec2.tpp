@@ -11,9 +11,9 @@
  */
 
 
+#include "falcon/math/common/Config.h"
 #include "falcon/math/common/Messages.h"
 #include "falcon/math/common/Types.h"
-#include "falcon/math/common/Config.h"
 #include "falcon/math/common/Wrappers.h"
 
 #include <algorithm>
@@ -36,12 +36,30 @@ namespace flcn
      *************************************/
 
     template <Arithmetic T>
-    FALCON_INLINE constexpr Vec2<T>::Vec2(T val) noexcept: _data{ val, val }
+    FALCON_INLINE constexpr Vec2<T>::Vec2(T val) noexcept
+        requires(std::is_integral_v<T> || std::is_floating_point_v<T>)
+        : _data{ val, val }
+    {}
+
+    // TODO: Refactor out to a helper function
+    // TODO: Take into account machine size when return the correct type.
+    FALCON_INLINE uint8_t toSimdBool(const bool val) { return val ? -1 : 0; }
+
+    template <Arithmetic T>
+    FALCON_INLINE constexpr Vec2<T>::Vec2(const bool val) noexcept: _data{ toSimdBool(val), toSimdBool(val) }
     {}
 
 
     template <Arithmetic T>
-    FALCON_INLINE constexpr Vec2<T>::Vec2(T v1, T v2) noexcept: _data{ v1, v2 }
+    FALCON_INLINE constexpr Vec2<T>::Vec2(T v1, T v2) noexcept
+        requires(std::is_integral_v<T> || std::is_floating_point_v<T>)
+        : _data{ v1, v2 }
+    {}
+
+
+    template <Arithmetic T>
+    FALCON_INLINE constexpr Vec2<T>::Vec2(const bool v1, const bool v2) noexcept
+        : _data{ toSimdBool(v1), toSimdBool(v2) }
     {}
 
 
@@ -60,11 +78,13 @@ namespace flcn
     FALCON_INLINE constexpr Vec2<T>::Vec2(const flcn::Simd128_t<T, DIMENSION>& reg) noexcept: _data{ reg }
     {}
 
+    // TODO: add a aligned toCVec2 variant
+
     template <Arithmetic T>
     FALCON_INLINE constexpr CVec2<T> Vec2<T>::toCVec2() const noexcept
     {
         CVec2<T> cVec{};
-        _data.storeAligned(cVec._data.data());
+        _data.store(cVec._data.data());
         return cVec;
     }
 

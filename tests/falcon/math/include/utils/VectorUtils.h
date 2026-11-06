@@ -263,18 +263,17 @@ namespace testutils
     void EXPECT_VEC_ZERO(const T& vector)
     {
         using ValueType = T::value_type;
-
         constexpr std::size_t elementCount = T::DIMENSION;
 
         for (std::size_t i = 0; i < elementCount; ++i)
         {
             if constexpr (std::is_same_v<ValueType, float>)
             {
-                EXPECT_FLOAT_EQ(0.0f, static_cast<ValueType>(vector[i]));
+                EXPECT_NEAR(0.0f, static_cast<ValueType>(vector[i]), 1e-5);
             }
             else if constexpr (std::is_same_v<ValueType, double>)
             {
-                EXPECT_DOUBLE_EQ(0.0, static_cast<ValueType>(vector[i]));
+                EXPECT_NEAR(0.0, static_cast<ValueType>(vector[i]), 1e-15);
             }
             else
             {

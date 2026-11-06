@@ -37,7 +37,6 @@ namespace flcn
 
     template <Arithmetic T>
     FALCON_INLINE constexpr Vec2<T>::Vec2(T val) noexcept
-        requires(std::is_integral_v<T> || std::is_floating_point_v<T>)
         : _data{ val, val }
     {}
 
@@ -45,22 +44,21 @@ namespace flcn
     // TODO: Take into account machine size when return the correct type.
     FALCON_INLINE uint8_t toSimdBool(const bool val) { return val ? -1 : 0; }
 
-    template <Arithmetic T>
-    FALCON_INLINE constexpr Vec2<T>::Vec2(const bool val) noexcept: _data{ toSimdBool(val), toSimdBool(val) }
-    {}
+    // template <Arithmetic T>
+    // FALCON_INLINE constexpr Vec2<T>::Vec2(const bool val) noexcept: _data{ toSimdBool(val), toSimdBool(val) }
+    // {}
 
 
     template <Arithmetic T>
     FALCON_INLINE constexpr Vec2<T>::Vec2(T v1, T v2) noexcept
-        requires(std::is_integral_v<T> || std::is_floating_point_v<T>)
         : _data{ v1, v2 }
     {}
 
 
-    template <Arithmetic T>
-    FALCON_INLINE constexpr Vec2<T>::Vec2(const bool v1, const bool v2) noexcept
-        : _data{ toSimdBool(v1), toSimdBool(v2) }
-    {}
+    // template <Arithmetic T>
+    // FALCON_INLINE constexpr Vec2<T>::Vec2(const bool v1, const bool v2) noexcept
+    //     : _data{ toSimdBool(v1), toSimdBool(v2) }
+    // {}
 
 
     template <Arithmetic T>

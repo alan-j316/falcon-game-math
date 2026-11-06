@@ -1,5 +1,6 @@
 include_guard()
 
+add_library(${PROJECT_NAME}-StrictWarnings INTERFACE)
 message(STATUS "Configuring Strict Warnings")
 if (MSVC AND NOT CMAKE_CXX_COMPILER_ID MATCHES "Clang")
     target_compile_options(${PROJECT_NAME}-StrictWarnings INTERFACE

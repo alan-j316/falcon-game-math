@@ -10,10 +10,6 @@
  */
 
 
-#include "falcon/simd/utils/SIMDUtils.h"
-
-#include <bitset>
-
 namespace flcn
 {
 

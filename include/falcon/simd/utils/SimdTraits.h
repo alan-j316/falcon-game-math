@@ -79,7 +79,7 @@ namespace flcn
     }
 } // namespace flcn
 
-
+// TODO: NAME ALIGNMENT, SIMD_LANE, WIDTH, BACKEND etc to have FALCON OR FLCN prefix.
 /// Switch Alignment and Backend Variable based on highest supported backend.
 /// ALIGNMENT Gives the maximum alignment required.
 /// CURRENT_SIMD_BACKEND The current SIMD backend used by the target application.
@@ -105,7 +105,6 @@ inline constexpr auto CURRENT_SIMD_BACKEND = flcn::SimdBackend::ARCH_AVX;
     #define FALCON_PLATFORM_X86
 
 #elif defined(FALCON_ENABLE_AVX2)
-
 inline constexpr size_t ALIGNMENT          = 32;
 inline constexpr size_t SIMD_LANE_WIDTH    = 256;
 inline constexpr auto CURRENT_SIMD_BACKEND = flcn::SimdBackend::ARCH_AVX2;

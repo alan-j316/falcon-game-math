@@ -46,8 +46,7 @@ namespace flcn
 } // namespace flcn
 
 
-#if defined(FALCON_ENABLE_SSE2) || defined(FALCON_ENABLE_SSE4) || defined(FALCON_ENABLE_AVX) ||                        \
-    defined(FALCON_ENABLE_AVX2) || defined(FALCON_ENABLE_AVX512) || defined(FALCON_ENABLE_AVX10)
+#if defined(FALCON_PLATFORM_X86)
     #include "x86/Simd128SSE.h"
     #include "x86/Simd256AVX.h"
     #include "x86/Simd256SSE.h"
@@ -56,19 +55,19 @@ namespace flcn
 
 namespace flcn
 {
-#if defined(FALCON_ENABLE_SSE2) || defined(FALCON_ENABLE_SSE4) || defined(FALCON_ENABLE_AVX) ||                        \
-    defined(FALCON_ENABLE_AVX2) || defined(FALCON_ENABLE_AVX512) || defined(FALCON_ENABLE_AVX10)
+    // Simd128
+#if defined(FALCON_PLATFORM_X86)
     template <typename DataType, size_t Lane>
     using Simd128_t = Simd128<SimdBackend::ARCH_SSE2, DataType, Lane>;
-
-    #if defined(FALCON_ENABLE_AVX) || defined(FALCON_ENABLE_AVX2) || defined(FALCON_ENABLE_AVX512) ||                  \
-        defined(FALCON_ENABLE_AVX10)
+#endif
+// Simd256
+#if defined(FALCON_ENABLE_AVX) || defined(FALCON_ENABLE_AVX2) || defined(FALCON_ENABLE_AVX512F) ||                     \
+    defined(FALCON_ENABLE_AVX10) || defined(FALCON_ENABLE_AVX512EX)
     template <typename DataType, size_t Lane>
     using Simd256_t = Simd256<SimdBackend::ARCH_AVX, DataType, Lane>;
-    #else
+#else
     template <typename DataType, size_t Lane>
     using Simd256_t = Simd256<SimdBackend::ARCH_SSE2, DataType, Lane>;
-    #endif
 #endif
 } // namespace flcn
 

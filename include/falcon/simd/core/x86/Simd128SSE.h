@@ -26,6 +26,7 @@
 
 #include <array>
 #include <bit>
+#include <bitset>
 #include <emmintrin.h>
 #include <format>
 #include <immintrin.h>

@@ -4,7 +4,6 @@ project(FalconGameMath LANGUAGES CXX)
 set(CMAKE_EXPORT_COMPILE_COMMANDS ON)
 enable_testing()
 
-add_library(${PROJECT_NAME}-StrictWarnings INTERFACE)
 add_library(${PROJECT_NAME}-ProjectSanitizers INTERFACE)
 
 set(DevToolsDir "Dev Tools")

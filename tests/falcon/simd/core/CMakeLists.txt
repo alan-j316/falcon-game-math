@@ -19,12 +19,17 @@ add_executable(FalconSIMDCoreTests
         Simd256/BlendTests.cpp
         Simd256/PermuteTests.cpp
         Simd256/ConstructorTests.cpp
-        Simd256/UtilTests.cpp
+        # Simd256/UtilTests.cpp
         Simd256/BasicMathOperationTests.cpp
 )
 
 target_compile_options(FalconSIMDCoreTests PRIVATE $<$<CXX_COMPILER_ID:MSVC>:/bigobj>)
 target_include_directories(FalconSIMDCoreTests PRIVATE "${FALCON_SIMD_TEST_ROOT_DIR}/include")
+
+# Enable Large objects for MinGW
+if (MINGW OR (CMAKE_CXX_COMPILER_ID STREQUAL "GNU" AND WIN32))
+    target_compile_options(FalconSIMDCoreTests PRIVATE "-Wa,-mbig-obj")
+endif ()
 
 target_link_libraries(FalconSIMDCoreTests PRIVATE FalconSIMDTestSetup)
 

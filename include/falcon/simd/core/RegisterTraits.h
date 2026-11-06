@@ -74,8 +74,11 @@ namespace flcn
         //  x86 Architecture
         //+=+=+=+=+=+=+=+=+=+=
 
+        /// Simd256 internal register specialization for any architecture below AVX
+        /// for all data types and below AVX2 for integrals.
         template <SimdBackend Backend, typename T, size_t Lane>
-            requires(isX86ISA(Backend))
+            requires(isX86ISA(Backend) &&
+                     (Backend < SimdBackend::ARCH_AVX || (Backend < SimdBackend::ARCH_AVX2 && std::is_integral_v<T>) ))
         struct Simd256Register<Backend, T, Lane>
         {
             using Type = Simd256<SimdBackend::ARCH_SSE2, T, Lane>;

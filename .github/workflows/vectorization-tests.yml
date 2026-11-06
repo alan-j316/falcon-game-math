@@ -2,9 +2,9 @@ name: Vectorization(SIMD) Tests
 
 on:
   push:
-    branches: [ "feat/vectorization" ]
+    branches: [ "main", "feat/vectorization" ]
   pull_request:
-    branches: [ "feat/vectorization" ]
+    branches: [ "main", "feat/vectorization" ]
 
 jobs:
   build:
@@ -12,7 +12,7 @@ jobs:
 
     strategy:
       # Set fail-fast to false to ensure that feedback is delivered for all matrix combinations. Consider changing this to true when your workflow is stable.
-      fail-fast: false
+      fail-fast: true
 
       # Set up a matrix to run the following 10 configurations:
       # 1. <Windows, Release, latest MSVC compiler toolchain on the default runner image, default generator>

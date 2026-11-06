@@ -548,26 +548,37 @@ namespace flcn
 
     // TODO: Rename ShuffleIndex to Index or PermuteIndex
     template <typename DataType, size_t Lane>
-    template <uint8_t... ShuffleIndex>
-        requires(sizeof...(ShuffleIndex) == Lane)
+    template <uint8_t... PermuteIndex>
+        requires(sizeof...(PermuteIndex) == Lane)
     FALCON_INLINE constexpr Simd256<SimdBackend::ARCH_SSE2, DataType, Lane> Simd256<SimdBackend::ARCH_SSE2, DataType,
                                                                                     Lane>::permute() const noexcept
     {
-        static_assert(sizeof...(ShuffleIndex) == Lane && "There must be <Lane> permute indices.");
-        static_assert(((ShuffleIndex < Lane) && ...) && "Indices must be between 0(inclusive) and <Lane>(exclusive).");
+        static_assert(sizeof...(PermuteIndex) == Lane && "There must be <Lane> permute indices.");
+        static_assert(((PermuteIndex < Lane) && ...) && "Indices must be between 0(inclusive) and <Lane>(exclusive).");
+
+        /// +---------------------------------------------------------------------------------------+
+        /// |                           NO PERMUTATION REQUIRED                                     |
+        /// +---------------------------------------------------------------------------------------+
+        /// No permute is required if the indices are in ascending order
+        constexpr auto requireNoPermute = [&]<size_t... Index>(std::index_sequence<Index...>) constexpr {
+            constexpr uint8_t indices[]{ PermuteIndex... };
+            return ((indices[Index] == Index) && ...);
+        }(std::make_index_sequence<sizeof...(PermuteIndex)>());
+
+        if constexpr (requireNoPermute)
+        {
+            return *this;
+        }
+
+
+        // TODO: add optimization where no-op for no-permutation as well as for same lane and cross lane.
 
         // For shuffling we need to perform a normalized shuffle(range between 0 - Max_128_Lane_Count)
         // and then use a mask to select values from appropriate register lanes.
 
-        // Packed indexing is not support until C++26, we need to use this workaround
-        // For shuffling with two indices we need to transform the array values(indices)
-        // to be between 0 - MAX_LANE_COUNT(exclusive)
-        // constexpr uint8_t normalizedIdx[MaxLaneCount]{ (static_cast<uint8_t>(ShuffleIndex % Max128BitLaneCount))...
-        // };
-
         // Masks for selecting values for the upper and lower 128-bit lanes.
         const auto makeMask = []<size_t Offset, size_t... Index>(std::index_sequence<Index...>) {
-            constexpr uint8_t ShuffleIndices[MaxLaneCount]{ ShuffleIndex... };
+            constexpr uint8_t ShuffleIndices[MaxLaneCount]{ PermuteIndex... };
 
             return simd::makeBlendMask32<Max128BitLaneCount,
                                          (ShuffleIndices[Offset + Index] >= Max128BitLaneCount)...>();
@@ -594,7 +605,7 @@ namespace flcn
         // Upper part of the register with lower and upper indices(hilo, lohi)
         const auto shuffleUpper = [&]<size_t Offset, size_t... Index>(std::index_sequence<Index...>) {
             constexpr uint8_t normalizedIdx[MaxLaneCount]{ (
-                static_cast<uint8_t>(ShuffleIndex % Max128BitLaneCount))... };
+                static_cast<uint8_t>(PermuteIndex % Max128BitLaneCount))... };
             return _upper.template permute<normalizedIdx[Offset + Index]...>();
         };
         const auto upperShuffledWithUpperIndices =
@@ -605,7 +616,7 @@ namespace flcn
         // Lower part of register with lower and upper indices (lolo, lohi)
         const auto shuffleLower = [&]<size_t Offset, size_t... Index>(std::index_sequence<Index...>) {
             constexpr uint8_t normalizedIdx[MaxLaneCount]{ (
-                static_cast<uint8_t>(ShuffleIndex % Max128BitLaneCount))... };
+                static_cast<uint8_t>(PermuteIndex % Max128BitLaneCount))... };
             return _lower.template permute<normalizedIdx[Offset + Index]...>();
         };
         const auto lowerShuffledWithUpperIndices =

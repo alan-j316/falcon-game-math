@@ -758,14 +758,14 @@ namespace flcn
         /**
          * @brief Permutates the values as per given indices.
          *
-         * @tparam ShuffleIndex The indices to use for permutation. Only accepts values from 0 to Lane - 1.
+         * @tparam PermuteIndex The indices to use for permutation. Only accepts values from 0 to Lane - 1.
          *                      Must be specified from lower index to higher index,
          *                      i.e, <0, 1, 2, 3> returns a copy of the same register.
          *
          * @return A new Simd register with permuted values.
          */
-        template <uint8_t... ShuffleIndex>
-            requires(sizeof...(ShuffleIndex) == Lane)
+        template <uint8_t... PermuteIndex>
+            requires(sizeof...(PermuteIndex) == Lane)
         [[nodiscard]] constexpr Simd256 permute() const noexcept;
 
 

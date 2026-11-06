@@ -2221,26 +2221,26 @@ namespace flcn
 
 
     template <typename DataType, size_t Lane>
-    template <uint8_t... ShuffleIndex>
-        requires(sizeof...(ShuffleIndex) == Lane)
+    template <uint8_t... PermuteIndex>
+        requires(sizeof...(PermuteIndex) == Lane)
     FALCON_INLINE constexpr Simd256<SimdBackend::ARCH_AVX, DataType, Lane> Simd256<SimdBackend::ARCH_AVX, DataType,
                                                                                    Lane>::permute() const noexcept
     {
         if constexpr (_FALCON_SIMD256_SUPPORT_NATIVE_INTRINSIC(DataType))
         {
-            constexpr uint8_t indices[sizeof...(ShuffleIndex)]{ ShuffleIndex... };
+            constexpr uint8_t indices[sizeof...(PermuteIndex)]{ PermuteIndex... };
 
             /// We can assert if the permute are in-bounds i.e they must be less than the lane count.
             // constexpr auto inBounds = [&]<size_t... Index>(std::index_sequence<Index...>) {
             //     return ((shuffleIndices[Index] < Lane) && ...);
             // };
-            constexpr bool inBounds = ((ShuffleIndex < Lane) && ...);
+            constexpr bool inBounds = ((PermuteIndex < Lane) && ...);
             static_assert(inBounds && "Invalid Shuffle Index. Must be between 0 and <Lane - 1>");
 
             /// No permute is required if the indices are in ascending order
             constexpr auto requireNoPermute = [&]<size_t... Index>(std::index_sequence<Index...>) constexpr {
                 return ((indices[Index] == Index) && ...);
-            }(std::make_index_sequence<sizeof...(ShuffleIndex)>());
+            }(std::make_index_sequence<sizeof...(PermuteIndex)>());
 
             /// There is no lane cross over if the indices for the upper half are above the middle index(inclusive)
             /// and for the lower half are below the middle index.
@@ -2252,14 +2252,14 @@ namespace flcn
                 return (((Index < middleBoundary && indices[Index] < middleBoundary) ||
                          (Index >= middleBoundary && indices[Index] >= middleBoundary)) &&
                         ...);
-            }(std::make_index_sequence<sizeof...(ShuffleIndex)>());
+            }(std::make_index_sequence<sizeof...(PermuteIndex)>());
 
             /// Check whether the upper and lower indices are the same.
             /// Eg [7, 6, 5, 4 | 3, 2, 1, 0] (4 is the 0th index in the upper lane)
             constexpr auto hasSameUpperAndLowerIndices = [&]<size_t... Index>(std::index_sequence<Index...>) constexpr {
-                const auto offset = sizeof...(ShuffleIndex) / 2;
+                const auto offset = sizeof...(Index) / 2;
                 return ((indices[Index] == (indices[offset + Index] % offset)) && ...);
-            }(std::make_index_sequence<sizeof...(ShuffleIndex) / 2>());
+            }(std::make_index_sequence<sizeof...(PermuteIndex) / 2>());
 
             if constexpr (requireNoPermute)
             {
@@ -2531,7 +2531,7 @@ namespace flcn
                         // [   6,   43 |   55,    4] OR result(permuted)
                         // [MaskInLane, MaskPermute]
                         // Create two masks with in-lane and cross-lane shuffles within the 128-bit boundary.
-                        constexpr auto masks  = simd::internal::mm256Epi16PermMask<Lane, ShuffleIndex...>();
+                        constexpr auto masks  = simd::internal::mm256Epi16PermMask<Lane, PermuteIndex...>();
                         const auto maskInLane = _mm256_load_si256(reinterpret_cast<__m256i const*>(masks.first.data()));
                         const auto maskPermute =
                             _mm256_load_si256(reinterpret_cast<__m256i const*>(masks.second.data()));
@@ -2568,7 +2568,7 @@ namespace flcn
                     {
                         // Same technique as for epi16
                         // [MaskInLane, MaskPermute]
-                        constexpr auto masks  = simd::internal::mm256Epi8PermMask<Lane, ShuffleIndex...>();
+                        constexpr auto masks  = simd::internal::mm256Epi8PermMask<Lane, PermuteIndex...>();
                         const auto maskInLane = _mm256_load_si256(reinterpret_cast<__m256i const*>(masks.first.data()));
                         const auto maskPermute =
                             _mm256_load_si256(reinterpret_cast<__m256i const*>(masks.second.data()));
@@ -2615,7 +2615,7 @@ namespace flcn
         }
         else
         {
-            return Simd256(_reg.template permute<ShuffleIndex...>());
+            return Simd256(_reg.template permute<PermuteIndex...>());
         }
     }
 

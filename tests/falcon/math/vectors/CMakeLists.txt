@@ -47,7 +47,13 @@ if (FALCON_ENABLE_NEON OR CMAKE_SYSTEM_PROCESSOR MATCHES "(arm|aarch64|ARM64)")
             Vec4Tests
             PROPERTIES FOLDER "Test Intermediates/FALCON"
     )
-
+    ###########################
+    ### DEATH TESTS
+    add_executable(FalconMathVectorDeathTests
+            cvec2/DeathTests.cpp # TODO: Add death tests here
+            vec3/DeathTests.cpp
+            vec4/DeathTests.cpp
+    )
 else ()
     # SIMD
     add_subdirectory(vec2)
@@ -76,7 +82,14 @@ else ()
             Vec2Tests
             PROPERTIES FOLDER "Test Intermediates/FALCON"
     )
-
+    ###########################
+    ### DEATH TESTS
+    add_executable(FalconMathVectorDeathTests
+            cvec2/DeathTests.cpp # TODO: Add death tests here
+            vec3/DeathTests.cpp
+            vec4/DeathTests.cpp
+            vec2/DeathTests.cpp
+    )
 endif ()
 
 target_precompile_headers(
@@ -86,14 +99,7 @@ target_precompile_headers(
 )
 
 
-###########################
-### DEATH TESTS
-add_executable(FalconMathVectorDeathTests
-        cvec2/DeathTests.cpp # TODO: Add death tests here
-        vec3/DeathTests.cpp
-        vec4/DeathTests.cpp
-        vec2/DeathTests.cpp
-)
+
 set_target_properties(FalconMathVectorDeathTests PROPERTIES CXX_STANDARD 20)
 set_target_properties(FalconMathVectorDeathTests PROPERTIES CXX_STANDARD_REQUIRED ON)
 set_target_properties(FalconMathVectorDeathTests PROPERTIES CXX_EXTENSIONS OFF)

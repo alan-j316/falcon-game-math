@@ -16,7 +16,6 @@
 #include <cmath>
 #include <falcon/math/common/MathTraits.h>
 #include <falcon/math/vectors/CVec2.h>
-#include <falcon/math/vectors/Vec2.h>
 #include <falcon/math/vectors/Vec3.h>
 #include <falcon/math/vectors/Vec4.h>
 #include <gtest/gtest.h>

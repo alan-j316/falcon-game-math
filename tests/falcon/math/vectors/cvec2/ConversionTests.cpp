@@ -11,7 +11,7 @@
 
 #include "CVec2TestSetup.h"
 
-#include <falcon/math/vectors/Vec2.h>
+#include <falcon/math/vectors/CVec2.h>
 
 
 /**

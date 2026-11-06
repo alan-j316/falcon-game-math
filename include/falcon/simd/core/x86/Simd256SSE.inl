@@ -569,64 +569,63 @@ namespace flcn
         {
             return *this;
         }
+        else
+        {
+            /// +---------------------------------------------------------------------------------------+
+            /// |                             PERMUTATION REQUIRED                                      |
+            /// +---------------------------------------------------------------------------------------+
+            // TODO: add optimization where no-op for no-permutation as well as for same lane and cross lane.
 
+            // For shuffling we need to perform a normalized shuffle(range between 0 - Max_128_Lane_Count)
+            // and then use a mask to select values from appropriate register lanes.
 
-        // TODO: add optimization where no-op for no-permutation as well as for same lane and cross lane.
+            // Masks for selecting values for the upper and lower 128-bit lanes.
+            const auto makeMask = []<size_t Offset, size_t... Index>(std::index_sequence<Index...>) {
+                constexpr uint8_t ShuffleIndices[MaxLaneCount]{ PermuteIndex... };
+                return simd::makeBlendMask32<Max128BitLaneCount,
+                                             (ShuffleIndices[Offset + Index] >= Max128BitLaneCount)...>();
+            };
+            // [up_mask1, up_mask0, lo_mask1, lo_mask0]
+            constexpr BlendMask32_t upperMask =
+                makeMask.template operator()<Max128BitLaneCount>(std::make_index_sequence<Max128BitLaneCount>{});
+            constexpr BlendMask32_t lowerMask =
+                makeMask.template operator()<0>(std::make_index_sequence<Max128BitLaneCount>{});
 
-        // For shuffling we need to perform a normalized shuffle(range between 0 - Max_128_Lane_Count)
-        // and then use a mask to select values from appropriate register lanes.
+            // low          hi
+            // | a1 | b1 | | c1 | d1 |
+            // -----------------------
+            // lolo | a1 | b1 | <--
+            // lohi | a1 | b1 |    | <===
+            // hilo | c1 | d1 | <--     |
+            // hihi | c1 | d1 |      <===
+            // Select hilo if Mask[i] is true and lolo otherwise
+            // Select hihi if Mask[i] is true and lohi otherwise
 
-        // Masks for selecting values for the upper and lower 128-bit lanes.
-        const auto makeMask = []<size_t Offset, size_t... Index>(std::index_sequence<Index...>) {
-            constexpr uint8_t ShuffleIndices[MaxLaneCount]{ PermuteIndex... };
+            // NOTE: Lambda needs to invoked using .template operator() since the compiler can get confused
+            //       by the <0> as less operator.
 
-            return simd::makeBlendMask32<Max128BitLaneCount,
-                                         (ShuffleIndices[Offset + Index] >= Max128BitLaneCount)...>();
-        };
-        // [up_mask1, up_mask0, lo_mask1, lo_mask0]
-        constexpr BlendMask32_t upperMask =
-            makeMask.template operator()<Max128BitLaneCount>(std::make_index_sequence<Max128BitLaneCount>{});
-        constexpr BlendMask32_t lowerMask =
-            makeMask.template operator()<0>(std::make_index_sequence<Max128BitLaneCount>{});
+            // Upper part of the register with lower and upper indices(hilo, lohi)
+            const auto shuffleUpper = [&]<size_t Offset, size_t... Index>(std::index_sequence<Index...>) {
+                return _upper.template permute<static_cast<uint8_t>(PermuteIndex % Max128BitLaneCount)...>();
+            };
+            const auto upperShuffledWithUpperIndices =
+                shuffleUpper.template operator()<Max128BitLaneCount>(std::make_index_sequence<UPPER_LANE_COUNT>{});
+            const auto upperShuffledWithLowerIndices =
+                shuffleUpper.template operator()<0>(std::make_index_sequence<UPPER_LANE_COUNT>{});
 
-        // low          hi
-        // | a1 | b1 | | c1 | d1 |
-        // -----------------------
-        // lolo | a1 | b1 | <--
-        // lohi | a1 | b1 |    | <===
-        // hilo | c1 | d1 | <--     |
-        // hihi | c1 | d1 |      <===
-        // Select hilo if Mask[i] is true and lolo otherwise
-        // Select hihi if Mask[i] is true and lohi otherwise
+            // Lower part of register with lower and upper indices (lolo, lohi)
+            const auto shuffleLower = [&]<size_t Offset, size_t... Index>(std::index_sequence<Index...>) {
+                return _lower.template permute<static_cast<uint8_t>(PermuteIndex % Max128BitLaneCount)...>();
+            };
+            const auto lowerShuffledWithUpperIndices =
+                shuffleLower.template operator()<Max128BitLaneCount>(std::make_index_sequence<LOWER_LANE_COUNT>{});
+            const auto lowerShuffledWithLowerIndices =
+                shuffleLower.template operator()<0>(std::make_index_sequence<LOWER_LANE_COUNT>{});
 
-        // NOTE: Lambda needs to invoked using .template operator() since the compiler can get confused
-        //       by the <0> as less operator.
-
-        // Upper part of the register with lower and upper indices(hilo, lohi)
-        const auto shuffleUpper = [&]<size_t Offset, size_t... Index>(std::index_sequence<Index...>) {
-            constexpr uint8_t normalizedIdx[MaxLaneCount]{ (
-                static_cast<uint8_t>(PermuteIndex % Max128BitLaneCount))... };
-            return _upper.template permute<normalizedIdx[Offset + Index]...>();
-        };
-        const auto upperShuffledWithUpperIndices =
-            shuffleUpper.template operator()<Max128BitLaneCount>(std::make_index_sequence<UPPER_LANE_COUNT>{});
-        const auto upperShuffledWithLowerIndices =
-            shuffleUpper.template operator()<0>(std::make_index_sequence<UPPER_LANE_COUNT>{});
-
-        // Lower part of register with lower and upper indices (lolo, lohi)
-        const auto shuffleLower = [&]<size_t Offset, size_t... Index>(std::index_sequence<Index...>) {
-            constexpr uint8_t normalizedIdx[MaxLaneCount]{ (
-                static_cast<uint8_t>(PermuteIndex % Max128BitLaneCount))... };
-            return _lower.template permute<normalizedIdx[Offset + Index]...>();
-        };
-        const auto lowerShuffledWithUpperIndices =
-            shuffleLower.template operator()<Max128BitLaneCount>(std::make_index_sequence<LOWER_LANE_COUNT>{});
-        const auto lowerShuffledWithLowerIndices =
-            shuffleLower.template operator()<0>(std::make_index_sequence<LOWER_LANE_COUNT>{});
-
-        // select(lolo, hilo, mask), select(lohi, hihi, mask)
-        return Simd256{ lowerShuffledWithLowerIndices.template blend<lowerMask>(upperShuffledWithLowerIndices),
-                        lowerShuffledWithUpperIndices.template blend<upperMask>(upperShuffledWithUpperIndices) };
+            // select(lolo, hilo, mask), select(lohi, hihi, mask)
+            return Simd256{ lowerShuffledWithLowerIndices.template blend<lowerMask>(upperShuffledWithLowerIndices),
+                            lowerShuffledWithUpperIndices.template blend<upperMask>(upperShuffledWithUpperIndices) };
+        }
     }
 
 

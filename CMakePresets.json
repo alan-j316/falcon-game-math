@@ -148,6 +148,20 @@
       }
     },
     {
+      "name": "Clang-Debug-Combo-Test-Bin",
+      "displayName": "Clang Debug(Combined Test Binary)",
+      "inherits": "windows-base",
+      "cacheVariables": {
+        "CMAKE_BUILD_TYPE": "Debug",
+        "CMAKE_CXX_COMPILER": "clang++",
+        "CMAKE_C_COMPILER": "clang",
+        "CMAKE_CXX_FLAGS": "-target x86_64-pc-windows-msvc",
+        "CMAKE_C_FLAGS": "-target x86_64-pc-windows-msvc",
+        "CMAKE_LINKER": "lld-link",
+        "FALCON_COMBINED_TEST_RUN": "ON"
+      }
+    },
+    {
       "name": "GCC-Debug",
       "displayName": "GCC Debug",
       "inherits": "base-strict",
@@ -178,16 +192,18 @@
       }
     },
     {
-      "name": "Clang-Debug-Combo-Test-Bin",
-      "displayName": "Clang Debug(Combined Test Binary)",
-      "inherits": "windows-base",
+      "name": "GCC-Debug-Combo-Test-Bin",
+      "displayName": "GCC Debug(Combined Test Binary)",
+      "inherits": "base-strict",
+      "vendor": {
+        "jetbrains.com/clion": {
+          "toolchain": "MinGW"
+        }
+      },
       "cacheVariables": {
-        "CMAKE_BUILD_TYPE": "Debug",
-        "CMAKE_CXX_COMPILER": "clang++",
-        "CMAKE_C_COMPILER": "clang",
-        "CMAKE_CXX_FLAGS": "-target x86_64-pc-windows-msvc",
-        "CMAKE_C_FLAGS": "-target x86_64-pc-windows-msvc",
-        "CMAKE_LINKER": "lld-link",
+        "CMAKE_BUILD_TYPE": "Release",
+        "CMAKE_CXX_COMPILER": "g++",
+        "CMAKE_C_COMPILER": "gcc",
         "FALCON_COMBINED_TEST_RUN": "ON"
       }
     },

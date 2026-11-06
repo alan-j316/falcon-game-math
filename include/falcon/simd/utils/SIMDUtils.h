@@ -100,12 +100,12 @@ namespace flcn::simd
      * @return A 32-bit integral mask usable across Simd128/256/512 const blending.
      */
     template <size_t MaxLaneCount, bool... Mask>
-        requires(std::has_single_bit(sizeof...(Mask)) && sizeof...(Mask) >= 2 && sizeof...(Mask) <= MaxLaneCount) &&
-        (MaxLaneCount >= 2 && MaxLaneCount <= 32 && std::has_single_bit(MaxLaneCount))
     constexpr BlendMask32_t makeBlendMask32() noexcept
     {
-        constexpr bool maskArr[]{ Mask... };
+        static_assert(std::has_single_bit(sizeof...(Mask)));
+        static_assert(sizeof...(Mask) >= 2);
 
+        constexpr bool maskArr[]{ Mask... };
         // Creates the mask with appropriate shifts.
         // We create a mask by selecting an appropriate mask (0b11..11 if true, 0b0 otherwise)
         // and shifting by width required per mask for saturating the full 32-bits.
@@ -176,7 +176,7 @@ namespace flcn::simd
         };
 
         return u128{ .upper = expandByFour(16, std::make_index_sequence<16>{}),
-                          .lower = expandByFour(0, std::make_index_sequence<16>{}) };
+                     .lower = expandByFour(0, std::make_index_sequence<16>{}) };
     }
 
     /**

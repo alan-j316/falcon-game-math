@@ -527,6 +527,25 @@ namespace flcn
         return Simd256(_lower.template blend<lowerMask>(other._lower), _upper.template blend<upperMask>(other._upper));
     }
 
+    namespace internal
+    {
+        // template <size_t Size>
+        // consteval BlendMask32_t _Simd256SSE_Permute_makeIndex(size_t offset, size_t numIterations, const uint8_t
+        // (&indices)[Size]) noexcept
+        // {
+        //     return simd::makeBlendMask32<Max128BitLaneCount,
+        //                                  (ShuffleIndices[Offset + Index] >= Max128BitLaneCount)...>();
+        //     BlendMask32_t mask;
+        //     for (size_t i =0; i < numIterations; ++i)
+        //     {
+        //         mask
+        //     }
+        //
+        //
+        //     return mask;
+        // }
+    } // namespace internal
+
     // TODO: Rename ShuffleIndex to Index or PermuteIndex
     template <typename DataType, size_t Lane>
     template <uint8_t... ShuffleIndex>
@@ -543,11 +562,13 @@ namespace flcn
         // Packed indexing is not support until C++26, we need to use this workaround
         // For shuffling with two indices we need to transform the array values(indices)
         // to be between 0 - MAX_LANE_COUNT(exclusive)
-        constexpr uint8_t normalizedIdx[MaxLaneCount]{ (static_cast<uint8_t>(ShuffleIndex % Max128BitLaneCount))... };
+        // constexpr uint8_t normalizedIdx[MaxLaneCount]{ (static_cast<uint8_t>(ShuffleIndex % Max128BitLaneCount))...
+        // };
 
-        constexpr uint8_t ShuffleIndices[MaxLaneCount]{ ShuffleIndex... };
         // Masks for selecting values for the upper and lower 128-bit lanes.
-        const auto makeMask = [&]<size_t Offset, size_t... Index>(std::index_sequence<Index...>) {
+        const auto makeMask = []<size_t Offset, size_t... Index>(std::index_sequence<Index...>) {
+            constexpr uint8_t ShuffleIndices[MaxLaneCount]{ ShuffleIndex... };
+
             return simd::makeBlendMask32<Max128BitLaneCount,
                                          (ShuffleIndices[Offset + Index] >= Max128BitLaneCount)...>();
         };
@@ -571,21 +592,25 @@ namespace flcn
         //       by the <0> as less operator.
 
         // Upper part of the register with lower and upper indices(hilo, lohi)
-        auto shuffleUpper = [&]<size_t Offset, size_t... Index>(std::index_sequence<Index...>) {
+        const auto shuffleUpper = [&]<size_t Offset, size_t... Index>(std::index_sequence<Index...>) {
+            constexpr uint8_t normalizedIdx[MaxLaneCount]{ (
+                static_cast<uint8_t>(ShuffleIndex % Max128BitLaneCount))... };
             return _upper.template permute<normalizedIdx[Offset + Index]...>();
         };
-        auto upperShuffledWithUpperIndices =
+        const auto upperShuffledWithUpperIndices =
             shuffleUpper.template operator()<Max128BitLaneCount>(std::make_index_sequence<UPPER_LANE_COUNT>{});
-        auto upperShuffledWithLowerIndices =
+        const auto upperShuffledWithLowerIndices =
             shuffleUpper.template operator()<0>(std::make_index_sequence<UPPER_LANE_COUNT>{});
 
         // Lower part of register with lower and upper indices (lolo, lohi)
-        auto shuffleLower = [&]<size_t Offset, size_t... Index>(std::index_sequence<Index...>) {
+        const auto shuffleLower = [&]<size_t Offset, size_t... Index>(std::index_sequence<Index...>) {
+            constexpr uint8_t normalizedIdx[MaxLaneCount]{ (
+                static_cast<uint8_t>(ShuffleIndex % Max128BitLaneCount))... };
             return _lower.template permute<normalizedIdx[Offset + Index]...>();
         };
-        auto lowerShuffledWithUpperIndices =
+        const auto lowerShuffledWithUpperIndices =
             shuffleLower.template operator()<Max128BitLaneCount>(std::make_index_sequence<LOWER_LANE_COUNT>{});
-        auto lowerShuffledWithLowerIndices =
+        const auto lowerShuffledWithLowerIndices =
             shuffleLower.template operator()<0>(std::make_index_sequence<LOWER_LANE_COUNT>{});
 
         // select(lolo, hilo, mask), select(lohi, hihi, mask)

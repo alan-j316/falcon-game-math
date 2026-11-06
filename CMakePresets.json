@@ -137,6 +137,36 @@
       }
     },
     {
+      "name": "GCC-Debug",
+      "displayName": "GCC Debug",
+      "inherits": "base-strict",
+      "vendor": {
+        "jetbrains.com/clion": {
+          "toolchain": "MinGW"
+        }
+      },
+      "cacheVariables": {
+        "CMAKE_BUILD_TYPE": "Debug",
+        "CMAKE_CXX_COMPILER": "g++",
+        "CMAKE_C_COMPILER": "gcc"
+      }
+    },
+    {
+      "name": "GCC-Release",
+      "displayName": "GCC Release",
+      "inherits": "base-strict",
+      "vendor": {
+        "jetbrains.com/clion": {
+          "toolchain": "MinGW"
+        }
+      },
+      "cacheVariables": {
+        "CMAKE_BUILD_TYPE": "Release",
+        "CMAKE_CXX_COMPILER": "g++",
+        "CMAKE_C_COMPILER": "gcc"
+      }
+    },
+    {
       "name": "Clang-Debug-Combo-Test-Bin",
       "displayName": "Clang Debug(Combined Test Binary)",
       "inherits": "windows-base",

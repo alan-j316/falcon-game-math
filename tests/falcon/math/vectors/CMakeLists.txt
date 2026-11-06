@@ -24,22 +24,38 @@ add_subdirectory(vec3)
 add_subdirectory(vec4)
 # SIMD
 add_subdirectory(vec2)
+if (NOT FALCON_ENABLE_NEON)
+    target_link_libraries(
+            FalconMathVectorTests
+            PRIVATE
+            FalconMathTestSetup
 
-target_link_libraries(
-        FalconMathVectorTests
-        PRIVATE
-        FalconMathTestSetup
+            # OBJs
+            # CONSTEXPR
+            Point2Tests
+            Point3Tests
+            CVec2Tests
+            Vec3Tests
+            Vec4Tests
+            # SIMD
+            Vec2Tests
+    )
+else ()
+    message(STATUS "Detected ARM architecture. Disabling SIMD tests")
+    target_link_libraries(
+            FalconMathVectorTests
+            PRIVATE
+            FalconMathTestSetup
 
-        # OBJs
-        # CONSTEXPR
-        Point2Tests
-        Point3Tests
-        CVec2Tests
-        Vec3Tests
-        Vec4Tests
-        # SIMD
-        Vec2Tests
-)
+            # OBJs
+            # CONSTEXPR
+            Point2Tests
+            Point3Tests
+            CVec2Tests
+            Vec3Tests
+            Vec4Tests
+    )
+endif ()
 
 target_precompile_headers(
         FalconMathVectorTests

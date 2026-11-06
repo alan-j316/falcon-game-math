@@ -25,22 +25,8 @@ FetchContent_Declare(
         SYSTEM
 )
 
-FetchContent_Declare(
-        sdl3
-        GIT_REPOSITORY https://github.com/libsdl-org/SDL.git
-        GIT_TAG d9d5536704d585616d4db3c8ba3c4ff6fc2757e1
-        SYSTEM
-)
-
-FetchContent_Declare(
-        fast_float
-        GIT_REPOSITORY https://github.com/fastfloat/fast_float.git
-        GIT_TAG v8.2.10
-        SYSTEM
-)
-
 # Test Harness Dependencies
-if (FGM_TESTS)
+if (FALCON_TESTS OR FALCON_SIMD_TESTS)
     FetchContent_MakeAvailable(googletest)
     # Group google_test projects into a "Gtest" folder
     set_target_properties(
@@ -56,16 +42,12 @@ endif ()
 
 
 # Benchmark Dependencies
-if (FGM_BENCHMARK)
+if (FALCON_BENCHMARK)
     FetchContent_MakeAvailable(googlebenchmark)
+    if(MSVC)
+    else()
+        target_compile_options(benchmark PRIVATE -Wno-format-nonliteral)
+        target_compile_options(benchmark_main PRIVATE -Wno-format-nonliteral)
+    endif()
     set_target_properties(benchmark benchmark_main PROPERTIES FOLDER "${VENDORS_DIR}/Google/Benchmark")
 endif ()
-
-
-# Rasterizer Dependencies
-if (FGM_DEMO_RASTERIZER)
-    FetchContent_MakeAvailable(sdl3)
-    FetchContent_MakeAvailable(fast_float)
-    set_target_properties(SDL3-static SDL3_test PROPERTIES FOLDER "${VENDORS_DIR}/SDL3")
-endif ()
-

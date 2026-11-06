@@ -1,0 +1,26 @@
+#pragma once
+/**
+ * @file Vec
+ * @author Alan Abraham P Kochumon
+ * @date Created on: June 19, 2026
+ *
+ * @brief Alias for @ref flcn::Vector(s).
+ *
+ * @copyright Copyright (c) 2026 Alan Abraham P Kochumon
+ */
+
+#include "vectors/CVec2.h"
+#include "vectors/Vec3.h"
+#include "vectors/Vec4.h"
+#include "common/MathTraits.h"
+
+namespace flcn
+{
+
+    /**
+     * @addtogroup FALCON_Header_Alias
+     * @{
+     */
+
+    /** @} */
+}

@@ -1,5 +1,5 @@
 /**
- * @file AVX512Test.cpp
+ * @file AVXTest.cpp
  * @author Alan Abraham P Kochumon
  * @date Created on: July 10, 2026
  *

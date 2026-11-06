@@ -1,113 +1,229 @@
 ﻿{
-    "version": 3,
-    "configurePresets": [
-        {
-            "name": "base-strict",
-            "hidden": true,
-            "generator": "Ninja",
-            "binaryDir": "${sourceDir}/out/build/${presetName}",
-            "cacheVariables": {
-                "CMAKE_EXPORT_COMPILE_COMMANDS": "ON",
-                "FGM_BENCHMARK": "ON",
-                "FGM_TESTS": "ON",
-                "FGM_DEMO_RASTERIZER": "ON",
-                "FGM_DOCS": "ON",
-                "FGM_STRICT_MODE": "ON"
-            }
-        },
-        {
-            "name": "windows-base",
-            "hidden": true,
-            "inherits": "base-strict",
-            "architecture": {
-                "value": "x64",
-                "strategy": "external"
-            },
-            "vendor": {
-                "microsoft.com/VisualStudioSettings/CMake/1.0": {
-                    "hostOS": ["Windows"]
-                }
-            }
-        },
-        {
-            "name": "MSVC-Debug",
-            "displayName": "MSVC Debug",
-            "inherits": "windows-base",
-            "cacheVariables": {
-                "CMAKE_BUILD_TYPE": "Debug",
-                "CMAKE_CXX_COMPILER": "cl",
-                "CMAKE_C_COMPILER": "cl"
-            }
-        },
-        {
-            "name": "MSVC-Release",
-            "displayName": "MSVC Release",
-            "inherits": "windows-base",
-            "cacheVariables": {
-                "CMAKE_BUILD_TYPE": "Release",
-                "CMAKE_CXX_COMPILER": "cl",
-                "CMAKE_C_COMPILER": "cl"
-            }
-        },
-        {
-            "name": "Clang-Debug",
-            "displayName": "Clang Debug",
-            "inherits": "windows-base",
-            "cacheVariables": {
-                "CMAKE_BUILD_TYPE": "Debug",
-                "CMAKE_CXX_COMPILER": "clang-cl",
-                "CMAKE_C_COMPILER": "clang-cl"
-            }
-        },
-        {
-            "name": "Clang-Debug-LHS",
-            "displayName": "Clang Debug (Left Handed)",
-            "inherits": "windows-base",
-            "cacheVariables": {
-                "CMAKE_BUILD_TYPE": "Debug",
-                "CMAKE_CXX_COMPILER": "clang-cl",
-                "CMAKE_C_COMPILER": "clang-cl",
-                "FGM_FORCE_LEFT_HANDED": "ON"
-            }
-        },
-        {
-            "name": "Clang-Debug-NonComprehensive",
-            "displayName": "Clang Debug (Non Comprehensive)",
-            "inherits": "windows-base",
-            "cacheVariables": {
-                "CMAKE_BUILD_TYPE": "Debug",
-                "CMAKE_CXX_COMPILER": "clang-cl",
-                "CMAKE_C_COMPILER": "clang-cl",
-                "NONCOMPREHENSIVE": "ON"
-            }
-        },
-        {
-            "name": "Clang-Release",
-            "displayName": "Clang Release",
-            "inherits": "windows-base",
-            "cacheVariables": {
-                "CMAKE_BUILD_TYPE": "Release",
-                "CMAKE_CXX_COMPILER": "clang-cl",
-                "CMAKE_C_COMPILER": "clang-cl"
-            }
-        },
-        {
-            "name": "macos-debug",
-            "displayName": "macOS AppleClang Debug",
-            "inherits": "base-strict",
-            "cacheVariables": {
-                "CMAKE_BUILD_TYPE": "Debug",
-                "CMAKE_OSX_ARCHITECTURES": "arm64"
-            }
-        },
-        {
-            "name": "macos-release",
-            "displayName": "macOS AppleClang Release",
-            "inherits": "base-strict",
-            "cacheVariables": {
-                "CMAKE_BUILD_TYPE": "Release",
-                "CMAKE_OSX_ARCHITECTURES": "arm64"
-            }
+  "version": 3,
+  "configurePresets": [
+    {
+      "name": "base-strict",
+      "hidden": true,
+      "generator": "Ninja",
+      "binaryDir": "${sourceDir}/out/build/${presetName}",
+      "cacheVariables": {
+        "CMAKE_EXPORT_COMPILE_COMMANDS": "ON",
+        "FALCON_BENCHMARK": "ON",
+        "FALCON_TESTS": "ON",
+        "FALCON_DOCS": "ON",
+        "FALCON_STRICT_MODE": "ON",
+        "FALCON_SIMD_TESTS": "ON",
+        "FALCON_CORE_TESTS": "ON"
+      }
+    },
+    {
+      "name": "windows-base",
+      "hidden": true,
+      "inherits": "base-strict",
+      "architecture": {
+        "value": "x64",
+        "strategy": "external"
+      },
+      "vendor": {
+        "microsoft.com/VisualStudioSettings/CMake/1.0": {
+          "hostOS": [
+            "Windows"
+          ]
         }
-    ]
+      }
+    },
+    {
+      "name": "MSVC-Debug",
+      "displayName": "MSVC Debug",
+      "inherits": "windows-base",
+      "cacheVariables": {
+        "CMAKE_BUILD_TYPE": "Debug",
+        "CMAKE_CXX_COMPILER": "cl",
+        "CMAKE_C_COMPILER": "cl"
+      }
+    },
+    {
+      "name": "MSVC-Release",
+      "displayName": "MSVC Release",
+      "inherits": "windows-base",
+      "cacheVariables": {
+        "CMAKE_BUILD_TYPE": "Release",
+        "CMAKE_CXX_COMPILER": "cl",
+        "CMAKE_C_COMPILER": "cl"
+      }
+    },
+    {
+      "name": "MSVC-Debug-AVX",
+      "displayName": "MSVC Debug AVX",
+      "inherits": "windows-base",
+      "cacheVariables": {
+        "CMAKE_BUILD_TYPE": "Debug",
+        "CMAKE_CXX_COMPILER": "cl",
+        "CMAKE_C_COMPILER": "cl",
+        "FALCON_SIMD_MODE": "FALCON_ENABLE_AVX"
+      }
+    },
+    {
+      "name": "Clang-Debug-LHS",
+      "displayName": "Clang Debug (Left Handed)",
+      "inherits": "windows-base",
+      "cacheVariables": {
+        "CMAKE_BUILD_TYPE": "Debug",
+        "CMAKE_CXX_COMPILER": "clang++",
+        "CMAKE_C_COMPILER": "clang",
+        "CMAKE_CXX_FLAGS": "-target x86_64-pc-windows-msvc",
+        "CMAKE_C_FLAGS": "-target x86_64-pc-windows-msvc",
+        "CMAKE_LINKER": "lld-link",
+        "FALCON_FORCE_LEFT_HANDED": "ON"
+      }
+    },
+    {
+      "name": "Clang-Debug-NonComprehensive",
+      "displayName": "Clang Debug (Non Comprehensive)",
+      "inherits": "windows-base",
+      "cacheVariables": {
+        "CMAKE_BUILD_TYPE": "Debug",
+        "CMAKE_CXX_COMPILER": "clang++",
+        "CMAKE_C_COMPILER": "clang",
+        "CMAKE_CXX_FLAGS": "-target x86_64-pc-windows-msvc",
+        "CMAKE_C_FLAGS": "-target x86_64-pc-windows-msvc",
+        "CMAKE_LINKER": "lld-link",
+        "NONCOMPREHENSIVE": "ON"
+      }
+    },
+    {
+      "name": "Clang-Debug-AVX",
+      "displayName": "Clang Debug AVX",
+      "inherits": "windows-base",
+      "cacheVariables": {
+        "CMAKE_BUILD_TYPE": "Debug",
+        "CMAKE_CXX_COMPILER": "clang++",
+        "CMAKE_C_COMPILER": "clang",
+        "CMAKE_CXX_FLAGS": "-target x86_64-pc-windows-msvc",
+        "CMAKE_C_FLAGS": "-target x86_64-pc-windows-msvc",
+        "CMAKE_LINKER": "lld-link",
+        "NONCOMPREHENSIVE": "OFF",
+        "FALCON_SIMD_MODE": "FALCON_ENABLE_AVX"
+      }
+    },
+    {
+      "name": "Clang-Debug-SSE4",
+      "displayName": "Clang Debug SSE4",
+      "inherits": "windows-base",
+      "cacheVariables": {
+        "CMAKE_BUILD_TYPE": "Debug",
+        "CMAKE_CXX_COMPILER": "clang++",
+        "CMAKE_C_COMPILER": "clang",
+        "CMAKE_CXX_FLAGS": "-target x86_64-pc-windows-msvc",
+        "CMAKE_C_FLAGS": "-target x86_64-pc-windows-msvc",
+        "CMAKE_LINKER": "lld-link",
+        "NONCOMPREHENSIVE": "OFF",
+        "FALCON_SIMD_MODE": "FALCON_ENABLE_SSE4"
+      }
+    },
+    {
+      "name": "Clang-Debug",
+      "displayName": "Clang Debug",
+      "inherits": "windows-base",
+      "cacheVariables": {
+        "CMAKE_BUILD_TYPE": "Debug",
+        "CMAKE_CXX_COMPILER": "clang++",
+        "CMAKE_C_COMPILER": "clang",
+        "CMAKE_CXX_FLAGS": "-target x86_64-pc-windows-msvc",
+        "CMAKE_C_FLAGS": "-target x86_64-pc-windows-msvc",
+        "CMAKE_LINKER": "lld-link"
+      }
+    },
+    {
+      "name": "Clang-Release",
+      "displayName": "Clang Release",
+      "inherits": "windows-base",
+      "cacheVariables": {
+        "CMAKE_BUILD_TYPE": "Release",
+        "CMAKE_CXX_COMPILER": "clang++",
+        "CMAKE_C_COMPILER": "clang",
+        "CMAKE_CXX_FLAGS": "-target x86_64-pc-windows-msvc",
+        "CMAKE_C_FLAGS": "-target x86_64-pc-windows-msvc",
+        "CMAKE_LINKER": "lld-link"
+      }
+    },
+    {
+      "name": "Clang-Debug-Combo-Test-Bin",
+      "displayName": "Clang Debug(Combined Test Binary)",
+      "inherits": "windows-base",
+      "cacheVariables": {
+        "CMAKE_BUILD_TYPE": "Debug",
+        "CMAKE_CXX_COMPILER": "clang++",
+        "CMAKE_C_COMPILER": "clang",
+        "CMAKE_CXX_FLAGS": "-target x86_64-pc-windows-msvc",
+        "CMAKE_C_FLAGS": "-target x86_64-pc-windows-msvc",
+        "CMAKE_LINKER": "lld-link",
+        "FALCON_COMBINED_TEST_RUN": "ON"
+      }
+    },
+    {
+      "name": "GCC-Debug",
+      "displayName": "GCC Debug",
+      "inherits": "base-strict",
+      "vendor": {
+        "jetbrains.com/clion": {
+          "toolchain": "MinGW"
+        }
+      },
+      "cacheVariables": {
+        "CMAKE_BUILD_TYPE": "Debug",
+        "CMAKE_CXX_COMPILER": "g++",
+        "CMAKE_C_COMPILER": "gcc"
+      }
+    },
+    {
+      "name": "GCC-Release",
+      "displayName": "GCC Release",
+      "inherits": "base-strict",
+      "vendor": {
+        "jetbrains.com/clion": {
+          "toolchain": "MinGW"
+        }
+      },
+      "cacheVariables": {
+        "CMAKE_BUILD_TYPE": "Release",
+        "CMAKE_CXX_COMPILER": "g++",
+        "CMAKE_C_COMPILER": "gcc"
+      }
+    },
+    {
+      "name": "GCC-Debug-Combo-Test-Bin",
+      "displayName": "GCC Debug(Combined Test Binary)",
+      "inherits": "base-strict",
+      "vendor": {
+        "jetbrains.com/clion": {
+          "toolchain": "MinGW"
+        }
+      },
+      "cacheVariables": {
+        "CMAKE_BUILD_TYPE": "Release",
+        "CMAKE_CXX_COMPILER": "g++",
+        "CMAKE_C_COMPILER": "gcc",
+        "FALCON_COMBINED_TEST_RUN": "ON"
+      }
+    },
+    {
+      "name": "macos-debug",
+      "displayName": "macOS AppleClang Debug",
+      "inherits": "base-strict",
+      "cacheVariables": {
+        "CMAKE_BUILD_TYPE": "Debug",
+        "CMAKE_OSX_ARCHITECTURES": "arm64"
+      }
+    },
+    {
+      "name": "macos-release",
+      "displayName": "macOS AppleClang Release",
+      "inherits": "base-strict",
+      "cacheVariables": {
+        "CMAKE_BUILD_TYPE": "Release",
+        "CMAKE_OSX_ARCHITECTURES": "arm64"
+      }
+    }
+  ]
 }

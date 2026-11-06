@@ -2,7 +2,9 @@
 
 # Falcon Game Math
 
-High performance math library written in modern C++. *Requires C++20 or above*
+Modern High Performance Game Math library with SIMD acceleration on supported platforms.
+
+*Requires C++20 or above*
 
 ## Requirements
 
@@ -13,36 +15,52 @@ High performance math library written in modern C++. *Requires C++20 or above*
 
 ### General
 
-- **FGM_DEMO_RASTERIZER**: Enables FGM Demo Application.
-- **FGM_DOCS**: Enables FGM Documentation Generation.
-- **FGM_STRICT_MODE**: Enables Strict Warnings, treating warnings as errors.
-- **FGM_ASAN**: Enables Address Sanitizer in Strict Mode.
-- **FGM_FORCE_LEFT_HANDED**: Switches Library to use Left Handed Coordinate System(Right-Handed by default).
+- **FALCON_DOCS**: Enables FALCON Documentation Generation.
+- **FALCON_STRICT_MODE**: Enables Strict Warnings, treating warnings as errors.
+- **FALCON_ASAN**: Enables Address Sanitizer in Strict Mode.
+- **FALCON_FORCE_LEFT_HANDED**: Switches Library to use Left Handed Coordinate System (Right-Handed by default).
 
 ### Testing and Benchmarks
 
-- **FGM_BENCHMARK**: Enables FGM Benchmark Suite.
-- **FGM_TESTS**: Enable FGM Unit Tests.
+- **FALCON_BENCHMARK**: Enables FALCON Benchmark Suite.
+- **FALCON_TESTS**: Enable FALCON Unit Tests.
 - **NONCOMPREHENSIVE**: Run unit tests with essential type matrix only.
 
-## How to run
+### SIMD
 
-1. Generate project files using
-    ```bash
-        cmake -B build -DENABLE_FGM_DEMO
-    ```
+The flag is currently only available for testing targets and will need to be defined per target using the
+`AddSimdCompilerFlag` CMake function.
 
-2. Run the build using commandline
-    ```bash
-        cmake --build build
-        ./build/playground/Debug/Playground.exe # To Run the playground
-    ```
-   OR
-   Run it in Visual Studio or your IDE of choice.
+- **AUTO**: Automatically detect SIMD based on the host machine.
+- **FALCON_ENABLE_AVX512**: Enables AVX512 support.
+- **FALCON_ENABLE_AVX10**: Enables AVX10.1 support. *No auto-detect available*
+- **FALCON_ENABLE_AVX2**: Enables AVX2 support.
+- **FALCON_ENABLE_AVX**: Enables AVX support.
+- **FALCON_ENABLE_SSE4**: Enables SSE4 support.
+- **FALCON_ENABLE_SSE2**: Enables SSE2 support.
+- **FALCON_DISABLE_SIMD**: Disables SIMD.
+
+## How to install (CMake FetchContent)
+
+1. Use `FetchContent` to pull the library.
+
+```cmake
+    FetchContent_Declare(
+        falcon
+        GIT_REPOSITORY https://github.com/alanabrahampkochumon-zqict/falcon-game-math.git
+        GIT_TAG 538f41eeeda7f1d2e61f21c06ea118b7a98b4ddd
+        SYSTEM
+)
+```
+
+2. Link with your target.
+    ```cmake
+        add_executable(SampleGame)
+        target_link_libraries(SampleGame PRIVATE Falcon::Falcon)    
+   ```
 
 ## References
 
 - <a href="https://foundationsofgameenginedev.com/" target="_blank">Eric Lengyel's Foundations of Game Engine
-  Development
-  Series</a>
+  Development Series</a>
 - <a href="https://gamemath.com/" target="_blank">3D Math Primer for Graphics and Game Engine Development</a>

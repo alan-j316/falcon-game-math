@@ -1,4 +1,4 @@
-# Documentation Guideline for Falcon Game Math Library (FGM)
+# Documentation Guideline for Falcon Game Math Library (FALCON)
 
 ## 1. General Language & Formatting
 
@@ -95,7 +95,7 @@
  * @note Arithmetic operations are limited to numeric types via @ref StrictArithmetic concept.
  *
  * @par Configuration
- * Define `ENABLE_FGM_SHADER_OPERATORS` to enable comparison operators (>, <, etc.).
+ * Define `ENABLE_FALCON_SHADER_OPERATORS` to enable comparison operators (>, <, etc.).
  * Even if disabled, functional comparisons like `greaterThan()` remain available.
  * Define `FORCE_SCALAR` to turn off SIMD which is on by default on supported hardware.
  *

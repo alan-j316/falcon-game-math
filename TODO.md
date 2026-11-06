@@ -39,6 +39,6 @@
 - Rasterizer with Texture mapping
 - Add asserts to functions that can have UB(like div by zero in vectors)
 - Custom Trigonometric functions for constexpr evaluations
-- Use FGM_LEFT_HANDED where ever calculation are not coordinate system agnostic
+- Use FALCON_LEFT_HANDED where ever calculation are not coordinate system agnostic
 - Wrapper for min, max, etc.
 - Custom Sqrt Function for constexpr evaluations

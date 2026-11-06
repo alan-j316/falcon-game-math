@@ -1,1 +1,0 @@
-cmake --build build && ./build/test-suite/Debug/TestSuite.exe

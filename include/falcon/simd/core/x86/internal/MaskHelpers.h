@@ -17,6 +17,14 @@
 
 namespace flcn::simd::internal
 {
+
+    /// Aligned struct for passing in and out permutation masks for 256 bit registers.
+    struct alignas(32) MM256PermuteMask
+    {
+        alignas(32) std::array<uint8_t, 32> inLaneMask;
+        alignas(32) std::array<uint8_t, 32> crossLaneMask;
+    };
+
     /**
      * Generate a suitable shuffle mask set for 16x16 register(mm256).
      * @tparam Lane  The number of lanes in the register.
@@ -28,7 +36,7 @@ namespace flcn::simd::internal
      */
     template <size_t Lane, uint8_t... Index>
         requires(sizeof...(Index) == 16)
-    consteval std::pair<std::array<uint8_t, 32>, std::array<uint8_t, 32>> mm256Epi16PermMask() noexcept
+    consteval MM256PermuteMask mm256Epi16PermMask() noexcept
     {
         // To perform a shuffle with _mm256_shuffle_epi8 we need to create 2 masks.
         // One for in-place shuffle and one for cross-lane shuffle.
@@ -94,7 +102,7 @@ namespace flcn::simd::internal
                 inLaneIdx[i * 2 + 1] = 0x80;
             }
         }
-        return { inLaneIdx, permutedIdx };
+        return { .inLaneMask = inLaneIdx, .crossLaneMask = permutedIdx };
     }
 
 
@@ -109,7 +117,7 @@ namespace flcn::simd::internal
      */
     template <size_t Lane, uint8_t... Index>
         requires(sizeof...(Index) == 32)
-    consteval std::pair<std::array<uint8_t, 32>, std::array<uint8_t, 32>> mm256Epi8PermMask() noexcept
+    consteval MM256PermuteMask mm256Epi8PermMask() noexcept
     {
         // To perform a shuffle with _mm256_shuffle_epi8 we need to create 2 masks.
         // One for in-place shuffle and one for cross-lane shuffle.
@@ -161,7 +169,7 @@ namespace flcn::simd::internal
                 inLaneIdx[i] = 0x80;
             }
         }
-        return { inLaneIdx, permutedIdx };
+        return { .inLaneMask = inLaneIdx, .crossLaneMask = permutedIdx };
     }
 
 

@@ -2532,9 +2532,9 @@ namespace flcn
                         // [MaskInLane, MaskPermute]
                         // Create two masks with in-lane and cross-lane shuffles within the 128-bit boundary.
                         constexpr auto masks  = simd::internal::mm256Epi16PermMask<Lane, PermuteIndex...>();
-                        const auto maskInLane = _mm256_load_si256(reinterpret_cast<__m256i const*>(masks.first.data()));
+                        const auto maskInLane = _mm256_load_si256(reinterpret_cast<__m256i const*>(masks.inLaneMask.data()));
                         const auto maskPermute =
-                            _mm256_load_si256(reinterpret_cast<__m256i const*>(masks.second.data()));
+                            _mm256_load_si256(reinterpret_cast<__m256i const*>(masks.crossLaneMask.data()));
 
                         // Permutate the upper lanes into lower and lower to upper
                         // [1, 0 | 1, 0] -> Relative index of the 64-bit blocks.
@@ -2569,9 +2569,9 @@ namespace flcn
                         // Same technique as for epi16
                         // [MaskInLane, MaskPermute]
                         constexpr auto masks  = simd::internal::mm256Epi8PermMask<Lane, PermuteIndex...>();
-                        const auto maskInLane = _mm256_load_si256(reinterpret_cast<__m256i const*>(masks.first.data()));
+                        const auto maskInLane = _mm256_load_si256(reinterpret_cast<__m256i const*>(masks.inLaneMask.data()));
                         const auto maskPermute =
-                            _mm256_load_si256(reinterpret_cast<__m256i const*>(masks.second.data()));
+                            _mm256_load_si256(reinterpret_cast<__m256i const*>(masks.crossLaneMask.data()));
                         // std::cout << "Shuffle Index\n";
                         // for (const auto m : indices)
                         // {

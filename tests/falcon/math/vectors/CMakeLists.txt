@@ -82,6 +82,7 @@ else ()
             Vec2Tests
             PROPERTIES FOLDER "Test Intermediates/FALCON"
     )
+    # TODO: Move outside once neon is ready
     ###########################
     ### DEATH TESTS
     add_executable(FalconMathVectorDeathTests
@@ -97,7 +98,6 @@ target_precompile_headers(
         REUSE_FROM
         FalconMathCommonTests
 )
-
 
 
 set_target_properties(FalconMathVectorDeathTests PROPERTIES CXX_STANDARD 20)

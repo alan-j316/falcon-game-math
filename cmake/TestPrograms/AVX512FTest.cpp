@@ -12,9 +12,8 @@
 
 int main()
 {
-    const __m128i a                       = _mm_setzero_si128();
-    const __m128i b                       = _mm_setzero_si128();
-    // AVX512DQ/VL Instruction
-    [[maybe_unused]] const __m128i result = _mm_mullo_epi64(a, b);
+    float data[16] {0};
+    const __m512 a = _mm512_setzero_ps();
+    _mm512_storeu_ps(data, a);
     return 0;
 }

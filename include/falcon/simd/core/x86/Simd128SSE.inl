@@ -528,7 +528,7 @@ namespace flcn
                 // Note: epi8 version of maskz_compress require __mmask16 and there is no standalone
                 //       variant of cvtsi128 for converting to 8-bit integral
                 auto reg = _mm_maskz_compress_epi8(static_cast<__mmask16>(1u << index), _register);
-                return static_cast<DataType>(_mm_cvtsi128_si16);
+                return static_cast<DataType>(_mm_cvtsi128_si16(reg));
             }
             return static_cast<DataType>(index);
         }

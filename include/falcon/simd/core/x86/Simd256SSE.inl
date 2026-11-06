@@ -606,7 +606,8 @@ namespace flcn
 
             // Upper part of the register with lower and upper indices(hilo, lohi)
             const auto shuffleUpper = [&]<size_t Offset, size_t... Index>(std::index_sequence<Index...>) {
-                return _upper.template permute<static_cast<uint8_t>(PermuteIndex % Max128BitLaneCount)...>();
+                constexpr uint8_t idx[MaxLaneCount]{ (static_cast<uint8_t>(PermuteIndex % Max128BitLaneCount))... };
+                return _upper.template permute<idx[Index + Offset]...>();
             };
             const auto upperShuffledWithUpperIndices =
                 shuffleUpper.template operator()<Max128BitLaneCount>(std::make_index_sequence<UPPER_LANE_COUNT>{});
@@ -615,7 +616,8 @@ namespace flcn
 
             // Lower part of register with lower and upper indices (lolo, lohi)
             const auto shuffleLower = [&]<size_t Offset, size_t... Index>(std::index_sequence<Index...>) {
-                return _lower.template permute<static_cast<uint8_t>(PermuteIndex % Max128BitLaneCount)...>();
+                constexpr uint8_t idx[MaxLaneCount]{ (static_cast<uint8_t>(PermuteIndex % Max128BitLaneCount))... };
+                return _lower.template permute<idx[Index + Offset]...>();
             };
             const auto lowerShuffledWithUpperIndices =
                 shuffleLower.template operator()<Max128BitLaneCount>(std::make_index_sequence<LOWER_LANE_COUNT>{});

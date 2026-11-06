@@ -259,7 +259,7 @@ TYPED_TEST(Simd128PermuteTests, ReturnsRegisterWithCorrectValues)
     // Get all the parameters from the types
     using Type                            = TypeParam::Type;
     constexpr size_t Lanes                = TypeParam::LaneCount;
-    alignas(16) constexpr Array<Type, Lanes> data     = TypeParam::data;
+    alignas(16) Array<Type, Lanes> data     = TypeParam::data;
     constexpr Array<Type, Lanes> expected = TypeParam::expected;
 
     // Create the register and load them
@@ -269,7 +269,7 @@ TYPED_TEST(Simd128PermuteTests, ReturnsRegisterWithCorrectValues)
     // we need to use call it using a lambda nad integer_sequence
     auto execPermute = [data]<uint8_t... I>(std::integer_sequence<uint8_t, I...>) {
         flcn::Simd128_t<Type, Lanes> reg{};
-        reg.load(const_cast<Type*>(data.data()));
+        reg.load(data.data());
         return reg.template permute<I...>();
     };
 

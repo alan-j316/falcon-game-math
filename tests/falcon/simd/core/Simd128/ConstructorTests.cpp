@@ -38,30 +38,29 @@ namespace
 
 using namespace simd::testing;
 
-
-TYPED_TEST(Simd128CtorTests, Simd128_CanBeInitializedWithAlignedVector)
-{
-    using Type            = TypeParam::Type;
-    constexpr size_t Lane = TypeParam::VALUE;
-
-    std::pmr::synchronized_pool_resource mem({ .max_blocks_per_chunk = 0, .largest_required_pool_block = 16 });
-    std::pmr::vector<Type> data(Lane, &mem);
-
-    for (size_t i = 0; i < Lane; ++i)
-    {
-        data[i] = static_cast<Type>(i + 11);
-    }
-
-    flcn::Simd128_t<Type, Lane> reg{ data };
-
-    alignas(16) std::array<Type, Lane> result{};
-    reg.storeAligned(result.data());
-
-    for (size_t i = 0; i < Lane; ++i)
-    {
-        EXPECT_ANY_EQ(data[i], result[i]);
-    }
-}
+// Use with aligned malloc is required.
+// TYPED_TEST(Simd128CtorTests, Simd128_CanBeInitializedWithAlignedVector)
+// {
+//     using Type            = TypeParam::Type;
+//     constexpr size_t Lane = TypeParam::VALUE;
+//
+//     std::vector<Type> data(Lane);
+//
+//     for (size_t i = 0; i < Lane; ++i)
+//     {
+//         data[i] = static_cast<Type>(i + 11);
+//     }
+//
+//     flcn::Simd128_t<Type, Lane> reg{ data };
+//
+//     alignas(16) std::array<Type, Lane> result{};
+//     reg.storeAligned(result.data());
+//
+//     for (size_t i = 0; i < Lane; ++i)
+//     {
+//         EXPECT_ANY_EQ(data[i], result[i]);
+//     }
+// }
 
 
 

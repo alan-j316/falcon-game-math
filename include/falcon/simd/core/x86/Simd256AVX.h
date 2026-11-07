@@ -788,13 +788,12 @@ namespace flcn
         ///       UTILITIES
         ///+=+=+=+=+=+=+=+=+=+=+=+=+=
 
-
         /// @brief Get the minimum value from this register.
         [[nodiscard]] constexpr DataType horizontalMin() const noexcept;
 
 
-        //     /// @brief Get the maximum value from this register.
-        //     [[nodiscard]] constexpr DataType horizontalMax() const noexcept;
+        /// @brief Get the maximum value from this register.
+        [[nodiscard]] constexpr DataType horizontalMax() const noexcept;
 
 
         /**

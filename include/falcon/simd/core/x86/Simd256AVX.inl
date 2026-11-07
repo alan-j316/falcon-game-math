@@ -2758,9 +2758,24 @@ namespace flcn
     }
 
 
-    // template <typename DataType, size_t Lane>
-    // FALCON_INLINE constexpr DataType Simd256<SimdBackend::ARCH_AVX, DataType, Lane>::horizontalMax() const
-    // noexcept { return std::max(_lower.horizontalMax(), _upper.horizontalMax()); }
+    template <typename DataType, size_t Lane>
+    FALCON_INLINE constexpr DataType Simd256<SimdBackend::ARCH_AVX, DataType, Lane>::horizontalMax() const
+    noexcept
+    {
+        if constexpr (_FALCON_SIMD256_SUPPORT_NATIVE_INTRINSIC(DataType))
+        {
+            const auto loLane       = _mm256_castsi256_si128(_reg);
+            const auto hiLane       = _mm256_extracti128_si256(_reg, 1);
+            constexpr auto halfLane = Lane / 2;
+            // TODO: Replace std::min with flcn::max
+            return std::max(Simd128<SimdBackend::ARCH_SSE2, DataType, halfLane>(loLane).horizontalMax(),
+                            Simd128<SimdBackend::ARCH_SSE2, DataType, halfLane>(hiLane).horizontalMax());
+        }
+        else
+        {
+            return Simd256(_reg.horizontalMax());
+        }
+    }
 
 
     template <typename DataType, size_t Lane>

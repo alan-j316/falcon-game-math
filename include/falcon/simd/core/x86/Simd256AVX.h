@@ -68,14 +68,14 @@ namespace flcn
         // // TODO: Add register creation from upper and lower values
         // /// @brief Cast a register from @p DataType to @p T.
         // /// @tparam T The destination data type.
-        // template <typename T>
-        // [[nodiscard]] constexpr Simd256<SimdBackend::ARCH_AVX, T, Lane> cast() const noexcept;
+        template <typename T>
+        [[nodiscard]] constexpr Simd256<SimdBackend::ARCH_AVX, T, Lane> cast() const noexcept;
 
 
-        //     /// @brief Cast a register from @p DataType to @p T (non-const variant).
-        //     /// @tparam T The destination data type.
-        //     template <typename T>
-        //     [[nodiscard]] constexpr Simd256<SimdBackend::ARCH_AVX, T, Lane> cast() noexcept;
+        /// @brief Cast a register from @p DataType to @p T (non-const variant).
+        /// @tparam T The destination data type.
+        template <typename T>
+        [[nodiscard]] constexpr Simd256<SimdBackend::ARCH_AVX, T, Lane> cast() noexcept;
 
 
         /**
@@ -820,11 +820,11 @@ namespace flcn
         //     /// @brief Get a mask with the Nan status of each Lane of elements.
         //     /// @note Integrals always return a zero register.
         //     [[nodiscard]] constexpr Simd256 hasNan() const noexcept;
-        //
-        //
-        //     /// @brief Get a mask with the Inf status of each Lane of elements.
-        //     /// @note Integrals always return a zero register.
-        //     [[nodiscard]] constexpr Simd256 hasInf() const noexcept;
+
+
+        /// @brief Get a mask with the Inf status of each Lane of elements.
+        /// @note Integrals always return a zero register.
+        [[nodiscard]] constexpr Simd256 hasInf() const noexcept;
 
 
     private:

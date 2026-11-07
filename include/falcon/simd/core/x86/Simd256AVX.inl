@@ -42,18 +42,134 @@ namespace flcn
     }
 
 
-    // template <typename DataType, size_t Lane>
-    // template <typename T>
-    // FALCON_INLINE constexpr Simd256<SimdBackend::ARCH_AVX, T, Lane> Simd256<SimdBackend::ARCH_AVX, DataType,
-    //                                                                          Lane>::cast() const noexcept
-    // { return Simd256(_lower.template cast<T>(), _upper.template cast<T>()); }
-    //
-    //
-    // template <typename DataType, size_t Lane>
-    // template <typename T>
-    // FALCON_INLINE constexpr Simd256<SimdBackend::ARCH_AVX, T, Lane> Simd256<SimdBackend::ARCH_AVX, DataType,
-    //                                                                          Lane>::cast() noexcept
-    // { return Simd256(_lower.template cast<T>(), _upper.template cast<T>()); }
+    template <typename DataType, size_t Lane>
+    template <typename T>
+    FALCON_INLINE constexpr Simd256<SimdBackend::ARCH_AVX, T, Lane> Simd256<SimdBackend::ARCH_AVX, DataType,
+                                                                            Lane>::cast() const noexcept
+    {
+        if constexpr (_FALCON_SIMD256_SUPPORT_NATIVE_INTRINSIC(DataType))
+        {
+            if constexpr (std::is_same_v<DataType, T>)
+            {
+                return Simd256(_reg);
+            }
+            else if constexpr (types::IsFP64<DataType>)
+            {
+                if constexpr (types::IsFP32<T>)
+                {
+                    return Simd256<SimdBackend::ARCH_AVX, T, Lane>(_mm256_castpd_ps(_reg));
+                }
+                else if constexpr (std::is_integral_v<T>)
+                {
+                    return Simd256<SimdBackend::ARCH_AVX, T, Lane>(_mm256_castpd_si256(_reg));
+                }
+                else
+                {
+                    return Simd256<SimdBackend::ARCH_AVX, T, Lane>(_reg);
+                }
+            }
+            else if constexpr (types::IsFP32<DataType>)
+            {
+                if constexpr (types::IsFP64<T>)
+                {
+                    return Simd256<SimdBackend::ARCH_AVX, T, Lane>(_mm256_castps_pd(_reg));
+                }
+                else if constexpr (std::is_integral_v<T>)
+                {
+                    return Simd256<SimdBackend::ARCH_AVX, T, Lane>(_mm256_castps_si256(_reg));
+                }
+                else
+                {
+                    return Simd256<SimdBackend::ARCH_AVX, T, Lane>(_reg);
+                }
+            }
+            else // Integral to floating point.
+            {
+                if constexpr (types::IsFP64<T>)
+                {
+                    return Simd256<SimdBackend::ARCH_AVX, T, Lane>(_mm256_castsi256_pd(_reg));
+                }
+                else if constexpr (types::IsFP32<T>)
+                {
+                    return Simd256<SimdBackend::ARCH_AVX, T, Lane>(_mm256_castsi256_ps(_reg));
+                }
+                else
+                {
+                    return Simd256<SimdBackend::ARCH_AVX, T, Lane>(_reg);
+                }
+            }
+        }
+        else
+        {
+            // Emulated Register will `set` the correct values so we don't need to assign.
+            return Simd256<SimdBackend::ARCH_AVX, T, Lane>(_reg.template cast<T>());
+        }
+    }
+
+
+    template <typename DataType, size_t Lane>
+    template <typename T>
+    FALCON_INLINE constexpr Simd256<SimdBackend::ARCH_AVX, T, Lane> Simd256<SimdBackend::ARCH_AVX, DataType,
+                                                                            Lane>::cast() noexcept
+    {
+        if constexpr (_FALCON_SIMD256_SUPPORT_NATIVE_INTRINSIC(DataType))
+        {
+            if constexpr (std::is_same_v<DataType, T>)
+            {
+                return Simd256(_reg);
+            }
+            else if constexpr (types::IsFP64<DataType>)
+            {
+                if constexpr (types::IsFP32<T>)
+                {
+                    return Simd256<SimdBackend::ARCH_AVX, T, Lane>(_mm256_castpd_ps(_reg));
+                }
+                else if constexpr (std::is_integral_v<T>)
+                {
+                    return Simd256<SimdBackend::ARCH_AVX, T, Lane>(_mm256_castpd_si256(_reg));
+                }
+                else
+                {
+                    return Simd256<SimdBackend::ARCH_AVX, T, Lane>(_reg);
+                }
+            }
+            else if constexpr (types::IsFP32<DataType>)
+            {
+                if constexpr (types::IsFP64<T>)
+                {
+                    return Simd256<SimdBackend::ARCH_AVX, T, Lane>(_mm256_castps_pd(_reg));
+                }
+                else if constexpr (std::is_integral_v<T>)
+                {
+                    return Simd256<SimdBackend::ARCH_AVX, T, Lane>(_mm256_castps_si256(_reg));
+                }
+                else
+                {
+                    return Simd256<SimdBackend::ARCH_AVX, T, Lane>(_reg);
+                }
+            }
+            else // Integral to floating point.
+            {
+                if constexpr (types::IsFP64<T>)
+                {
+                    return Simd256<SimdBackend::ARCH_AVX, T, Lane>(_mm256_castsi256_pd(_reg));
+                }
+                else if constexpr (types::IsFP32<T>)
+                {
+                    return Simd256<SimdBackend::ARCH_AVX, T, Lane>(_mm256_castsi256_ps(_reg));
+                }
+                else
+                {
+                    return Simd256<SimdBackend::ARCH_AVX, T, Lane>(_reg);
+                }
+            }
+        }
+        else
+        {
+            // Emulated Register will `set` the correct values so we don't need to assign.
+            return Simd256<SimdBackend::ARCH_AVX, T, Lane>(_reg.template cast<T>());
+        }
+    }
 
 
     template <typename DataType, size_t Lane>
@@ -2724,14 +2840,42 @@ namespace flcn
     //                                                                                 Lane>::hasNan() const
     //                                                                                 noexcept
     // { return Simd256(_lower.hasNan(), _upper.hasNan()); }
-    //
-    //
-    // template <typename DataType, size_t Lane>
-    // FALCON_INLINE constexpr Simd256<SimdBackend::ARCH_AVX, DataType, Lane> Simd256<SimdBackend::ARCH_AVX,
-    // DataType,
-    //                                                                                 Lane>::hasInf() const
-    //                                                                                 noexcept
-    // { return Simd256(_lower.hasInf(), _upper.hasInf()); }
+
+
+    template <typename DataType, size_t Lane>
+    FALCON_INLINE constexpr Simd256<SimdBackend::ARCH_AVX, DataType, Lane> Simd256<SimdBackend::ARCH_AVX, DataType,
+                                                                                   Lane>::hasInf() const noexcept
+    {
+        if constexpr (_FALCON_SIMD256_SUPPORT_NATIVE_INTRINSIC(DataType))
+        {
+            return Simd256();
+            // if constexpr (types::IsFP64<DataType>)
+            // {
+            //     const auto shifted = cast<uint64_t>().template shiftLeft<1>();
+            //     const auto res     = shifted == Simd128<SimdBackend::ARCH_SSE2, uint64_t,
+            //     Lane>(0xFFE0000000000000ULL); return Simd256(_mm_castsi128_pd(*res));
+            // }
+            // else if constexpr (types::IsFP32<DataType>)
+            // {
+            //     const auto shifted = cast<uint32_t>().template shiftLeft<1>();
+            //     const auto res     = shifted == Simd128<SimdBackend::ARCH_SSE2, uint32_t, Lane>(0xFF000000U);
+            //     return Simd256(_mm_castsi128_ps(*res));
+            // }
+            // else if constexpr (std::is_integral_v<DataType>)
+            // {
+            //     return Simd256(_mm256_setzero_si256());
+            // }
+            // else
+            // {
+            //     static_assert("[Simd256AVX/HasInf]: Unsupported data type.");
+            //     return Simd256{};
+            // }
+        }
+        else
+        {
+            return Simd256(_reg.hasInf());
+        }
+    }
 
 #undef _FALCON_SIMD256_SUPPORT_NATIVE_INTRINSIC
 

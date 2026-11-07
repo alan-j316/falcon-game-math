@@ -195,5 +195,10 @@ namespace flcn
     { return reg.abs(); }
 
 
+    template <typename DataType, size_t Lane>
+    FALCON_INLINE constexpr _REG_256_AVX<DataType, Lane> sqrt(_REG_256_AVX<DataType, Lane> reg) noexcept
+    { return reg.sqrt(); }
+
+
 #undef _FALCON_SIMD256_SUPPORT_NATIVE_INTRINSIC
 } // namespace flcn

@@ -2832,14 +2832,39 @@ namespace flcn
     //                                                                                 Lane>::sqrt() const
     //                                                                                 noexcept
     // { return Simd256(_lower.sqrt(), _upper.sqrt()); }
-    //
-    //
-    // template <typename DataType, size_t Lane>
-    // FALCON_INLINE constexpr Simd256<SimdBackend::ARCH_AVX, DataType, Lane> Simd256<SimdBackend::ARCH_AVX,
-    // DataType,
-    //                                                                                 Lane>::hasNan() const
-    //                                                                                 noexcept
-    // { return Simd256(_lower.hasNan(), _upper.hasNan()); }
+
+
+    template <typename DataType, size_t Lane>
+    FALCON_INLINE constexpr Simd256<SimdBackend::ARCH_AVX, DataType, Lane> Simd256<SimdBackend::ARCH_AVX, DataType,
+                                                                                   Lane>::hasNan() const noexcept
+    {
+        if constexpr (_FALCON_SIMD256_SUPPORT_NATIVE_INTRINSIC(DataType))
+        {
+            // For floating point numbers shift the sign bit and compare the exponents.
+            // For infinity exponents are all ones 0xFFE(0b11111111111) for doubles and 0xFF(0b00000000).
+            if constexpr (types::IsFP64<DataType>)
+            {
+                return Simd256(_mm256_cmp_pd(_reg, _reg, _CMP_UNORD_Q));
+            }
+            else if constexpr (types::IsFP32<DataType>)
+            {
+                return Simd256(_mm256_cmp_ps(_reg, _reg, _CMP_UNORD_Q));
+            }
+            else if constexpr (std::is_integral_v<DataType>)
+            {
+                return Simd256(_mm256_setzero_si256());
+            }
+            else
+            {
+                static_assert("[Simd256AVX/HasInf]: Unsupported data type.");
+                return Simd256{};
+            }
+        }
+        else
+        {
+            return Simd256(_reg.hasNan());
+        }
+    }
 
 
     template <typename DataType, size_t Lane>

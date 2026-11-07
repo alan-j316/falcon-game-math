@@ -2848,28 +2848,29 @@ namespace flcn
     {
         if constexpr (_FALCON_SIMD256_SUPPORT_NATIVE_INTRINSIC(DataType))
         {
-            return Simd256();
-            // if constexpr (types::IsFP64<DataType>)
-            // {
-            //     const auto shifted = cast<uint64_t>().template shiftLeft<1>();
-            //     const auto res     = shifted == Simd128<SimdBackend::ARCH_SSE2, uint64_t,
-            //     Lane>(0xFFE0000000000000ULL); return Simd256(_mm_castsi128_pd(*res));
-            // }
-            // else if constexpr (types::IsFP32<DataType>)
-            // {
-            //     const auto shifted = cast<uint32_t>().template shiftLeft<1>();
-            //     const auto res     = shifted == Simd128<SimdBackend::ARCH_SSE2, uint32_t, Lane>(0xFF000000U);
-            //     return Simd256(_mm_castsi128_ps(*res));
-            // }
-            // else if constexpr (std::is_integral_v<DataType>)
-            // {
-            //     return Simd256(_mm256_setzero_si256());
-            // }
-            // else
-            // {
-            //     static_assert("[Simd256AVX/HasInf]: Unsupported data type.");
-            //     return Simd256{};
-            // }
+            // For floating point numbers shift the sign bit and compare the exponents.
+            // For infinity exponents are all ones 0xFFE(0b11111111111) for doubles and 0xFF(0b00000000).
+            if constexpr (types::IsFP64<DataType>)
+            {
+                const auto shifted = cast<uint64_t>().template shiftLeft<1>();
+                const auto res     = shifted == Simd256<SimdBackend::ARCH_AVX, uint64_t, Lane>(0xFFE0000000000000ULL);
+                return Simd256(_mm256_castsi256_pd(*res));
+            }
+            else if constexpr (types::IsFP32<DataType>)
+            {
+                const auto shifted = cast<uint32_t>().template shiftLeft<1>();
+                const auto res     = shifted == Simd256<SimdBackend::ARCH_AVX, uint32_t, Lane>(0xFF000000U);
+                return Simd256(_mm256_castsi256_ps(*res));
+            }
+            else if constexpr (std::is_integral_v<DataType>)
+            {
+                return Simd256(_mm256_setzero_si256());
+            }
+            else
+            {
+                static_assert("[Simd256AVX/HasInf]: Unsupported data type.");
+                return Simd256{};
+            }
         }
         else
         {

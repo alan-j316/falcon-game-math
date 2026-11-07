@@ -63,11 +63,12 @@ namespace flcn
         explicit constexpr Simd256(Args&&... data) noexcept;
 
 
-        // // TODO: Add test
         // // TODO: Add upper, and lower
         // // TODO: Add register creation from upper and lower values
-        // /// @brief Cast a register from @p DataType to @p T.
-        // /// @tparam T The destination data type.
+
+        // // TODO: Add test
+        /// @brief Cast a register from @p DataType to @p T.
+        /// @tparam T The destination data type.
         template <typename T>
         [[nodiscard]] constexpr Simd256<SimdBackend::ARCH_AVX, T, Lane> cast() const noexcept;
 

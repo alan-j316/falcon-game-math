@@ -19,7 +19,7 @@ add_executable(FalconSIMDCoreTests
         Simd256/BlendTests.cpp
         Simd256/PermuteTests.cpp
         Simd256/ConstructorTests.cpp
-        # Simd256/UtilTests.cpp
+        Simd256/UtilTests.cpp
         Simd256/BasicMathOperationTests.cpp
 )
 

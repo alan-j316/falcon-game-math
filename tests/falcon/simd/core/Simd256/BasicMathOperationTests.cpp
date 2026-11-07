@@ -115,40 +115,40 @@ TYPED_TEST(Simd256BasicMathTests, Max_ReturnsARegisterWithMaximumValuesFromEithe
 }
 
 
-// TYPED_TEST(Simd256BasicMathTests, MemberAbsFunction_ReturnsARegisterWithAbsoluteValues)
-// {
-//     using Type            = TypeParam::Type;
-//     constexpr size_t Lane = TypeParam::VALUE;
-//
-//     alignas(32) std::array<Type, Lane> data{}, expected{}, result{};
-//     for (size_t i = 0; i < Lane; ++i)
-//     {
-//         data[i] = this->absData[i];
-//
-//         if constexpr (std::is_unsigned_v<Type>)
-//         {
-//             expected[i] = data[i];
-//         }
-//         else
-//         {
-//             expected[i] = data[i] < 0 ? data[i] * -1 : data[i];
-//         }
-//     }
-//
-//     flcn::Simd256_t<Type, Lane> reg;
-//     reg.loadAligned(data.data());
-//
-//     auto regRes = reg.abs();
-//
-//     regRes.storeAligned(result.data());
-//
-//     for (size_t i = 0; i < Lane; ++i)
-//     {
-//         EXPECT_ANY_EQ(expected[i], result[i]);
-//     }
-// }
-//
-//
+TYPED_TEST(Simd256BasicMathTests, MemberAbsFunction_ReturnsARegisterWithAbsoluteValues)
+{
+    using Type            = TypeParam::Type;
+    constexpr size_t Lane = TypeParam::VALUE;
+
+    alignas(32) std::array<Type, Lane> data{}, expected{}, result{};
+    for (size_t i = 0; i < Lane; ++i)
+    {
+        data[i] = this->absData[i];
+
+        if constexpr (std::is_unsigned_v<Type>)
+        {
+            expected[i] = data[i];
+        }
+        else
+        {
+            expected[i] = data[i] < 0 ? data[i] * -1 : data[i];
+        }
+    }
+
+    flcn::Simd256_t<Type, Lane> reg;
+    reg.loadAligned(data.data());
+
+    auto regRes = reg.abs();
+
+    regRes.storeAligned(result.data());
+
+    for (size_t i = 0; i < Lane; ++i)
+    {
+        EXPECT_ANY_EQ(expected[i], result[i]);
+    }
+}
+
+
 // /// @test Verify that abs return the absolute value of data types from the register.
 // /// @note For unsigned types, it just return a copy of the same register.
 // TYPED_TEST(Simd256BasicMathTests, Abs_ReturnsARegisterWithAbsoluteValues)

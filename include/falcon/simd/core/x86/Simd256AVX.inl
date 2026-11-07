@@ -2365,9 +2365,9 @@ namespace flcn
                                 // [3, 2, 1, 0 | 3, 2, 1, 0]
                                 // NOTE: We could use shifts and `std::countr_zero` to do modulo but since this will be
                                 //       resolved at compile time, we can use % directly as there is no runtime impact.
-                                const auto idx = _mm256_set_epi32(indices[7] % hLane, indices[6] % hLane, indices[5] % hLane,
-                                                                  indices[4] % hLane, indices[3] % hLane, indices[2] % hLane,
-                                                                  indices[1] % hLane, indices[0] % hLane);
+                                const auto idx = _mm256_set_epi32(
+                                    indices[7] % hLane, indices[6] % hLane, indices[5] % hLane, indices[4] % hLane,
+                                    indices[3] % hLane, indices[2] % hLane, indices[1] % hLane, indices[0] % hLane);
                                 // Mask 0b01 swaps the upper lanes in the lower and lower into upper.
                                 // [b1, b0] [a1, a0] // Both a and b are same registers here.
                                 //  3    2    1   0
@@ -2531,8 +2531,9 @@ namespace flcn
                         // [   6,   43 |   55,    4] OR result(permuted)
                         // [MaskInLane, MaskPermute]
                         // Create two masks with in-lane and cross-lane shuffles within the 128-bit boundary.
-                        constexpr auto masks  = simd::internal::mm256Epi16PermMask<Lane, PermuteIndex...>();
-                        const auto maskInLane = _mm256_load_si256(reinterpret_cast<__m256i const*>(masks.inLaneMask.data()));
+                        constexpr auto masks = simd::internal::mm256Epi16PermMask<Lane, PermuteIndex...>();
+                        const auto maskInLane =
+                            _mm256_load_si256(reinterpret_cast<__m256i const*>(masks.inLaneMask.data()));
                         const auto maskPermute =
                             _mm256_load_si256(reinterpret_cast<__m256i const*>(masks.crossLaneMask.data()));
 
@@ -2568,8 +2569,9 @@ namespace flcn
                     {
                         // Same technique as for epi16
                         // [MaskInLane, MaskPermute]
-                        constexpr auto masks  = simd::internal::mm256Epi8PermMask<Lane, PermuteIndex...>();
-                        const auto maskInLane = _mm256_load_si256(reinterpret_cast<__m256i const*>(masks.inLaneMask.data()));
+                        constexpr auto masks = simd::internal::mm256Epi8PermMask<Lane, PermuteIndex...>();
+                        const auto maskInLane =
+                            _mm256_load_si256(reinterpret_cast<__m256i const*>(masks.inLaneMask.data()));
                         const auto maskPermute =
                             _mm256_load_si256(reinterpret_cast<__m256i const*>(masks.crossLaneMask.data()));
                         // std::cout << "Shuffle Index\n";
@@ -2628,16 +2630,86 @@ namespace flcn
     // template <typename DataType, size_t Lane>
     // FALCON_INLINE constexpr DataType Simd256<SimdBackend::ARCH_AVX, DataType, Lane>::horizontalMax() const
     // noexcept { return std::max(_lower.horizontalMax(), _upper.horizontalMax()); }
-    //
-    //
-    // template <typename DataType, size_t Lane>
-    // FALCON_INLINE constexpr Simd256<SimdBackend::ARCH_AVX, DataType, Lane> Simd256<SimdBackend::ARCH_AVX,
-    // DataType,
-    //                                                                                 Lane>::abs() const
-    //                                                                                 noexcept
-    // { return Simd256(_lower.abs(), _upper.abs()); }
-    //
-    //
+
+
+    template <typename DataType, size_t Lane>
+    FALCON_INLINE constexpr Simd256<SimdBackend::ARCH_AVX, DataType, Lane> Simd256<SimdBackend::ARCH_AVX, DataType,
+                                                                                   Lane>::abs() const noexcept
+    {
+        if constexpr (_FALCON_SIMD256_SUPPORT_NATIVE_INTRINSIC(DataType))
+        {
+            // There is no intrinsic for floating point abs so we have to use a sign flag mask and use AND
+            // 1 101 1010
+            // 0 111 1111 &
+            // 0 101 1010
+
+            // For integrals use the trick from Hackers Delight[2-4]
+            // y = x a>> (sizeof(DataType) * 8 - 1) (for int32 its y = x >> 31)
+            // (x xor y) - y
+            // -7  1001
+            // t = 1111 xor
+            //   = 0110
+            //   = 1111 -
+            //   = 0111 (7)
+            if constexpr (std::is_unsigned_v<DataType>)
+            {
+                return Simd256(_reg);
+            }
+            else if constexpr (types::IsFP64<DataType>)
+            {
+                // We can take the abs of a register by using a flag mask and ANDing it with our register.
+                const auto flagReg = _mm256_set1_epi64x(0x7FFFFFFFFFFFFFFF); // 0b0111..1111
+                const auto intReg  = _mm256_castpd_si256(_reg);
+                const auto absReg  = _mm256_and_si256(intReg, flagReg);
+                return Simd256(_mm256_castsi256_pd(absReg));
+            }
+            else if constexpr (types::IsFP32<DataType>)
+            {
+                // We can take the abs of a register by using a flag mask and ANDing it with our register.
+                const auto flagReg = _mm256_set1_epi32(0x7FFFFFFF); // 0b0111..1111
+                const auto intReg  = _mm256_castps_si256(_reg);
+                const auto absReg  = _mm256_and_si256(intReg, flagReg);
+                return Simd256(_mm256_castsi256_ps(absReg));
+            }
+            else if constexpr (types::IsQWord<DataType>)
+            {
+                if constexpr (CURRENT_SIMD_BACKEND >= SimdBackend::ARCH_AVX512EX) // AVX512F + VL
+                {
+                    return Simd128(_mm_abs_epi64(_reg));
+                }
+                else
+                {
+                    // t = x a>> 63; abs = (x xor t) - t;
+                    const auto t      = *shiftRightArithmetic<63>();
+                    const auto xorReg = _mm256_xor_si256(_reg, t);
+                    return Simd256(_mm256_sub_epi64(xorReg, t));
+                }
+            }
+            else if constexpr (types::IsDWord<DataType>)
+            {
+                return Simd256(_mm256_abs_epi32(_reg));
+            }
+            else if constexpr (types::IsWord<DataType>)
+            {
+                return Simd256(_mm256_abs_epi16(_reg));
+            }
+            else if constexpr (types::IsByte<DataType>)
+            {
+                return Simd256(_mm256_abs_epi8(_reg));
+            }
+            else
+            {
+                static_assert("[Simd256AVX/Abs]: Unsupported data type.");
+                return Simd256{};
+            }
+        }
+        else
+        {
+            return Simd256(_reg.abs());
+        }
+    }
+
+
     // template <typename DataType, size_t Lane>
     // FALCON_INLINE constexpr Simd256<SimdBackend::ARCH_AVX, DataType, Lane> Simd256<SimdBackend::ARCH_AVX,
     // DataType,

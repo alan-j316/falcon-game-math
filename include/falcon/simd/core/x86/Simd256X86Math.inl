@@ -201,4 +201,5 @@ namespace flcn
 
 
 #undef _FALCON_SIMD256_SUPPORT_NATIVE_INTRINSIC
+    
 } // namespace flcn

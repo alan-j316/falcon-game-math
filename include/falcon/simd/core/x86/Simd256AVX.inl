@@ -2739,11 +2739,25 @@ namespace flcn
     }
 
 
-    // template <typename DataType, size_t Lane>
-    // FALCON_INLINE constexpr DataType Simd256<SimdBackend::ARCH_AVX, DataType, Lane>::horizontalMin() const
-    // noexcept { return std::min(_lower.horizontalMin(), _upper.horizontalMin()); }
-    //
-    //
+    template <typename DataType, size_t Lane>
+    FALCON_INLINE constexpr DataType Simd256<SimdBackend::ARCH_AVX, DataType, Lane>::horizontalMin() const noexcept
+    {
+        if constexpr (_FALCON_SIMD256_SUPPORT_NATIVE_INTRINSIC(DataType))
+        {
+            const auto loLane       = _mm256_castsi256_si128(_reg);
+            const auto hiLane       = _mm256_extracti128_si256(_reg, 1);
+            constexpr auto halfLane = Lane / 2;
+            // TODO: Replace std::min with flcn::min
+            return std::min(Simd128<SimdBackend::ARCH_SSE2, DataType, halfLane>(loLane).horizontalMin(),
+                            Simd128<SimdBackend::ARCH_SSE2, DataType, halfLane>(hiLane).horizontalMin());
+        }
+        else
+        {
+            return Simd256(_reg.horizontalMin());
+        }
+    }
+
+
     // template <typename DataType, size_t Lane>
     // FALCON_INLINE constexpr DataType Simd256<SimdBackend::ARCH_AVX, DataType, Lane>::horizontalMax() const
     // noexcept { return std::max(_lower.horizontalMax(), _upper.horizontalMax()); }
@@ -2957,7 +2971,7 @@ namespace flcn
                 else if constexpr (sizeof(DataType) == 1)
                 {
                     // Clamp the register values to greater than or equal to zero, if the register is signed.
-                    auto reg = _reg;
+                    auto reg        = _reg;
                     const auto zero = _mm256_setzero_si256();
                     if constexpr (std::is_signed_v<DataType>)
                     {

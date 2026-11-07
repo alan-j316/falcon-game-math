@@ -806,16 +806,15 @@ namespace flcn
         [[nodiscard]] constexpr Simd256 abs() const noexcept;
 
 
-        //     /**
-        //      * @brief Compute the square root value of each entry in this register.
-        //      *
-        //      * @note For integral square roots less than zero, this will generate a zero value.
-        //      *       For floating-point number, the function follow standard behavior of returning a NaN for
-        //      negatives.
-        //      *
-        //      * @return A Simd256 register with square root of values, rounded to the same target type.
-        //      */
-        //     [[nodiscard]] constexpr Simd256 sqrt() const noexcept;
+        /**
+         * @brief Compute the square root value of each entry in this register.
+         *
+         * @note For integral square roots less than zero, this will generate a zero value.
+         *       For floating-point number, the function follow standard behavior of returning a NaN for negatives.
+         *
+         * @return A Simd256 register with square root of values, rounded to the same target type.
+         */
+        [[nodiscard]] constexpr Simd256 sqrt() const noexcept;
 
 
         /// @brief Get a mask with the Nan status of each Lane of elements.

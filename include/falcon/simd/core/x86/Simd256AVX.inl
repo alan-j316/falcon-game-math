@@ -2826,12 +2826,98 @@ namespace flcn
     }
 
 
-    // template <typename DataType, size_t Lane>
-    // FALCON_INLINE constexpr Simd256<SimdBackend::ARCH_AVX, DataType, Lane> Simd256<SimdBackend::ARCH_AVX,
-    // DataType,
-    //                                                                                 Lane>::sqrt() const
-    //                                                                                 noexcept
-    // { return Simd256(_lower.sqrt(), _upper.sqrt()); }
+    template <typename DataType, size_t Lane>
+    FALCON_INLINE constexpr Simd256<SimdBackend::ARCH_AVX, DataType, Lane> Simd256<SimdBackend::ARCH_AVX, DataType,
+                                                                                   Lane>::sqrt() const noexcept
+    {
+        if constexpr (_FALCON_SIMD256_SUPPORT_NATIVE_INTRINSIC(DataType))
+        {
+            // For floating point numbers shift the sign bit and compare the exponents.
+            // For infinity exponents are all ones 0xFFE(0b11111111111) for doubles and 0xFF(0b00000000).
+            if constexpr (types::IsFP64<DataType>)
+            {
+                return Simd256(_mm256_sqrt_pd(_reg));
+            }
+            else if constexpr (types::IsFP32<DataType>)
+            {
+                return Simd256(_mm256_sqrt_ps(_reg));
+            }
+            else if constexpr (std::is_integral_v<DataType>)
+            {
+                // TODO: Integral sqrt may not be optimal
+                if constexpr (sizeof(DataType) == 8)
+                {
+                    // There must only 4 lanes for 64-bit integrals
+                    alignas(Alignment) DataType array[Lane]{};
+                    if constexpr (std::is_signed_v<DataType>)
+                    {
+                        // For signed integrals we must clamp to zero to prevent negative integral square roots
+                        // And we need to clamp to zero.
+                        const auto clamped = *max(*this, Simd256(_mm256_setzero_si256()));
+                        _mm256_store_si256(reinterpret_cast<__m256i*>(array), clamped);
+                    }
+                    else
+                    {
+                        storeAligned(array);
+                    }
+                    return Simd256(
+                        static_cast<DataType>(std::sqrt(array[0])), static_cast<DataType>(std::sqrt(array[1])),
+                        static_cast<DataType>(std::sqrt(array[2])), static_cast<DataType>(std::sqrt(array[3])));
+                }
+                else if constexpr (sizeof(DataType) == 4)
+                {
+                    // There are not sqrt for integrals so we can convert to double
+                    // and take sqrt and convert back
+                    const auto loLane = _mm256_castsi256_si128(_reg);
+                    const auto hiLane = _mm256_extracti128_si256(_reg, 1);
+
+                    if constexpr (std::is_signed_v<DataType>)
+                    {
+                        // Clamp the value to >= 0.
+                        const auto loFloat = _mm256_max_pd(_mm256_cvtepi32_pd(loLane), _mm256_setzero_pd());
+                        const auto hiFloat = _mm256_max_pd(_mm256_cvtepi32_pd(hiLane), _mm256_setzero_pd());
+
+                        const auto loSqrt = _mm256_sqrt_pd(loFloat);
+                        const auto hiSqrt = _mm256_sqrt_pd(hiFloat);
+
+                        // [3, 2, 1, 0]
+                        const auto loSqrtInt = _mm256_cvtpd_epi32(loSqrt);
+                        // [7, 6, 5, 4]
+                        const auto hiSqrtInt = _mm256_cvtpd_epi32(hiSqrt);
+
+                        // Insert the 128-bit register into the upper lane.
+                        return Simd256(_mm256_setr_m128i(loSqrtInt, hiSqrtInt));
+                    }
+                    else
+                    {
+                        return Simd256{};
+                    }
+                }
+                else if constexpr (sizeof(DataType) == 2)
+                {
+                    return Simd256{};
+                }
+                else if constexpr (sizeof(DataType) == 1)
+                {
+                    return Simd256{};
+                }
+                else
+                {
+                    static_assert("[Simd256AVX/Sqrt]: Unsupported data type.");
+                    return Simd256{};
+                }
+            }
+            else
+            {
+                static_assert("[Simd256AVX/Sqrt]: Unsupported data type.");
+                return Simd256{};
+            }
+        }
+        else
+        {
+            return Simd256(_reg.sqrt());
+        }
+    }
 
 
     template <typename DataType, size_t Lane>
@@ -2856,7 +2942,7 @@ namespace flcn
             }
             else
             {
-                static_assert("[Simd256AVX/HasInf]: Unsupported data type.");
+                static_assert("[Simd256AVX/HasNan]: Unsupported data type.");
                 return Simd256{};
             }
         }

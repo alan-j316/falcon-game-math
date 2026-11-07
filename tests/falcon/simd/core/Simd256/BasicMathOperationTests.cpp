@@ -183,39 +183,39 @@ TYPED_TEST(Simd256BasicMathTests, MemberAbsFunction_ReturnsARegisterWithAbsolute
 //         EXPECT_ANY_EQ(expected[i], result[i]);
 //     }
 // }
-//
-//
-// TYPED_TEST(Simd256BasicMathTests, MemberSqrtFunction_ReturnsARegisterWithSquareRootValues)
-// {
-//     using Type            = TypeParam::Type;
-//     constexpr size_t Lane = TypeParam::VALUE;
-//
-//     alignas(32) std::array<Type, Lane> data{}, expected{}, result{};
-//     for (size_t i = 0; i < Lane; ++i)
-//     {
-//         data[i] = this->a[i];
-//         // For our simd sqrt, we clamp the values for integrals to zero
-//         auto clampedVal = data[i];
-//         if constexpr (std::is_integral_v<Type>)
-//         {
-//             clampedVal = std::max(Type(0), data[i]);
-//         }
-//         expected[i] = static_cast<Type>(std::sqrt(clampedVal));
-//     }
-//
-//     flcn::Simd256_t<Type, Lane> reg;
-//     reg.loadAligned(data.data());
-//
-//     auto regRes = reg.sqrt();
-//     regRes.storeAligned(result.data());
-//
-//     for (size_t i = 0; i < Lane; ++i)
-//     {
-//         EXPECT_ANY_EQ(expected[i], result[i]);
-//     }
-// }
-//
-//
+
+
+TYPED_TEST(Simd256BasicMathTests, MemberSqrtFunction_ReturnsARegisterWithSquareRootValues)
+{
+    using Type            = TypeParam::Type;
+    constexpr size_t Lane = TypeParam::VALUE;
+
+    alignas(32) std::array<Type, Lane> data{}, expected{}, result{};
+    for (size_t i = 0; i < Lane; ++i)
+    {
+        data[i] = this->a[i];
+        // For our simd sqrt, we clamp the values for integrals to zero
+        auto clampedVal = data[i];
+        if constexpr (std::is_integral_v<Type>)
+        {
+            clampedVal = std::max(Type(0), data[i]);
+        }
+        expected[i] = static_cast<Type>(std::sqrt(clampedVal));
+    }
+
+    flcn::Simd256_t<Type, Lane> reg;
+    reg.loadAligned(data.data());
+
+    auto regRes = reg.sqrt();
+    regRes.storeAligned(result.data());
+
+    for (size_t i = 0; i < Lane; ++i)
+    {
+        EXPECT_ANY_EQ(expected[i], result[i]);
+    }
+}
+
+
 // /// @test Verify that the non member variant of sqrt function returns the sqrt of the register values.
 // TYPED_TEST(Simd256BasicMathTests, Sqrt_ReturnsARegisterWithSquareRootValues)
 // {

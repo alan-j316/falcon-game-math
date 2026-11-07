@@ -2866,7 +2866,7 @@ namespace flcn
                 }
                 else if constexpr (sizeof(DataType) == 4)
                 {
-                    // There are not sqrt for integrals so we can convert to double
+                    // There are no sqrt for integrals so we can convert to double
                     // and take sqrt and convert back
                     const auto loLane = _mm256_castsi256_si128(_reg);
                     const auto hiLane = _mm256_extracti128_si256(_reg, 1);
@@ -2874,23 +2874,73 @@ namespace flcn
                     if constexpr (std::is_signed_v<DataType>)
                     {
                         // Clamp the value to >= 0.
-                        const auto loFloat = _mm256_max_pd(_mm256_cvtepi32_pd(loLane), _mm256_setzero_pd());
-                        const auto hiFloat = _mm256_max_pd(_mm256_cvtepi32_pd(hiLane), _mm256_setzero_pd());
-
+                        const auto zero      = _mm_setzero_si128();
+                        const auto loClamped = _mm_max_epi32(loLane, zero);
+                        const auto hiClamped = _mm_max_epi32(hiLane, zero);
+                        // Convert to float
+                        const auto loFloat = _mm256_cvtepi32_pd(loClamped);
+                        const auto hiFloat = _mm256_cvtepi32_pd(hiClamped);
+                        // Take the sqrt
                         const auto loSqrt = _mm256_sqrt_pd(loFloat);
                         const auto hiSqrt = _mm256_sqrt_pd(hiFloat);
 
                         // [3, 2, 1, 0]
-                        const auto loSqrtInt = _mm256_cvtpd_epi32(loSqrt);
+                        const auto loSqrtInt = _mm256_cvttpd_epi32(loSqrt);
                         // [7, 6, 5, 4]
-                        const auto hiSqrtInt = _mm256_cvtpd_epi32(hiSqrt);
+                        const auto hiSqrtInt = _mm256_cvttpd_epi32(hiSqrt);
 
                         // Insert the 128-bit register into the upper lane.
                         return Simd256(_mm256_setr_m128i(loSqrtInt, hiSqrtInt));
                     }
                     else
                     {
-                        return Simd256{};
+                        if constexpr (CURRENT_SIMD_BACKEND >= SimdBackend::ARCH_AVX512EX) // AVX512F + VL
+                        {
+                            // EPU32 to PD and PD to EPU32 require AVX512F + VL
+                            const auto loFloat = _mm256_cvtepu32_pd(loLane);
+                            const auto hiFloat = _mm256_cvtepu32_pd(hiLane);
+
+                            // Take the sqrt
+                            const auto loSqrt = _mm256_sqrt_pd(loFloat);
+                            const auto hiSqrt = _mm256_sqrt_pd(hiFloat);
+
+                            // [3, 2, 1, 0]
+                            const auto loSqrtInt = _mm256_cvttpd_epu32(loSqrt);
+                            // [7, 6, 5, 4]
+                            const auto hiSqrtInt = _mm256_cvttpd_epu32(hiSqrt);
+
+                            // Insert the 128-bit register into the upper lane.
+                            return Simd256(_mm256_setr_m128i(loSqrtInt, hiSqrtInt));
+                        }
+                        else
+                        {
+                            // For 32-bit integers since we don't have an epu32_pd
+                            // when having an int with the MSB `ON`, it will get interpreted as a negative double.
+                            // To convert that negative interpretation to a positive number
+                            // we add the int32-max, which will reset the negative number to our original number
+                            // If our number is 111...111 it will get interpreted as -1, although it is (2^32) - 1 or
+                            // 4294967295 but adding 2^32 to the -1 yields our original number.
+                            const auto offset = _mm256_set1_pd(4294967296.0);
+                            const auto zero   = _mm256_setzero_pd();
+
+                            // If hardware created a negative double, it was a large unsigned int
+                            // so add an offset to it
+                            const auto loFloatReg  = _mm256_cvtepi32_pd(loLane);
+                            const auto loMask      = _mm256_cmp_pd(loFloatReg, zero, _CMP_LT_OQ);
+                            const auto loFilter    = _mm256_and_pd(loMask, offset);
+                            const auto loCorrected = _mm256_add_pd(loFloatReg, loFilter);
+                            const auto loSqrt      = _mm256_sqrt_pd(loCorrected);
+                            const auto loSqrtInt   = _mm256_cvttpd_epi32(loSqrt);
+
+                            const auto hiFloatReg  = _mm256_cvtepi32_pd(hiLane);
+                            const auto hiMask      = _mm256_cmp_pd(hiFloatReg, zero, _CMP_LT_OQ);
+                            const auto hiFilter    = _mm256_and_pd(offset, hiMask);
+                            const auto hiCorrected = _mm256_add_pd(hiFloatReg, hiFilter);
+                            const auto hiSqrt      = _mm256_sqrt_pd(hiCorrected);
+                            const auto hiSqrtInt   = _mm256_cvttpd_epi32(hiSqrt);
+
+                            return Simd256(_mm256_setr_m128i(loSqrtInt, hiSqrtInt));
+                        }
                     }
                 }
                 else if constexpr (sizeof(DataType) == 2)

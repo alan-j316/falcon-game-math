@@ -10,6 +10,7 @@
  */
 
 
+#include "CustomX86Intrin.inl"
 #include "falcon/simd/core/x86/Simd256SSE.h"
 #include "falcon/simd/utils/SIMDUtils.h"
 #include "internal/MaskHelpers.h"
@@ -2945,11 +2946,32 @@ namespace flcn
                 }
                 else if constexpr (sizeof(DataType) == 2)
                 {
-                    return Simd256{};
+                    // Clamp the register values to greater than or equal to zero, if the register is signed.
+                    auto reg = _reg;
+                    if constexpr (std::is_signed_v<DataType>)
+                    {
+                        reg = _mm256_max_epi16(reg, _mm256_setzero_si256());
+                    }
+                    return Simd256(intrin::_mm256_sqrt_epi16_custom(reg));
                 }
                 else if constexpr (sizeof(DataType) == 1)
                 {
-                    return Simd256{};
+                    // Clamp the register values to greater than or equal to zero, if the register is signed.
+                    auto reg = _reg;
+                    const auto zero = _mm256_setzero_si256();
+                    if constexpr (std::is_signed_v<DataType>)
+                    {
+                        reg = _mm256_max_epi8(reg, zero);
+                    }
+                    // Unpack to 16-bit integral and take sqrt
+                    const auto loLane = _mm256_unpacklo_epi8(reg, zero);
+                    const auto hiLane = _mm256_unpackhi_epi8(reg, zero);
+                    // Compute the square root
+                    const auto loSqrt = intrin::_mm256_sqrt_epi16_custom(loLane);
+                    const auto hiSqrt = intrin::_mm256_sqrt_epi16_custom(hiLane);
+
+                    // Pack the 16-bits to 8-bit integral
+                    return Simd256(_mm256_packs_epi16(loSqrt, hiSqrt));
                 }
                 else
                 {

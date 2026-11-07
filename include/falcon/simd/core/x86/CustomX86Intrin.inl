@@ -669,4 +669,36 @@ namespace flcn::intrin
         }
     }
 
+
+    /**
+     * @brief Compute the square root of (u)int16x16 256-bit register.
+     */
+    FALCON_INLINE __m256i _mm256_sqrt_epi16_custom(const __m256i reg) noexcept
+    {
+        // For Epi16 we need to unpack to a 32-integral register,
+        // convert it to a float register, perform the sqrt and then pack it back into a 16-bit integral
+        // register. We only need to sqrt with the lower lane if lane count is less than or equal to 4. For
+        // byte-wide register we need to convert them into 4(D, C, B, A) 32 bit registers and perform sqrt
+        // and then packed them
+        const auto zero = _mm256_setzero_si256();
+
+        // [A15, A14, A13, A12, A11, A10, A9, A8, A7, A6, A5, A4, A3, A2, A1, A0
+        // Unpack low and high integrals
+        // [0, A11, 0, A10, 0, A9, 0, A8, 0, A3, 0, A2, 0, A1, 0, A0]
+        const auto loReg = _mm256_unpacklo_epi16(reg, zero);
+        // [0, A15, 0, A14, 0, A13, 0, A12, 0, A3, 0, A2, 0, A1, 0, A0]
+        const auto hiReg = _mm256_unpackhi_epi16(reg, zero);
+
+        const auto loRegFloat = _mm256_cvtepi32_ps(loReg);
+        const auto hiRegFloat = _mm256_cvtepi32_ps(hiReg);
+
+        const auto loSqrt = _mm256_sqrt_ps(loRegFloat);
+        const auto hiSqrt = _mm256_sqrt_ps(hiRegFloat);
+
+        const auto loSqrtInt = _mm256_cvttps_epi32(loSqrt);
+        const auto hiSqrtInt = _mm256_cvttps_epi32(hiSqrt);
+
+        return _mm256_packs_epi32(loSqrtInt, hiSqrtInt);
+    }
+
 } // namespace flcn::intrin

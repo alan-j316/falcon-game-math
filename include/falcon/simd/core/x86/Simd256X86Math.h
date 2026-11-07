@@ -126,6 +126,21 @@ namespace flcn
                                                              _REG_256_AVX<DataType, Lane> b) noexcept;
 
 
+    /**
+     * @brief Compute the absolute value of each entry in the register.
+     *
+     * @note For unsigned types the value will not be affected.
+     *
+     * @tparam DataType The data type of the Simd256 register.
+     * @tparam Lane     The number of lanes of the Simd256 register.
+     *
+     * @param reg The register.
+     *
+     * @return A Simd256 register with absolute values.
+     */
+    template <typename DataType, size_t Lane>
+    [[nodiscard]] constexpr _REG_256_AVX<DataType, Lane> abs(_REG_256_AVX<DataType, Lane> reg) noexcept;
+
 } // namespace flcn
 
 #include "Simd256X86Math.inl"

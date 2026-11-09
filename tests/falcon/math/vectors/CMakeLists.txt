@@ -22,10 +22,9 @@ add_subdirectory(point3)
 add_subdirectory(cvec2)
 add_subdirectory(vec3)
 add_subdirectory(vec4)
-set(FALCON_ENABLE_NEON ON)
-# TODO: REMOVE TEMPORARY
+
 if (FALCON_ENABLE_NEON OR CMAKE_SYSTEM_PROCESSOR MATCHES "(arm|aarch64|ARM64)")
-    message(STATUS "Detected ARM architecture. Disabling SIMD tests")
+    message(STATUS "[Falcon]: Detected ARM architecture. Disabling SIMD tests")
     target_link_libraries(
             FalconMathVectorTests
             PRIVATE

@@ -8,6 +8,7 @@
  * @copyright Copyright (c) 2026 Alan Abraham P Kochumon
  */
 
+
 #include <immintrin.h>
 
 int main()
@@ -16,5 +17,9 @@ int main()
     const __m128 b = _mm_set1_ps(1.5f);
     const __m128 c = _mm_set1_ps(2.5f);
 
-    [[maybe_unused]] __m128 result = _mm_fmadd_ps(a, b, c);
+    __m128 result = _mm_fmadd_ps(a, b, c);
+
+    [[maybe_unused]] volatile int scalar = _mm_cvtps_epi32(result);
+
+    return 0;
 }

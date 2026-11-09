@@ -47,6 +47,8 @@ function(AddCompilerFlag Target Visibility Config)
     #--------------------------
     # AUTO SIMD FLAG DETECTION
     #--------------------------
+    # Treat all warnings as errors
+    set(CMAKE_REQUIRED_FLAGS "-Werror")
 
     if (Config STREQUAL "AUTO")
         #----------------------------------------
@@ -364,5 +366,8 @@ function(AddCompilerFlag Target Visibility Config)
         target_compile_options(${Target} ${Visibility} ${CompilerFlag})
     endif ()
     target_compile_definitions(${Target} ${Visibility} ${Config} ${FMA_Config})
+
+
+    unset(CMAKE_REQUIRED_FLAGS)
 
 endfunction()

@@ -26,9 +26,9 @@ set_property(CACHE FALCON_SIMD_FMA PROPERTY STRINGS "AUTO" "ENABLED" "DISABLED" 
 include(CheckCXXSourceRuns)
 include(CheckCXXCompilerFlag)
 
-set(TEST_PROG_DIR "${PROJECT_SOURCE_DIR}/cmake/TestPrograms/")
+set(TEST_PROG_DIR "${CMAKE_CURRENT_LIST_DIR}/TestPrograms/")
 string(RANDOM RANDOM_STR) # Random Suffix is required since the program same config like Clang-Debug LHS may try to access the same variable
-set(TEST_COMPILE_DIR "${PROJECT_SOURCE_DIR}/cmake/TestPrograms/build/${CMAKE_CXX_COMPILER_ID}-${CMAKE_BUILD_TYPE}-${RANDOM_STR}")
+set(TEST_COMPILE_DIR "${CMAKE_CURRENT_LIST_DIR}/TestPrograms/build/${CMAKE_CXX_COMPILER_ID}-${CMAKE_BUILD_TYPE}-${RANDOM_STR}")
 
 
 #--------------------------------------------------------------------------------------
@@ -113,7 +113,7 @@ function(AddCompilerFlag Target Visibility Config)
         #            try_run(
         #                    AVX10_RUNS
         #                    AVX10_COMPILES
-        #                    "${PROJECT_SOURCE_DIR}/TestPrograms/build"
+        #                    "${CMAKE_CURRENT_LIST_DIR}/TestPrograms/build"
         #                    "${TEST_PROG_DIR}/AVX10Test.cpp"
         #                    CMAKE_FLAGS "-DCMAKE_CXX_STANDARD=17"
         #                    RUN_OUTPUT_VARIABLE AVX10_RUN_OUTPUT

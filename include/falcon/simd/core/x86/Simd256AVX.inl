@@ -43,6 +43,7 @@ namespace flcn
     }
 
 
+    // TODO: Add test
     template <typename DataType, size_t Lane>
     template <typename T>
     FALCON_INLINE constexpr Simd256<SimdBackend::ARCH_AVX, T, Lane> Simd256<SimdBackend::ARCH_AVX, DataType,
@@ -128,8 +129,8 @@ namespace flcn
                     {
                         // For converting a Simd256 emulated into a native register we need extract them
                         // and set the upper and lower lanes
-                        const auto loLane = *((*_reg).lower);
-                        const auto hiLane = *((*_reg).upper);
+                        const auto loLane  = *((*_reg).lower);
+                        const auto hiLane  = *((*_reg).upper);
                         const auto castReg = _mm256_castpd_si256(_mm256_setr_m128d(loLane, hiLane));
                         return Simd256<SimdBackend::ARCH_AVX, T, Lane>(castReg);
                     }
@@ -144,8 +145,8 @@ namespace flcn
                     {
                         // For converting a Simd256 emulated into a native register we need extract them
                         // and set the upper and lower lanes
-                        const auto loLane = *((*_reg).lower);
-                        const auto hiLane = *((*_reg).upper);
+                        const auto loLane  = *((*_reg).lower);
+                        const auto hiLane  = *((*_reg).upper);
                         const auto castReg = _mm256_castps_si256(_mm256_setr_m128(loLane, hiLane));
                         return Simd256<SimdBackend::ARCH_AVX, T, Lane>(castReg);
                     }
@@ -2957,7 +2958,7 @@ namespace flcn
         }
         else
         {
-            return _reg.abs();
+            return Simd256(_reg.abs());
         }
     }
 
@@ -3170,15 +3171,15 @@ namespace flcn
             // For infinity exponents are all ones 0xFFE(0b11111111111) for doubles and 0xFF(0b00000000).
             if constexpr (types::IsFP64<DataType>)
             {
-                const auto shifted = cast<uint64_t>().template shiftLeft<1>();
-                const auto res     = shifted == Simd256<SimdBackend::ARCH_AVX, uint64_t, Lane>(0xFFE0000000000000ULL);
-                return Simd256(_mm256_castsi256_pd(*res));
+                constexpr auto inf = std::bit_cast<double>(0xFFE0000000000000ULL);
+                const auto shifted = shiftLeft<1>();
+                return shifted == Simd256(inf);
             }
             else if constexpr (types::IsFP32<DataType>)
             {
-                const auto shifted = cast<uint32_t>().template shiftLeft<1>();
-                const auto res     = shifted == Simd256<SimdBackend::ARCH_AVX, uint32_t, Lane>(0xFF000000U);
-                return Simd256(_mm256_castsi256_ps(*res));
+                constexpr auto inf = std::bit_cast<float>(0xFF000000U);
+                const auto shifted = shiftLeft<1>();
+                return shifted == Simd256(inf);
             }
             else if constexpr (std::is_integral_v<DataType>)
             {

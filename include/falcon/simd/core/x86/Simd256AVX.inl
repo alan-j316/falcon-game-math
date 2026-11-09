@@ -2911,18 +2911,16 @@ namespace flcn
             else if constexpr (types::IsFP64<DataType>)
             {
                 // We can take the abs of a register by using a flag mask and ANDing it with our register.
-                const auto flagReg = _mm256_set1_epi64x(0x7FFFFFFFFFFFFFFF); // 0b0111..1111
-                const auto intReg  = _mm256_castpd_si256(_reg);
-                const auto absReg  = _mm256_and_si256(intReg, flagReg);
-                return Simd256(_mm256_castsi256_pd(absReg));
+                const auto flagReg = _mm256_set1_pd(std::bit_cast<double>(0x7FFFFFFFFFFFFFFF)); // 0b0111..1111
+                const auto absReg  = _mm256_and_pd(_reg, flagReg);
+                return Simd256(absReg);
             }
             else if constexpr (types::IsFP32<DataType>)
             {
                 // We can take the abs of a register by using a flag mask and ANDing it with our register.
-                const auto flagReg = _mm256_set1_epi32(0x7FFFFFFF); // 0b0111..1111
-                const auto intReg  = _mm256_castps_si256(_reg);
-                const auto absReg  = _mm256_and_si256(intReg, flagReg);
-                return Simd256(_mm256_castsi256_ps(absReg));
+                const auto flagReg = _mm256_set1_ps(std::bit_cast<float>(0x7FFFFFFF)); // 0b0111..1111
+                const auto absReg  = _mm256_and_ps(_reg, flagReg);
+                return Simd256(absReg);
             }
             else if constexpr (types::IsQWord<DataType>)
             {

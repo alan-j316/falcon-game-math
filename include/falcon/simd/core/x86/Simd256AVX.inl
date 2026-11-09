@@ -2810,7 +2810,7 @@ namespace flcn
                 return std::min(Simd128<SimdBackend::ARCH_SSE2, DataType, halfLane>(loLane).horizontalMin(),
                                 Simd128<SimdBackend::ARCH_SSE2, DataType, halfLane>(hiLane).horizontalMin());
             }
-            if constexpr (types::IsFP32<DataType>)
+            else if constexpr (types::IsFP32<DataType>)
             {
                 auto loLane = _mm256_castps256_ps128(_reg);
                 auto hiLane = _mm256_extractf128_ps(_reg, 1);
@@ -2828,7 +2828,7 @@ namespace flcn
             }
             else
             {
-                // Should hit this case
+                // Should not hit this case
                 static_assert("[Simd256AVX/HMax]: Unsupported data type.");
                 return DataType(0);
             }
@@ -2855,7 +2855,7 @@ namespace flcn
                 return std::max(Simd128<SimdBackend::ARCH_SSE2, DataType, halfLane>(loLane).horizontalMax(),
                                 Simd128<SimdBackend::ARCH_SSE2, DataType, halfLane>(hiLane).horizontalMax());
             }
-            if constexpr (types::IsFP32<DataType>)
+            else if constexpr (types::IsFP32<DataType>)
             {
                 auto loLane = _mm256_castps256_ps128(_reg);
                 auto hiLane = _mm256_extractf128_ps(_reg, 1);
@@ -2873,8 +2873,8 @@ namespace flcn
             }
             else
             {
-                // Should hit this case
-                static_assert("[Simd256AVX/HMax]: Unsupported data type.");
+                // Should not hit this case
+                static_assert(true && "[Simd256AVX/HMax]: Unsupported data type.");
                 return DataType(0);
             }
         }

@@ -19,7 +19,7 @@ int main()
 
     __m128 result = _mm_fmadd_ps(a, b, c);
 
-    [[maybe_unused]] volatile int scalar = _mm_cvtps_epi32(result);
+    [[maybe_unused]] volatile int scalar = _mm_cvtss_f32(result);
 
     return 0;
 }

@@ -15,8 +15,8 @@
 
 int main()
 {
-    const __m128d data                   = _mm_set_pd1(124.56);
-    const auto rounded                   = _mm_ceil_pd(data);
-    [[maybe_unused]] volatile int scalar = _mm_cvtpd_epi32(rounded);
+    const __m128d data                      = _mm_set_pd1(124.56);
+    const auto rounded                      = _mm_ceil_pd(data);
+    [[maybe_unused]] volatile double scalar = _mm_cvtsd_f64(rounded);
     return 0;
 }

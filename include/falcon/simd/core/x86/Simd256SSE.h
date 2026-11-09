@@ -46,6 +46,18 @@ namespace flcn
     struct alignas(32) Simd256<SimdBackend::ARCH_SSE2, DataType, Lane>
     {
 
+    private:
+        static constexpr auto Max128BitLaneCount = 128 / (sizeof(DataType) * 8);
+        static_assert(Lane > Max128BitLaneCount, "Payload fits in 128-bits. Use Simd128 to directly prevent emulation");
+
+        static constexpr auto LOWER_LANE_COUNT = Max128BitLaneCount;
+        static constexpr auto UPPER_LANE_COUNT = (Lane - Max128BitLaneCount > 0) ? (Lane - Max128BitLaneCount) : 0;
+
+        /// [Upper][Lower]
+        Simd128<SimdBackend::ARCH_SSE2, DataType, UPPER_LANE_COUNT> _upper;
+        Simd128<SimdBackend::ARCH_SSE2, DataType, LOWER_LANE_COUNT> _lower;
+
+    public:
         static constexpr size_t BufferWidth  = 256;      ///< Width of the register in bits.
         using ValueType                      = DataType; ///< The internal data type of this Register.
         static constexpr size_t LaneCount    = Lane;     ///< Number of Lanes of current SIMD256 Register
@@ -114,6 +126,12 @@ namespace flcn
          */
         constexpr explicit Simd256(const DataType* pBuffer) noexcept;
 
+
+        /// @brief Initialize a Simd256 with the lower and upper Simd128 register.
+        explicit constexpr Simd256(Simd128<SimdBackend::ARCH_SSE2, DataType, LOWER_LANE_COUNT> lower,
+                                   Simd128<SimdBackend::ARCH_SSE2, DataType, UPPER_LANE_COUNT> upper)
+            : _upper(upper), _lower(lower)
+        {}
 
         /**
          * @brief Set the register with the given values in the lower lanes filling the unfilled lanes with zeroes.
@@ -828,26 +846,8 @@ namespace flcn
         [[nodiscard]] constexpr Simd256 hasInf() const noexcept;
 
 
-    private:
-        static constexpr auto Max128BitLaneCount = 128 / (sizeof(DataType) * 8);
-        static_assert(Lane > Max128BitLaneCount, "Payload fits in 128-bits. Use Simd128 to directly prevent emulation");
-
-        static constexpr auto LOWER_LANE_COUNT = Max128BitLaneCount;
-        static constexpr auto UPPER_LANE_COUNT = (Lane - Max128BitLaneCount > 0) ? (Lane - Max128BitLaneCount) : 0;
-
-        /// [Upper][Lower]
-        Simd128<SimdBackend::ARCH_SSE2, DataType, UPPER_LANE_COUNT> _upper;
-        Simd128<SimdBackend::ARCH_SSE2, DataType, LOWER_LANE_COUNT> _lower;
 
     private:
-        /// @brief Initialize a Simd256 with the lower and upper Simd128 register.
-        explicit constexpr Simd256(Simd128<SimdBackend::ARCH_SSE2, DataType, LOWER_LANE_COUNT> lower,
-                                   Simd128<SimdBackend::ARCH_SSE2, DataType, UPPER_LANE_COUNT> upper)
-            : _upper(upper), _lower(lower)
-        {}
-
-
-
         /**************************************
          *         FRIEND FUNCTION            *
          **************************************/

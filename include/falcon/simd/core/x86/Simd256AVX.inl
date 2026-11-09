@@ -2744,12 +2744,38 @@ namespace flcn
     {
         if constexpr (_FALCON_SIMD256_SUPPORT_NATIVE_INTRINSIC(DataType))
         {
-            const auto loLane       = _mm256_castsi256_si128(_reg);
-            const auto hiLane       = _mm256_extracti128_si256(_reg, 1);
             constexpr auto halfLane = Lane / 2;
             // TODO: Replace std::min with flcn::min
-            return std::min(Simd128<SimdBackend::ARCH_SSE2, DataType, halfLane>(loLane).horizontalMin(),
-                            Simd128<SimdBackend::ARCH_SSE2, DataType, halfLane>(hiLane).horizontalMin());
+            if constexpr (types::IsFP64<DataType>)
+            {
+                auto loLane = _mm256_castpd256_pd128(_reg);
+                auto hiLane = _mm256_extractf128_pd(_reg, 1);
+
+                return std::min(Simd128<SimdBackend::ARCH_SSE2, DataType, halfLane>(loLane).horizontalMin(),
+                                Simd128<SimdBackend::ARCH_SSE2, DataType, halfLane>(hiLane).horizontalMin());
+            }
+            if constexpr (types::IsFP32<DataType>)
+            {
+                auto loLane = _mm256_castps256_ps128(_reg);
+                auto hiLane = _mm256_extractf128_ps(_reg, 1);
+
+                return std::min(Simd128<SimdBackend::ARCH_SSE2, DataType, halfLane>(loLane).horizontalMin(),
+                                Simd128<SimdBackend::ARCH_SSE2, DataType, halfLane>(hiLane).horizontalMin());
+            }
+            else if constexpr (std::is_integral_v<DataType>)
+            {
+                auto loLane = _mm256_castsi256_si128(_reg);
+                auto hiLane = _mm256_extracti128_si256(_reg, 1);
+
+                return std::min(Simd128<SimdBackend::ARCH_SSE2, DataType, halfLane>(loLane).horizontalMin(),
+                                Simd128<SimdBackend::ARCH_SSE2, DataType, halfLane>(hiLane).horizontalMin());
+            }
+            else
+            {
+                // Should hit this case
+                static_assert("[Simd256AVX/HMax]: Unsupported data type.");
+                return DataType(0);
+            }
         }
         else
         {
@@ -2759,17 +2785,42 @@ namespace flcn
 
 
     template <typename DataType, size_t Lane>
-    FALCON_INLINE constexpr DataType Simd256<SimdBackend::ARCH_AVX, DataType, Lane>::horizontalMax() const
-    noexcept
+    FALCON_INLINE constexpr DataType Simd256<SimdBackend::ARCH_AVX, DataType, Lane>::horizontalMax() const noexcept
     {
         if constexpr (_FALCON_SIMD256_SUPPORT_NATIVE_INTRINSIC(DataType))
         {
-            const auto loLane       = _mm256_castsi256_si128(_reg);
-            const auto hiLane       = _mm256_extracti128_si256(_reg, 1);
             constexpr auto halfLane = Lane / 2;
             // TODO: Replace std::min with flcn::max
-            return std::max(Simd128<SimdBackend::ARCH_SSE2, DataType, halfLane>(loLane).horizontalMax(),
-                            Simd128<SimdBackend::ARCH_SSE2, DataType, halfLane>(hiLane).horizontalMax());
+            if constexpr (types::IsFP64<DataType>)
+            {
+                auto loLane = _mm256_castpd256_pd128(_reg);
+                auto hiLane = _mm256_extractf128_pd(_reg, 1);
+
+                return std::max(Simd128<SimdBackend::ARCH_SSE2, DataType, halfLane>(loLane).horizontalMax(),
+                                Simd128<SimdBackend::ARCH_SSE2, DataType, halfLane>(hiLane).horizontalMax());
+            }
+            if constexpr (types::IsFP32<DataType>)
+            {
+                auto loLane = _mm256_castps256_ps128(_reg);
+                auto hiLane = _mm256_extractf128_ps(_reg, 1);
+
+                return std::max(Simd128<SimdBackend::ARCH_SSE2, DataType, halfLane>(loLane).horizontalMax(),
+                                Simd128<SimdBackend::ARCH_SSE2, DataType, halfLane>(hiLane).horizontalMax());
+            }
+            else if constexpr (std::is_integral_v<DataType>)
+            {
+                auto loLane = _mm256_castsi256_si128(_reg);
+                auto hiLane = _mm256_extracti128_si256(_reg, 1);
+
+                return std::max(Simd128<SimdBackend::ARCH_SSE2, DataType, halfLane>(loLane).horizontalMax(),
+                                Simd128<SimdBackend::ARCH_SSE2, DataType, halfLane>(hiLane).horizontalMax());
+            }
+            else
+            {
+                // Should hit this case
+                static_assert("[Simd256AVX/HMax]: Unsupported data type.");
+                return DataType(0);
+            }
         }
         else
         {

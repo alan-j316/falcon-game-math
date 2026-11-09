@@ -10,6 +10,7 @@
  */
 
 #include "vectors/CVec2.h"
+#include "vectors/Vec2.h"
 #include "vectors/Vec3.h"
 #include "vectors/Vec4.h"
 #include "common/MathTraits.h"
@@ -18,7 +19,7 @@ namespace flcn
 {
 
     /**
-     * @addtogroup FALCON_Header_Alias
+     * @addtogroup Falcon_Header_Alias
      * @{
      */
 

@@ -2779,7 +2779,7 @@ namespace flcn
         }
         else
         {
-            return Simd256(_reg.horizontalMin());
+            return _reg.horizontalMin();
         }
     }
 
@@ -2824,7 +2824,7 @@ namespace flcn
         }
         else
         {
-            return Simd256(_reg.horizontalMax());
+            return _reg.horizontalMax();
         }
     }
 
@@ -2902,7 +2902,7 @@ namespace flcn
         }
         else
         {
-            return Simd256(_reg.abs());
+            return _reg.abs();
         }
     }
 

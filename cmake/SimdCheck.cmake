@@ -26,9 +26,9 @@ set_property(CACHE FALCON_SIMD_FMA PROPERTY STRINGS "AUTO" "ENABLED" "DISABLED" 
 include(CheckCXXSourceRuns)
 include(CheckCXXCompilerFlag)
 
-set(TEST_PROG_DIR "${CMAKE_CURRENT_LIST_DIR}/TestPrograms/")
-string(RANDOM RANDOM_STR) # Random Suffix is required since the program same config like Clang-Debug LHS may try to access the same variable
-set(TEST_COMPILE_DIR "${CMAKE_CURRENT_LIST_DIR}/TestPrograms/build/${CMAKE_CXX_COMPILER_ID}-${CMAKE_BUILD_TYPE}-${RANDOM_STR}")
+# set(TEST_PROG_DIR "${CMAKE_CURRENT_LIST_DIR}/TestPrograms/")
+# string(RANDOM RANDOM_STR) # Random Suffix is required since the program same config like Clang-Debug LHS may try to access the same variable
+# set(TEST_COMPILE_DIR "${CMAKE_CURRENT_LIST_DIR}/TestPrograms/build/${CMAKE_CXX_COMPILER_ID}-${CMAKE_BUILD_TYPE}-${RANDOM_STR}")
 
 
 #--------------------------------------------------------------------------------------
@@ -44,6 +44,14 @@ set(TEST_COMPILE_DIR "${CMAKE_CURRENT_LIST_DIR}/TestPrograms/build/${CMAKE_CXX_C
 #                         FALCON_DISABLE_SIMD
 #--------------------------------------------------------------------------------------
 function(AddCompilerFlag Target Visibility Config)
+
+    #--------------------------
+    #    DIRECTORY CONFIG
+    #--------------------------
+    set(TEST_PROG_DIR "${CMAKE_CURRENT_FUNCTION_LIST_DIR}/TestPrograms/")
+    string(RANDOM RANDOM_STR) # Random Suffix is required since the program same config like Clang-Debug LHS may try to access the same variable
+    set(TEST_COMPILE_DIR "${CMAKE_CURRENT_FUNCTION_LIST_DIR}/TestPrograms/build/${CMAKE_CXX_COMPILER_ID}-${CMAKE_BUILD_TYPE}-${RANDOM_STR}")
+
     #--------------------------
     # AUTO SIMD FLAG DETECTION
     #--------------------------
@@ -78,7 +86,7 @@ function(AddCompilerFlag Target Visibility Config)
         try_run(
                 AVX512EX_RUNS
                 AVX512EX_COMPILES
-                ${TEST_COMPILE_DIR}
+                "${TEST_COMPILE_DIR}"
                 "${TEST_PROG_DIR}/AVX512ExTest.cpp"
                 CMAKE_FLAGS
                 "-DCMAKE_CXX_STANDARD=17"
@@ -96,7 +104,7 @@ function(AddCompilerFlag Target Visibility Config)
         try_run(
                 AVX512F_RUNS
                 AVX512F_COMPILES
-                ${TEST_COMPILE_DIR}
+                "${TEST_COMPILE_DIR}"
                 "${TEST_PROG_DIR}/AVX512FTest.cpp"
                 CMAKE_FLAGS
                 "-DCMAKE_CXX_STANDARD=17"
@@ -123,7 +131,7 @@ function(AddCompilerFlag Target Visibility Config)
         try_run(
                 AVX2_RUNS
                 AVX2_COMPILES
-                ${TEST_COMPILE_DIR}
+                "${TEST_COMPILE_DIR}"
                 "${TEST_PROG_DIR}/AVX2Test.cpp"
                 CMAKE_FLAGS
                 "-DCMAKE_CXX_STANDARD=17"
@@ -140,7 +148,7 @@ function(AddCompilerFlag Target Visibility Config)
         try_run(
                 AVX_RUNS
                 AVX_COMPILES
-                ${TEST_COMPILE_DIR}
+                "${TEST_COMPILE_DIR}"
                 "${TEST_PROG_DIR}/AVXTest.cpp"
                 CMAKE_FLAGS
                 "-DCMAKE_CXX_STANDARD=17"
@@ -157,7 +165,7 @@ function(AddCompilerFlag Target Visibility Config)
         try_run(
                 SSE4_RUNS
                 SSE4_COMPILES
-                ${TEST_COMPILE_DIR}
+                "${TEST_COMPILE_DIR}"
                 "${TEST_PROG_DIR}/SSE4Test.cpp"
                 CMAKE_FLAGS
                 "-DCMAKE_CXX_STANDARD=17"
@@ -174,7 +182,7 @@ function(AddCompilerFlag Target Visibility Config)
         try_run(
                 SSE2_RUNS
                 SSE2_COMPILES
-                ${TEST_COMPILE_DIR}
+                "${TEST_COMPILE_DIR}"
                 "${TEST_PROG_DIR}/SSETest.cpp"
                 CMAKE_FLAGS
                 "-DCMAKE_CXX_STANDARD=17"
@@ -191,7 +199,7 @@ function(AddCompilerFlag Target Visibility Config)
         try_run(
                 NEON_RUNS
                 NEON_COMPILES
-                ${TEST_COMPILE_DIR}
+                "${TEST_COMPILE_DIR}"
                 "${TEST_PROG_DIR}/NeonTest.cpp"
                 CMAKE_FLAGS
                 "-DCMAKE_CXX_STANDARD=17"
@@ -310,7 +318,7 @@ function(AddCompilerFlag Target Visibility Config)
                 try_run(
                         FMA_RUNS
                         FMA_COMPILES
-                        ${TEST_COMPILE_DIR}
+                        "${TEST_COMPILE_DIR}"
                         "${TEST_PROG_DIR}/FMATest.cpp"
                         CMAKE_FLAGS
                         "-DCMAKE_CXX_STANDARD=17"

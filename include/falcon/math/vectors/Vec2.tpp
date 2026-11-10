@@ -29,11 +29,9 @@
 
 namespace flcn
 {
-    /*************************************
-     *                                   *
-     *            INITIALIZERS           *
-     *                                   *
-     *************************************/
+    /// +---------------------------------------------------------------------------------------+
+    /// |                               INITIALIZERS                                            |
+    /// +---------------------------------------------------------------------------------------+
 
     template <Arithmetic T>
     FALCON_INLINE constexpr Vec2<T>::Vec2(T val) noexcept
@@ -71,9 +69,9 @@ namespace flcn
         _data.set(static_cast<T>(other.x()), static_cast<T>(other.y()));
     }
 
-
+// TODO: Add
     template <Arithmetic T>
-    FALCON_INLINE constexpr Vec2<T>::Vec2(const flcn::Simd128_t<T, DIMENSION>& reg) noexcept: _data{ reg }
+    FALCON_INLINE constexpr Vec2<T>::Vec2(const Simd128_t<T, DIMENSION>& reg) noexcept: _data{ reg }
     {}
 
     // TODO: add a aligned toCVec2 variant
@@ -90,16 +88,14 @@ namespace flcn
     FALCON_INLINE constexpr CVec2<T> Vec2<T>::toCVec2(const Vec2& vec) noexcept
     { return vec.toCVec2(); }
 
-    /*************************************
-     *                                   *
-     *            ACCESSORS              *
-     *                                   *
-     *************************************/
+
+
+    /// +---------------------------------------------------------------------------------------+
+    /// |                                 ACCESSORS                                             |
+    /// +---------------------------------------------------------------------------------------+
 
     /**************************************
-     *                                    *
      *        SPATIAL COORDINATES         *
-     *                                    *
      **************************************/
 
     template <Arithmetic T>
@@ -123,9 +119,7 @@ namespace flcn
 
 
     /**************************************
-     *                                    *
      *           STP COORDINATES          *
-     *                                    *
      **************************************/
 
     template <Arithmetic T>
@@ -149,9 +143,7 @@ namespace flcn
 
 
     /**************************************
-     *                                    *
      *         COLOR COORDINATES          *
-     *                                    *
      **************************************/
 
     template <Arithmetic T>
@@ -175,9 +167,7 @@ namespace flcn
 
 
     /**************************************
-     *                                    *
      *              INDEXING              *
-     *                                    *
      **************************************/
 
     template <Arithmetic T>

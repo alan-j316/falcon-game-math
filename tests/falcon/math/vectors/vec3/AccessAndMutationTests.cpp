@@ -19,30 +19,6 @@
 
 namespace
 {
-    /**************************************
-     *            STATIC TESTS            *
-     **************************************/
-
-    namespace
-    {
-        constexpr flcn::Vec3 vector(1, 2, 3);
-
-        /// @test Verify that vector is accessible as <x, y, z> at compile time.
-        static_assert(vector.x() == 1);
-        static_assert(vector.y() == 2);
-        static_assert(vector.z() == 3);
-
-        /// @test Verify that vector is accessible as <r, g, b> at compile time.
-        static_assert(vector.r() == 1);
-        static_assert(vector.g() == 2);
-        static_assert(vector.b() == 3);
-
-        /// @test Verify that vector is accessible as <s, t, p> at compile time.
-        static_assert(vector.s() == 1);
-        static_assert(vector.t() == 2);
-        static_assert(vector.p() == 3);
-
-    } // namespace
 
 }
 

@@ -17,6 +17,7 @@
 #include <falcon/math/common/MathTraits.h>
 #include <falcon/math/vectors/CVec2.h>
 #include <falcon/math/vectors/CVec3.h>
+#include <falcon/math/vectors/Vec3.h>
 #include <falcon/math/vectors/Vec4.h>
 #include <gtest/gtest.h>
 #include <type_traits>
@@ -101,6 +102,7 @@ namespace testutils
         }
     }
 
+
     /**
      * @brief Performs a strict component-wise validation of a @ref flcn::Vec2 against discrete scalar values.
      *
@@ -149,6 +151,42 @@ namespace testutils
      */
     template <flcn::Arithmetic T>
     void EXPECT_VEC_CONTAINS(const flcn::CVec3<T>& vector, T x, T y, T z)
+    {
+        if constexpr (std::is_same_v<T, float>)
+        {
+            EXPECT_FLOAT_EQ(x, vector.x());
+            EXPECT_FLOAT_EQ(y, vector.y());
+            EXPECT_FLOAT_EQ(z, vector.z());
+        }
+        else if constexpr (std::is_same_v<T, double>)
+        {
+            EXPECT_DOUBLE_EQ(x, vector.x());
+            EXPECT_DOUBLE_EQ(y, vector.y());
+            EXPECT_DOUBLE_EQ(z, vector.z());
+        }
+        else
+        {
+            EXPECT_EQ(x, vector.x());
+            EXPECT_EQ(y, vector.y());
+            EXPECT_EQ(z, vector.z());
+        }
+    }
+
+    /**
+         * @brief Performs a strict component-wise validation of a @ref flcn::Vec3 against discrete scalar values.
+         *
+         * @tparam T Numeric type of the vector and scalar components.
+         *
+         * @param vector The 3D vector instance being evaluated.
+         * @param x      The expected value for the x-component.
+         * @param y      The expected value for the y-component.
+         * @param z      The expected value for the z-component.
+         *
+         * @note Uses GoogleTest macros. Triggers a non-fatal test failure if the vector's
+         *       internal state does not match the provided scalars.
+         */
+    template <flcn::Arithmetic T>
+    void EXPECT_VEC_CONTAINS(const flcn::Vec3<T>& vector, T x, T y, T z)
     {
         if constexpr (std::is_same_v<T, float>)
         {

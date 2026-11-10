@@ -125,7 +125,7 @@ namespace flcn
          * @brief Initialize a @ref Vec2 with an Simd128_t register.
          * @param reg The register to bind to this vector.
          */
-        [[nodiscard]] explicit constexpr Vec2(const flcn::Simd128_t<T, DIMENSION>& reg) noexcept;
+        [[nodiscard]] explicit constexpr Vec2(const Simd128_t<T, DIMENSION>& reg) noexcept;
 
 
         /// @brief Convert this Vec2 to CVec2.

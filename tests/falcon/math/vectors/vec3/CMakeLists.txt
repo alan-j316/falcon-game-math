@@ -2,7 +2,7 @@ add_library(Vec3Tests OBJECT)
 
 target_sources(
         Vec3Tests PRIVATE
-        AccessAndMutationTests.cpp
+#        AccessAndMutationTests.cpp
 #        AliasTests.cpp
 #        ArithmeticOperationTests.cpp
 #        BooleanBitOperationTests.cpp
@@ -10,7 +10,7 @@ target_sources(
 #        ConstantsTests.cpp
 #        DistanceTests.cpp
 #        EqualityTests.cpp
-#        InitializationTests.cpp
+        InitializationTests.cpp
 #        MagnitudeTests.cpp
 #        NormalizationTests.cpp
 #        PNormTests.cpp

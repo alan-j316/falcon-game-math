@@ -398,7 +398,7 @@ namespace flcn
          *        *But you shouldn't make the CVec2 instance a temporary.*
          * @note The buffer must be of an adequate size to store the contents.
          *
-         * @warning No memory alignment necessary.
+         * @note No memory alignment necessary.
          *
          * @code
          * // DO
@@ -429,7 +429,7 @@ namespace flcn
          *        *But you shouldn't make the CVec2 instance a temporary.*
          * @note The buffer must be of an adequate size to store the contents.
          *
-         * @warning No memory alignment necessary.
+         * @note No memory alignment necessary.
          *
          * @code
          * // DO

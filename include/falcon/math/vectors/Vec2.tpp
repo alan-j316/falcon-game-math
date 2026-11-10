@@ -34,8 +34,7 @@ namespace flcn
     /// +---------------------------------------------------------------------------------------+
 
     template <Arithmetic T>
-    FALCON_INLINE constexpr Vec2<T>::Vec2(T val) noexcept
-        : _data{ val, val }
+    FALCON_INLINE constexpr Vec2<T>::Vec2(T val) noexcept: _data{ val, val }
     {}
 
     // TODO: Refactor out to a helper function
@@ -48,8 +47,7 @@ namespace flcn
 
 
     template <Arithmetic T>
-    FALCON_INLINE constexpr Vec2<T>::Vec2(T v1, T v2) noexcept
-        : _data{ v1, v2 }
+    FALCON_INLINE constexpr Vec2<T>::Vec2(T v1, T v2) noexcept: _data{ v1, v2 }
     {}
 
 
@@ -69,7 +67,7 @@ namespace flcn
         _data.set(static_cast<T>(other.x()), static_cast<T>(other.y()));
     }
 
-// TODO: Add
+    // TODO: Add
     template <Arithmetic T>
     FALCON_INLINE constexpr Vec2<T>::Vec2(const Simd128_t<T, DIMENSION>& reg) noexcept: _data{ reg }
     {}
@@ -252,7 +250,12 @@ namespace flcn
 
     template <Arithmetic T>
     FALCON_INLINE constexpr void Vec2<T>::store(T* pBuffer) const noexcept
-    { _data.storeAligned(pBuffer); }
+    {
+        // TODO: Add death test for Vec3 and Vec2 unaligned address with aligned store
+        FALCON_ASSERT_MSG(reinterpret_cast<uintptr_t>(pBuffer) % 16 == 0,
+                          "[Vec3/Store]: pBuffer must be aligned to 16 bytes. For unaligned store, use storeUnaligned");
+        _data.storeAligned(pBuffer);
+    }
 
     template <Arithmetic T>
     FALCON_INLINE constexpr void Vec2<T>::store(const Vec2& vec, T* pBuffer) noexcept

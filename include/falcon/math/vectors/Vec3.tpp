@@ -253,4 +253,36 @@ namespace flcn
 
 
 
+    /// +---------------------------------------------------------------------------------------+
+    /// |                                   STORAGE                                             |
+    /// +---------------------------------------------------------------------------------------+
+
+    template <Arithmetic T>
+    FALCON_INLINE constexpr void Vec3<T>::store(T* pBuffer) const noexcept
+    {
+        // TODO: Add death test for Vec3 and Vec2 unaligned address with aligned store
+        constexpr size_t alignment = sizeof(T) > 4 ? 32 : 16;
+        FALCON_ASSERT_MSG(reinterpret_cast<uintptr_t>(pBuffer) % alignment == 0,
+                          "[Vec3/Store]: pBuffer must be aligned to 32(double, uint64_t, int64_t) or 16 bytes (for "
+                          "other types). For unaligned store, use storeUnaligned");
+        _data.storeAligned(pBuffer);
+    }
+
+
+    template <Arithmetic T>
+    FALCON_INLINE constexpr void Vec3<T>::store(const Vec3& vec, T* pBuffer) noexcept
+    { vec.store(pBuffer); }
+
+
+    template <Arithmetic T>
+    FALCON_INLINE constexpr void Vec3<T>::storeUnaligned(T* pBuffer) const noexcept
+    { _data.store(pBuffer); }
+
+
+    template <Arithmetic T>
+    FALCON_INLINE constexpr void Vec3<T>::storeUnaligned(const Vec3& vec, T* pBuffer) noexcept
+    { vec.storeUnaligned(pBuffer); }
+
+
+
 } // namespace flcn

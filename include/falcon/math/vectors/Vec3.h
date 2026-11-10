@@ -368,6 +368,145 @@ namespace flcn
         /** @} */
 
 
+
+        /**
+         * @addtogroup Falcon_CVec3_Ptr
+         * @{
+         */
+
+        /**
+         * @brief Store the values of this vector to @p pBuffer.
+         * @note  Since we cannot return a pointer to a buffer, due to lifetime limitation
+         *        of pointer allocated on the callstack of @ref store,
+         *        use either @ref store or storeUnaligned.
+         *        Alternatively, convert to a CVec3 using @ref toCVec3 and then use *cvec or cvec.ptr().
+         *        *But you shouldn't make the CVec3 instance a temporary.*
+         * @note The buffer must be of an adequate size to store the contents.
+         *
+         * @warning @p pBuffer must be aligned to 16-byte boundary.
+         *          If you want to store unaligned memory use @ref storeUnaligned.
+         * @warning @p pBuffer must be a pointer to an data-structure that is 4 elements wide(e.g: float[4]).
+         *
+         * @code
+         * // DO
+         * auto cvec3 = vec3.toCVec3();
+         * auto ptr = *cvec3();
+         *
+         * // OR
+         * alignas(16) float data[4];
+         * vec3.store(data);
+         *
+         * // DON'T
+         * auto ptr = *(vec3.toCVec3());
+         * @endcode
+         *
+         * @relatedalso store(Vec3<T>, T*)
+         * @relatedalso storeUnaligned(T*)
+         * @relatedalso storeUnaligned(Vec3<T>, T*)
+         */
+        constexpr void store(T* pBuffer) const noexcept;
+
+
+        /**
+         * @brief Store the values of @p vec to @p pBuffer.
+         * @note  Since we cannot return a pointer to a buffer, due to lifetime limitation
+         *        of pointer allocated on the callstack of @ref store,
+         *        use either @ref store or storeUnaligned.
+         *        Alternatively, convert to a CVec3 using @ref toCVec3 and then use *cvec or cvec.ptr().
+         *        *But you shouldn't make the CVec3 instance a temporary.*
+         * @note The buffer must be of an adequate size to store the contents.
+         *
+         * @warning @p pBuffer must be aligned to 16-byte boundary.
+         *          If you want to store unaligned memory use @ref storeUnaligned.
+         * @warning @p pBuffer must be a pointer to an data-structure that is 4 elements wide(e.g: float[4]).
+         *
+         * @code
+         * // DO
+         * auto cvec3 = vec3.toCVec3();
+         * auto ptr = *cvec3();
+         *
+         * // OR
+         * alignas(16) float data[4];
+         * vec3.store(data);
+         *
+         * // DON'T
+         * auto ptr = *(vec3.toCVec3());
+         * @endcode
+         *
+         * @relatedalso store(T*)
+         * @relatedalso storeUnaligned(T*)
+         * @relatedalso storeUnaligned(Vec3<T>, T*)
+         */
+        static constexpr void store(const Vec3& vec, T* pBuffer) noexcept;
+
+
+        /**
+         * @brief Store the values of this vector to @p pBuffer.
+         * @note  Since we cannot return a pointer to a buffer, due to lifetime limitation
+         *        of pointer allocated on the callstack of @ref storeUnaligned,
+         *        use either @ref store or storeUnaligned.
+         *        Alternatively, convert to a CVec3 using @ref toCVec3 and then use *cvec or cvec.ptr().
+         *        *But you shouldn't make the CVec3 instance a temporary.*
+         * @note The buffer must be of an adequate size to store the contents.
+         *
+         * @note No memory alignment necessary.
+         * @warning @p pBuffer must be a pointer to an data-structure that is 4 elements wide(e.g: float[4]).
+         *
+         * @code
+         * // DO
+         * auto cvec3 = vec3.toCVec3();
+         * auto ptr = *cvec3();
+         *
+         * // OR
+         * float data[4];
+         * vec3.store(data);
+         *
+         * // DON'T
+         * auto ptr = *(vec3.toCVec3());
+         * @endcode
+         *
+         * @relatedalso store(T*)
+         * @relatedalso store(Vec3<T>, T*)
+         * @relatedalso storeUnaligned(Vec3<T>, T*)
+         */
+        constexpr void storeUnaligned(T* pBuffer) const noexcept;
+
+
+        /**
+         * @brief Store the values of @p vec to @p pBuffer.
+         * @note  Since we cannot return a pointer to a buffer, due to lifetime limitation
+         *        of pointer allocated on the callstack of @ref storeUnaligned,
+         *        use either @ref store or storeUnaligned.
+         *        Alternatively, convert to a CVec3 using @ref toCVec3 and then use *cvec or cvec.ptr().
+         *        *But you shouldn't make the CVec3 instance a temporary.*
+         * @note The buffer must be of an adequate size to store the contents.
+         *
+         * @note No memory alignment necessary.
+         * @warning @p pBuffer must be a pointer to an data-structure that is 4 elements wide(e.g: float[4]).
+         *
+         * @code
+         * // DO
+         * auto cvec3 = vec3.toCVec3();
+         * auto ptr = *cvec3();
+         *
+         * // OR
+         * float data[4];
+         * vec3.storeUnaligned(data);
+         *
+         * // DON'T
+         * auto ptr = *(vec3.toCVec3());
+         * @endcode
+         *
+         * @relatedalso store(T*)
+         * @relatedalso store(Vec3<T>, T*)
+         * @relatedalso storeUnaligned(T*)
+         */
+        static constexpr void storeUnaligned(const Vec3& vec, T* pBuffer) noexcept;
+
+        /** @} */
+
+
+
         //         /**
         //          * @addtogroup Falcon_Vec3_Equality
         //          * @{

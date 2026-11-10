@@ -320,6 +320,33 @@ namespace flcn
         /** @} */
 
 
+        // TODO: Add these methods
+ //        /**
+ // * @addtogroup Falcon_CVec2_Ptr
+ // * @{
+ // */
+ //
+ //        /// @brief Get the internal storage of the vector as a pointer.
+ //        [[nodiscard]] constexpr const T* ptr() const noexcept;
+ //
+ //        /// @brief Get the internal storage of the vector as a pointer (non-const).
+ //        [[nodiscard]] constexpr T* ptr() noexcept;
+ //
+ //        /// @brief Get the internal storage of @p vec as a pointer.
+ //        [[nodiscard]] static constexpr const T* ptr(const CVec2& vec) noexcept;
+ //
+ //        /// @brief Get the internal storage of @p vec as a pointer.
+ //        [[nodiscard]] static constexpr T* ptr(CVec2& vec) noexcept;
+ //
+ //        /// @brief Get the internal storage of @p vec as a pointer (non-const).
+ //        [[nodiscard]] constexpr T* operator*() noexcept;
+ //
+ //        /// @brief Get the internal storage of @p vec as a pointer (non-const).
+ //        [[nodiscard]] constexpr const T* operator*() const noexcept;
+ //
+ //        /** @} */
+
+
         /**
          * @addtogroup Falcon_CVec3_Equality
          * @{

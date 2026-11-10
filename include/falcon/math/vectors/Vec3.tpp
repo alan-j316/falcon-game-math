@@ -69,9 +69,9 @@ namespace flcn
     { return _data.template getAt<0>(); }
 
 
-    // template <Arithmetic T>
-    // FALCON_INLINE constexpr T& Vec3<T>::x() noexcept
-    // { return _data.template setAt<0>(); }
+    template <Arithmetic T>
+    FALCON_INLINE constexpr Vec3<T>::template ConstIndexableProxy<0> Vec3<T>::x() noexcept
+    { return ConstIndexableProxy<0>(*this); }
 
 
     template <Arithmetic T>
@@ -79,9 +79,9 @@ namespace flcn
     { return _data.template getAt<1>(); }
 
 
-    // template <Arithmetic T>
-    // FALCON_INLINE constexpr T& Vec3<T>::y() noexcept
-    // { return _data[1]; }
+    template <Arithmetic T>
+    FALCON_INLINE constexpr Vec3<T>::template ConstIndexableProxy<1> Vec3<T>::y() noexcept
+    { return ConstIndexableProxy<1>(*this); }
 
 
     template <Arithmetic T>
@@ -89,9 +89,79 @@ namespace flcn
     { return _data.template getAt<2>(); }
 
 
-    // template <Arithmetic T>
-    // FALCON_INLINE constexpr T& Vec3<T>::z() noexcept
-    // { return _data[2]; }
+    template <Arithmetic T>
+    FALCON_INLINE constexpr Vec3<T>::template ConstIndexableProxy<2> Vec3<T>::z() noexcept
+    { return ConstIndexableProxy<2>(*this); }
+
+
+    /**************************************
+     *          STP COORDINATES           *
+     **************************************/
+
+    template <Arithmetic T>
+    FALCON_INLINE constexpr T Vec3<T>::s() const noexcept
+    { return _data.template getAt<0>(); }
+
+
+    template <Arithmetic T>
+    FALCON_INLINE constexpr Vec3<T>::template ConstIndexableProxy<0> Vec3<T>::s() noexcept
+    { return ConstIndexableProxy<0>(*this); }
+
+
+    template <Arithmetic T>
+    FALCON_INLINE constexpr T Vec3<T>::t() const noexcept
+    { return _data.template getAt<1>(); }
+
+
+    template <Arithmetic T>
+    FALCON_INLINE constexpr Vec3<T>::template ConstIndexableProxy<1> Vec3<T>::t() noexcept
+    { return ConstIndexableProxy<1>(*this); }
+
+
+    template <Arithmetic T>
+    FALCON_INLINE constexpr T Vec3<T>::p() const noexcept
+    { return _data.template getAt<2>(); }
+
+
+    template <Arithmetic T>
+    FALCON_INLINE constexpr Vec3<T>::template ConstIndexableProxy<2> Vec3<T>::p() noexcept
+    { return ConstIndexableProxy<2>(*this); }
+
+
+
+    /**************************************
+     *         COLOR COORDINATES          *
+     **************************************/
+
+    template <Arithmetic T>
+    FALCON_INLINE constexpr T Vec3<T>::r() const noexcept
+    { return _data.template getAt<0>(); }
+
+
+    template <Arithmetic T>
+    FALCON_INLINE constexpr Vec3<T>::template ConstIndexableProxy<0> Vec3<T>::r() noexcept
+    { return ConstIndexableProxy<0>(*this); }
+
+
+    template <Arithmetic T>
+    FALCON_INLINE constexpr T Vec3<T>::g() const noexcept
+    { return _data.template getAt<1>(); }
+
+
+    template <Arithmetic T>
+    FALCON_INLINE constexpr Vec3<T>::template ConstIndexableProxy<1> Vec3<T>::g() noexcept
+    { return ConstIndexableProxy<1>(*this); }
+
+
+    template <Arithmetic T>
+    FALCON_INLINE constexpr T Vec3<T>::b() const noexcept
+    { return _data.template getAt<2>(); }
+
+
+    template <Arithmetic T>
+    FALCON_INLINE constexpr Vec3<T>::template ConstIndexableProxy<2> Vec3<T>::b() noexcept
+    { return ConstIndexableProxy<2>(*this); }
+
 
 
     /**************************************
@@ -99,10 +169,18 @@ namespace flcn
      **************************************/
 
     template <Arithmetic T>
+    FALCON_INLINE constexpr Vec3<T>::IndexableProxy Vec3<T>::operator[](size_t idx) noexcept
+    {
+        FALCON_ASSERT_MSG(idx < DIMENSION, flcn::messages::assertion::VEC_OUT_OF_BOUNDS_ACCESS);
+        return IndexableProxy(*this, idx);
+    }
+
+
+    template <Arithmetic T>
     FALCON_INLINE constexpr T Vec3<T>::operator[](const size_t idx) const noexcept
     {
         FALCON_ASSERT_MSG(idx < DIMENSION, flcn::messages::assertion::VEC_OUT_OF_BOUNDS_ACCESS);
-        return _data[idx];
+        return _data.getAt(idx);
     }
 
     // TODO: ADD

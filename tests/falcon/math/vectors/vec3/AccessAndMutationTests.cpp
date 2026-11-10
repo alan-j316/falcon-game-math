@@ -1,7 +1,7 @@
 /**
  * @file AccessAndMutationTests.cpp
  * @author Alan Abraham P Kochumon
- * @date Created on: March 10, 2026
+ * @date Created on: November 10, 2026
  *
  * @brief Verify @ref flcn::Vec3 accessors and mutators.
  *
@@ -16,12 +16,6 @@
  * @addtogroup T_Falcon_Vec3_Access
  * @{
  */
-
-namespace
-{
-
-}
-
 
 
 /**************************************

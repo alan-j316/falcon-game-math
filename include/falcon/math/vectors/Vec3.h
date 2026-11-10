@@ -61,8 +61,16 @@ namespace flcn
 
 
     template <Arithmetic T>
-    struct Vec3
+    struct alignas(sizeof(T) > 4 ? 32 : 16) Vec3
     {
+    private:
+        /// ForwardDeclarations
+        template <size_t Index>
+        class ConstIndexableProxy;
+        class IndexableProxy;
+
+
+    public:
         /**
          * @addtogroup Falcon_Vec3_Members
          * @{
@@ -149,7 +157,7 @@ namespace flcn
          * @brief Access the element at the first location (read-write access).
          * @return A reference to the first element of the vector.
          */
-        // [[nodiscard]] constexpr T& x() noexcept;
+        [[nodiscard]] constexpr ConstIndexableProxy<0> x() noexcept;
 
 
         /**
@@ -163,7 +171,7 @@ namespace flcn
          * @brief Access the element at the second location (read-write access).
          * @return A reference to the second element of the vector.
          */
-        // [[nodiscard]] constexpr T& y() noexcept;
+         [[nodiscard]] constexpr ConstIndexableProxy<1> y() noexcept;
 
 
         /**
@@ -177,107 +185,106 @@ namespace flcn
          * @brief Access the element at the third location (read-write access).
          * @return A reference to the third element of the vector.
          */
-        // [[nodiscard]] constexpr T& z() noexcept;
+         [[nodiscard]] constexpr ConstIndexableProxy<2> z() noexcept;
 
 
-        //         /**
-        //          * @brief Access the element at the first location.
-        //          * @return A copy of the first vector element.
-        //          */
-        //         [[nodiscard]] constexpr T s() const noexcept;
-        //
-        //
-        //         /**
-        //          * @brief Access the element at the first location (read-write access).
-        //          * @return A reference to the first element of the vector.
-        //          */
-        //         [[nodiscard]] constexpr T& s() noexcept;
-        //
-        //
-        //         /**
-        //          * @brief Access the element at the second location (read-only).
-        //          * @return A copy of the third second element.
-        //          */
-        //         [[nodiscard]] constexpr T t() const noexcept;
-        //
-        //
-        //         /**
-        //          * @brief Access the element at the second location (read-write access).
-        //          * @return A reference to the second element of the vector.
-        //          */
-        //         [[nodiscard]] constexpr T& t() noexcept;
-        //
-        //
-        //         /**
-        //          * @brief Access the element at the third location (read-only).
-        //          * @return A copy of the third vector element.
-        //          */
-        //         [[nodiscard]] constexpr T p() const noexcept;
-        //
-        //
-        //         /**
-        //          * @brief Access the element at the third location (read-write access).
-        //          * @return A reference to the third element of the vector.
-        //          */
-        //         [[nodiscard]] constexpr T& p() noexcept;
-        //
-        //
-        //
-        //         /**
-        //          * @brief Access the element at the first location.
-        //          * @return A copy of the first vector element.
-        //          */
-        //         [[nodiscard]] constexpr T r() const noexcept;
-        //
-        //
-        //         /**
-        //          * @brief Access the element at the first location (read-write access).
-        //          * @return A reference to the first element of the vector.
-        //          */
-        //         [[nodiscard]] constexpr T& r() noexcept;
-        //
-        //
-        //         /**
-        //          * @brief Access the element at the second location (read-only).
-        //          * @return A copy of the second vector element.
-        //          */
-        //         [[nodiscard]] constexpr T g() const noexcept;
-        //
-        //
-        //         /**
-        //          * @brief Access the element at the second location (read-write access).
-        //          * @return A reference to the second element of the vector.
-        //          */
-        //         [[nodiscard]] constexpr T& g() noexcept;
-        //
-        //
-        //         /**
-        //          * @brief Access the element at the third location (read-only).
-        //          * @return A copy of the third vector element.
-        //          */
-        //         [[nodiscard]] constexpr T b() const noexcept;
-        //
-        //
-        //         /**
-        //          * @brief Access the element at the third location (read-write access).
-        //          * @return A reference to the third element of the vector.
-        //          */
-        //         [[nodiscard]] constexpr T& b() noexcept;
-        //
-        //
-        //
-        //         /**
-        //          * @brief Access the element at the specified location.
-        //          *        Provide read-write access to the element.
-        //          *
-        //          * @note Performs bounds checking in **DEBUG MODE**.
-        //          *
-        //          * @param[in] idx The index of the vector component.
-        //          *
-        //          * @return A reference to the vector component.
-        //          */
-        //         constexpr T& operator[](size_t idx) noexcept;
-        //
+        /**
+         * @brief Access the element at the first location.
+         * @return A copy of the first vector element.
+         */
+        [[nodiscard]] constexpr T s() const noexcept;
+
+
+        /**
+         * @brief Access the element at the first location (read-write access).
+         * @return A reference to the first element of the vector.
+         */
+        [[nodiscard]] constexpr ConstIndexableProxy<0> s() noexcept;
+
+
+        /**
+         * @brief Access the element at the second location (read-only).
+         * @return A copy of the third second element.
+         */
+        [[nodiscard]] constexpr T t() const noexcept;
+
+
+        /**
+         * @brief Access the element at the second location (read-write access).
+         * @return A reference to the second element of the vector.
+         */
+        [[nodiscard]] constexpr ConstIndexableProxy<1> t() noexcept;
+
+
+        /**
+         * @brief Access the element at the third location (read-only).
+         * @return A copy of the third vector element.
+         */
+        [[nodiscard]] constexpr T p() const noexcept;
+
+
+        /**
+         * @brief Access the element at the third location (read-write access).
+         * @return A reference to the third element of the vector.
+         */
+        [[nodiscard]] constexpr ConstIndexableProxy<2> p() noexcept;
+
+
+
+        /**
+         * @brief Access the element at the first location.
+         * @return A copy of the first vector element.
+         */
+        [[nodiscard]] constexpr T r() const noexcept;
+
+
+        /**
+         * @brief Access the element at the first location (read-write access).
+         * @return A reference to the first element of the vector.
+         */
+        [[nodiscard]] constexpr ConstIndexableProxy<0> r() noexcept;
+
+
+        /**
+         * @brief Access the element at the second location (read-only).
+         * @return A copy of the second vector element.
+         */
+        [[nodiscard]] constexpr T g() const noexcept;
+
+
+        /**
+         * @brief Access the element at the second location (read-write access).
+         * @return A reference to the second element of the vector.
+         */
+        [[nodiscard]] constexpr ConstIndexableProxy<1> g() noexcept;
+
+
+        /**
+         * @brief Access the element at the third location (read-only).
+         * @return A copy of the third vector element.
+         */
+        [[nodiscard]] constexpr T b() const noexcept;
+
+
+        /**
+         * @brief Access the element at the third location (read-write access).
+         * @return A reference to the third element of the vector.
+         */
+        [[nodiscard]] constexpr ConstIndexableProxy<2> b() noexcept;
+
+
+        /**
+         * @brief Access the element at the specified location.
+         *        Provide read-write access to the element.
+         *
+         * @note Performs bounds checking in **DEBUG MODE**.
+         *
+         * @param[in] idx The index of the vector component.
+         *
+         * @return A reference to the vector component.
+         */
+        constexpr IndexableProxy operator[](size_t idx) noexcept;
+
 
         /**
          * @brief Access the element at the specified location.
@@ -2509,6 +2516,71 @@ namespace flcn
 
     private:
         internal::Vec3SimdStore<T>::Type _data;
+
+
+
+        /// +---------------------------------------------------------------------------------------+
+        /// |                             MUTATION PROXY                                            |
+        /// +---------------------------------------------------------------------------------------+
+
+        /// Proxy that enables indexing for Vec2 indexing since Simd128 doesn't support indexed write.
+        class IndexableProxy
+        {
+        public:
+            FALCON_INLINE constexpr IndexableProxy(Vec3& parent, const size_t index) noexcept
+                : _vec{ parent }, _index{ index }
+            {}
+
+            FALCON_INLINE constexpr IndexableProxy& operator=(T value) noexcept
+            {
+                _vec._data.setAt(_index, value);
+                return *this;
+            }
+
+            // Allows for operator chaining
+            FALCON_INLINE constexpr IndexableProxy& operator=(const IndexableProxy& other) noexcept
+            {
+                _vec._data.setAt(_index, static_cast<T>(other));
+                return *this;
+            }
+
+            // Implicit conversion
+            FALCON_INLINE constexpr operator T() const noexcept { return _vec._data.getAt(_index); }
+
+
+        private:
+            Vec3& _vec;
+            size_t _index;
+        };
+
+
+        /// Proxy that enables indexing with compile-time known indices.
+        /// @tparam Index The index to use for indexing.
+        template <size_t Index>
+        class ConstIndexableProxy
+        {
+        public:
+            FALCON_INLINE constexpr ConstIndexableProxy(Vec3& parent) noexcept: _vec{ parent } {}
+
+            FALCON_INLINE constexpr ConstIndexableProxy& operator=(T value) noexcept
+            {
+                _vec._data.template setAt<Index>(value);
+                return *this;
+            }
+
+            // Allows for operator chaining(a = b = c)
+            FALCON_INLINE constexpr ConstIndexableProxy& operator=(const ConstIndexableProxy& other) noexcept
+            {
+                _vec._data.template setAt<Index>(static_cast<T>(other));
+                return *this;
+            }
+
+            // Implicit conversion
+            FALCON_INLINE constexpr operator T() const noexcept { return _vec._data.template getAt<Index>(); }
+
+        private:
+            Vec3& _vec;
+        };
     };
     //
     //

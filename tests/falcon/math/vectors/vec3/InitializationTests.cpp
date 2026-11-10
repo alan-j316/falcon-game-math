@@ -39,12 +39,11 @@ namespace
  **************************************/
 
 /** @test Verify that the default constructor initializes all components to zero. */
-// TODO: Add back
-// TYPED_TEST(Vec3InitializationTests, EmptyConstructorInitializesZeroVector)
-// {
-//     const flcn::Vec3<TypeParam> vec{};
-//     EXPECT_VEC_ZERO(vec);
-// }
+TYPED_TEST(Vec3InitializationTests, EmptyConstructorInitializesZeroVector)
+{
+    const flcn::Vec3<TypeParam> vec{};
+    EXPECT_VEC_ZERO(vec);
+}
 
 
 /** @test Verify that the parameterized constructor correctly assigns components from the provided arguments. */

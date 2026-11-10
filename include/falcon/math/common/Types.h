@@ -16,7 +16,7 @@
 
 
 /**
- * @addtogroup FALCON_Types
+ * @addtogroup Falcon_Types
  * @{
  */
 

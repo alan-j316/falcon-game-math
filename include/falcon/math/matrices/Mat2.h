@@ -39,7 +39,7 @@ namespace flcn
     {
 
         /**
-         * @addtogroup FALCON_Mat2x2_Members
+         * @addtogroup Falcon_Mat2x2_Members
          * @{
          */
 
@@ -54,7 +54,7 @@ namespace flcn
 
 
         /**
-         * @addtogroup FALCON_Mat2x2_Init
+         * @addtogroup Falcon_Mat2x2_Init
          * @{
          */
 
@@ -116,7 +116,7 @@ namespace flcn
 
 
         /**
-         * @addtogroup FALCON_Mat3x3_Access
+         * @addtogroup Falcon_Mat3x3_Access
          * @{
          */
 
@@ -174,7 +174,7 @@ namespace flcn
 
 
         /**
-         * @addtogroup FALCON_Mat2x2_Equality
+         * @addtogroup Falcon_Mat2x2_Equality
          * @{
          */
 
@@ -316,7 +316,7 @@ namespace flcn
 
 
         /**
-         * @addtogroup FALCON_Mat2x2_Arithmetic
+         * @addtogroup Falcon_Mat2x2_Arithmetic
          * @{
          */
 
@@ -427,7 +427,7 @@ namespace flcn
 
 
         /**
-         * @addtogroup FALCON_Mat2x2_Geom
+         * @addtogroup Falcon_Mat2x2_Geom
          * @{
          */
 
@@ -467,7 +467,7 @@ namespace flcn
 
 
         /**
-         * @addtogroup FALCON_Mat2x2_Comp
+         * @addtogroup Falcon_Mat2x2_Comp
          * @{
          */
 
@@ -542,7 +542,7 @@ namespace flcn
 
 
         /**
-         * @addtogroup FALCON_Mat2x2_Algebra
+         * @addtogroup Falcon_Mat2x2_Algebra
          * @{
          */
 
@@ -707,7 +707,7 @@ namespace flcn
 
 
         /**
-         * @addtogroup FALCON_Mat2x2_Algebra
+         * @addtogroup Falcon_Mat2x2_Algebra
          * @{
          */
 
@@ -992,7 +992,7 @@ namespace flcn
 
 
         /**
-         * @addtogroup FALCON_Mat2x2_Utils
+         * @addtogroup Falcon_Mat2x2_Utils
          * @{
          */
 
@@ -1044,7 +1044,7 @@ namespace flcn
 
 
         /**
-         * @addtogroup FALCON_Mat2x2_Log
+         * @addtogroup Falcon_Mat2x2_Log
          * @{
          */
 
@@ -1086,7 +1086,7 @@ namespace flcn
 
 
         /**
-         * @addtogroup FALCON_Mat2x2_Transforms
+         * @addtogroup Falcon_Mat2x2_Transforms
          * @{
          */
 
@@ -1185,7 +1185,7 @@ namespace flcn
 
 
         /**
-         * @addtogroup T_FALCON_Mat2x2_Constant
+         * @addtogroup T_Falcon_Mat2x2_Constant
          * @{
          */
 
@@ -1229,7 +1229,7 @@ namespace flcn
 
 
     /**
-     * @addtogroup FALCON_Mat2x2_Alias
+     * @addtogroup Falcon_Mat2x2_Alias
      * @{
      */
 
@@ -1259,7 +1259,7 @@ namespace flcn
      **************************************/
 
     /**
-     * @addtogroup FALCON_Mat2x2_Arithmetic
+     * @addtogroup Falcon_Mat2x2_Arithmetic
      * @{
      */
 
@@ -1284,7 +1284,7 @@ namespace flcn
 
 
     /**
-     * @addtogroup FALCON_Mat2x2_Geom
+     * @addtogroup Falcon_Mat2x2_Geom
      * @{
      */
 

@@ -40,7 +40,7 @@ namespace flcn
     struct Mat4
     {
         /**
-         * @addtogroup FALCON_Mat4x4_Members
+         * @addtogroup Falcon_Mat4x4_Members
          * @{
          */
 
@@ -54,7 +54,7 @@ namespace flcn
 
 
         /**
-         * @addtogroup FALCON_Mat4x4_Init
+         * @addtogroup Falcon_Mat4x4_Init
          * @{
          */
 
@@ -134,7 +134,7 @@ namespace flcn
 
 
         /**
-         * @addtogroup FALCON_Mat4x4_Access
+         * @addtogroup Falcon_Mat4x4_Access
          * @{
          */
 
@@ -191,7 +191,7 @@ namespace flcn
 
 
         /**
-         * @addtogroup FALCON_Mat4x4_Equality
+         * @addtogroup Falcon_Mat4x4_Equality
          * @{
          */
 
@@ -333,7 +333,7 @@ namespace flcn
 
 
         /**
-         * @addtogroup FALCON_Mat4x4_Arithmetic
+         * @addtogroup Falcon_Mat4x4_Arithmetic
          * @{
          */
 
@@ -443,7 +443,7 @@ namespace flcn
 
 
         /**
-         * @addtogroup FALCON_Mat4x4_Geom
+         * @addtogroup Falcon_Mat4x4_Geom
          * @{
          */
 
@@ -485,7 +485,7 @@ namespace flcn
 
 
         /**
-         * @addtogroup FALCON_Mat4x4_Comp
+         * @addtogroup Falcon_Mat4x4_Comp
          * @{
          */
 
@@ -572,7 +572,7 @@ namespace flcn
 
 
         /**
-         * @addtogroup FALCON_Mat4x4_Algebra
+         * @addtogroup Falcon_Mat4x4_Algebra
          * @{
          */
 
@@ -738,7 +738,7 @@ namespace flcn
 
 
         /**
-         * @addtogroup FALCON_Mat4x4_Algebra
+         * @addtogroup Falcon_Mat4x4_Algebra
          * @{
          */
 
@@ -1121,7 +1121,7 @@ namespace flcn
 
 
         /**
-         * @addtogroup FALCON_Mat4x4_Utils
+         * @addtogroup Falcon_Mat4x4_Utils
          * @{
          */
 
@@ -1173,7 +1173,7 @@ namespace flcn
 
 
         /**
-         * @addtogroup FALCON_Mat4x4_Log
+         * @addtogroup Falcon_Mat4x4_Log
          * @{
          */
 
@@ -1221,7 +1221,7 @@ namespace flcn
         /** @} */
 
         /**
-         * @addtogroup FALCON_Mat4x4_Transforms
+         * @addtogroup Falcon_Mat4x4_Transforms
          * @{
          */
 
@@ -1785,7 +1785,7 @@ namespace flcn
         /** @} */
 
         /**
-         * @addtogroup T_FALCON_Mat4x4_Constant
+         * @addtogroup T_Falcon_Mat4x4_Constant
          * @{
          */
 
@@ -1835,7 +1835,7 @@ namespace flcn
 
 
     /**
-     * @addtogroup FALCON_Ma4x4_Alias
+     * @addtogroup Falcon_Ma4x4_Alias
      * @{
      */
 
@@ -1865,7 +1865,7 @@ namespace flcn
      **************************************/
 
     /**
-     * @addtogroup FALCON_Mat4x4_Arithmetic
+     * @addtogroup Falcon_Mat4x4_Arithmetic
      * @{
      */
 
@@ -1890,7 +1890,7 @@ namespace flcn
 
 
     /**
-     * @addtogroup FALCON_Mat4x4_Geom
+     * @addtogroup Falcon_Mat4x4_Geom
      * @{
      */
 

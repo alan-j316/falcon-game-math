@@ -12,7 +12,7 @@
 // clang-format off
 
 /**
- * @defgroup FALCON_SIMD Falcon SIMD
+ * @defgroup Falcon_SIMD Falcon SIMD
  * @brief Platform Agnostic SIMD Wrapper.
  * @{
  */
@@ -43,6 +43,6 @@
      * @brief Wrappers for C++ Simd intrinsics.
      */
 
-/** @} */ // End of FALCON_SIMD
+/** @} */ // End of Falcon_SIMD
 
 // clang-format on

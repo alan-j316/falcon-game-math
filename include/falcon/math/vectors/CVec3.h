@@ -38,7 +38,7 @@ namespace flcn
     struct CVec3
     {
         /**
-         * @addtogroup FALCON_CVec3_Members
+         * @addtogroup Falcon_CVec3_Members
          * @{
          */
 
@@ -50,7 +50,7 @@ namespace flcn
 
 
         /**
-         * @addtogroup FALCON_CVec3_Init
+         * @addtogroup Falcon_CVec3_Init
          * @{
          */
 
@@ -108,7 +108,7 @@ namespace flcn
 
 
         /**
-         * @addtogroup FALCON_CVec3_Access
+         * @addtogroup Falcon_CVec3_Access
          * @{
          */
 
@@ -268,7 +268,7 @@ namespace flcn
 
 
         /**
-         * @addtogroup FALCON_CVec3_Swizzle
+         * @addtogroup Falcon_CVec3_Swizzle
          * @{
          */
 
@@ -313,7 +313,7 @@ namespace flcn
 
 
         /**
-         * @addtogroup FALCON_CVec3_Equality
+         * @addtogroup Falcon_CVec3_Equality
          * @{
          */
 
@@ -535,7 +535,7 @@ namespace flcn
 
 
         /**
-         * @addtogroup FALCON_CVec3_Comparison
+         * @addtogroup Falcon_CVec3_Comparison
          * @{
          */
 
@@ -725,7 +725,7 @@ namespace flcn
 
 
         /**
-         * @addtogroup FALCON_CVec3_Bitwise
+         * @addtogroup Falcon_CVec3_Bitwise
          * @{
          */
 
@@ -800,7 +800,7 @@ namespace flcn
 
 
         /**
-         * @addtogroup FALCON_CVec3_Arithmetic
+         * @addtogroup Falcon_CVec3_Arithmetic
          * @{
          */
 
@@ -1049,7 +1049,7 @@ namespace flcn
 
 
         /**
-         * @addtogroup FALCON_CVec3_Product
+         * @addtogroup Falcon_CVec3_Product
          * @{
          */
 
@@ -1177,7 +1177,7 @@ namespace flcn
 
 
         /**
-         * @addtogroup FALCON_CVec3_Mag
+         * @addtogroup Falcon_CVec3_Mag
          * @{
          */
 
@@ -1279,7 +1279,7 @@ namespace flcn
 
 
         /**
-         * @addtogroup FALCON_CVec3_Dist
+         * @addtogroup Falcon_CVec3_Dist
          * @{
          */
 
@@ -1446,7 +1446,7 @@ namespace flcn
 
 
         /**
-         * @addtogroup FALCON_CVec3_Normalize
+         * @addtogroup Falcon_CVec3_Normalize
          * @{
          */
 
@@ -1559,7 +1559,7 @@ namespace flcn
 
 
         /**
-         * @addtogroup FALCON_CVec3_Proj
+         * @addtogroup Falcon_CVec3_Proj
          * @{
          */
 
@@ -2164,7 +2164,7 @@ namespace flcn
 
 
         /**
-         * @addtogroup FALCON_CVec3_Utils
+         * @addtogroup Falcon_CVec3_Utils
          * @{
          */
 
@@ -2215,7 +2215,7 @@ namespace flcn
 
 
         /**
-         * @addtogroup FALCON_CVec3_Log
+         * @addtogroup Falcon_CVec3_Log
          * @{
          */
 
@@ -2248,7 +2248,7 @@ namespace flcn
         /** @} */
 
         /**
-         * @addtogroup FALCON_CVec3_Const
+         * @addtogroup Falcon_CVec3_Const
          * @{
          */
 
@@ -2406,7 +2406,7 @@ namespace flcn
      *************************************/
 
     /**
-     * @addtogroup FALCON_CVec3_Arithmetic
+     * @addtogroup Falcon_CVec3_Arithmetic
      * @{
      */
 
@@ -2432,7 +2432,7 @@ namespace flcn
 
 
     /**
-     * @addtogroup FALCON_CVec3_Alias
+     * @addtogroup Falcon_CVec3_Alias
      * @{
      */
 

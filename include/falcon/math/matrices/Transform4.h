@@ -22,7 +22,7 @@ namespace flcn
     {
 
         /**
-         * @addtogroup FALCON_Transform4_Members
+         * @addtogroup Falcon_Transform4_Members
          * @{
          */
         using value_type = T; ///< The numeric type of the transform elements.
@@ -34,7 +34,7 @@ namespace flcn
 
 
         /**
-         * @addtogroup FALCON_Transform4_Init
+         * @addtogroup Falcon_Transform4_Init
          * @{
          */
 
@@ -96,7 +96,7 @@ namespace flcn
 
 
         /**
-         * @addtogroup FALCON_Transform4_Access
+         * @addtogroup Falcon_Transform4_Access
          * @{
          */
 
@@ -169,7 +169,7 @@ namespace flcn
 
 
         /**
-         * @addtogroup FALCON_Mat4x4_Geom
+         * @addtogroup Falcon_Mat4x4_Geom
          * @{
          */
 
@@ -245,7 +245,7 @@ namespace flcn
 
 
         /**
-         * @addtogroup FALCON_Transform4_Comp
+         * @addtogroup Falcon_Transform4_Comp
          * @{
          */
 
@@ -335,7 +335,7 @@ namespace flcn
 
 
         /**
-         * @addtogroup FALCON_Transform4_Geom
+         * @addtogroup Falcon_Transform4_Geom
          * @{
          */
 

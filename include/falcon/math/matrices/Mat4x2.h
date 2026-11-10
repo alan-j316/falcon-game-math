@@ -37,7 +37,7 @@ namespace flcn
     {
 
         /**
-         * @addtogroup FALCON_Mat4x2_Members
+         * @addtogroup Falcon_Mat4x2_Members
          * @{
          */
 
@@ -52,7 +52,7 @@ namespace flcn
 
 
         /**
-         * @addtogroup FALCON_Mat4x2_Init
+         * @addtogroup Falcon_Mat4x2_Init
          * @{
          */
 
@@ -109,7 +109,7 @@ namespace flcn
 
 
         /**
-         * @addtogroup FALCON_Mat4x2_Access
+         * @addtogroup Falcon_Mat4x2_Access
          * @{
          */
 
@@ -167,7 +167,7 @@ namespace flcn
 
 
         /**
-         * @addtogroup FALCON_Mat4x2_Equality
+         * @addtogroup Falcon_Mat4x2_Equality
          * @{
          */
 
@@ -311,7 +311,7 @@ namespace flcn
 
 
         /**
-         * @addtogroup FALCON_Mat4x2_Arithmetic
+         * @addtogroup Falcon_Mat4x2_Arithmetic
          * @{
          */
 
@@ -580,7 +580,7 @@ namespace flcn
 
 
         /**
-         * @addtogroup FALCON_Mat4x2_Algebra
+         * @addtogroup Falcon_Mat4x2_Algebra
          * @{
          */
 
@@ -634,7 +634,7 @@ namespace flcn
 
 
         /**
-         * @addtogroup FALCON_Mat4x2_Utils
+         * @addtogroup Falcon_Mat4x2_Utils
          * @{
          */
 
@@ -685,7 +685,7 @@ namespace flcn
 
 
         /**
-         * @addtogroup T_FALCON_Mat4x2_Constant
+         * @addtogroup T_Falcon_Mat4x2_Constant
          * @{
          */
 
@@ -719,7 +719,7 @@ namespace flcn
 
 
         /**
-         * @addtogroup FALCON_Mat4x2_Log
+         * @addtogroup Falcon_Mat4x2_Log
          * @{
          */
 
@@ -769,7 +769,7 @@ namespace flcn
 
 
     /**
-     * @addtogroup FALCON_Mat4x2_Alias
+     * @addtogroup Falcon_Mat4x2_Alias
      * @{
      */
 

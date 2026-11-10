@@ -41,7 +41,7 @@ namespace flcn
     struct Mat3
     {
         /**
-         * @addtogroup FALCON_Mat3x3_Members
+         * @addtogroup Falcon_Mat3x3_Members
          * @{
          */
 
@@ -54,7 +54,7 @@ namespace flcn
 
 
         /**
-         * @addtogroup FALCON_Mat3x3_Init
+         * @addtogroup Falcon_Mat3x3_Init
          * @{
          */
 
@@ -121,7 +121,7 @@ namespace flcn
 
 
         /**
-         * @addtogroup FALCON_Mat3x3_Access
+         * @addtogroup Falcon_Mat3x3_Access
          * @{
          */
 
@@ -179,7 +179,7 @@ namespace flcn
 
 
         /**
-         * @addtogroup FALCON_Mat3x3_Equality
+         * @addtogroup Falcon_Mat3x3_Equality
          * @{
          */
 
@@ -320,7 +320,7 @@ namespace flcn
 
 
         /**
-         * @addtogroup FALCON_Mat3x3_Arithmetic
+         * @addtogroup Falcon_Mat3x3_Arithmetic
          * @{
          */
 
@@ -431,7 +431,7 @@ namespace flcn
 
 
         /**
-         * @addtogroup FALCON_Mat3x3_Geom
+         * @addtogroup Falcon_Mat3x3_Geom
          * @{
          */
 
@@ -472,7 +472,7 @@ namespace flcn
 
 
         /**
-         * @addtogroup FALCON_Mat3x3_Comp
+         * @addtogroup Falcon_Mat3x3_Comp
          * @{
          */
 
@@ -553,7 +553,7 @@ namespace flcn
 
 
         /**
-         * @addtogroup FALCON_Mat3x3_Algebra
+         * @addtogroup Falcon_Mat3x3_Algebra
          * @{
          */
 
@@ -717,7 +717,7 @@ namespace flcn
 
 
         /**
-         * @addtogroup FALCON_Mat3x3_Algebra
+         * @addtogroup Falcon_Mat3x3_Algebra
          * @{
          */
 
@@ -1026,7 +1026,7 @@ namespace flcn
 
 
         /**
-         * @addtogroup FALCON_Mat3x3_Utils
+         * @addtogroup Falcon_Mat3x3_Utils
          * @{
          */
 
@@ -1077,7 +1077,7 @@ namespace flcn
 
 
         /**
-         * @addtogroup FALCON_Mat3x3_Log
+         * @addtogroup Falcon_Mat3x3_Log
          * @{
          */
 
@@ -1119,7 +1119,7 @@ namespace flcn
         /** @} */
 
         /**
-         * @addtogroup FALCON_Mat3x3_Transforms
+         * @addtogroup Falcon_Mat3x3_Transforms
          * @{
          */
 
@@ -1565,7 +1565,7 @@ namespace flcn
 
 
         /**
-         * @addtogroup T_FALCON_Mat3x3_Constant
+         * @addtogroup T_Falcon_Mat3x3_Constant
          * @{
          */
 
@@ -1606,7 +1606,7 @@ namespace flcn
 
 
     /**
-     * @addtogroup FALCON_Ma3x3_Alias
+     * @addtogroup Falcon_Ma3x3_Alias
      * @{
      */
 
@@ -1636,7 +1636,7 @@ namespace flcn
      **************************************/
 
     /**
-     * @addtogroup FALCON_Mat3x3_Arithmetic
+     * @addtogroup Falcon_Mat3x3_Arithmetic
      * @{
      */
 
@@ -1661,7 +1661,7 @@ namespace flcn
 
 
     /**
-     * @addtogroup FALCON_Mat3x3_Geom
+     * @addtogroup Falcon_Mat3x3_Geom
      * @{
      */
 

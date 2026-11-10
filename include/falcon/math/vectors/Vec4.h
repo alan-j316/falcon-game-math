@@ -42,7 +42,7 @@ namespace flcn
     {
 
         /**
-         * @addtogroup FALCON_Vec4_Members
+         * @addtogroup Falcon_Vec4_Members
          * @{
          */
 
@@ -55,7 +55,7 @@ namespace flcn
 
 
         /**
-         * @addtogroup FALCON_Vec4_Init
+         * @addtogroup Falcon_Vec4_Init
          * @{
          */
 
@@ -124,7 +124,7 @@ namespace flcn
 
 
         /**
-         * @addtogroup FALCON_Vec4_Access
+         * @addtogroup Falcon_Vec4_Access
          * @{
          */
 
@@ -328,7 +328,7 @@ namespace flcn
 
 
         /**
-         * @addtogroup FALCON_Vec4_Swizzle
+         * @addtogroup Falcon_Vec4_Swizzle
          * @{
          */
 
@@ -374,7 +374,7 @@ namespace flcn
 
 
         /**
-         * @addtogroup FALCON_Vec4_Equality
+         * @addtogroup Falcon_Vec4_Equality
          * @{
          */
 
@@ -597,7 +597,7 @@ namespace flcn
 
 
         /**
-         * @addtogroup FALCON_Vec4_Comparison
+         * @addtogroup Falcon_Vec4_Comparison
          * @{
          */
 
@@ -788,7 +788,7 @@ namespace flcn
 
 
         /**
-         * @addtogroup FALCON_Vec4_Bitwise
+         * @addtogroup Falcon_Vec4_Bitwise
          * @{
          */
 
@@ -864,7 +864,7 @@ namespace flcn
 
 
         /**
-         * @addtogroup FALCON_Vec4_Arithmetic
+         * @addtogroup Falcon_Vec4_Arithmetic
          * @{
          */
 
@@ -1118,7 +1118,7 @@ namespace flcn
 
 
         /**
-         * @addtogroup FALCON_Vec4_Product
+         * @addtogroup Falcon_Vec4_Product
          * @{
          */
 
@@ -1204,7 +1204,7 @@ namespace flcn
 
 
         /**
-         * @addtogroup FALCON_Vec4_Mag
+         * @addtogroup Falcon_Vec4_Mag
          * @{
          */
 
@@ -1306,7 +1306,7 @@ namespace flcn
 
 
         /**
-         * @addtogroup FALCON_Vec4_Dist
+         * @addtogroup Falcon_Vec4_Dist
          * @{
          */
 
@@ -1473,7 +1473,7 @@ namespace flcn
 
 
         /**
-         * @addtogroup FALCON_Vec4_Normalize
+         * @addtogroup Falcon_Vec4_Normalize
          * @{
          */
 
@@ -1588,7 +1588,7 @@ namespace flcn
 
 
         /**
-         * @addtogroup FALCON_Vec4_Proj
+         * @addtogroup Falcon_Vec4_Proj
          * @{
          */
 
@@ -2174,7 +2174,7 @@ namespace flcn
 
 
         /**
-         * @addtogroup FALCON_Vec4_Utils
+         * @addtogroup Falcon_Vec4_Utils
          * @{
          */
 
@@ -2226,7 +2226,7 @@ namespace flcn
 
 
         /**
-         * @addtogroup FALCON_Vec4_Log
+         * @addtogroup Falcon_Vec4_Log
          * @{
          */
 
@@ -2261,7 +2261,7 @@ namespace flcn
 
 
         /**
-         * @addtogroup FALCON_Vec4_Const
+         * @addtogroup Falcon_Vec4_Const
          * @{
          */
 
@@ -2425,7 +2425,7 @@ namespace flcn
      *************************************/
 
     /**
-     * @addtogroup FALCON_Vec4_Arithmetic
+     * @addtogroup Falcon_Vec4_Arithmetic
      * @{
      */
 
@@ -2452,7 +2452,7 @@ namespace flcn
 
 
     /**
-     * @addtogroup FALCON_Vec4_Alias
+     * @addtogroup Falcon_Vec4_Alias
      * @{
      */
 

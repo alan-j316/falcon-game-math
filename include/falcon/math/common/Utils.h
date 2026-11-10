@@ -17,7 +17,7 @@ namespace flcn::utils
 {
 
     /**
-     * @addtogroup FALCON_Utils
+     * @addtogroup Falcon_Utils
      * @{
      */
 

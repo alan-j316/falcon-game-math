@@ -14,7 +14,7 @@
 
 
 /**
- * @addtogroup FALCON_Messages
+ * @addtogroup Falcon_Messages
  * @{
  */
 

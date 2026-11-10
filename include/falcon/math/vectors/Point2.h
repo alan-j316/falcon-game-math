@@ -21,7 +21,7 @@ namespace flcn
     {
 
         /**
-         * @addtogroup FALCON_Point2_Init
+         * @addtogroup Falcon_Point2_Init
          * @{
          */
 
@@ -33,7 +33,7 @@ namespace flcn
 
 
         /**
-         * @addtogroup FALCON_Point2_Arithmetic
+         * @addtogroup Falcon_Point2_Arithmetic
          * @{
          */
 

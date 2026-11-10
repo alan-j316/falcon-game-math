@@ -31,7 +31,7 @@ namespace flcn
 {
 
     /**
-     * @addtogroup FALCON_Mat2x3_Comp
+     * @addtogroup Falcon_Mat2x3_Comp
      * @{
      */
 
@@ -111,7 +111,7 @@ namespace flcn
 
 
     /**
-     * @addtogroup FALCON_Mat2x4_Comp
+     * @addtogroup Falcon_Mat2x4_Comp
      * @{
      */
 
@@ -192,7 +192,7 @@ namespace flcn
 
 
     /**
-     * @addtogroup FALCON_Mat3x2_Comp
+     * @addtogroup Falcon_Mat3x2_Comp
      * @{
      */
 
@@ -272,7 +272,7 @@ namespace flcn
 
 
     /**
-     * @addtogroup FALCON_Mat3x4_Comp
+     * @addtogroup Falcon_Mat3x4_Comp
      * @{
      */
 
@@ -352,7 +352,7 @@ namespace flcn
 
 
     /**
-     * @addtogroup FALCON_Mat4x2_Comp
+     * @addtogroup Falcon_Mat4x2_Comp
      * @{
      */
 

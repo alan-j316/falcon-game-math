@@ -50,7 +50,7 @@ namespace flcn
 
 
         /**
-         * @addtogroup FALCON_Quaternion_Init
+         * @addtogroup Falcon_Quaternion_Init
          * @{
          */
 
@@ -109,7 +109,7 @@ namespace flcn
 
 
         /**
-         * @addtogroup FALCON_Quaternion_Access
+         * @addtogroup Falcon_Quaternion_Access
          * @{
          */
 
@@ -226,7 +226,7 @@ namespace flcn
 
 
         /**
-         * @addtogroup FALCON_Quaternion_Arithmetic
+         * @addtogroup Falcon_Quaternion_Arithmetic
          * @{
          */
 
@@ -368,7 +368,7 @@ namespace flcn
 
 
         /**
-         * @addtogroup FALCON_Quaternion_Equality
+         * @addtogroup Falcon_Quaternion_Equality
          * @{
          */
 
@@ -723,7 +723,7 @@ namespace flcn
 
 
         /**
-         * @addtogroup FALCON_Quaternion_Algebra
+         * @addtogroup Falcon_Quaternion_Algebra
          * @{
          */
 
@@ -847,7 +847,7 @@ namespace flcn
 
 
         /**
-         * @addtogroup FALCON_Quaternion_Vector_Algebra
+         * @addtogroup Falcon_Quaternion_Vector_Algebra
          * @{
          */
 
@@ -895,7 +895,7 @@ namespace flcn
 
 
         /**
-         * @addtogroup FALCON_Quaternion_Utils
+         * @addtogroup Falcon_Quaternion_Utils
          * @{
          */
 
@@ -946,7 +946,7 @@ namespace flcn
 
 
         /**
-         * @addtogroup FALCON_Quaternion_Const
+         * @addtogroup Falcon_Quaternion_Const
          * @{
          */
 
@@ -984,7 +984,7 @@ namespace flcn
 
 
     /**
-     * @addtogroup FALCON_Quaternion_Arithmetic
+     * @addtogroup Falcon_Quaternion_Arithmetic
      * @{
      */
 

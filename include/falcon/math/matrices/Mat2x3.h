@@ -16,7 +16,7 @@
  *
  * @par Configuration
  *      Define `FORCE_SCALAR` to turn off SIMD which is on by default on supported hardware.
- *      Define `FALCON_LEFT_HANDED` to configure library to use left-handed coordinated system.
+ *      Define `Falcon_LEFT_HANDED` to configure library to use left-handed coordinated system.
  *
  * @copyright Copyright (c) 2026 Alan Abraham P Kochumon
  */
@@ -36,7 +36,7 @@ namespace flcn
     {
 
         /**
-         * @addtogroup FALCON_Mat2x3_Members
+         * @addtogroup Falcon_Mat2x3_Members
          * @{
          */
 
@@ -51,7 +51,7 @@ namespace flcn
 
 
         /**
-         * @addtogroup FALCON_Mat2x3_Init
+         * @addtogroup Falcon_Mat2x3_Init
          * @{
          */
 
@@ -107,7 +107,7 @@ namespace flcn
 
 
         /**
-         * @addtogroup FALCON_Mat2x3_Access
+         * @addtogroup Falcon_Mat2x3_Access
          * @{
          */
 
@@ -165,7 +165,7 @@ namespace flcn
 
 
         /**
-         * @addtogroup FALCON_Mat2x3_Equality
+         * @addtogroup Falcon_Mat2x3_Equality
          * @{
          */
 
@@ -309,7 +309,7 @@ namespace flcn
 
 
         /**
-         * @addtogroup FALCON_Mat2x3_Arithmetic
+         * @addtogroup Falcon_Mat2x3_Arithmetic
          * @{
          */
 
@@ -577,7 +577,7 @@ namespace flcn
 
 
         /**
-         * @addtogroup FALCON_Mat2x3_Algebra
+         * @addtogroup Falcon_Mat2x3_Algebra
          * @{
          */
         /**
@@ -626,7 +626,7 @@ namespace flcn
 
 
         /**
-         * @addtogroup FALCON_Mat2x3_Utils
+         * @addtogroup Falcon_Mat2x3_Utils
          * @{
          */
 
@@ -678,7 +678,7 @@ namespace flcn
 
 
         /**
-         * @addtogroup T_FALCON_Mat2x3_Constant
+         * @addtogroup T_Falcon_Mat2x3_Constant
          * @{
          */
 
@@ -712,7 +712,7 @@ namespace flcn
 
 
         /**
-         * @addtogroup FALCON_Mat2x3_Log
+         * @addtogroup Falcon_Mat2x3_Log
          * @{
          */
 
@@ -758,7 +758,7 @@ namespace flcn
 
 
     /**
-     * @addtogroup FALCON_Mat2x3_Alias
+     * @addtogroup Falcon_Mat2x3_Alias
      * @{
      */
 

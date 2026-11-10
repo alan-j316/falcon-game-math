@@ -18,7 +18,7 @@
 namespace flcn
 {
     /**
-     * @addtogroup FALCON_Concepts
+     * @addtogroup Falcon_Concepts
      * @{
      */
 

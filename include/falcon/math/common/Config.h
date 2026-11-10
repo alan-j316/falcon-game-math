@@ -20,7 +20,7 @@ namespace flcn
 {
 
     /**
-     * @addtogroup FALCON_Math_Config
+     * @addtogroup Falcon_Math_Config
      * @{
      */
 

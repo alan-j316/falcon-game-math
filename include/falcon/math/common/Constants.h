@@ -17,7 +17,7 @@
 
 
 /**
- * @addtogroup FALCON_Math_Constants
+ * @addtogroup Falcon_Math_Constants
  * @{
  */
 namespace flcn::constants

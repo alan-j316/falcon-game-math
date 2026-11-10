@@ -51,6 +51,8 @@ add_library(${FALCON_MATH_TARGET_NAME} INTERFACE
         # SIMD-ACCELERATED WRAPPER
         vectors/Vec2.h
         vectors/Vec2.tpp
+        vectors/Vec3.h
+        vectors/Vec3.tpp
 )
 # TODO: REMOVE
 target_compile_options(${FALCON_MATH_TARGET_NAME} INTERFACE $<$<CXX_COMPILER_ID:MSVC>:/fp:strict>)

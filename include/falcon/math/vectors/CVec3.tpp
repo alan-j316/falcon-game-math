@@ -29,6 +29,11 @@ namespace flcn
      *************************************/
 
     template <Arithmetic T>
+    FALCON_INLINE constexpr CVec3<T>::CVec3(T val) noexcept: _data{ val, val, val }
+    {}
+
+
+    template <Arithmetic T>
     FALCON_INLINE constexpr CVec3<T>::CVec3(T v1, T v2, T v3) noexcept: _data{ v1, v2, v3 }
     {}
 
@@ -334,8 +339,8 @@ namespace flcn
         {
             /** @note Direct equality check is required to handle @ref INFINITY cases, as Inf - Inf results in NAN_F. */
             return CVec3<bool>(_data[0] == rhs[0] || flcn::abs(_data[0] - rhs[0]) <= epsilon,
-                              _data[1] == rhs[1] || flcn::abs(_data[1] - rhs[1]) <= epsilon,
-                              _data[2] == rhs[2] || flcn::abs(_data[2] - rhs[2]) <= epsilon);
+                               _data[1] == rhs[1] || flcn::abs(_data[1] - rhs[1]) <= epsilon,
+                               _data[2] == rhs[2] || flcn::abs(_data[2] - rhs[2]) <= epsilon);
         }
     }
 
@@ -343,7 +348,8 @@ namespace flcn
     template <Arithmetic T>
     template <Arithmetic U>
         requires StrictSignedness<T, U>
-    FALCON_INLINE constexpr CVec3<bool> CVec3<T>::eq(const CVec3& lhs, const CVec3<U>& rhs, const double epsilon) noexcept
+    FALCON_INLINE constexpr CVec3<bool> CVec3<T>::eq(const CVec3& lhs, const CVec3<U>& rhs,
+                                                     const double epsilon) noexcept
     { return lhs.eq(rhs, epsilon); }
 
 
@@ -360,8 +366,8 @@ namespace flcn
         {
             /** @note Identity check and inverted logic handle NAN_F and INFINITY per IEEE 754. */
             return CVec3<bool>(_data[0] != rhs[0] && !(flcn::abs(_data[0] - rhs[0]) <= epsilon),
-                              _data[1] != rhs[1] && !(flcn::abs(_data[1] - rhs[1]) <= epsilon),
-                              _data[2] != rhs[2] && !(flcn::abs(_data[2] - rhs[2]) <= epsilon));
+                               _data[1] != rhs[1] && !(flcn::abs(_data[1] - rhs[1]) <= epsilon),
+                               _data[2] != rhs[2] && !(flcn::abs(_data[2] - rhs[2]) <= epsilon));
         }
     }
 
@@ -369,7 +375,8 @@ namespace flcn
     template <Arithmetic T>
     template <Arithmetic U>
         requires StrictSignedness<T, U>
-    FALCON_INLINE constexpr CVec3<bool> CVec3<T>::neq(const CVec3& lhs, const CVec3<U>& rhs, const double epsilon) noexcept
+    FALCON_INLINE constexpr CVec3<bool> CVec3<T>::neq(const CVec3& lhs, const CVec3<U>& rhs,
+                                                      const double epsilon) noexcept
     { return lhs.neq(rhs, epsilon); }
 
 
@@ -435,8 +442,8 @@ namespace flcn
     {
         using R = Magnitude<PromotedValue_t<T, U>>;
         return CVec3<bool>(static_cast<R>(_data[0]) <= static_cast<R>(rhs[0]),
-                          static_cast<R>(_data[1]) <= static_cast<R>(rhs[1]),
-                          static_cast<R>(_data[2]) <= static_cast<R>(rhs[2]));
+                           static_cast<R>(_data[1]) <= static_cast<R>(rhs[1]),
+                           static_cast<R>(_data[2]) <= static_cast<R>(rhs[2]));
     }
 
 
@@ -628,7 +635,8 @@ namespace flcn
 
 
     template <StrictArithmetic T, StrictArithmetic S>
-    FALCON_INLINE constexpr auto operator*(const S scalar, const CVec3<T>& vector) noexcept -> CVec3<PromotedValue_t<T, S>>
+    FALCON_INLINE constexpr auto operator*(const S scalar, const CVec3<T>& vector) noexcept
+        -> CVec3<PromotedValue_t<T, S>>
         requires StrictArithmetic<T>
     { return vector * scalar; }
 
@@ -659,7 +667,8 @@ namespace flcn
         using R = PromotedValue_t<T, S>;
         if constexpr (std::is_floating_point_v<R>)
         {
-            FALCON_ASSERT_MSG(flcn::abs(scalar) >= flcn::Config::EPSILON<R>, flcn::messages::assertion::VEC_DIV_BY_ZERO);
+            FALCON_ASSERT_MSG(flcn::abs(scalar) >= flcn::Config::EPSILON<R>,
+                              flcn::messages::assertion::VEC_DIV_BY_ZERO);
             R factor = R(1) / static_cast<R>(scalar);
             return CVec3<R>(_data[0] * factor, _data[1] * factor, _data[2] * factor);
         }
@@ -770,7 +779,8 @@ namespace flcn
 
     template <Arithmetic T>
     template <StrictArithmetic S>
-    FALCON_INLINE constexpr PromotedCVec3<T, S> CVec3<T>::tryDiv(const CVec3& vec, S scalar, OperationStatus& status) noexcept
+    FALCON_INLINE constexpr PromotedCVec3<T, S> CVec3<T>::tryDiv(const CVec3& vec, S scalar,
+                                                                 OperationStatus& status) noexcept
         requires StrictArithmetic<T>
     { return vec.tryDiv(scalar, status); }
 
@@ -827,11 +837,9 @@ namespace flcn
         requires StrictArithmetic<T>
     {
         using R = std::common_type_t<T, U>;
-        return Mat3{
-            R(this->x() * rhs.x()), R(this->x() * rhs.y()), R(this->x() * rhs.z()),
-            R(this->y() * rhs.x()), R(this->y() * rhs.y()), R(this->y() * rhs.z()),
-            R(this->z() * rhs.x()), R(this->z() * rhs.y()), R(this->z() * rhs.z())
-        };
+        return Mat3{ R(this->x() * rhs.x()), R(this->x() * rhs.y()), R(this->x() * rhs.z()),
+                     R(this->y() * rhs.x()), R(this->y() * rhs.y()), R(this->y() * rhs.z()),
+                     R(this->z() * rhs.x()), R(this->z() * rhs.y()), R(this->z() * rhs.z()) };
     }
 
 
@@ -840,9 +848,7 @@ namespace flcn
         requires StrictSignedness<T, U>
     FALCON_INLINE constexpr PromotedMat3<T, U> CVec3<T>::tensorProduct(const CVec3& lhs, const CVec3<U>& rhs) noexcept
         requires StrictArithmetic<T>
-    {
-        return lhs.tensorProduct(rhs);
-    }
+    { return lhs.tensorProduct(rhs); }
 
 
 
@@ -859,7 +865,7 @@ namespace flcn
     {
         using R = PromotedValue_t<T, U>;
         return CVec3<R>(_data[1] * rhs[2] - _data[2] * rhs[1], _data[2] * rhs[0] - _data[0] * rhs[2],
-                       _data[0] * rhs[1] - _data[1] * rhs[0]);
+                        _data[0] * rhs[1] - _data[1] * rhs[0]);
     }
 
 
@@ -962,7 +968,8 @@ namespace flcn
     template <Arithmetic T>
     template <StrictArithmetic U>
         requires StrictSignedness<T, U>
-    FALCON_INLINE constexpr Magnitude<PromotedValue_t<T, U>> CVec3<T>::dist(const CVec3<U>& lhs, const CVec3<U>& rhs) noexcept
+    FALCON_INLINE constexpr Magnitude<PromotedValue_t<T, U>> CVec3<T>::dist(const CVec3<U>& lhs,
+                                                                            const CVec3<U>& rhs) noexcept
         requires StrictArithmetic<T>
     { return lhs.dist(rhs); }
 
@@ -1007,7 +1014,8 @@ namespace flcn
     template <Arithmetic T>
     template <StrictArithmetic U>
         requires StrictSignedness<T, U>
-    FALCON_INLINE constexpr PromotedValue_t<T, U> CVec3<T>::manhattanDist(const CVec3<U>& lhs, const CVec3<U>& rhs) noexcept
+    FALCON_INLINE constexpr PromotedValue_t<T, U> CVec3<T>::manhattanDist(const CVec3<U>& lhs,
+                                                                          const CVec3<U>& rhs) noexcept
         requires StrictArithmetic<T>
     { return lhs.manhattanDist(rhs); }
 
@@ -1033,7 +1041,8 @@ namespace flcn
     template <Arithmetic T>
     template <StrictArithmetic U>
         requires StrictSignedness<T, U>
-    FALCON_INLINE constexpr PromotedValue_t<T, U> CVec3<T>::chebyshevDist(const CVec3<U>& lhs, const CVec3<U>& rhs) noexcept
+    FALCON_INLINE constexpr PromotedValue_t<T, U> CVec3<T>::chebyshevDist(const CVec3<U>& lhs,
+                                                                          const CVec3<U>& rhs) noexcept
         requires StrictArithmetic<T>
     { return lhs.chebyshevDist(rhs); }
 
@@ -1051,7 +1060,7 @@ namespace flcn
     {
         const auto magnitude = mag();
         FALCON_ASSERT_MSG(magnitude >= flcn::Config::EPSILON<decltype(magnitude)>,
-                       flcn::messages::assertion::VEC_NORMALIZE_DIV_BY_ZERO);
+                          flcn::messages::assertion::VEC_NORMALIZE_DIV_BY_ZERO);
         return *this / magnitude;
     }
 
@@ -1110,7 +1119,8 @@ namespace flcn
 
 
     template <Arithmetic T>
-    FALCON_INLINE constexpr CVec3<Magnitude<T>> CVec3<T>::tryNormalize(const CVec3& vec, OperationStatus& status) noexcept
+    FALCON_INLINE constexpr CVec3<Magnitude<T>> CVec3<T>::tryNormalize(const CVec3& vec,
+                                                                       OperationStatus& status) noexcept
         requires StrictArithmetic<T>
     { return vec.tryNormalize(status); }
 
@@ -1133,7 +1143,7 @@ namespace flcn
         const auto b2 = static_cast<Magnitude<R>>(onto.dot(onto));
 
         FALCON_ASSERT_MSG(b2 >= flcn::Config::EPSILON_SQUARE<Magnitude<R>>,
-                       flcn::messages::assertion::VEC_PROJECT_DIV_BY_ZERO);
+                          flcn::messages::assertion::VEC_PROJECT_DIV_BY_ZERO);
 
         return this->dot(onto) / b2 * onto; // a.dot(b) / b.dot(b) * b
     }
@@ -1208,7 +1218,8 @@ namespace flcn
     template <Arithmetic T>
     template <StrictArithmetic U>
         requires StrictSignedness<T, U>
-    FALCON_INLINE constexpr PromotedFloatCVec3<T, U> CVec3<T>::safeProject(const CVec3& vec, const CVec3<U>& onto) noexcept
+    FALCON_INLINE constexpr PromotedFloatCVec3<T, U> CVec3<T>::safeProject(const CVec3& vec,
+                                                                           const CVec3<U>& onto) noexcept
         requires StrictArithmetic<T>
     { return vec.safeProject(onto); }
 
@@ -1216,7 +1227,8 @@ namespace flcn
     template <Arithmetic T>
     template <StrictArithmetic U>
         requires StrictSignedness<T, U>
-    FALCON_INLINE constexpr PromotedCVec3<T, U> CVec3<T>::safeProjectNorm(const CVec3& vec, const CVec3<U>& onto) noexcept
+    FALCON_INLINE constexpr PromotedCVec3<T, U> CVec3<T>::safeProjectNorm(const CVec3& vec,
+                                                                          const CVec3<U>& onto) noexcept
         requires StrictArithmetic<T>
     { return vec.safeProjectNorm(onto); }
 
@@ -1225,7 +1237,7 @@ namespace flcn
     template <StrictArithmetic U>
         requires StrictSignedness<T, U>
     FALCON_INLINE constexpr PromotedFloatCVec3<T, U> CVec3<T>::tryProject(const CVec3<U>& onto,
-                                                                     OperationStatus& status) const noexcept
+                                                                          OperationStatus& status) const noexcept
         requires StrictArithmetic<T>
     {
         using R       = PromotedValue_t<T, U>;
@@ -1256,7 +1268,7 @@ namespace flcn
     template <StrictArithmetic U>
         requires StrictSignedness<T, U>
     FALCON_INLINE constexpr PromotedCVec3<T, U> CVec3<T>::tryProjectNorm(const CVec3<U>& onto,
-                                                                    OperationStatus& status) const noexcept
+                                                                         OperationStatus& status) const noexcept
         requires StrictArithmetic<T>
     {
         using R       = PromotedValue_t<T, U>;
@@ -1276,7 +1288,7 @@ namespace flcn
     template <StrictArithmetic U>
         requires StrictSignedness<T, U>
     FALCON_INLINE constexpr PromotedFloatCVec3<T, U> CVec3<T>::tryProject(const CVec3& vec, const CVec3<U>& onto,
-                                                                     OperationStatus& status) noexcept
+                                                                          OperationStatus& status) noexcept
         requires StrictArithmetic<T>
     { return vec.tryProject(onto, status); }
 
@@ -1285,7 +1297,7 @@ namespace flcn
     template <StrictArithmetic U>
         requires StrictSignedness<T, U>
     FALCON_INLINE constexpr PromotedCVec3<T, U> CVec3<T>::tryProjectNorm(const CVec3& vec, const CVec3<U>& onto,
-                                                                    OperationStatus& status) noexcept
+                                                                         OperationStatus& status) noexcept
         requires StrictArithmetic<T>
     { return vec.tryProjectNorm(onto, status); }
 
@@ -1315,7 +1327,8 @@ namespace flcn
     template <Arithmetic T>
     template <StrictArithmetic U>
         requires StrictSignedness<T, U>
-    FALCON_INLINE constexpr PromotedFloatCVec3<T, U> CVec3<T>::reject(const CVec3& vector, const CVec3<U>& from) noexcept
+    FALCON_INLINE constexpr PromotedFloatCVec3<T, U> CVec3<T>::reject(const CVec3& vector,
+                                                                      const CVec3<U>& from) noexcept
         requires StrictArithmetic<T>
     { return vector.reject(from); }
 
@@ -1361,7 +1374,8 @@ namespace flcn
     template <Arithmetic T>
     template <StrictArithmetic U>
         requires StrictSignedness<T, U>
-    FALCON_INLINE constexpr PromotedFloatCVec3<T, U> CVec3<T>::safeReject(const CVec3& vec, const CVec3<U>& from) noexcept
+    FALCON_INLINE constexpr PromotedFloatCVec3<T, U> CVec3<T>::safeReject(const CVec3& vec,
+                                                                          const CVec3<U>& from) noexcept
         requires StrictArithmetic<T>
     { return vec.safeReject(from); }
 
@@ -1369,7 +1383,8 @@ namespace flcn
     template <Arithmetic T>
     template <StrictArithmetic U>
         requires StrictSignedness<T, U>
-    FALCON_INLINE constexpr PromotedCVec3<T, U> CVec3<T>::safeRejectNorm(const CVec3& vec, const CVec3<U>& from) noexcept
+    FALCON_INLINE constexpr PromotedCVec3<T, U> CVec3<T>::safeRejectNorm(const CVec3& vec,
+                                                                         const CVec3<U>& from) noexcept
         requires StrictArithmetic<T>
     { return vec.safeRejectNorm(from); }
 
@@ -1378,7 +1393,7 @@ namespace flcn
     template <StrictArithmetic U>
         requires StrictSignedness<T, U>
     FALCON_INLINE constexpr PromotedFloatCVec3<T, U> CVec3<T>::tryReject(const CVec3<U>& from,
-                                                                    OperationStatus& status) const noexcept
+                                                                         OperationStatus& status) const noexcept
         requires StrictArithmetic<T>
     {
         if (hasNaN() || from.hasNaN())
@@ -1395,7 +1410,7 @@ namespace flcn
     template <StrictArithmetic U>
         requires StrictSignedness<T, U>
     FALCON_INLINE constexpr PromotedCVec3<T, U> CVec3<T>::tryRejectNorm(const CVec3<U>& from,
-                                                                   OperationStatus& status) const noexcept
+                                                                        OperationStatus& status) const noexcept
         requires StrictArithmetic<T>
     {
         if (hasNaN() || from.hasNaN())
@@ -1412,7 +1427,7 @@ namespace flcn
     template <StrictArithmetic U>
         requires StrictSignedness<T, U>
     FALCON_INLINE constexpr PromotedFloatCVec3<T, U> CVec3<T>::tryReject(const CVec3& vec, const CVec3<U>& from,
-                                                                    OperationStatus& status) noexcept
+                                                                         OperationStatus& status) noexcept
         requires StrictArithmetic<T>
     { return vec.tryReject(from, status); }
 
@@ -1421,7 +1436,7 @@ namespace flcn
     template <StrictArithmetic U>
         requires StrictSignedness<T, U>
     FALCON_INLINE constexpr PromotedCVec3<T, U> CVec3<T>::tryRejectNorm(const CVec3& vec, const CVec3<U>& from,
-                                                                   OperationStatus& status) noexcept
+                                                                        OperationStatus& status) noexcept
         requires StrictArithmetic<T>
     { return vec.tryRejectNorm(from, status); }
 

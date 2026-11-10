@@ -39,6 +39,12 @@ namespace
 
     namespace static_wrapper
     {
+        /// @test Verify that CVec3 can be initialized with a single parameter at compile time.
+        constexpr flcn::CVec3 SINGLE_INIT_VEC(1);
+        static_assert(SINGLE_INIT_VEC.x() == 1);
+        static_assert(SINGLE_INIT_VEC.y() == 1);
+        static_assert(SINGLE_INIT_VEC.z() == 1);
+
         /// @test Verify that CVec3 can be initialized with parameters at compile time.
         constexpr flcn::CVec3 SCALAR_INIT_VEC(1, 2, 3);
         static_assert(SCALAR_INIT_VEC.x() == 1);
@@ -78,6 +84,12 @@ TYPED_TEST(CVec3InitializationTests, EmptyConstructorInitializesZeroVector)
     EXPECT_VEC_ZERO(vec);
 }
 
+TYPED_TEST(CVec3InitializationTests, Ctor_SingleParameterInitializesVector)
+{
+    const auto a = static_cast<TypeParam>(3);
+    const flcn::CVec3<TypeParam> vec(a);
+    EXPECT_VEC_CONTAINS(vec, a, a, a);
+}
 
 /** @test Verify that the parameterized constructor correctly assigns components from the provided arguments. */
 TYPED_TEST(CVec3InitializationTests, ConstructorParametersInitializesVector)

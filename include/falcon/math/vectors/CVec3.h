@@ -65,13 +65,13 @@ namespace flcn
          */
         CVec3() = default;
 
-        // TODO: Add
-        // /**
-        //  * @brief Initialize @ref CVec3 with a single value broadcast across its components.
-        //  *
-        //  * @param[in] val The value to use broadcast across all vector components.
-        //  */
-        // [[nodiscard]] explicit constexpr CVec3(T val) noexcept;
+
+        /**
+         * @brief Initialize @ref CVec3 with a single value broadcast across its components.
+         *
+         * @param[in] val The value to use broadcast across all vector components.
+         */
+        [[nodiscard]] explicit constexpr CVec3(T val) noexcept;
 
 
         /**

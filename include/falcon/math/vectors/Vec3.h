@@ -669,203 +669,184 @@ namespace flcn
         { return Vec3<bool>(static_cast<bool>(x()), static_cast<bool>(y()), static_cast<bool>(z())); }
 
 
-        //
-        //         /**
-        //          * @addtogroup Falcon_Vec3_Comparison
-        //          * @{
-        //          */
-        //
-        //         /**
-        //          * @brief Perform component-wise greater-than comparison between this vector and @p rhs vector.
-        //          *        Compare each component pair and returns a boolean mask.
-        //          *
-        //          * @tparam U Numeric type of the RHS vector. Must satisfy @ref StrictArithmetic.
-        //          *
-        //          * @param[in] rhs The vector to compare against.
-        //          *
-        //          * @return A @ref Vec3<bool> mask containing the results of each component comparison.
-        //          */
-        //         template <StrictArithmetic U>
-        //             requires StrictSignedness<T, U>
-        //         [[nodiscard]] constexpr Vec3<bool> gt(const Vec3<U>& rhs) const noexcept
-        //             requires StrictArithmetic<T>;
-        //
-        //
-        //         /**
-        //          * @brief Perform component-wise greater-than comparison between @p lhs vector and @p rhs vector.
-        //          *        Compare each component pair and returns a boolean mask.
-        //          *
-        //          * @tparam U Numeric type of the RHS vector. Must satisfy @ref StrictArithmetic.
-        //          *
-        //          * @param[in]  lhs The vector to compare.
-        //          * @param[in]  rhs The vector to compare against.
-        //          *
-        //          * @return A @ref Vec3<bool> mask containing the results of each component comparison.
-        //          */
-        //         template <StrictArithmetic U>
-        //             requires StrictSignedness<T, U>
-        //         [[nodiscard]] static constexpr Vec3<bool> gt(const Vec3& lhs, const Vec3<U>& rhs) noexcept
-        //             requires StrictArithmetic<T>;
-        //
-        //
-        //         /**
-        //          * @brief Perform component-wise greater-than-or-equal comparison between this vector and @p rhs
-        //          vector.
-        //          *        Compare each component pair and returns a boolean mask.
-        //          *
-        //          * @tparam U Numeric type of the RHS vector. Must satisfy @ref StrictArithmetic.
-        //          *
-        //          * @param[in] rhs The vector to compare against.
-        //          *
-        //          * @return A @ref Vec3<bool> mask containing the results of each component comparison.
-        //          */
-        //         template <StrictArithmetic U>
-        //             requires StrictSignedness<T, U>
-        //         [[nodiscard]] constexpr Vec3<bool> gte(const Vec3<U>& rhs) const noexcept
-        //             requires StrictArithmetic<T>;
-        //
-        //
-        //         /**
-        //          * @brief Perform component-wise greater-than-or-equal comparison between @p lhs vector and @p rhs
-        //          vector.
-        //          *        Compare each component pair and returns a boolean mask.
-        //          *
-        //          * @tparam U Numeric type of the RHS vector. Must satisfy @ref StrictArithmetic.
-        //          *
-        //          * @param[in]  lhs The vector to compare.
-        //          * @param[in]  rhs The vector to compare against.
-        //          *
-        //          * @return A @ref Vec3<bool> mask containing the results of each component comparison.
-        //          */
-        //         template <StrictArithmetic U>
-        //             requires StrictSignedness<T, U>
-        //         [[nodiscard]] static constexpr Vec3<bool> gte(const Vec3& lhs, const Vec3<U>& rhs) noexcept
-        //             requires StrictArithmetic<T>;
-        //
-        //
-        //         /**
-        //          * @brief Perform component-wise less-than comparison between this vector and @p rhs vector.
-        //          *        Compare each component pair and returns a boolean mask.
-        //          *
-        //          * @note On MSVC, constexpr comparisons involving NaN may return incorrect results due to
-        //          compiler-level
-        //          *       constant folding bugs. Runtime execution remains IEEE 754 compliant under /fp:strict.
-        //          *
-        //          * @tparam U Numeric type of the RHS vector. Must satisfy @ref StrictArithmetic.
-        //          *
-        //          * @param[in] rhs The vector to compare against.
-        //          *
-        //          * @return A @ref Vec3<bool> mask containing the results of each component comparison.
-        //          */
-        //         template <StrictArithmetic U>
-        //             requires StrictSignedness<T, U>
-        //         [[nodiscard]] constexpr Vec3<bool> lt(const Vec3<U>& rhs) const noexcept
-        //             requires StrictArithmetic<T>;
-        //
-        //
-        //         /**
-        //          * @brief Perform component-wise less-than comparison between @p lhs vector and @p rhs vector.
-        //          *        Compare each component pair and returns a boolean mask.
-        //          *
-        //          * @note On MSVC, constexpr comparisons involving NaN may return incorrect results due to
-        //          compiler-level
-        //          *       constant folding bugs. Runtime execution remains IEEE 754 compliant under /fp:strict
-        //          *
-        //          * @tparam U Numeric type of the RHS vector. Must satisfy @ref StrictArithmetic.
-        //          *
-        //          * @param[in]  lhs The vector to compare.
-        //          * @param[in]  rhs The vector to compare against.
-        //          *
-        //          * @return A @ref Vec3<bool> mask containing the results of each component comparison.
-        //          */
-        //         template <StrictArithmetic U>
-        //             requires StrictSignedness<T, U>
-        //         [[nodiscard]] static constexpr Vec3<bool> lt(const Vec3& lhs, const Vec3<U>& rhs) noexcept
-        //             requires StrictArithmetic<T>;
-        //
-        //
-        //         /**
-        //          * @brief Perform component-wise less-than-or-equal comparison between this vector and @p rhs vector.
-        //          *        Compares each component pair and returns a boolean mask.
-        //          *
-        //          * @note On MSVC, constexpr comparisons involving NaN may return incorrect results due to
-        //          compiler-level
-        //          *       constant folding bugs. Runtime execution remains IEEE 754 compliant under /fp:strict
-        //          *
-        //          * @tparam U Numeric type of the RHS vector. Must satisfy @ref StrictArithmetic.
-        //          *
-        //          * @param[in] rhs The vector to compare against.
-        //          *
-        //          * @return A @ref Vec3<bool> mask containing the results of each component comparison.
-        //          */
-        //         template <StrictArithmetic U>
-        //             requires StrictSignedness<T, U>
-        //         [[nodiscard]] constexpr Vec3<bool> lte(const Vec3<U>& rhs) const noexcept
-        //             requires StrictArithmetic<T>;
-        //
-        //
-        //         /**
-        //          * @brief Perform component-wise less-than-or-equal comparison between @p lhs vector and @p rhs
-        //          vector.
-        //          *        Compares each component pair and returns a boolean mask.
-        //          *
-        //          * @note On MSVC, constexpr comparisons involving NaN may return incorrect results due to
-        //          compiler-level
-        //          *       constant folding bugs. Runtime execution remains IEEE 754 compliant under /fp:strict
-        //          *
-        //          * @tparam U Numeric type of the RHS vector. Must satisfy @ref StrictArithmetic.
-        //          *
-        //          * @param[in]  lhs The vector to compare.
-        //          * @param[in]  rhs The vector to compare against.
-        //          *
-        //          * @return A @ref Vec3<bool> mask containing the results of each component comparison.
-        //          */
-        //         template <StrictArithmetic U>
-        //             requires StrictSignedness<T, U>
-        //         [[nodiscard]] static constexpr Vec3<bool> lte(const Vec3& lhs, const Vec3<U>& rhs) noexcept
-        //             requires StrictArithmetic<T>;
-        //
-        //
-        // #ifdef ENABLE_FALCON_SHADER_OPERATORS
-        //
-        //         /**
-        //          * @copydoc gt(const Vec3<U>&) const
-        //          */
-        //         template <StrictArithmetic U>
-        //             requires StrictSignedness<T, U>
-        //         [[nodiscard]] constexpr Vec3<bool> operator>(const Vec3<U>& rhs) const noexcept
-        //             requires StrictArithmetic<T>;
-        //
-        //
-        //         /**
-        //          * @copydoc gte(const Vec3<U>&) const
-        //          */
-        //         template <StrictArithmetic U>
-        //             requires StrictSignedness<T, U>
-        //         [[nodiscard]] constexpr Vec3<bool> operator>=(const Vec3<U>& rhs) const noexcept
-        //             requires StrictArithmetic<T>;
-        //
-        //
-        //         /**
-        //          * @copydoc lt(const Vec3<U>&) const
-        //          */
-        //         template <StrictArithmetic U>
-        //             requires StrictSignedness<T, U>
-        //         [[nodiscard]] constexpr Vec3<bool> operator<(const Vec3<U>& rhs) const noexcept
-        //             requires StrictArithmetic<T>;
-        //
-        //
-        //         /**
-        //          * @copydoc lte(const Vec3<U>&) const
-        //          */
-        //         template <StrictArithmetic U>
-        //             requires StrictSignedness<T, U>
-        //         [[nodiscard]] constexpr Vec3<bool> operator<=(const Vec3<U>& rhs) const noexcept
-        //             requires StrictArithmetic<T>;
-        // #endif
-        //
-        //         /** @} */
-        //
+        /**
+         * @addtogroup Falcon_Vec2_Comparison
+         * @{
+         */
+
+        /**
+         * @brief Perform component-wise greater-than comparison between this vector and @p rhs vector.
+         *        Compare each component pair and returns a boolean mask.
+         *
+         * @param[in] rhs The vector to compare against.
+         *
+         * @note Use @ref toBool to convert mask vector to a boolean vector.
+         * @note For direct comparisons use @ref flcn::TrueMask<T> or flcn::FalseMask<T>.
+         *
+         * @return A @ref Mask_t(unsigned integral) Vec3 with `true` represented by 111...111 and `false` by 000...000.
+         */
+        [[nodiscard]] constexpr Vec3<Mask_t<T>> gt(const Vec3& rhs) const noexcept
+            requires StrictArithmetic<T>;
+
+
+        /**
+         * @brief Perform component-wise greater-than comparison between @p lhs vector and @p rhs vector.
+         *        Compare each component pair and returns a boolean mask.
+         *
+         * @param[in]  lhs The vector to compare.
+         * @param[in]  rhs The vector to compare against.
+         *
+         * @note Use @ref toBool to convert mask vector to a boolean vector.
+         * @note For direct comparisons use @ref flcn::TrueMask<T> or flcn::FalseMask<T>.
+         *
+         * @return A @ref Mask_t(unsigned integral) Vec3 with `true` represented by 111...111 and `false` by 000...000.
+         */
+        [[nodiscard]] static constexpr Vec3<Mask_t<T>> gt(const Vec3& lhs, const Vec3& rhs) noexcept
+            requires StrictArithmetic<T>;
+
+
+        /**
+         * @brief Perform component-wise greater-than-or-equal comparison between this vector and @p rhs
+         *        vector. Compare each component pair and returns a boolean mask.
+         *
+         * @param[in] rhs The vector to compare against.
+         *
+         * @note Use @ref toBool to convert mask vector to a boolean vector.
+         * @note For direct comparisons use @ref flcn::TrueMask<T> or flcn::FalseMask<T>.
+         *
+         * @return A @ref Mask_t(unsigned integral) Vec3 with `true` represented by 111...111 and `false` by 000...000.
+         */
+        [[nodiscard]] constexpr Vec3<Mask_t<T>> gte(const Vec3& rhs) const noexcept
+            requires StrictArithmetic<T>;
+
+
+        /**
+         * @brief Perform component-wise greater-than-or-equal comparison between @p lhs vector and @p rhs
+         *        vector. Compare each component pair and returns a boolean mask.
+         *
+         * @param[in]  lhs The vector to compare.
+         * @param[in]  rhs The vector to compare against.
+         *
+         * @note Use @ref toBool to convert mask vector to a boolean vector.
+         * @note For direct comparisons use @ref flcn::TrueMask<T> or flcn::FalseMask<T>.
+         *
+         * @return A @ref Mask_t(unsigned integral) Vec3 with `true` represented by 111...111 and `false` by 000...000.
+         */
+        [[nodiscard]] static constexpr Vec3<Mask_t<T>> gte(const Vec3& lhs, const Vec3& rhs) noexcept
+            requires StrictArithmetic<T>;
+
+
+        /**
+         * @brief Perform component-wise less-than comparison between this vector and @p rhs vector.
+         *        Compare each component pair and returns a boolean mask.
+         *
+         * @note On MSVC, constexpr comparisons involving NaN may return incorrect results due to
+         *       compiler-level constant folding bugs.
+         *       Runtime execution remains IEEE 754 compliant under /fp:strict.
+         *
+         * @param[in] rhs The vector to compare against.
+         *
+         * @note Use @ref toBool to convert mask vector to a boolean vector.
+         * @note For direct comparisons use @ref flcn::TrueMask<T> or flcn::FalseMask<T>.
+         *
+         * @return A @ref Mask_t(unsigned integral) Vec3 with `true` represented by 111...111 and `false` by 000...000.
+         */
+        [[nodiscard]] constexpr Vec3<Mask_t<T>> lt(const Vec3& rhs) const noexcept
+            requires StrictArithmetic<T>;
+
+
+        /**
+         * @brief Perform component-wise less-than comparison between @p lhs vector and @p rhs vector.
+         *        Compare each component pair and returns a boolean mask.
+         *
+         * @note On MSVC, constexpr comparisons involving NaN may return incorrect results due to
+         *       compiler-level constant folding bugs.
+         *       Runtime execution remains IEEE 754 compliant under /fp:strict.
+         *
+         * @param[in]  lhs The vector to compare.
+         * @param[in]  rhs The vector to compare against.
+         *
+         * @note Use @ref toBool to convert mask vector to a boolean vector.
+         * @note For direct comparisons use @ref flcn::TrueMask<T> or flcn::FalseMask<T>.
+         *
+         * @return A @ref Mask_t(unsigned integral) Vec3 with `true` represented by 111...111 and `false` by 000...000.
+         */
+        [[nodiscard]] static constexpr Vec3<Mask_t<T>> lt(const Vec3& lhs, const Vec3& rhs) noexcept
+            requires StrictArithmetic<T>;
+
+
+        /**
+         * @brief Perform component-wise less-than-or-equal comparison between this vector and @p rhs vector.
+         *        Compares each component pair and returns a boolean mask.
+         *
+         * @note On MSVC, constexpr comparisons involving NaN may return incorrect results due to
+         *       compiler-level constant folding bugs.
+         *       Runtime execution remains IEEE 754 compliant under /fp:strict.
+         *
+         * @param[in] rhs The vector to compare against.
+         *
+         * @note Use @ref toBool to convert mask vector to a boolean vector.
+         * @note For direct comparisons use @ref flcn::TrueMask<T> or flcn::FalseMask<T>.
+         *
+         * @return A @ref Mask_t(unsigned integral) Vec3 with `true` represented by 111...111 and `false` by 000...000.
+         */
+        [[nodiscard]] constexpr Vec3<Mask_t<T>> lte(const Vec3& rhs) const noexcept
+            requires StrictArithmetic<T>;
+
+
+        /**
+         * @brief Perform component-wise less-than-or-equal comparison between @p lhs vector and @p rhs
+         *        vector. Compares each component pair and returns a boolean mask.
+         *
+         * @note On MSVC, constexpr comparisons involving NaN may return incorrect results due to
+         *       compiler-level constant folding bugs.
+         *       Runtime execution remains IEEE 754 compliant under /fp:strict.
+         *
+         * @param[in]  lhs The vector to compare.
+         * @param[in]  rhs The vector to compare against.
+         *
+         * @note Use @ref toBool to convert mask vector to a boolean vector.
+         * @note For direct comparisons use @ref flcn::TrueMask<T> or flcn::FalseMask<T>.
+         *
+         * @return A @ref Mask_t(unsigned integral) Vec3 with `true` represented by 111...111 and `false` by 000...000.
+         */
+        [[nodiscard]] static constexpr Vec3<Mask_t<T>> lte(const Vec3& lhs, const Vec3& rhs) noexcept
+            requires StrictArithmetic<T>;
+
+
+#ifdef ENABLE_FALCON_SHADER_OPERATORS
+
+        /**
+         * @copydoc gt(const Vec3&) const
+         */
+        [[nodiscard]] constexpr Vec3<Mask_t<T>> operator>(const Vec3& rhs) const noexcept
+            requires StrictArithmetic<T>;
+
+
+        /**
+         * @copydoc gte(const Vec3&) const
+         */
+        [[nodiscard]] constexpr Vec3<Mask_t<T>> operator>=(const Vec3& rhs) const noexcept
+            requires StrictArithmetic<T>;
+
+
+        /**
+         * @copydoc lt(const Vec3&) const
+         */
+        [[nodiscard]] constexpr Vec3<Mask_t<T>> operator<(const Vec3& rhs) const noexcept
+            requires StrictArithmetic<T>;
+
+
+        /**
+         * @copydoc lte(const Vec3&) const
+         */
+        [[nodiscard]] constexpr Vec3<Mask_t<T>> operator<=(const Vec3& rhs) const noexcept
+            requires StrictArithmetic<T>;
+#endif
+
+        /** @} */
+
+
         //
         //         /**
         //          * @addtogroup Falcon_Vec3_Bitwise

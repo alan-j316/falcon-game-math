@@ -356,4 +356,89 @@ namespace flcn
 
 
 
+    /// +---------------------------------------------------------------------------------------+
+    /// |                                   COMPARISONS                                         |
+    /// +---------------------------------------------------------------------------------------+
+
+    template <Arithmetic T>
+    FALCON_INLINE constexpr Vec3<typename UInt<T>::type> Vec3<T>::gt(const Vec3& rhs) const noexcept
+        requires StrictArithmetic<T>
+    { return Vec3<Mask_t<T>>((_data > rhs._data).template cast<Mask_t<T>>()); }
+
+
+    template <Arithmetic T>
+    FALCON_INLINE constexpr Vec3<Mask_t<T>> Vec3<T>::gt(const Vec3& lhs, const Vec3& rhs) noexcept
+        requires StrictArithmetic<T>
+    { return lhs.gt(rhs); }
+
+
+    template <Arithmetic T>
+    FALCON_INLINE constexpr Vec3<Mask_t<T>> Vec3<T>::gte(const Vec3& rhs) const noexcept
+        requires StrictArithmetic<T>
+    { return Vec3<Mask_t<T>>((_data >= rhs._data).template cast<Mask_t<T>>()); }
+
+
+    template <Arithmetic T>
+    FALCON_INLINE constexpr Vec3<Mask_t<T>> Vec3<T>::gte(const Vec3& lhs, const Vec3& rhs) noexcept
+        requires StrictArithmetic<T>
+    { return lhs.gte(rhs); }
+
+
+    template <Arithmetic T>
+    FALCON_INLINE constexpr Vec3<Mask_t<T>> Vec3<T>::lt(const Vec3& rhs) const noexcept
+        requires StrictArithmetic<T>
+    { return Vec3<Mask_t<T>>((_data < rhs._data).template cast<Mask_t<T>>()); }
+
+
+    template <Arithmetic T>
+    FALCON_INLINE constexpr Vec3<Mask_t<T>> Vec3<T>::lt(const Vec3& lhs, const Vec3& rhs) noexcept
+        requires StrictArithmetic<T>
+    { return lhs.lt(rhs); }
+
+
+    template <Arithmetic T>
+    FALCON_INLINE constexpr Vec3<Mask_t<T>> Vec3<T>::lte(const Vec3& rhs) const noexcept
+        requires StrictArithmetic<T>
+    { return Vec3<Mask_t<T>>((_data <= rhs._data).template cast<Mask_t<T>>()); }
+
+
+    template <Arithmetic T>
+    FALCON_INLINE constexpr Vec3<Mask_t<T>> Vec3<T>::lte(const Vec3& lhs, const Vec3& rhs) noexcept
+        requires StrictArithmetic<T>
+    { return lhs.lte(rhs); }
+
+
+
+    /// +---------------------------------------------------------------------------------------+
+    /// |                             COMPARISON OPERATORS                                      |
+    /// +---------------------------------------------------------------------------------------+
+
+#ifdef ENABLE_FALCON_SHADER_OPERATORS
+
+    template <Arithmetic T>
+    FALCON_INLINE constexpr Vec3<Mask_t<T>> Vec3<T>::operator>(const Vec3& rhs) const noexcept
+        requires StrictArithmetic<T>
+    { return this->gt(rhs); }
+
+
+    template <Arithmetic T>
+    FALCON_INLINE constexpr Vec3<Mask_t<T>> Vec3<T>::operator>=(const Vec3& rhs) const noexcept
+        requires StrictArithmetic<T>
+    { return this->gte(rhs); }
+
+
+    template <Arithmetic T>
+    FALCON_INLINE constexpr Vec3<Mask_t<T>> Vec3<T>::operator<(const Vec3& rhs) const noexcept
+        requires StrictArithmetic<T>
+    { return this->lt(rhs); }
+
+
+    template <Arithmetic T>
+    FALCON_INLINE constexpr Vec3<Mask_t<T>> Vec3<T>::operator<=(const Vec3& rhs) const noexcept
+        requires StrictArithmetic<T>
+    { return this->lte(rhs); }
+
+#endif
+
+
 } // namespace flcn

@@ -285,4 +285,70 @@ namespace flcn
 
 
 
+    /// +---------------------------------------------------------------------------------------+
+    /// |                              EQUALITY OPERATORS                                       |
+    /// +---------------------------------------------------------------------------------------+
+
+    template <Arithmetic T>
+    FALCON_INLINE constexpr bool Vec3<T>::allEq(const Vec3& rhs) const noexcept
+    {
+        const auto mask = _data == rhs._data;
+        return static_cast<bool>(mask.horizontalAnd());
+    }
+
+
+    template <Arithmetic T>
+    FALCON_INLINE constexpr bool Vec3<T>::allEq(const Vec3& lhs, const Vec3& rhs) noexcept
+    { return lhs.allEq(rhs); }
+
+
+    template <Arithmetic T>
+    FALCON_INLINE constexpr bool Vec3<T>::anyNeq(const Vec3& rhs) const noexcept
+    {
+        const auto mask = _data != rhs._data;
+        return static_cast<bool>(mask.horizontalOr());
+    }
+
+
+    template <Arithmetic T>
+    FALCON_INLINE constexpr bool Vec3<T>::anyNeq(const Vec3& lhs, const Vec3& rhs) noexcept
+    { return lhs.anyNeq(rhs); }
+
+
+    template <Arithmetic T>
+    FALCON_INLINE constexpr bool Vec3<T>::operator==(const Vec3& rhs) const noexcept
+    { return allEq(rhs); }
+
+
+    template <Arithmetic T>
+    FALCON_INLINE constexpr bool Vec3<T>::operator!=(const Vec3& rhs) const noexcept
+    { return anyNeq(rhs); }
+
+
+
+    /// +---------------------------------------------------------------------------------------+
+    /// |                                EQUALITY (MASK)                                        |
+    /// +---------------------------------------------------------------------------------------+
+
+    // template <Arithmetic T>
+    // FALCON_INLINE constexpr Vec3<Mask_t<T>> Vec3<T>::eq(const Vec3& rhs) const noexcept
+    // {}
+    //
+    //
+    // template <Arithmetic T>
+    // FALCON_INLINE constexpr Vec3<Mask_t<T>> Vec3<T>::eq(const Vec3& lhs, const Vec3& rhs) noexcept
+    // {}
+    //
+    //
+    // template <Arithmetic T>
+    // FALCON_INLINE constexpr Vec3<Mask_t<T>> Vec3<T>::neq(const Vec3& rhs) const noexcept
+    // {}
+    //
+    //
+    // template <Arithmetic T>
+    // FALCON_INLINE constexpr Vec3<Mask_t<T>> Vec3<T>::neq(const Vec3& lhs, const Vec3& rhs) noexcept
+    // {}
+
+
+
 } // namespace flcn

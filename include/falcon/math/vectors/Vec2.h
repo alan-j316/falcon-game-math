@@ -39,9 +39,6 @@ namespace flcn
     using namespace flcn::types;
     using namespace flcn::constants;
 
-    template <typename T>
-    using Mask_t = UInt_t<T>;
-
     template <Arithmetic T>
     struct alignas(16) Vec2
     {
@@ -463,7 +460,7 @@ namespace flcn
          *
          * @note To obtain a component-wise boolean mask, use @ref eq.
          *
-         * @param[in] rhs     The vector to compare against.
+         * @param[in] rhs The vector to compare against.
          *
          * @return True if all components are equal.
          */
@@ -475,8 +472,8 @@ namespace flcn
          *
          * @note To obtain a component-wise boolean mask, use @ref eq.
          *
-         * @param[in] lhs     The vector to compare.
-         * @param[in] rhs     The vector to compare against.
+         * @param[in] lhs The vector to compare.
+         * @param[in] rhs The vector to compare against.
          *
          * @return `true` if all components are equal.
          */
@@ -489,7 +486,7 @@ namespace flcn
          * @note To obtain a component-wise boolean mask, use @ref neq.
          *
          *
-         * @param[in] rhs     The vector to compare against.
+         * @param[in] rhs The vector to compare against.
          *
          * @return `true` if any of the components are not equal.
          */
@@ -503,8 +500,8 @@ namespace flcn
          *
          * @tparam U Numeric type of the RHS vector. Must satisfy @ref Arithmetic.
          *
-         * @param[in] lhs     The vector to compare.
-         * @param[in] rhs     The vector to compare against.
+         * @param[in] lhs The vector to compare.
+         * @param[in] rhs The vector to compare against.
          *
          * @return `true` if any of the components are not equal.
          */
@@ -543,7 +540,7 @@ namespace flcn
          *
          * @note To obtain a single scalar result, use @ref allEq or @ref operator==.
          *
-         * @param[in] rhs     The vector to compare against.
+         * @param[in] rhs The vector to compare against.
          *
          * @note Use @ref toBool to convert mask vector to a boolean vector.
          * @note For direct comparisons use @ref flcn::TrueMask<T> or flcn::FalseMask<T>.
@@ -559,8 +556,8 @@ namespace flcn
          *
          * @tparam U Numeric type of the RHS vector. Must satisfy @ref Arithmetic.
          *
-         * @param[in] lhs     The vector to compare.
-         * @param[in] rhs     The vector to compare against.
+         * @param[in] lhs The vector to compare.
+         * @param[in] rhs The vector to compare against.
          *
          * @note Use @ref toBool to convert mask vector to a boolean vector.
          * @note For direct comparisons use @ref flcn::TrueMask<T> or flcn::FalseMask<T>.
@@ -576,7 +573,7 @@ namespace flcn
          *
          * @note To obtain a single scalar result, use @ref anyNeq or @ref operator!=.
          *
-         * @param[in] rhs     The vector to compare against.
+         * @param[in] rhs The vector to compare against.
          *
          * @note Use @ref toBool to convert mask vector to a boolean vector.
          * @note For direct comparisons use @ref flcn::TrueMask<T> or flcn::FalseMask<T>.
@@ -590,8 +587,8 @@ namespace flcn
          * @brief Perform component-wise inequality check between @p lhs vector and @p rhs vector.
          *        Compare each component pair and returns a boolean mask.
          *
-         * @param[in] lhs     The vector to compare.
-         * @param[in] rhs     The vector to compare against.
+         * @param[in] lhs The vector to compare.
+         * @param[in] rhs The vector to compare against.
          *
          * @note Use @ref toBool to convert mask vector to a boolean vector.
          * @note For direct comparisons use @ref flcn::TrueMask<T> or flcn::FalseMask<T>.

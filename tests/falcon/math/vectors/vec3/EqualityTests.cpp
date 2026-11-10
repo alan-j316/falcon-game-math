@@ -24,6 +24,11 @@ namespace
     constexpr auto NAN_F = flcn::constants::NaN;
     constexpr auto INF   = flcn::constants::INFINITY_F;
 
+    template <typename T>
+    constexpr auto False = flcn::FalseMask<flcn::Mask_t<T>>;
+    template <typename T>
+    constexpr auto True = flcn::TrueMask<flcn::Mask_t<T>>;
+
     /**************************************
      *           TEST SETUP               *
      **************************************/
@@ -39,8 +44,8 @@ namespace
         flcn::Vec3<T> _eqVecA;
         flcn::Vec3<T> _eqVecB;
         flcn::Vec3<T> _dissimilarVec;
-        flcn::Vec3<bool> _equalityMask;
-        flcn::Vec3<bool> _inequalityMask;
+        flcn::Vec3<flcn::Mask_t<T>> _equalityMask;
+        flcn::Vec3<flcn::Mask_t<T>> _inequalityMask;
 
 
         void SetUp() override
@@ -48,86 +53,12 @@ namespace
             _eqVecA         = { T(1.1234568789), T(2.123458319), T(5.123412593891) };
             _eqVecB         = { T(1.1234568789), T(2.123458319), T(5.123412593891) };
             _dissimilarVec  = { T(7.1234568789), T(2.123458319), T(24.00) };
-            _equalityMask   = { false, true, false };
-            _inequalityMask = { true, false, true };
+            _equalityMask   = { False<T>, True<T>, False<T> };
+            _inequalityMask = { True<T>, False<T>, True<T> };
         }
     };
     TYPED_TEST_SUITE(Vec3EqualityTests, SupportedArithmeticTypes);
 
-
-
-    /**************************************
-     *            STATIC TESTS            *
-     **************************************/
-
-    namespace static_tests
-    {
-        constexpr flcn::Vec3 VEC_A(1, 2, 4);
-        constexpr flcn::Vec3 VEC_B(3, 2, 1);
-        constexpr flcn::Vec3 VEC_C(1, 2, 4);
-
-
-        /// @test Verify that @ref Vec3 allEq returns correct boolean for equal vectors.
-        constexpr auto ALLEQ_EQ_VECS = VEC_A.allEq(VEC_B);
-        static_assert(ALLEQ_EQ_VECS == false);
-
-        /// @test Verify that @ref Vec3 allEq returns correct boolean for unequal vectors.
-        constexpr auto ALL_EQ_UNEQUAL_VECS = VEC_A.allEq(VEC_C);
-        static_assert(ALL_EQ_UNEQUAL_VECS == true);
-
-        /// @test Verify that @ref Vec3 allEq (static wrapper) returns correct boolean for equal vectors.
-        constexpr auto ALLEQ_EQ_VECS_STATIC = flcn::Vec3<int>::allEq(VEC_A, VEC_B);
-        static_assert(ALLEQ_EQ_VECS_STATIC == false);
-
-        /// @test Verify that @ref Vec3 allEq (static wrapper) returns correct boolean for unequal vectors.
-        constexpr auto ALLEQ_UNEQUAL_VECS_STATIC = flcn::Vec3<int>::allEq(VEC_A, VEC_C);
-        static_assert(ALLEQ_UNEQUAL_VECS_STATIC == true);
-
-        /// @test Verify that @ref Vec3 equals operator returns correct boolean for equal vectors.
-        constexpr auto DBLEQ_OP_EQUAL_VECS = VEC_A == VEC_B;
-        static_assert(DBLEQ_OP_EQUAL_VECS == false);
-
-        /// @test Verify that @ref Vec3 equals operator returns correct boolean for unequal vectors.
-        constexpr auto DBLEQ_OP_UNEQUAL_VECS = VEC_A == VEC_C;
-        static_assert(DBLEQ_OP_UNEQUAL_VECS == true);
-
-
-        /// @test Verify that @ref Vec3 equality mask returns valid boolean mask
-        constexpr auto EQ_VEC_MASK = VEC_A.eq(VEC_B);
-        static_assert(EQ_VEC_MASK.x() == false);
-        static_assert(EQ_VEC_MASK.y() == true);
-
-
-        /// @test Verify that @ref Vec3 anyNeq returns correct boolean for equal vectors.
-        constexpr auto ANYNEQ_EQ_VECS = VEC_A.anyNeq(VEC_B);
-        static_assert(ANYNEQ_EQ_VECS == true);
-
-        /// @test Verify that @ref Vec3 anyNeq returns correct boolean for unequal vectors.
-        constexpr auto ANYNEQ_UNEQUAL_VECS = VEC_A.anyNeq(VEC_C);
-        static_assert(ANYNEQ_UNEQUAL_VECS == false);
-
-        /// @test Verify that @ref Vec3 anyNeq(static wrapper) returns correct boolean for equal vectors.
-        constexpr auto ANYNEQ_EQ_VECS_STATIC = flcn::Vec3<int>::anyNeq(VEC_A, VEC_B);
-        static_assert(ANYNEQ_EQ_VECS_STATIC == true);
-
-        /// @test Verify that @ref Vec3 anyNeq(static wrapper) returns correct boolean for unequal vectors.
-        constexpr auto ANYNEQ_UNEQUAL_VECS_STATIC = flcn::Vec3<int>::anyNeq(VEC_A, VEC_C);
-        static_assert(ANYNEQ_UNEQUAL_VECS_STATIC == false);
-
-        /// @test Verify that @ref Vec3 not equals operator returns correct boolean for equal vectors.
-        constexpr auto ANYNEQ_OP_EQUAL_VECS = VEC_A != VEC_B;
-        static_assert(ANYNEQ_OP_EQUAL_VECS == true);
-
-        /// @test Verify that @ref Vec3 not equals operator returns correct boolean for unequal vectors.
-        constexpr auto NOT_EQ_OP = VEC_A != VEC_C;
-        static_assert(NOT_EQ_OP == false);
-
-        /// @test Verify that @ref Vec3 inequality mask returns valid boolean mask.
-        constexpr auto NEQ_MASK_VEC = VEC_A.neq(VEC_B);
-        static_assert(NEQ_MASK_VEC.x() == true);
-        static_assert(NEQ_MASK_VEC.y() == false);
-
-    } // namespace static_tests
 } // namespace
 
 
@@ -136,7 +67,7 @@ namespace
  *           EQUALITY TESTS           *
  **************************************/
 
-/** @test Verify that @ref flcn::Vec3::allEq returns true for identical vectors. */
+/** @test Verify that @ref flcn::Vec3::allEq returns True for identical vectors. */
 TYPED_TEST(Vec3EqualityTests, AllEq_IdenticalVectorsReturnsTrue)
 {
     const bool equality = this->_eqVecA.allEq(this->_eqVecB);
@@ -144,7 +75,7 @@ TYPED_TEST(Vec3EqualityTests, AllEq_IdenticalVectorsReturnsTrue)
 }
 
 
-/** @test Verify that @ref flcn::Vec3::allEq returns false if any component differ. */
+/** @test Verify that @ref flcn::Vec3::allEq returns False if any component differ. */
 TYPED_TEST(Vec3EqualityTests, Equality_DifferentVectorsReturnsFalse)
 {
     const bool equality = this->_eqVecA.allEq(this->_dissimilarVec);
@@ -172,7 +103,7 @@ TYPED_TEST(Vec3EqualityTests, StaticWrapper_Equality_DifferentVectorsReturnsFals
 TEST(Vec3EqualityTests, NanEqualityReturnsFalse)
 {
     const flcn::Vec3 vecA = { NAN_F, NAN_F, NAN_F };
-    const flcn::Vec3 vecB = { 1.0, -5.88874789, flcn::constants::INFINITY_D };
+    const flcn::Vec3 vecB = { 1.0f, -5.88874789f, flcn::constants::INFINITY_F };
 
     const bool equality = vecA.allEq(vecB);
     EXPECT_FALSE(equality);
@@ -201,7 +132,7 @@ TEST(Vec3EqualityTests, InfinityEquality_DifferentVectorsReturnsFalse)
 }
 
 
-/** @test Verify that the equality operator returns true for identical vectors. */
+/** @test Verify that the equality operator returns True for identical vectors. */
 TYPED_TEST(Vec3EqualityTests, EqualityOperator_IdenticalVectorsReturnsTrue)
 {
     const bool equality = this->_eqVecA == this->_eqVecB;
@@ -209,29 +140,7 @@ TYPED_TEST(Vec3EqualityTests, EqualityOperator_IdenticalVectorsReturnsTrue)
 }
 
 
-/** @test Verify that @ref flcn::Vec3::allEq works for different vector types with identical components. */
-TYPED_TEST(Vec3EqualityTests, MixedType_AllEq_IdenticalVectorsReturnsTrue)
-{
-    const flcn::Vec3 vecA(1, 2, 3);
-    const flcn::Vec3 vecB(1.0, 2.0, 3.0);
-
-    const bool equality = vecA.allEq(vecB);
-    EXPECT_TRUE(equality);
-}
-
-
-/** @test Verify that @ref flcn::Vec3::allEq works for different vector types with different components. */
-TYPED_TEST(Vec3EqualityTests, MixedType_Equality_DifferentVectorsReturnsFalse)
-{
-    const flcn::Vec3 vecA(5, 6, 7);
-    const flcn::Vec3 vecB(1.0, 2.0, 3.0);
-
-    const bool equality = vecA.allEq(vecB);
-    EXPECT_FALSE(equality);
-}
-
-
-/** @test Verify that the equality operator returns false if any component differ. */
+/** @test Verify that the equality operator returns False if any component differ. */
 TYPED_TEST(Vec3EqualityTests, EqualityOperator_DifferentVectorsReturnsFalse)
 {
     const bool equality = this->_eqVecA == this->_dissimilarVec;
@@ -242,8 +151,8 @@ TYPED_TEST(Vec3EqualityTests, EqualityOperator_DifferentVectorsReturnsFalse)
 /** @test Verify that the equality operator works for bool vector with identical components. */
 TEST(Vec3EqualityTests, EqualityOperator_IdenticalBooleanVectorsReturnsTrue)
 {
-    const flcn::Vec3 vecA(true, false, true);
-    const flcn::Vec3 vecB(true, false, true);
+    const flcn::Vec3 vecA(True<float>, False<float>, True<float>);
+    const flcn::Vec3 vecB(True<float>, False<float>, True<float>);
 
     const bool equality = vecA == vecB;
     EXPECT_TRUE(equality);
@@ -253,68 +162,68 @@ TEST(Vec3EqualityTests, EqualityOperator_IdenticalBooleanVectorsReturnsTrue)
 /** @test Verify that the equality operator works for bool vector with different components. */
 TEST(Vec3EqualityTests, EqualityOperator_DifferentBooleanVectorsReturnsFalse)
 {
-    const flcn::Vec3 vecA(true, false, true);
-    const flcn::Vec3 vecB(true, true, true);
+    const flcn::Vec3 vecA(True<float>, False<float>, True<float>);
+    const flcn::Vec3 vecB(True<float>, True<float>, True<float>);
 
     const bool equality = vecA == vecB;
     EXPECT_FALSE(equality);
 }
 
 
-/** @test Verify that @ref flcn::Vec3::eq returns @ref flcn::Vec3<bool> mask for identical vectors. */
-TYPED_TEST(Vec3EqualityTests, EqualityReturnsCorrectBooleanMask)
-{
-    const flcn::Vec3<bool> mask = this->_eqVecA.eq(this->_dissimilarVec);
-    EXPECT_VEC_EQ(this->_equalityMask, mask);
-}
-
-
-/** @test Verify that @ref flcn::Vec3::eq returns @ref flcn::Vec3<bool> mask for different vectors. */
-TEST(Vec3EqualityTests, MixedType_EqualityReturnsCorrectBooleanMask)
-{
-    const flcn::Vec3 vecA         = { 1, 2, 3 };
-    const flcn::Vec3 vecB         = { 1.0, 4.0, 0.0 };
-    const flcn::Vec3 expectedMask = { true, false, false };
-
-    const flcn::Vec3<bool> mask = vecA.eq(vecB);
-    EXPECT_VEC_EQ(expectedMask, mask);
-}
-
-
-/** @test Verify that @ref flcn::Vec3::eq follows IEEE 754 for NaN comparisons. */
-TEST(Vec3EqualityTests, NanEqualityReturnsFalseBooleanMask)
-{
-    const flcn::Vec3 vecA         = { NAN_F, NAN_F, NAN_F };
-    const flcn::Vec3 vecB         = { 1.0, -5.88874789, flcn::constants::INFINITY_D };
-    const flcn::Vec3 expectedMask = { false, false, false };
-
-    const flcn::Vec3 mask = vecA.eq(vecB);
-    EXPECT_VEC_EQ(expectedMask, mask);
-}
-
-
-/** @test Verify that @ref flcn::Vec3::eq follows IEEE 754 for INFINITY comparisons. */
-TEST(Vec3EqualityTests, InfinityEqualityReturnsCorrectBooleanMask)
-{
-    const flcn::Vec3 vecA         = { INF, -INF, INF };
-    const flcn::Vec3<double> vecB = { flcn::constants::INFINITY_D, flcn::constants::INFINITY_D, 10e11 };
-    const flcn::Vec3 expectedMask = { true, false, false };
-
-    const flcn::Vec3 mask = vecA.eq(vecB);
-    EXPECT_VEC_EQ(expectedMask, mask);
-}
-
-
-/**
- * @test Verify that the static variant of @ref flcn::Vec3::eq returns @ref flcn::Vec3<bool> mask
- *       for different vectors.
- */
-TYPED_TEST(Vec3EqualityTests, StaticWrapper_EqualityReturnsCorrectBooleanMask)
-{
-    const flcn::Vec3<bool> mask = flcn::Vec3<TypeParam>::eq(this->_eqVecA, this->_dissimilarVec);
-
-    EXPECT_VEC_EQ(this->_equalityMask, mask);
-}
+// /** @test Verify that @ref flcn::Vec3::eq returns @ref flcn::Vec3<bool> mask for identical vectors. */
+// TYPED_TEST(Vec3EqualityTests, EqualityReturnsCorrectBooleanMask)
+// {
+//     const flcn::Vec3<bool> mask = this->_eqVecA.eq(this->_dissimilarVec);
+//     EXPECT_VEC_EQ(this->_equalityMask, mask);
+// }
+//
+//
+// /** @test Verify that @ref flcn::Vec3::eq returns @ref flcn::Vec3<bool> mask for different vectors. */
+// TEST(Vec3EqualityTests, MixedType_EqualityReturnsCorrectBooleanMask)
+// {
+//     const flcn::Vec3 vecA         = { 1, 2, 3 };
+//     const flcn::Vec3 vecB         = { 1.0, 4.0, 0.0 };
+//     const flcn::Vec3 expectedMask = { True, False, False };
+//
+//     const flcn::Vec3<bool> mask = vecA.eq(vecB);
+//     EXPECT_VEC_EQ(expectedMask, mask);
+// }
+//
+//
+// /** @test Verify that @ref flcn::Vec3::eq follows IEEE 754 for NaN comparisons. */
+// TEST(Vec3EqualityTests, NanEqualityReturnsFalseBooleanMask)
+// {
+//     const flcn::Vec3 vecA         = { NAN_F, NAN_F, NAN_F };
+//     const flcn::Vec3 vecB         = { 1.0, -5.88874789, flcn::constants::INFINITY_D };
+//     const flcn::Vec3 expectedMask = { False, False, False };
+//
+//     const flcn::Vec3 mask = vecA.eq(vecB);
+//     EXPECT_VEC_EQ(expectedMask, mask);
+// }
+//
+//
+// /** @test Verify that @ref flcn::Vec3::eq follows IEEE 754 for INFINITY comparisons. */
+// TEST(Vec3EqualityTests, InfinityEqualityReturnsCorrectBooleanMask)
+// {
+//     const flcn::Vec3 vecA         = { INF, -INF, INF };
+//     const flcn::Vec3<double> vecB = { flcn::constants::INFINITY_D, flcn::constants::INFINITY_D, 10e11 };
+//     const flcn::Vec3 expectedMask = { True, False, False };
+//
+//     const flcn::Vec3 mask = vecA.eq(vecB);
+//     EXPECT_VEC_EQ(expectedMask, mask);
+// }
+//
+//
+// /**
+//  * @test Verify that the static variant of @ref flcn::Vec3::eq returns @ref flcn::Vec3<bool> mask
+//  *       for different vectors.
+//  */
+// TYPED_TEST(Vec3EqualityTests, StaticWrapper_EqualityReturnsCorrectBooleanMask)
+// {
+//     const flcn::Vec3<bool> mask = flcn::Vec3<TypeParam>::eq(this->_eqVecA, this->_dissimilarVec);
+//
+//     EXPECT_VEC_EQ(this->_equalityMask, mask);
+// }
 
 
 
@@ -322,7 +231,7 @@ TYPED_TEST(Vec3EqualityTests, StaticWrapper_EqualityReturnsCorrectBooleanMask)
  *          INEQUALITY TESTS          *
  **************************************/
 
-/** @test Verify that @ref flcn::Vec3::anyNeq returns false for identical vectors. */
+/** @test Verify that @ref flcn::Vec3::anyNeq returns False for identical vectors. */
 TYPED_TEST(Vec3EqualityTests, Inequality_IdenticalVectorsReturnsFalse)
 {
     const bool inequality = this->_eqVecA.anyNeq(this->_eqVecB);
@@ -330,7 +239,7 @@ TYPED_TEST(Vec3EqualityTests, Inequality_IdenticalVectorsReturnsFalse)
 }
 
 
-/** @test Verify that @ref flcn::Vec3::anyNeq returns true if any component differ. */
+/** @test Verify that @ref flcn::Vec3::anyNeq returns True if any component differ. */
 TYPED_TEST(Vec3EqualityTests, Inequality_DifferentVectorsReturnsTrue)
 {
     const bool inequality = this->_eqVecA.anyNeq(this->_dissimilarVec);
@@ -357,11 +266,11 @@ TYPED_TEST(Vec3EqualityTests, StaticWrapper_Inequality_DifferentVectorsReturnsTr
 /** @test Verify that @ref flcn::Vec3::anyNeq follows IEEE 754 for NaN comparisons. */
 TEST(Vec3EqualityTests, NanInequalityReturnsTrue)
 {
-    const flcn::Vec3 vecA         = { NAN_F, NAN_F, NAN_F };
-    const flcn::Vec3<double> vecB = {
-        1.0,
-        -5.88874789,
-        flcn::constants::INFINITY_D,
+    const flcn::Vec3 vecA = { NAN_F, NAN_F, NAN_F };
+    const flcn::Vec3 vecB = {
+        1.0f,
+        -5.88874789f,
+        flcn::constants::INFINITY_F,
     };
 
     const bool inequality = vecA.anyNeq(vecB);
@@ -391,29 +300,7 @@ TEST(Vec3EqualityTests, InfinityInequality_DifferentVectorsReturnsTrue)
 }
 
 
-/** @test Verify that @ref flcn::Vec3::anyNeq works for different vector types with identical components. */
-TYPED_TEST(Vec3EqualityTests, MixedType_Inequality_IdenticalVectorsReturnsFalse)
-{
-    const flcn::Vec3 vecA(1, 2, 3);
-    const flcn::Vec3 vecB(1.0, 2.0, 3.0);
-
-    const bool inequality = vecA.anyNeq(vecB);
-    EXPECT_FALSE(inequality);
-}
-
-
-/** @test Verify that @ref flcn::Vec3::anyNeq works for different vector types with different components. */
-TYPED_TEST(Vec3EqualityTests, MixedType_Inequality_DifferentVectorsReturnsTrue)
-{
-    const flcn::Vec3 vecA(5, 6, 7);
-    const flcn::Vec3 vecB(1.0, 2.0, 3.0);
-
-    const bool inequality = vecA.anyNeq(vecB);
-    EXPECT_TRUE(inequality);
-}
-
-
-/** @test Verify that the operator returns false for identical vectors. */
+/** @test Verify that the operator returns False for identical vectors. */
 TYPED_TEST(Vec3EqualityTests, NotEqualsOperator_IdenticalVectorsReturnsFalse)
 {
     const bool inequality = this->_eqVecA != this->_eqVecB;
@@ -421,7 +308,7 @@ TYPED_TEST(Vec3EqualityTests, NotEqualsOperator_IdenticalVectorsReturnsFalse)
 }
 
 
-/** @test Verify that the inequality operator returns true for different vectors. */
+/** @test Verify that the inequality operator returns True for different vectors. */
 TYPED_TEST(Vec3EqualityTests, NotEqualsOperator_DifferentVectorsReturnsTrue)
 {
     const bool inequality = this->_eqVecA != this->_dissimilarVec;
@@ -432,8 +319,8 @@ TYPED_TEST(Vec3EqualityTests, NotEqualsOperator_DifferentVectorsReturnsTrue)
 /** @test Verify that the inequality operator works for @ref flcn::Vec3<bool> with identical components. */
 TEST(Vec3EqualityTests, InequalityOperator_IdenticalBooleanVectorsReturnsFalse)
 {
-    const flcn::Vec3 vecA(true, false, true);
-    const flcn::Vec3 vecB(true, false, true);
+    const flcn::Vec3 vecA(True<float>, False<float>, True<float>);
+    const flcn::Vec3 vecB(True<float>, False<float>, True<float>);
 
     const bool inequality = vecA != vecB;
     EXPECT_FALSE(inequality);
@@ -443,66 +330,66 @@ TEST(Vec3EqualityTests, InequalityOperator_IdenticalBooleanVectorsReturnsFalse)
 /** @test Verify that the inequality operator works for @ref flcn::Vec3<bool> with different components. */
 TEST(Vec3EqualityTests, InequalityOperator_DifferentBooleanVectorsReturnsTrue)
 {
-    const flcn::Vec3 vecA(true, false, true);
-    const flcn::Vec3 vecB(true, true, true);
+    const flcn::Vec3 vecA(True<float>, False<float>, True<float>);
+    const flcn::Vec3 vecB(True<float>, True<float>, True<float>);
 
     const bool inequality = vecA != vecB;
     EXPECT_TRUE(inequality);
 }
 
 
-/** @test Verify that @ref flcn::Vec3::neq returns @ref flcn::Vec3<bool> mask for identical vectors. */
-TYPED_TEST(Vec3EqualityTests, InequalityReturnsCorrectBooleanMask)
-{
-    const flcn::Vec3<bool> mask = this->_eqVecA.neq(this->_dissimilarVec);
-    EXPECT_VEC_EQ(this->_inequalityMask, mask);
-}
-
-
-/** @test Verify that @ref flcn::Vec3::neq returns @ref flcn::Vec3<bool> mask for different vectors. */
-TEST(Vec3EqualityTests, MixedType_InequalityReturnsCorrectBooleanMask)
-{
-    const flcn::Vec3 vecA         = { 1, 2, 3 };
-    const flcn::Vec3 vecB         = { 1.0, 4.0, 0.0 };
-    const flcn::Vec3 expectedMask = { false, true, true };
-
-    const flcn::Vec3<bool> mask = vecA.neq(vecB);
-    EXPECT_VEC_EQ(expectedMask, mask);
-}
-
-
-/** @test Verify that @ref flcn::Vec3::neq follows IEEE 754 for NaN comparisons. */
-TEST(Vec3EqualityTests, NanInequalityReturnsTrueBooleanMask)
-{
-    const flcn::Vec3 vecA         = { NAN_F, NAN_F, NAN_F };
-    const flcn::Vec3<double> vecB = { 1.0, -5.88874789, flcn::constants::INFINITY_D };
-    const flcn::Vec3 expectedMask = { true, true, true };
-
-    const flcn::Vec3 mask = vecA.neq(vecB);
-    EXPECT_VEC_EQ(expectedMask, mask);
-}
-
-
-/** @test Verify that @ref flcn::Vec3::neq follows IEEE 754 for INFINITY comparisons. */
-TEST(Vec3EqualityTests, InfinityInequalityReturnsCorrectBooleanMask)
-{
-    const flcn::Vec3 vecA         = { INF, -INF, INF };
-    const flcn::Vec3 vecB         = { flcn::constants::INFINITY_D, flcn::constants::INFINITY_D, 10e11 };
-    const flcn::Vec3 expectedMask = { false, true, true };
-
-    const flcn::Vec3 mask = vecA.neq(vecB);
-    EXPECT_VEC_EQ(expectedMask, mask);
-}
-
-
-/**
- * @test Verify that the static variant of @ref flcn::Vec3::neq returns @ref flcn::Vec3<bool> mask
- *       for different vectors.
- */
-TYPED_TEST(Vec3EqualityTests, StaticWrapper_InequalityReturnsCorrectBooleanMask)
-{
-    const flcn::Vec3<bool> mask = flcn::Vec3<TypeParam>::neq(this->_eqVecA, this->_dissimilarVec);
-    EXPECT_VEC_EQ(this->_inequalityMask, mask);
-}
+// /** @test Verify that @ref flcn::Vec3::neq returns @ref flcn::Vec3<bool> mask for identical vectors. */
+// TYPED_TEST(Vec3EqualityTests, InequalityReturnsCorrectBooleanMask)
+// {
+//     const flcn::Vec3<bool> mask = this->_eqVecA.neq(this->_dissimilarVec);
+//     EXPECT_VEC_EQ(this->_inequalityMask, mask);
+// }
+//
+//
+// /** @test Verify that @ref flcn::Vec3::neq returns @ref flcn::Vec3<bool> mask for different vectors. */
+// TEST(Vec3EqualityTests, MixedType_InequalityReturnsCorrectBooleanMask)
+// {
+//     const flcn::Vec3 vecA         = { 1, 2, 3 };
+//     const flcn::Vec3 vecB         = { 1.0, 4.0, 0.0 };
+//     const flcn::Vec3 expectedMask = { False, True, True };
+//
+//     const flcn::Vec3<bool> mask = vecA.neq(vecB);
+//     EXPECT_VEC_EQ(expectedMask, mask);
+// }
+//
+//
+// /** @test Verify that @ref flcn::Vec3::neq follows IEEE 754 for NaN comparisons. */
+// TEST(Vec3EqualityTests, NanInequalityReturnsTrueBooleanMask)
+// {
+//     const flcn::Vec3 vecA         = { NAN_F, NAN_F, NAN_F };
+//     const flcn::Vec3<double> vecB = { 1.0, -5.88874789, flcn::constants::INFINITY_D };
+//     const flcn::Vec3 expectedMask = { True, True, True };
+//
+//     const flcn::Vec3 mask = vecA.neq(vecB);
+//     EXPECT_VEC_EQ(expectedMask, mask);
+// }
+//
+//
+// /** @test Verify that @ref flcn::Vec3::neq follows IEEE 754 for INFINITY comparisons. */
+// TEST(Vec3EqualityTests, InfinityInequalityReturnsCorrectBooleanMask)
+// {
+//     const flcn::Vec3 vecA         = { INF, -INF, INF };
+//     const flcn::Vec3 vecB         = { flcn::constants::INFINITY_D, flcn::constants::INFINITY_D, 10e11 };
+//     const flcn::Vec3 expectedMask = { False, True, True };
+//
+//     const flcn::Vec3 mask = vecA.neq(vecB);
+//     EXPECT_VEC_EQ(expectedMask, mask);
+// }
+//
+//
+// /**
+//  * @test Verify that the static variant of @ref flcn::Vec3::neq returns @ref flcn::Vec3<bool> mask
+//  *       for different vectors.
+//  */
+// TYPED_TEST(Vec3EqualityTests, StaticWrapper_InequalityReturnsCorrectBooleanMask)
+// {
+//     const flcn::Vec3<bool> mask = flcn::Vec3<TypeParam>::neq(this->_eqVecA, this->_dissimilarVec);
+//     EXPECT_VEC_EQ(this->_inequalityMask, mask);
+// }
 
 /** @} */

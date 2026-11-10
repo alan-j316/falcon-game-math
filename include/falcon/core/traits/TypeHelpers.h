@@ -91,6 +91,9 @@ namespace flcn::types
     template <typename T>
     using UInt_t = UInt<T>::type;
 
+    /// @brief Comparison mask type.
+    template <typename T>
+    using Mask_t = UInt_t<T>;
 
 } // namespace flcn::types
 

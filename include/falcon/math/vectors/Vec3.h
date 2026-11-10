@@ -99,6 +99,13 @@ namespace flcn
          */
         Vec3() = default;
 
+        /**
+         * @brief Initialize @ref Vec3 with a single value broadcast across its components.
+         *
+         * @param[in] val The value to use broadcast across all vector components.
+         */
+        [[nodiscard]] explicit constexpr Vec3(T val) noexcept;
+
 
         /**
          * @brief Initialize @ref Vec3 with passed in values.
@@ -171,7 +178,7 @@ namespace flcn
          * @brief Access the element at the second location (read-write access).
          * @return A reference to the second element of the vector.
          */
-         [[nodiscard]] constexpr ConstIndexableProxy<1> y() noexcept;
+        [[nodiscard]] constexpr ConstIndexableProxy<1> y() noexcept;
 
 
         /**
@@ -185,7 +192,7 @@ namespace flcn
          * @brief Access the element at the third location (read-write access).
          * @return A reference to the third element of the vector.
          */
-         [[nodiscard]] constexpr ConstIndexableProxy<2> z() noexcept;
+        [[nodiscard]] constexpr ConstIndexableProxy<2> z() noexcept;
 
 
         /**
@@ -296,6 +303,21 @@ namespace flcn
          * @return A copy of the vector component.
          */
         constexpr T operator[](size_t idx) const noexcept;
+
+
+        /// @brief Get the element at @p Index.
+        template <size_t Index>
+        constexpr T get() const noexcept;
+
+
+        /// @brief Get the element at @p Index (non-const variant).
+        template <size_t Index>
+        constexpr T get() noexcept;
+
+
+        /// @brief Get the element at @p Index to @p value.
+        template <size_t Index>
+        constexpr void set(T value) noexcept;
 
         /** @} */
         //

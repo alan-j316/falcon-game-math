@@ -17,6 +17,11 @@ namespace flcn
     /// +---------------------------------------------------------------------------------------+
 
     template <Arithmetic T>
+    FALCON_INLINE constexpr Vec3<T>::Vec3(T val) noexcept: _data{ val, val, val, T(0) }
+    {}
+
+
+    template <Arithmetic T>
     FALCON_INLINE constexpr Vec3<T>::Vec3(T v1, T v2, T v3) noexcept: _data{ v1, v2, v3, T(0) }
     {}
 
@@ -183,30 +188,33 @@ namespace flcn
         return _data.getAt(idx);
     }
 
-    // TODO: ADD
-    // template <Arithmetic T>
-    // template <size_t Index>
-    // FALCON_INLINE constexpr T Vec2<T>::get() const noexcept
-    // {
-    //     static_assert(Index < DIMENSION && "[Vec2]: Out of bounds access");
-    //     return _data.template getAt<Index>();
-    // }
-    //
-    //
-    // template <Arithmetic T>
-    // template <size_t Index>
-    // FALCON_INLINE constexpr T Vec2<T>::get() noexcept
-    // {
-    //     static_assert(Index < DIMENSION && "[Vec2]: Out of bounds access");
-    //     return _data.template getAt<Index>();
-    // }
-    //
-    //
-    // template <Arithmetic T>
-    // template <size_t Index>
-    // FALCON_INLINE constexpr void Vec2<T>::set(T value) noexcept
-    // {
-    //     static_assert(Index < DIMENSION && "[Vec2]: Out of bounds mutation");
-    //     _data.template setAt<Index>(value);
-    // }
+
+    template <Arithmetic T>
+    template <size_t Index>
+    FALCON_INLINE constexpr T Vec3<T>::get() const noexcept
+    {
+        static_assert(Index < DIMENSION && "[Vec3]: Out of bounds access");
+        return _data.template getAt<Index>();
+    }
+
+
+    template <Arithmetic T>
+    template <size_t Index>
+    FALCON_INLINE constexpr T Vec3<T>::get() noexcept
+    {
+        static_assert(Index < DIMENSION && "[Vec3]: Out of bounds access");
+        return _data.template getAt<Index>();
+    }
+
+
+    template <Arithmetic T>
+    template <size_t Index>
+    FALCON_INLINE constexpr void Vec3<T>::set(T value) noexcept
+    {
+        static_assert(Index < DIMENSION && "[Vec3]: Out of bounds mutation");
+        _data.template setAt<Index>(value);
+    }
+
+
+
 } // namespace flcn

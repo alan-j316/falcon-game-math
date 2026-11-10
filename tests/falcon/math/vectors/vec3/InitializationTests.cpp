@@ -46,6 +46,14 @@ TYPED_TEST(Vec3InitializationTests, EmptyConstructorInitializesZeroVector)
 }
 
 
+TYPED_TEST(Vec3InitializationTests, Ctor_SingleParameterInitializesVector)
+{
+    const auto a = static_cast<TypeParam>(3);
+    const flcn::Vec3<TypeParam> vec(a);
+    EXPECT_VEC_CONTAINS(vec, a, a, a);
+}
+
+
 /** @test Verify that the parameterized constructor correctly assigns components from the provided arguments. */
 TYPED_TEST(Vec3InitializationTests, ConstructorParametersInitializesVector)
 {

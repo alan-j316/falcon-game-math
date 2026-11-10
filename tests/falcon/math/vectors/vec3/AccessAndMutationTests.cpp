@@ -17,7 +17,6 @@
  * @{
  */
 
-
 /**************************************
  *            ACCESS TESTS            *
  **************************************/
@@ -63,6 +62,25 @@ TEST(Vec3AccessTests, AccessibleAsArray)
     EXPECT_FLOAT_EQ(3.0f, vec[0]);
     EXPECT_FLOAT_EQ(1.0f, vec[1]);
     EXPECT_FLOAT_EQ(6.0f, vec[2]);
+}
+
+
+TEST(Vec3AccessTests, ConstVec_AccessibleAsCompileTimeIndex)
+{
+    const flcn::Vec3 vec(3.0f, 1.0f, 6.0f);
+    EXPECT_FLOAT_EQ(3.0f, vec.get<0>());
+    EXPECT_FLOAT_EQ(1.0f, vec.get<1>());
+    EXPECT_FLOAT_EQ(6.0f, vec.get<2>());
+}
+
+
+TEST(Vec3AccessTests, NonConstVec_AccessibleAsCompileTimeIndex)
+{
+    flcn::Vec3 vec(3.0f, 1.0f, 6.0f);
+
+    EXPECT_FLOAT_EQ(3.0f, vec.get<0>());
+    EXPECT_FLOAT_EQ(1.0f, vec.get<1>());
+    EXPECT_FLOAT_EQ(6.0f, vec.get<2>());
 }
 
 
@@ -124,6 +142,20 @@ TEST(Vec3MutationTests, ElementsCanBeMutatedUsingIndex)
     vec[0] = 3.0f;
     vec[1] = 1.0f;
     vec[2] = 6.0f;
+
+    EXPECT_FLOAT_EQ(3.0f, vec[0]);
+    EXPECT_FLOAT_EQ(1.0f, vec[1]);
+    EXPECT_FLOAT_EQ(6.0f, vec[2]);
+}
+
+
+TEST(Vec3MutationTests, ElementsCanBeMutatedUsingCompileTimeIndexing)
+{
+    flcn::Vec3<float> vec{ 0.0f };
+
+    vec.set<0>(3.0f);
+    vec.set<1>(1.0f);
+    vec.set<2>(6.0f);
 
     EXPECT_FLOAT_EQ(3.0f, vec[0]);
     EXPECT_FLOAT_EQ(1.0f, vec[1]);

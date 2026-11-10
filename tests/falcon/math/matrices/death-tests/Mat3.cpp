@@ -91,7 +91,7 @@ namespace
 
         void SetUp() override
         {
-            _matrix         = { flcn::Vec3<T>{ 17, 13, 15 }, flcn::Vec3<T>{ 11, 16, 35 }, flcn::Vec3<T>{ 27, 44, 56 } };
+            _matrix         = { flcn::CVec3<T>{ 17, 13, 15 }, flcn::CVec3<T>{ 11, 16, 35 }, flcn::CVec3<T>{ 27, 44, 56 } };
             _scalar         = T(7);
             _expectedMatrix = { { T(2.428571428571428), T(1.857142857142857), T(2.142857142857143) },
                                 { T(1.571428571428571), T(2.285714285714286), T(5.0) },
@@ -122,12 +122,12 @@ namespace
     INSTANTIATE_TEST_SUITE_P(
         Mat3SingularMatrixInverse, Mat3InverseSingularTests,
         ::testing::Values(
-            flcn::Mat3{ flcn::Vec3{ 1.0f, 2.0f, 3.0f }, flcn::Vec3{ 1.0f, 2.0f, 3.0f }, flcn::Vec3{ 7.0f, 8.0f, 9.0f } },
-            flcn::Mat3{ flcn::Vec3{ 1.0f, 1.0f, 5.0f }, flcn::Vec3{ 2.0f, 2.0f, 3.0f }, flcn::Vec3{ 3.0f, 3.0f, 9.0f } },
-            flcn::Mat3{ flcn::Vec3{ 0.0f, 0.0f, 0.0f }, flcn::Vec3{ 1.0f, 2.0f, 3.0f }, flcn::Vec3{ 1.0f, 8.0f, 9.0f } },
-            flcn::Mat3{ flcn::Vec3{ 0.0f, 5.0f, 1.0f }, flcn::Vec3{ 0.0f, 2.0f, 3.0f }, flcn::Vec3{ 0.0f, 8.0f, 9.0f } },
-            flcn::Mat3{ flcn::Vec3{ 1.0f, 2.0f, 3.0f }, flcn::Vec3{ 2.0f, 4.0f, 6.0f }, flcn::Vec3{ 7.0f, 8.0f, 9.0f } },
-            flcn::Mat3{ flcn::Vec3{ 1.0f, 2.0f, 1.0f }, flcn::Vec3{ 2.0f, 4.0f, 3.0f }, flcn::Vec3{ 3.0f, 6.0f, 9.0f } }));
+            flcn::Mat3{ flcn::CVec3{ 1.0f, 2.0f, 3.0f }, flcn::CVec3{ 1.0f, 2.0f, 3.0f }, flcn::CVec3{ 7.0f, 8.0f, 9.0f } },
+            flcn::Mat3{ flcn::CVec3{ 1.0f, 1.0f, 5.0f }, flcn::CVec3{ 2.0f, 2.0f, 3.0f }, flcn::CVec3{ 3.0f, 3.0f, 9.0f } },
+            flcn::Mat3{ flcn::CVec3{ 0.0f, 0.0f, 0.0f }, flcn::CVec3{ 1.0f, 2.0f, 3.0f }, flcn::CVec3{ 1.0f, 8.0f, 9.0f } },
+            flcn::Mat3{ flcn::CVec3{ 0.0f, 5.0f, 1.0f }, flcn::CVec3{ 0.0f, 2.0f, 3.0f }, flcn::CVec3{ 0.0f, 8.0f, 9.0f } },
+            flcn::Mat3{ flcn::CVec3{ 1.0f, 2.0f, 3.0f }, flcn::CVec3{ 2.0f, 4.0f, 6.0f }, flcn::CVec3{ 7.0f, 8.0f, 9.0f } },
+            flcn::Mat3{ flcn::CVec3{ 1.0f, 2.0f, 1.0f }, flcn::CVec3{ 2.0f, 4.0f, 3.0f }, flcn::CVec3{ 3.0f, 6.0f, 9.0f } }));
 
 
 
@@ -166,7 +166,7 @@ TEST_P(Mat3IndexingTests, OutOfBoundAccess_TriggersAssertInDebugMode)
 TEST_P(Mat3ColumnIndexingTests, OutOfBoundMutation_TriggersAssertInDebugMode)
 {
     const auto col = GetParam();
-    EXPECT_DEBUG_DEATH(static_cast<void>(mat[col] = flcn::Vec3<int>::zero()), "");
+    EXPECT_DEBUG_DEATH(static_cast<void>(mat[col] = flcn::CVec3<int>::zero()), "");
 }
 
 

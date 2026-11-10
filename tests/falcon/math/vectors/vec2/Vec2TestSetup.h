@@ -4,7 +4,7 @@
  * @author Alan Abraham P Kochumon
  * @date Created on: April 03, 2026
  *
- * @brief Define test setups common to all @ref Vec3 tests.
+ * @brief Define test setups common to all @ref CVec3 tests.
  *
  * @copyright Copyright (c) 2026 Alan Abraham P Kochumon
  */

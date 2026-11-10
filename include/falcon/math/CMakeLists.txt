@@ -43,8 +43,8 @@ add_library(${FALCON_MATH_TARGET_NAME} INTERFACE
         vectors/Point2.tpp
         vectors/Point3.h
         vectors/Point3.tpp
-        vectors/Vec3.h
-        vectors/Vec3.tpp
+        vectors/CVec3.h
+        vectors/CVec3.tpp
         vectors/Vec4.h
         vectors/Vec4.tpp
 

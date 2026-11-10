@@ -33,17 +33,17 @@ namespace
     class Mat3InvolutionFactoryFPTests: public testing::Test
     {
     protected:
-        flcn::Vec3<T> _norm;
+        flcn::CVec3<T> _norm;
         flcn::Mat3<T> _expectedInvolution;
 
         void SetUp() override
         {
-            _norm = flcn::Vec3{ T(0.3244428422615251), T(0.48666426339228763), T(0.8111071056538127) };
+            _norm = flcn::CVec3{ T(0.3244428422615251), T(0.48666426339228763), T(0.8111071056538127) };
 
             _expectedInvolution = {
-                flcn::Vec3{ T(-0.7894736842105263), T(0.31578947368421056), T(0.5263157894736843) },
-                flcn::Vec3{ T(0.31578947368421056), T(-0.5263157894736842), T(0.7894736842105263) },
-                flcn::Vec3{ T(0.5263157894736843), T(0.7894736842105263), T(0.3157894736842106) },
+                flcn::CVec3{ T(-0.7894736842105263), T(0.31578947368421056), T(0.5263157894736843) },
+                flcn::CVec3{ T(0.31578947368421056), T(-0.5263157894736842), T(0.7894736842105263) },
+                flcn::CVec3{ T(0.5263157894736843), T(0.7894736842105263), T(0.3157894736842106) },
             };
         }
     };
@@ -59,23 +59,23 @@ namespace
     class Mat3InvolutionFactoryIntTests: public ::testing::Test
     {
     protected:
-        flcn::Vec3<T> _xAxis, _yAxis, _zAxis;
+        flcn::CVec3<T> _xAxis, _yAxis, _zAxis;
         flcn::Mat3<T> _expectedInvolutionX, _expectedInvolutionY, _expectedInvolutionZ;
 
         void SetUp() override
         {
-            _xAxis = flcn::Vec3{ T(1), T(0), T(0) };
-            _yAxis = flcn::Vec3{ T(0), T(1), T(0) };
-            _zAxis = flcn::Vec3{ T(0), T(0), T(1) };
+            _xAxis = flcn::CVec3{ T(1), T(0), T(0) };
+            _yAxis = flcn::CVec3{ T(0), T(1), T(0) };
+            _zAxis = flcn::CVec3{ T(0), T(0), T(1) };
 
-            _expectedInvolutionX = { flcn::Vec3{ T(1), T(0), T(0) }, flcn::Vec3{ T(0), T(-1), T(0) },
-                                     flcn::Vec3{ T(0), T(0), T(-1) } };
+            _expectedInvolutionX = { flcn::CVec3{ T(1), T(0), T(0) }, flcn::CVec3{ T(0), T(-1), T(0) },
+                                     flcn::CVec3{ T(0), T(0), T(-1) } };
 
-            _expectedInvolutionY = { flcn::Vec3{ T(-1), T(0), T(0) }, flcn::Vec3{ T(0), T(1), T(0) },
-                                     flcn::Vec3{ T(0), T(0), T(-1) } };
+            _expectedInvolutionY = { flcn::CVec3{ T(-1), T(0), T(0) }, flcn::CVec3{ T(0), T(1), T(0) },
+                                     flcn::CVec3{ T(0), T(0), T(-1) } };
 
-            _expectedInvolutionZ = { flcn::Vec3{ T(-1), T(0), T(0) }, flcn::Vec3{ T(0), T(-1), T(0) },
-                                     flcn::Vec3{ T(0), T(0), T(1) } };
+            _expectedInvolutionZ = { flcn::CVec3{ T(-1), T(0), T(0) }, flcn::CVec3{ T(0), T(-1), T(0) },
+                                     flcn::CVec3{ T(0), T(0), T(1) } };
         }
     };
     TYPED_TEST_SUITE(Mat3InvolutionFactoryIntTests, SupportedSignedArithmeticTypes);
@@ -89,10 +89,10 @@ namespace
     namespace static_tests
     {
         /// @test Verify that involution matrix transformation factory is available at compile time.
-        constexpr auto INVOLUTION_MAT = flcn::Mat3<int>::makeInvolution(flcn::Vec3{ 1, 0, 0 });
-        static_assert(INVOLUTION_MAT[0] == flcn::Vec3{ 1, 0, 0});
-        static_assert(INVOLUTION_MAT[1] == flcn::Vec3{ 0, -1, 0 });
-        static_assert(INVOLUTION_MAT[2] == flcn::Vec3{ 0, 0, -1 });
+        constexpr auto INVOLUTION_MAT = flcn::Mat3<int>::makeInvolution(flcn::CVec3{ 1, 0, 0 });
+        static_assert(INVOLUTION_MAT[0] == flcn::CVec3{ 1, 0, 0});
+        static_assert(INVOLUTION_MAT[1] == flcn::CVec3{ 0, -1, 0 });
+        static_assert(INVOLUTION_MAT[2] == flcn::CVec3{ 0, 0, -1 });
 
     } // namespace static_tests
 

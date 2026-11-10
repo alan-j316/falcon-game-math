@@ -35,9 +35,9 @@ namespace
 
         void SetUp() override
         {
-            _matA = { flcn::Vec3<T>(-1, 2, 3), flcn::Vec3<T>(5, 6, 7), flcn::Vec3<T>(0, 15, -12), flcn::Vec3<T>(1, 3, 1) };
-            _expectedMat = { flcn::Vec3<T>(1, -2, -3), flcn::Vec3<T>(-5, -6, -7), flcn::Vec3<T>(0, -15, 12),
-                             flcn::Vec3<T>(-1, -3, -1) };
+            _matA = { flcn::CVec3<T>(-1, 2, 3), flcn::CVec3<T>(5, 6, 7), flcn::CVec3<T>(0, 15, -12), flcn::CVec3<T>(1, 3, 1) };
+            _expectedMat = { flcn::CVec3<T>(1, -2, -3), flcn::CVec3<T>(-5, -6, -7), flcn::CVec3<T>(0, -15, 12),
+                             flcn::CVec3<T>(-1, -3, -1) };
         }
     };
     TYPED_TEST_SUITE(Mat3x4NegationTests, SupportedSignedArithmeticTypes);

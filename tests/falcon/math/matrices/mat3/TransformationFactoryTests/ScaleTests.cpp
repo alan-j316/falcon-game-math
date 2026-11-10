@@ -37,8 +37,8 @@ namespace
 
         void SetUp() override
         {
-            _expectedMat = { flcn::Vec3{ T(5.3821839321), T(0), T(0) }, flcn::Vec3{ T(0), T(5.3821839321), T(0) },
-                             flcn::Vec3{ T(0), T(0), T(5.3821839321) } };
+            _expectedMat = { flcn::CVec3{ T(5.3821839321), T(0), T(0) }, flcn::CVec3{ T(0), T(5.3821839321), T(0) },
+                             flcn::CVec3{ T(0), T(0), T(5.3821839321) } };
             _scale       = T(5.3821839321);
         }
     };
@@ -59,8 +59,8 @@ namespace
 
         void SetUp() override
         {
-            _expectedMat = { flcn::Vec3{ T(5.3821839321), T(0), T(0) }, flcn::Vec3{ T(0), T(8.1234921348), T(0) },
-                             flcn::Vec3{ T(0), T(0), T(0.12348921340) } };
+            _expectedMat = { flcn::CVec3{ T(5.3821839321), T(0), T(0) }, flcn::CVec3{ T(0), T(8.1234921348), T(0) },
+                             flcn::CVec3{ T(0), T(0), T(0.12348921340) } };
             _scaleX      = T(5.3821839321);
             _scaleY      = T(8.1234921348);
             _scaleZ      = T(0.12348921340);
@@ -78,7 +78,7 @@ namespace
     class Mat3ScaleFactoryDirectionVectorFPTests: public testing::Test
     {
     protected:
-        flcn::Vec3<T> _direction;
+        flcn::CVec3<T> _direction;
         T _scale;
         flcn::Mat3<T> _expectedMat;
 
@@ -86,9 +86,9 @@ namespace
         {
             _scale       = 5;
             _direction   = { T(0.2672612419124244), T(0.5345224838248488), T(0.8017837257372732) };
-            _expectedMat = { flcn::Vec3{ T(1.2857142857142858), T(0.5714285714285715), T(0.8571428571428572) },
-                             flcn::Vec3{ T(0.5714285714285715), T(2.1428571428571432), T(1.7142857142857144) },
-                             flcn::Vec3{ T(0.8571428571428572), T(1.7142857142857144), T(3.5714285714285716) } };
+            _expectedMat = { flcn::CVec3{ T(1.2857142857142858), T(0.5714285714285715), T(0.8571428571428572) },
+                             flcn::CVec3{ T(0.5714285714285715), T(2.1428571428571432), T(1.7142857142857144) },
+                             flcn::CVec3{ T(0.8571428571428572), T(1.7142857142857144), T(3.5714285714285716) } };
         }
     };
     TYPED_TEST_SUITE(Mat3ScaleFactoryDirectionVectorFPTests, SupportedFloatingPointTypes);
@@ -103,25 +103,25 @@ namespace
     class Mat3ScaleFactoryDirectionVectorIntTests: public testing::Test
     {
     protected:
-        flcn::Vec3<T> _xAxis, _yAxis, _zAxis;
+        flcn::CVec3<T> _xAxis, _yAxis, _zAxis;
         T _scale;
         flcn::Mat3<T> _expectedMatX, _expectedMatY, _expectedMatZ;
 
         void SetUp() override
         {
             _scale = 5;
-            _xAxis = flcn::Vec3{ T(1), T(0), T(0) };
-            _yAxis = flcn::Vec3{ T(0), T(1), T(0) };
-            _zAxis = flcn::Vec3{ T(0), T(0), T(1) };
+            _xAxis = flcn::CVec3{ T(1), T(0), T(0) };
+            _yAxis = flcn::CVec3{ T(0), T(1), T(0) };
+            _zAxis = flcn::CVec3{ T(0), T(0), T(1) };
 
-            _expectedMatX = flcn::Mat3<T>{ flcn::Vec3{ T(5), T(0), T(0) }, flcn::Vec3{ T(0), T(1), T(0) },
-                                          flcn::Vec3{ T(0), T(0), T(1) } };
+            _expectedMatX = flcn::Mat3<T>{ flcn::CVec3{ T(5), T(0), T(0) }, flcn::CVec3{ T(0), T(1), T(0) },
+                                          flcn::CVec3{ T(0), T(0), T(1) } };
 
-            _expectedMatY = flcn::Mat3<T>{ flcn::Vec3{ T(1), T(0), T(0) }, flcn::Vec3{ T(0), T(5), T(0) },
-                                          flcn::Vec3{ T(0), T(0), T(1) } };
+            _expectedMatY = flcn::Mat3<T>{ flcn::CVec3{ T(1), T(0), T(0) }, flcn::CVec3{ T(0), T(5), T(0) },
+                                          flcn::CVec3{ T(0), T(0), T(1) } };
 
-            _expectedMatZ = flcn::Mat3<T>{ flcn::Vec3{ T(1), T(0), T(0) }, flcn::Vec3{ T(0), T(1), T(0) },
-                                          flcn::Vec3{ T(0), T(0), T(5) } };
+            _expectedMatZ = flcn::Mat3<T>{ flcn::CVec3{ T(1), T(0), T(0) }, flcn::CVec3{ T(0), T(1), T(0) },
+                                          flcn::CVec3{ T(0), T(0), T(5) } };
         }
     };
     TYPED_TEST_SUITE(Mat3ScaleFactoryDirectionVectorIntTests, SupportedSignedArithmeticTypes);
@@ -137,22 +137,22 @@ namespace
     {
         /// @test Verify that scale transformation factory for uniform scale is available at compile time.
         constexpr auto UNIFORM_SCALE_MAT = flcn::Mat3<int>::makeScale(2);
-        static_assert(UNIFORM_SCALE_MAT[0] == flcn::Vec3(2, 0, 0));
-        static_assert(UNIFORM_SCALE_MAT[1] == flcn::Vec3(0, 2, 0));
-        static_assert(UNIFORM_SCALE_MAT[2] == flcn::Vec3(0, 0, 2));
+        static_assert(UNIFORM_SCALE_MAT[0] == flcn::CVec3(2, 0, 0));
+        static_assert(UNIFORM_SCALE_MAT[1] == flcn::CVec3(0, 2, 0));
+        static_assert(UNIFORM_SCALE_MAT[2] == flcn::CVec3(0, 0, 2));
 
         /// @test Verify that scale transformation factory for non-uniform scale is available at compile time.
         constexpr auto NON_UNIFORM_SCALE_MAT = flcn::Mat3<int>::makeScale(2, 3, 4);
-        static_assert(NON_UNIFORM_SCALE_MAT[0] == flcn::Vec3(2, 0, 0));
-        static_assert(NON_UNIFORM_SCALE_MAT[1] == flcn::Vec3(0, 3, 0));
-        static_assert(NON_UNIFORM_SCALE_MAT[2] == flcn::Vec3(0, 0, 4));
+        static_assert(NON_UNIFORM_SCALE_MAT[0] == flcn::CVec3(2, 0, 0));
+        static_assert(NON_UNIFORM_SCALE_MAT[1] == flcn::CVec3(0, 3, 0));
+        static_assert(NON_UNIFORM_SCALE_MAT[2] == flcn::CVec3(0, 0, 4));
 
         /// @test Verify that scale transformation factory for scaling along any direction is available at compile time.
         /// Tests scaling along x-axis.
-        constexpr auto SCALE_ANY_DIR = flcn::Mat3<int>::makeScale(2, flcn::Vec3(1, 0, 0));
-        static_assert(SCALE_ANY_DIR[0] == flcn::Vec3(2, 0, 0));
-        static_assert(SCALE_ANY_DIR[1] == flcn::Vec3(0, 1, 0));
-        static_assert(SCALE_ANY_DIR[2] == flcn::Vec3(0, 0, 1));
+        constexpr auto SCALE_ANY_DIR = flcn::Mat3<int>::makeScale(2, flcn::CVec3(1, 0, 0));
+        static_assert(SCALE_ANY_DIR[0] == flcn::CVec3(2, 0, 0));
+        static_assert(SCALE_ANY_DIR[1] == flcn::CVec3(0, 1, 0));
+        static_assert(SCALE_ANY_DIR[2] == flcn::CVec3(0, 0, 1));
 
     } // namespace static_tests
 

@@ -41,8 +41,8 @@ namespace
         {
             _matrix            = { flcn::Vec4{ T(1), T(4), T(7), T(10) }, flcn::Vec4{ T(2), T(5), T(8), T(11) },
                                    flcn::Vec4{ T(3), T(6), T(9), T(12) } };
-            _expectedTranspose = { flcn::Vec3{ T(1), T(2), T(3) }, flcn::Vec3{ T(4), T(5), T(6) },
-                                   flcn::Vec3{ T(7), T(8), T(9) }, flcn::Vec3{ T(10), T(11), T(12) } };
+            _expectedTranspose = { flcn::CVec3{ T(1), T(2), T(3) }, flcn::CVec3{ T(4), T(5), T(6) },
+                                   flcn::CVec3{ T(7), T(8), T(9) }, flcn::CVec3{ T(10), T(11), T(12) } };
         }
     };
     TYPED_TEST_SUITE(Mat4x3TransposeTests, SupportedTypes);
@@ -58,24 +58,24 @@ namespace
         constexpr flcn::Mat4x3 MAT(1, 2, 3, 4, 5, 6, 7, 8, 9, 10, 11, 12);
 
         // NOTE: The matrix takes elements in row, col order
-        //       but when compared with Vec3, we are taking col, row order.
-        //       That's why Vec3(1, 2, 3) is the transpose and not Vec4(1, 4, 7)
+        //       but when compared with CVec3, we are taking col, row order.
+        //       That's why CVec3(1, 2, 3) is the transpose and not Vec4(1, 4, 7)
 
         /// @test Verify matrix transpose is returns a 3x4 matrix with swapped rows and
         ///       columns at compile time.
         constexpr auto TRANSPOSE_MAT = MAT.transpose();
-        static_assert(TRANSPOSE_MAT[0] == flcn::Vec3(1, 2, 3));
-        static_assert(TRANSPOSE_MAT[1] == flcn::Vec3(4, 5, 6));
-        static_assert(TRANSPOSE_MAT[2] == flcn::Vec3(7, 8, 9));
-        static_assert(TRANSPOSE_MAT[3] == flcn::Vec3(10, 11, 12));
+        static_assert(TRANSPOSE_MAT[0] == flcn::CVec3(1, 2, 3));
+        static_assert(TRANSPOSE_MAT[1] == flcn::CVec3(4, 5, 6));
+        static_assert(TRANSPOSE_MAT[2] == flcn::CVec3(7, 8, 9));
+        static_assert(TRANSPOSE_MAT[3] == flcn::CVec3(10, 11, 12));
 
         /// @test Verify matrix transpose using static variant returns a 3x4 matrix with
         ///       swapped rows and columns at compile time.
         constexpr auto TRANSPOSE_MAT_STATIC = flcn::Mat4x3<int>::transpose(MAT);
-        static_assert(TRANSPOSE_MAT_STATIC[0] == flcn::Vec3(1, 2, 3));
-        static_assert(TRANSPOSE_MAT_STATIC[1] == flcn::Vec3(4, 5, 6));
-        static_assert(TRANSPOSE_MAT_STATIC[2] == flcn::Vec3(7, 8, 9));
-        static_assert(TRANSPOSE_MAT_STATIC[3] == flcn::Vec3(10, 11, 12));
+        static_assert(TRANSPOSE_MAT_STATIC[0] == flcn::CVec3(1, 2, 3));
+        static_assert(TRANSPOSE_MAT_STATIC[1] == flcn::CVec3(4, 5, 6));
+        static_assert(TRANSPOSE_MAT_STATIC[2] == flcn::CVec3(7, 8, 9));
+        static_assert(TRANSPOSE_MAT_STATIC[3] == flcn::CVec3(10, 11, 12));
 
     } // namespace static_tests
 

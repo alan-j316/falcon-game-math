@@ -40,11 +40,11 @@ protected:
 
     void SetUp() override
     {
-        _mat                 = { flcn::Vec3{ T(7), T(13), T(11) }, flcn::Vec3{ T(5), T(4), T(2) } };
+        _mat                 = { flcn::CVec3{ T(7), T(13), T(11) }, flcn::CVec3{ T(5), T(4), T(2) } };
         _scalar              = T(2.123456789123456);
-        _expectedFloatingMat = { flcn::Vec3{ T(14.864197523864192), T(27.604938258604928), T(23.358024680358014) },
-                                 flcn::Vec3{ T(10.61728394561728), T(8.493827156493824), T(4.246913578246912) } };
-        _expectedIntegralMat = { flcn::Vec3{ T(14), T(26), T(22) }, flcn::Vec3{ T(10), T(8), T(4) } };
+        _expectedFloatingMat = { flcn::CVec3{ T(14.864197523864192), T(27.604938258604928), T(23.358024680358014) },
+                                 flcn::CVec3{ T(10.61728394561728), T(8.493827156493824), T(4.246913578246912) } };
+        _expectedIntegralMat = { flcn::CVec3{ T(14), T(26), T(22) }, flcn::CVec3{ T(10), T(8), T(4) } };
     }
 };
 TYPED_TEST_SUITE(Mat3x2ScalarMultiplicationTests, SupportedArithmeticTypes);

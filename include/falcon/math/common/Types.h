@@ -44,7 +44,7 @@ namespace flcn
     struct Vec2;
 
     template <Arithmetic T>
-    struct Vec3;
+    struct CVec3;
 
     template <Arithmetic T>
     struct Vec4;
@@ -108,16 +108,16 @@ namespace flcn
     using PromotedFloatCVec2 = CVec2<Magnitude<PromotedValue_t<T, U>>>;
 
 
-    /** @brief Alias for @ref Vec3 with promoted value type. */
+    /** @brief Alias for @ref CVec3 with promoted value type. */
     template <Arithmetic T, Arithmetic U>
         requires Arithmetic<PromotedValue_t<T, U>>
-    using PromotedVec3 = Vec3<PromotedValue_t<T, U>>;
+    using PromotedCVec3 = CVec3<PromotedValue_t<T, U>>;
 
 
-    /** @brief Alias for @ref Vec3 with a `value_type` of @ref Magnitude of the wider type. */
+    /** @brief Alias for @ref CVec3 with a `value_type` of @ref Magnitude of the wider type. */
     template <Arithmetic T, Arithmetic U>
         requires Arithmetic<PromotedValue_t<T, U>>
-    using PromotedFloatVec3 = Vec3<Magnitude<PromotedValue_t<T, U>>>;
+    using PromotedFloatCVec3 = CVec3<Magnitude<PromotedValue_t<T, U>>>;
 
 
     /** @brief Alias for @ref Vec4 with promoted value type. */

@@ -23,7 +23,7 @@
 
 
 #include "falcon/math/common/Types.h"
-#include "falcon/math/vectors/Vec3.h"
+#include "falcon/math/vectors/CVec3.h"
 
 #include <array>
 #include <type_traits>
@@ -86,7 +86,7 @@ namespace flcn
          * @param[in] col0 The 3D vector to use as the first column entry.
          * @param[in] col1 The 3D vector to use as the second column entry.
          */
-        [[nodiscard]] constexpr Mat3x2(const Vec3<T>& col0, const Vec3<T>& col1) noexcept;
+        [[nodiscard]] constexpr Mat3x2(const CVec3<T>& col0, const CVec3<T>& col1) noexcept;
 
 
 
@@ -119,7 +119,7 @@ namespace flcn
          *
          * @return A reference to the column vector.
          */
-        [[nodiscard]] constexpr Vec3<T>& operator[](std::size_t col) noexcept;
+        [[nodiscard]] constexpr CVec3<T>& operator[](std::size_t col) noexcept;
 
 
         /**
@@ -131,7 +131,7 @@ namespace flcn
          *
          * @return A const reference to the column vector.
          */
-        [[nodiscard]] constexpr const Vec3<T>& operator[](std::size_t col) const noexcept;
+        [[nodiscard]] constexpr const CVec3<T>& operator[](std::size_t col) const noexcept;
 
 
         /**
@@ -757,7 +757,7 @@ namespace flcn
 
 
     private:
-        std::array<Vec3<T>, COLUMNS> _data;
+        std::array<CVec3<T>, COLUMNS> _data;
     };
 
 

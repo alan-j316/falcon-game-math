@@ -20,7 +20,7 @@
 #include "falcon/math/matrices/Mat4x2.h"
 #include "falcon/math/matrices/Mat4x3.h"
 #include "falcon/math/vectors/CVec2.h"
-#include "falcon/math/vectors/Vec3.h"
+#include "falcon/math/vectors/CVec3.h"
 #include "falcon/math/vectors/Vec4.h"
 
 
@@ -57,13 +57,13 @@ namespace flcn
      */
     template <StrictArithmetic T, StrictArithmetic U>
         requires StrictSignedness<T, U>
-    [[nodiscard]] constexpr PromotedCVec2<T, U> operator*(const Mat2x3<T>& mat, const Vec3<U>& vec) noexcept;
+    [[nodiscard]] constexpr PromotedCVec2<T, U> operator*(const Mat2x3<T>& mat, const CVec3<U>& vec) noexcept;
 
 
     /**
      * @brief Multiply a 2D row vector with a 2x3 matrix.
      *
-     * @note Promotes the result to the wider type using @ref PromotedVec3<T, U>.
+     * @note Promotes the result to the wider type using @ref PromotedCVec3<T, U>.
      * @note Operation is restricted to numeric types via @ref StrictArithmetic.
      *
      * @tparam U Numeric type of the second matrix. Must satisfy @ref StrictArithmetic.
@@ -75,7 +75,7 @@ namespace flcn
      */
     template <StrictArithmetic T, StrictArithmetic U>
         requires StrictSignedness<T, U>
-    [[nodiscard]] constexpr PromotedVec3<T, U> operator*(const CVec2<T>& vec, const Mat2x3<U>& mat) noexcept;
+    [[nodiscard]] constexpr PromotedCVec3<T, U> operator*(const CVec2<T>& vec, const Mat2x3<U>& mat) noexcept;
 
     /** @} */
 
@@ -145,7 +145,7 @@ namespace flcn
      */
     template <StrictArithmetic T, StrictArithmetic U>
         requires StrictSignedness<T, U>
-    [[nodiscard]] constexpr PromotedVec3<T, U> operator*(const Mat3x2<T>& mat, const CVec2<U>& vec) noexcept;
+    [[nodiscard]] constexpr PromotedCVec3<T, U> operator*(const Mat3x2<T>& mat, const CVec2<U>& vec) noexcept;
 
 
     /**
@@ -163,7 +163,7 @@ namespace flcn
      */
     template <StrictArithmetic T, StrictArithmetic U>
         requires StrictSignedness<T, U>
-    [[nodiscard]] constexpr PromotedCVec2<T, U> operator*(const Vec3<T>& vec, const Mat3x2<U>& mat) noexcept;
+    [[nodiscard]] constexpr PromotedCVec2<T, U> operator*(const CVec3<T>& vec, const Mat3x2<U>& mat) noexcept;
 
     /** @} */
 
@@ -189,7 +189,7 @@ namespace flcn
      */
     template <StrictArithmetic T, StrictArithmetic U>
         requires StrictSignedness<T, U>
-    [[nodiscard]] constexpr PromotedVec3<T, U> operator*(const Mat3x4<T>& mat, const Vec4<U>& vec) noexcept;
+    [[nodiscard]] constexpr PromotedCVec3<T, U> operator*(const Mat3x4<T>& mat, const Vec4<U>& vec) noexcept;
 
 
     /**
@@ -207,7 +207,7 @@ namespace flcn
      */
     template <StrictArithmetic T, StrictArithmetic U>
         requires StrictSignedness<T, U>
-    [[nodiscard]] constexpr PromotedVec4<T, U> operator*(const Vec3<T>& vec, const Mat3x4<U>& mat) noexcept;
+    [[nodiscard]] constexpr PromotedVec4<T, U> operator*(const CVec3<T>& vec, const Mat3x4<U>& mat) noexcept;
 
 
     /** @} */
@@ -278,7 +278,7 @@ namespace flcn
      */
     template <StrictArithmetic T, StrictArithmetic U>
         requires StrictSignedness<T, U>
-    [[nodiscard]] constexpr PromotedVec4<T, U> operator*(const Mat4x3<T>& mat, const Vec3<U>& vec) noexcept;
+    [[nodiscard]] constexpr PromotedVec4<T, U> operator*(const Mat4x3<T>& mat, const CVec3<U>& vec) noexcept;
 
 
     /**
@@ -296,7 +296,7 @@ namespace flcn
      */
     template <StrictArithmetic T, StrictArithmetic U>
         requires StrictSignedness<T, U>
-    [[nodiscard]] constexpr PromotedVec3<T, U> operator*( const Vec4<U>& vec, const Mat4x3<T>& mat) noexcept;
+    [[nodiscard]] constexpr PromotedCVec3<T, U> operator*( const Vec4<U>& vec, const Mat4x3<T>& mat) noexcept;
 
     /** @} */
 

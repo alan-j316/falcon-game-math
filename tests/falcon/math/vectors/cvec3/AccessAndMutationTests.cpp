@@ -3,17 +3,17 @@
  * @author Alan Abraham P Kochumon
  * @date Created on: March 10, 2026
  *
- * @brief Verify @ref flcn::Vec3 accessors and mutators.
+ * @brief Verify @ref flcn::CVec3 accessors and mutators.
  *
  * @copyright Copyright (c) 2026 Alan Abraham P Kochumon
  */
 
 
-#include "Vec3TestSetup.h"
+#include "CVec3TestSetup.h"
 
 
 /**
- * @addtogroup T_Falcon_Vec3_Access
+ * @addtogroup T_Falcon_CVec3_Access
  * @{
  */
 
@@ -25,7 +25,7 @@ namespace
 
     namespace
     {
-        constexpr flcn::Vec3 vector(1, 2, 3);
+        constexpr flcn::CVec3 vector(1, 2, 3);
 
         /// @test Verify that vector is accessible as <x, y, z> at compile time.
         static_assert(vector.x() == 1);
@@ -53,9 +53,9 @@ namespace
  **************************************/
 
 /** @test Verify that the components are accessible via named spatial aliases (x, y, z). */
-TEST(Vec3AccessTests, AccessibleAsXYZW)
+TEST(CVec3AccessTests, AccessibleAsXYZW)
 {
-    const flcn::Vec3 vec(3.0f, 1.0f, 6.0f);
+    const flcn::CVec3 vec(3.0f, 1.0f, 6.0f);
 
     EXPECT_FLOAT_EQ(3.0f, vec.x());
     EXPECT_FLOAT_EQ(1.0f, vec.y());
@@ -64,9 +64,9 @@ TEST(Vec3AccessTests, AccessibleAsXYZW)
 
 
 /** @test Verify that the components are accessible via named spatial aliases (s, t, p). */
-TEST(Vec3AccessTests, AccessibleAsSTPQ)
+TEST(CVec3AccessTests, AccessibleAsSTPQ)
 {
-    const flcn::Vec3 vec(3.0f, 1.0f, 6.0f);
+    const flcn::CVec3 vec(3.0f, 1.0f, 6.0f);
 
     EXPECT_FLOAT_EQ(3.0f, vec.s());
     EXPECT_FLOAT_EQ(1.0f, vec.t());
@@ -75,9 +75,9 @@ TEST(Vec3AccessTests, AccessibleAsSTPQ)
 
 
 /** @test Verify that the components are accessible via named spatial aliases (r, g, b). */
-TEST(Vec3AccessTests, AccessibleAsRGBA)
+TEST(CVec3AccessTests, AccessibleAsRGBA)
 {
-    const flcn::Vec3 vec(3.0f, 1.0f, 6.0f);
+    const flcn::CVec3 vec(3.0f, 1.0f, 6.0f);
 
     EXPECT_FLOAT_EQ(3.0f, vec.r());
     EXPECT_FLOAT_EQ(1.0f, vec.g());
@@ -86,9 +86,9 @@ TEST(Vec3AccessTests, AccessibleAsRGBA)
 
 
 /** @test Verify that the components are accessible via subscript indexing for reads. */
-TEST(Vec3AccessTests, AccessibleAsArray)
+TEST(CVec3AccessTests, AccessibleAsArray)
 {
-    const flcn::Vec3 vec(3.0f, 1.0f, 6.0f);
+    const flcn::CVec3 vec(3.0f, 1.0f, 6.0f);
 
     EXPECT_FLOAT_EQ(3.0f, vec[0]);
     EXPECT_FLOAT_EQ(1.0f, vec[1]);
@@ -102,9 +102,9 @@ TEST(Vec3AccessTests, AccessibleAsArray)
  **************************************/
 
 /** @test Verify that the components can be mutated via named spatial aliases (x, y, z). */
-TEST(Vec3MutationTests, ElementsCanBeMutatedUsingXYZW)
+TEST(CVec3MutationTests, ElementsCanBeMutatedUsingXYZW)
 {
-    flcn::Vec3<float> vec;
+    flcn::CVec3<float> vec;
 
     vec.x() = 3.0f;
     vec.y() = 1.0f;
@@ -117,9 +117,9 @@ TEST(Vec3MutationTests, ElementsCanBeMutatedUsingXYZW)
 
 
 /** @test Verify that the components can be mutated via named spatial aliases (s, t, p). */
-TEST(Vec3MutationTests, ElementsCanBeMutatedUsingSTPQ)
+TEST(CVec3MutationTests, ElementsCanBeMutatedUsingSTPQ)
 {
-    flcn::Vec3<float> vec;
+    flcn::CVec3<float> vec;
 
     vec.s() = 3.0f;
     vec.t() = 1.0f;
@@ -132,9 +132,9 @@ TEST(Vec3MutationTests, ElementsCanBeMutatedUsingSTPQ)
 
 
 /** @test Verify that the components can be mutated via named spatial aliases (r, g, b). */
-TEST(Vec3MutationTests, ElementsCanBeMutatedUsingRGBA)
+TEST(CVec3MutationTests, ElementsCanBeMutatedUsingRGBA)
 {
-    flcn::Vec3<float> vec;
+    flcn::CVec3<float> vec;
 
     vec.r() = 3.0f;
     vec.g() = 1.0f;
@@ -147,9 +147,9 @@ TEST(Vec3MutationTests, ElementsCanBeMutatedUsingRGBA)
 
 
 /** @test Verify that the components are accessible via subscript indexing for writing. */
-TEST(Vec3MutationTests, ElementsCanBeMutatedUsingIndex)
+TEST(CVec3MutationTests, ElementsCanBeMutatedUsingIndex)
 {
-    flcn::Vec3<float> vec;
+    flcn::CVec3<float> vec;
 
     vec[0] = 3.0f;
     vec[1] = 1.0f;

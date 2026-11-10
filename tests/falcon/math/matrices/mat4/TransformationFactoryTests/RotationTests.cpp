@@ -116,7 +116,7 @@ namespace
     {
     protected:
         T _angle;
-        flcn::Vec3<T> _axis, _center;
+        flcn::CVec3<T> _axis, _center;
         flcn::Mat4<T> _expectedMatX, _expectedMatY, _expectedMatZ, _expectedMatXYZ, _expectedAxisRotation;
         flcn::Mat4<T> _expectedMatXCenter, _expectedMatYCenter, _expectedMatZCenter, _expectedMatXYZCenter,
             _expectedAxisRotationCenter;
@@ -125,8 +125,8 @@ namespace
         void SetUp() override
         {
             _angle  = flcn::constants::PI<T> / T(4.0);
-            _center = flcn::Vec3{ T(1), T(2), T(3) };
-            _axis   = flcn::Vec3{ T(0.26726124191242440), T(0.53452248382484879), T(0.80178372573727319) };
+            _center = flcn::CVec3{ T(1), T(2), T(3) };
+            _axis   = flcn::CVec3{ T(0.26726124191242440), T(0.53452248382484879), T(0.80178372573727319) };
 
 #ifdef FALCON_LEFT_HANDED
             _expectedMatX = { flcn::Vec4{ T(1.0), T(0.0), T(0.0), T(0.0) },

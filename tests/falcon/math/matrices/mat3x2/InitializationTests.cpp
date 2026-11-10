@@ -35,7 +35,7 @@ class Mat3x2InitializationTests: public testing::Test
 {
 protected:
     std::vector<T> _elements;
-    flcn::Vec3<T> _col0, _col1;
+    flcn::CVec3<T> _col0, _col1;
 
     void SetUp() override
     {
@@ -65,7 +65,7 @@ TYPED_TEST_SUITE(Mat3x2InitializationTests, SupportedTypes);
 
 
     /// @test Verify that the matrix can be initialized at compile time using column vectors.
-    constexpr flcn::Mat3x2 MAT2(flcn::Vec3(1, 3, 5), flcn::Vec3(2, 4, 6));
+    constexpr flcn::Mat3x2 MAT2(flcn::CVec3(1, 3, 5), flcn::CVec3(2, 4, 6));
     static_assert(MAT2(0, 0) == 1);
     static_assert(MAT2(0, 1) == 2);
     static_assert(MAT2(1, 0) == 3);

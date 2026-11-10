@@ -35,7 +35,7 @@ namespace
     class QuaternionInitialization: public testing::Test
     {
     protected:
-        flcn::Vec3<T> _complexPart;
+        flcn::CVec3<T> _complexPart;
         T _realPart;
         flcn::Quaternion<T> _expectedQuaternion;
 
@@ -58,7 +58,7 @@ namespace
 
     namespace static_tests
     {
-        constexpr flcn::Vec3 VECTOR(1, 2, 3);
+        constexpr flcn::CVec3 VECTOR(1, 2, 3);
         constexpr auto SCALAR{ 5 };
 
         /// @test Verify that quaternions can be initialized with braced initializer has zero out components

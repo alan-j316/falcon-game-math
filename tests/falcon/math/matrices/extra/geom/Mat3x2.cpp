@@ -43,7 +43,7 @@ namespace
 
     protected:
         flcn::CVec2<T> _vec2, _expectedFPCVec2, _expectedIntCVec2;
-        flcn::Vec3<T> _vec3, _expectedFPVec3, _expectedIntVec3;
+        flcn::CVec3<T> _vec3, _expectedFPCVec3, _expectedIntCVec3;
 
         flcn::Mat3x2<T> _mat3x2;
 
@@ -54,13 +54,13 @@ namespace
             _expectedFPCVec2  = flcn::CVec2{ T(23.57800617829743928), T(29.49140573069764315) };
             _expectedIntCVec2 = flcn::CVec2{ T(22), T(28) };
 
-            _vec3            = flcn::Vec3{ T(1.32194213899999991), T(2.12304122299999998), T(3.02134123399999988) };
-            _expectedFPVec3  = flcn::Vec3{ T(6.33060730095153090), T(12.61075992189763717), T(19.60486191482313600) };
-            _expectedIntVec3 = flcn::Vec3{ T(5), T(11), T(17) };
+            _vec3            = flcn::CVec3{ T(1.32194213899999991), T(2.12304122299999998), T(3.02134123399999988) };
+            _expectedFPCVec3  = flcn::CVec3{ T(6.33060730095153090), T(12.61075992189763717), T(19.60486191482313600) };
+            _expectedIntCVec3 = flcn::CVec3{ T(5), T(11), T(17) };
 
 
-            _mat3x2 = { flcn::Vec3{ T(1.32194213899999991), T(3.02134123399999988), T(5.10238399999999981) },
-                        flcn::Vec3{ T(2.12304122299999998), T(4.01283041000000029), T(6.01238399999999995) } };
+            _mat3x2 = { flcn::CVec3{ T(1.32194213899999991), T(3.02134123399999988), T(5.10238399999999981) },
+                        flcn::CVec3{ T(2.12304122299999998), T(4.01283041000000029), T(6.01238399999999995) } };
         }
     };
     TYPED_TEST_SUITE(Mat3x2GeometricOpsTests, SupportedArithmeticTypes);
@@ -74,7 +74,7 @@ namespace
     {
         // STATIC TEST SETUP
         constexpr flcn::CVec2 VEC2(1, 2);
-        constexpr flcn::Vec3 ROW_VEC3(1, 2, 3);
+        constexpr flcn::CVec3 ROW_VEC3(1, 2, 3);
 
         constexpr flcn::Mat3x2 MAT3X2(1, 2, 3, 4, 5, 6);
 
@@ -106,11 +106,11 @@ TYPED_TEST(Mat3x2GeometricOpsTests, Mat3x2Times2DVector_ReturnsAValid3DVector)
     const auto expectedVector = this->_mat3x2 * this->_vec2;
     if constexpr (std::is_floating_point_v<TypeParam>)
     {
-        EXPECT_VEC_EQ(this->_expectedFPVec3, expectedVector);
+        EXPECT_VEC_EQ(this->_expectedFPCVec3, expectedVector);
     }
     else
     {
-        EXPECT_VEC_EQ(this->_expectedIntVec3, expectedVector);
+        EXPECT_VEC_EQ(this->_expectedIntCVec3, expectedVector);
     }
 }
 

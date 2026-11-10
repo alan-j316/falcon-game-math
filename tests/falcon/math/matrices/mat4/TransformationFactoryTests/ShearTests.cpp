@@ -65,15 +65,15 @@ namespace
     protected:
         T _shearAngle;
         T _shearFactor;
-        flcn::Vec3<T> _shearDirection, _shearPlaneNormal;
+        flcn::CVec3<T> _shearDirection, _shearPlaneNormal;
         flcn::Mat4<T> _shear;
 
         void SetUp() override
         {
             _shearAngle       = T(std::numbers::pi / 4);
             _shearFactor      = T(1);
-            _shearDirection   = flcn::Vec3{ T(0.2672612419124244), T(0.5345224838248488), T(0.8017837257372732) };
-            _shearPlaneNormal = flcn::Vec3{ T(0.48471791416315496), T(0.5728484440110013), T(0.6609789738588476) };
+            _shearDirection   = flcn::CVec3{ T(0.2672612419124244), T(0.5345224838248488), T(0.8017837257372732) };
+            _shearPlaneNormal = flcn::CVec3{ T(0.48471791416315496), T(0.5728484440110013), T(0.6609789738588476) };
             _shear =
                 flcn::Mat4<T>{ flcn::Vec4{ T(1.1295463117164446), T(0.15310018657398008), T(0.1766540614315155), T(0) },
                               flcn::Vec4{ T(0.2590926234328894), T(1.3062003731479601), T(0.353308122863031), T(0) },
@@ -124,7 +124,7 @@ namespace
 
         /// @test Verify that @ref Mat4 makeShear returns a valid 4D shear matrix at compile time.
         constexpr auto SHEAR4D_MAT =
-            flcn::Mat4<float>::makeShear(1.0f, flcn::Vec3{ 1.0f, 0.0f, 0.0f }, flcn::Vec3{ 0.0f, 0.0f, 1.0f });
+            flcn::Mat4<float>::makeShear(1.0f, flcn::CVec3{ 1.0f, 0.0f, 0.0f }, flcn::CVec3{ 0.0f, 0.0f, 1.0f });
         static_assert(SHEAR4D_MAT[0] == flcn::Vec4{ 1, 0, 0, 0 });
         static_assert(SHEAR4D_MAT[1] == flcn::Vec4{ 0, 1, 0, 0 });
         static_assert(SHEAR4D_MAT[2] == flcn::Vec4{ 1, 0, 1, 0 });

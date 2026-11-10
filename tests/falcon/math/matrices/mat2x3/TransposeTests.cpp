@@ -40,7 +40,7 @@ namespace
         void SetUp() override
         {
             _matrix            = { flcn::CVec2{ T(1), T(4) }, flcn::CVec2{ T(2), T(5) }, flcn::CVec2{ T(3), T(6) } };
-            _expectedTranspose = { flcn::Vec3{ T(1), T(2), T(3) }, flcn::Vec3{ T(4), T(5), T(6) } };
+            _expectedTranspose = { flcn::CVec3{ T(1), T(2), T(3) }, flcn::CVec3{ T(4), T(5), T(6) } };
         }
     };
     TYPED_TEST_SUITE(Mat2x3TransposeTests, SupportedTypes);
@@ -56,20 +56,20 @@ namespace
         constexpr flcn::Mat2x3 MAT(1, 2, 3, 4, 5, 6);
 
         // NOTE: The matrix takes elements in row, col order
-        //       but when compared with Vec3, we are taking col, row order.
-        //       That's why Vec3(1, 2, 3) is the transpose and not Vec3(1, 3, 5)
+        //       but when compared with CVec3, we are taking col, row order.
+        //       That's why CVec3(1, 2, 3) is the transpose and not CVec3(1, 3, 5)
 
         /// @test Verify matrix transpose is returns a 3x2 matrix with swapped rows and
         ///       columns at compile time.
         constexpr flcn::Mat3x2 TRANSPOSE_MAT = MAT.transpose();
-        static_assert(TRANSPOSE_MAT[0] == flcn::Vec3(1, 2, 3));
-        static_assert(TRANSPOSE_MAT[1] == flcn::Vec3(4, 5, 6));
+        static_assert(TRANSPOSE_MAT[0] == flcn::CVec3(1, 2, 3));
+        static_assert(TRANSPOSE_MAT[1] == flcn::CVec3(4, 5, 6));
 
         /// @test Verify matrix transpose using static variant returns a 3x2 matrix with
         ///       swapped rows and columns at compile time.
         constexpr auto TRANSPOSE_MAT_STATIC = flcn::Mat2x3<int>::transpose(MAT);
-        static_assert(TRANSPOSE_MAT_STATIC[0] == flcn::Vec3(1, 2, 3));
-        static_assert(TRANSPOSE_MAT_STATIC[1] == flcn::Vec3(4, 5, 6));
+        static_assert(TRANSPOSE_MAT_STATIC[0] == flcn::CVec3(1, 2, 3));
+        static_assert(TRANSPOSE_MAT_STATIC[1] == flcn::CVec3(4, 5, 6));
 
     } // namespace static_tests
 

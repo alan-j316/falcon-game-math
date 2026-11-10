@@ -691,23 +691,23 @@ namespace flcn
     {
         using R = Magnitude<T>;
 
-        auto a = static_cast<Vec3<R>>(_data[0].template swizzle<axis::X, axis::Y, axis::Z>());
-        auto b = static_cast<Vec3<R>>(_data[1].template swizzle<axis::X, axis::Y, axis::Z>());
-        auto c = static_cast<Vec3<R>>(_data[2].template swizzle<axis::X, axis::Y, axis::Z>());
+        auto a = static_cast<CVec3<R>>(_data[0].template swizzle<axis::X, axis::Y, axis::Z>());
+        auto b = static_cast<CVec3<R>>(_data[1].template swizzle<axis::X, axis::Y, axis::Z>());
+        auto c = static_cast<CVec3<R>>(_data[2].template swizzle<axis::X, axis::Y, axis::Z>());
         auto d = _data[3].template swizzle<axis::X, axis::Y, axis::Z>();
 
         // NOTE: NOT CONSTEXPR COMPATIBLE
-        // const auto& a = reinterpret_cast<const Vec3<R>&>(_data[0]);
-        // const auto& b = reinterpret_cast<const Vec3<R>&>(_data[1]);
-        // const auto& c = reinterpret_cast<const Vec3<R>&>(_data[2]);
-        // const auto& d = reinterpret_cast<const Vec3<R>&>(_data[3]);
+        // const auto& a = reinterpret_cast<const CVec3<R>&>(_data[0]);
+        // const auto& b = reinterpret_cast<const CVec3<R>&>(_data[1]);
+        // const auto& c = reinterpret_cast<const CVec3<R>&>(_data[2]);
+        // const auto& d = reinterpret_cast<const CVec3<R>&>(_data[3]);
 
         auto x = _data[0][3];
         auto y = _data[1][3];
         auto z = _data[2][3];
         auto w = _data[3][3];
 
-        auto s = static_cast<Vec3<R>>(a.cross(b));
+        auto s = static_cast<CVec3<R>>(a.cross(b));
         auto t = c.cross(d);
         auto u = y * a - x * b;
         auto v = w * c - z * d;
@@ -744,9 +744,9 @@ namespace flcn
     {
         using R = Magnitude<T>;
 
-        auto a = static_cast<Vec3<R>>(_data[0].template swizzle<axis::X, axis::Y, axis::Z>());
-        auto b = static_cast<Vec3<R>>(_data[1].template swizzle<axis::X, axis::Y, axis::Z>());
-        auto c = static_cast<Vec3<R>>(_data[2].template swizzle<axis::X, axis::Y, axis::Z>());
+        auto a = static_cast<CVec3<R>>(_data[0].template swizzle<axis::X, axis::Y, axis::Z>());
+        auto b = static_cast<CVec3<R>>(_data[1].template swizzle<axis::X, axis::Y, axis::Z>());
+        auto c = static_cast<CVec3<R>>(_data[2].template swizzle<axis::X, axis::Y, axis::Z>());
         auto d = _data[3].template swizzle<axis::X, axis::Y, axis::Z>();
 
         auto x = _data[0][3];
@@ -754,7 +754,7 @@ namespace flcn
         auto z = _data[2][3];
         auto w = _data[3][3];
 
-        auto s = static_cast<Vec3<R>>(a.cross(b));
+        auto s = static_cast<CVec3<R>>(a.cross(b));
         auto t = c.cross(d);
         auto u = y * a - x * b;
         auto v = w * c - z * d;
@@ -805,9 +805,9 @@ namespace flcn
     {
         using R = Magnitude<T>;
 
-        auto a = static_cast<Vec3<R>>(_data[0].template swizzle<axis::X, axis::Y, axis::Z>());
-        auto b = static_cast<Vec3<R>>(_data[1].template swizzle<axis::X, axis::Y, axis::Z>());
-        auto c = static_cast<Vec3<R>>(_data[2].template swizzle<axis::X, axis::Y, axis::Z>());
+        auto a = static_cast<CVec3<R>>(_data[0].template swizzle<axis::X, axis::Y, axis::Z>());
+        auto b = static_cast<CVec3<R>>(_data[1].template swizzle<axis::X, axis::Y, axis::Z>());
+        auto c = static_cast<CVec3<R>>(_data[2].template swizzle<axis::X, axis::Y, axis::Z>());
         auto d = _data[3].template swizzle<axis::X, axis::Y, axis::Z>();
 
         auto x = _data[0][3];
@@ -815,7 +815,7 @@ namespace flcn
         auto z = _data[2][3];
         auto w = _data[3][3];
 
-        auto s = static_cast<Vec3<R>>(a.cross(b));
+        auto s = static_cast<CVec3<R>>(a.cross(b));
         auto t = c.cross(d);
         auto u = y * a - x * b;
         auto v = w * c - z * d;
@@ -928,7 +928,7 @@ namespace flcn
 
     template <Arithmetic T>
     template <std::floating_point U>
-    FALCON_INLINE constexpr Mat4<T> Mat4<T>::makeRotationX(const U angle, const Vec3<T>& center) noexcept
+    FALCON_INLINE constexpr Mat4<T> Mat4<T>::makeRotationX(const U angle, const CVec3<T>& center) noexcept
         requires SignedStrictArithmetic<T>
     {
         using R  = PromotedValue_t<T, U>;
@@ -966,7 +966,7 @@ namespace flcn
 
     template <Arithmetic T>
     template <std::floating_point U>
-    FALCON_INLINE constexpr Mat4<T> Mat4<T>::makeRotationY(const U angle, const Vec3<T>& center) noexcept
+    FALCON_INLINE constexpr Mat4<T> Mat4<T>::makeRotationY(const U angle, const CVec3<T>& center) noexcept
         requires SignedStrictArithmetic<T>
     {
         using R  = PromotedValue_t<T, U>;
@@ -1005,7 +1005,7 @@ namespace flcn
 
     template <Arithmetic T>
     template <std::floating_point U>
-    FALCON_INLINE constexpr Mat4<T> Mat4<T>::makeRotationZ(U angle, const Vec3<T>& center) noexcept
+    FALCON_INLINE constexpr Mat4<T> Mat4<T>::makeRotationZ(U angle, const CVec3<T>& center) noexcept
         requires SignedStrictArithmetic<T>
     {
         using R  = PromotedValue_t<T, U>;
@@ -1023,7 +1023,7 @@ namespace flcn
 
     template <Arithmetic T>
     template <std::floating_point U>
-    FALCON_INLINE constexpr PromotedFloatMat4<T, U> Mat4<T>::makeRotation(U angle, const Vec3<T>& axis) noexcept
+    FALCON_INLINE constexpr PromotedFloatMat4<T, U> Mat4<T>::makeRotation(U angle, const CVec3<T>& axis) noexcept
         requires StrictArithmetic<T>
     {
         using S = Magnitude<std::common_type_t<T, U>>;
@@ -1065,8 +1065,8 @@ namespace flcn
 
     template <Arithmetic T>
     template <std::floating_point U>
-    FALCON_INLINE constexpr PromotedFloatMat4<T, U> Mat4<T>::makeRotation(U angle, const Vec3<T>& axis,
-                                                                       const Vec3<T>& center) noexcept
+    FALCON_INLINE constexpr PromotedFloatMat4<T, U> Mat4<T>::makeRotation(U angle, const CVec3<T>& axis,
+                                                                       const CVec3<T>& center) noexcept
         requires StrictArithmetic<T>
     {
         using S = Magnitude<std::common_type_t<T, U>>;
@@ -1126,7 +1126,7 @@ namespace flcn
 
 
     template <Arithmetic T>
-    FALCON_INLINE constexpr Mat4<T> Mat4<T>::makeScale(T scale, const Vec3<T>& direction) noexcept
+    FALCON_INLINE constexpr Mat4<T> Mat4<T>::makeScale(T scale, const CVec3<T>& direction) noexcept
         requires SignedStrictArithmetic<T>
     {
         scale -= T(1);
@@ -1156,7 +1156,7 @@ namespace flcn
 
 
     template <Arithmetic T>
-    FALCON_INLINE constexpr Mat4<T> Mat4<T>::makeReflection(const Vec3<T>& normal) noexcept
+    FALCON_INLINE constexpr Mat4<T> Mat4<T>::makeReflection(const CVec3<T>& normal) noexcept
         requires SignedStrictArithmetic<T>
     {
 
@@ -1172,7 +1172,7 @@ namespace flcn
 
 
     template <Arithmetic T>
-    FALCON_INLINE constexpr Mat4<T> Mat4<T>::makeInvolution(const Vec3<T>& normal) noexcept
+    FALCON_INLINE constexpr Mat4<T> Mat4<T>::makeInvolution(const CVec3<T>& normal) noexcept
         requires SignedStrictArithmetic<T>
     {
         T x  = static_cast<T>(2 * normal.x() * normal.x() - 1);
@@ -1217,8 +1217,8 @@ namespace flcn
 
 
     template <Arithmetic T>
-    FALCON_INLINE constexpr Mat4<T> Mat4<T>::makeShearByAngle(T shearAngle, const Vec3<T>& direction,
-                                                           const Vec3<T>& normal) noexcept
+    FALCON_INLINE constexpr Mat4<T> Mat4<T>::makeShearByAngle(T shearAngle, const CVec3<T>& direction,
+                                                           const CVec3<T>& normal) noexcept
         requires std::floating_point<T>
     {
         const auto t = std::tan(shearAngle);
@@ -1245,8 +1245,8 @@ namespace flcn
 
 
     template <Arithmetic T>
-    FALCON_INLINE constexpr Mat4<T> Mat4<T>::makeShear(T shearFactor, const Vec3<T>& direction,
-                                                    const Vec3<T>& normal) noexcept
+    FALCON_INLINE constexpr Mat4<T> Mat4<T>::makeShear(T shearFactor, const CVec3<T>& direction,
+                                                    const CVec3<T>& normal) noexcept
         requires std::floating_point<T>
     {
         T x = direction.x() * shearFactor;
@@ -1273,7 +1273,7 @@ namespace flcn
 
     template <Arithmetic T>
     FALCON_INLINE constexpr Mat4<T> Mat4<T>::makeAffine(const Mat3<T>& linearTransform,
-                                                     const Vec3<T>& translation) noexcept
+                                                     const CVec3<T>& translation) noexcept
     {
         return Mat4{ linearTransform(0, 0),
                      linearTransform(0, 1),

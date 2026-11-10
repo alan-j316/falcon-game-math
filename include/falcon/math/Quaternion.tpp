@@ -30,7 +30,7 @@ namespace flcn
 
 
     template <Arithmetic T>
-    FALCON_INLINE constexpr Quaternion<T>::Quaternion(const Vec3<T>& complex, T real) noexcept
+    FALCON_INLINE constexpr Quaternion<T>::Quaternion(const CVec3<T>& complex, T real) noexcept
     {
         _data[0] = complex.x();
         _data[1] = complex.y();
@@ -40,7 +40,7 @@ namespace flcn
 
 
     template <Arithmetic T>
-    FALCON_INLINE constexpr Quaternion<T>::Quaternion(T real, const Vec3<T>& complex) noexcept
+    FALCON_INLINE constexpr Quaternion<T>::Quaternion(T real, const CVec3<T>& complex) noexcept
     {
         _data[0] = complex.x();
         _data[1] = complex.y();
@@ -148,8 +148,8 @@ namespace flcn
 
 
     template <Arithmetic T>
-    FALCON_INLINE constexpr Vec3<T> Quaternion<T>::getVectorPart() const noexcept
-    { return Vec3<T>{ _data[0], _data[1], _data[2] }; }
+    FALCON_INLINE constexpr CVec3<T> Quaternion<T>::getVectorPart() const noexcept
+    { return CVec3<T>{ _data[0], _data[1], _data[2] }; }
 
 
     template <Arithmetic T>

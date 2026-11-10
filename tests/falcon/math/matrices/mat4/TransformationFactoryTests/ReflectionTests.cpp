@@ -32,15 +32,15 @@ namespace
     class Mat4ReflectionFactoryIntTests: public testing::Test
     {
     protected:
-        flcn::Vec3<T> _xAxis, _yAxis, _zAxis;
+        flcn::CVec3<T> _xAxis, _yAxis, _zAxis;
         flcn::Mat4<T> _expectedReflectionX, _expectedReflectionY, _expectedReflectionZ, _expectedReflectionXY,
             _expectedReflectionYZ, _expectedReflectionZX, _expectedReflectionOrigin;
 
         void SetUp() override
         {
-            _xAxis = flcn::Vec3{ T(1), T(0), T(0) };
-            _yAxis = flcn::Vec3{ T(0), T(1), T(0) };
-            _zAxis = flcn::Vec3{ T(0), T(0), T(1) };
+            _xAxis = flcn::CVec3{ T(1), T(0), T(0) };
+            _yAxis = flcn::CVec3{ T(0), T(1), T(0) };
+            _zAxis = flcn::CVec3{ T(0), T(0), T(1) };
 
             _expectedReflectionX = { flcn::Vec4{ T(1), T(0), T(0), T(0) }, flcn::Vec4{ T(0), T(-1), T(0), T(0) },
                                      flcn::Vec4{ T(0), T(0), T(-1), T(0) }, flcn::Vec4{ T(0), T(0), T(0), T(1) } };
@@ -76,12 +76,12 @@ namespace
     class Mat4ReflectionFactoryFactoryFPTests: public ::testing::Test
     {
     protected:
-        flcn::Vec3<T> _norm;
+        flcn::CVec3<T> _norm;
         flcn::Mat4<T> _expectedNormReflect;
 
         void SetUp() override
         {
-            _norm = flcn::Vec3{ T(0.3244428422615251), T(0.48666426339228763), T(0.8111071056538127) };
+            _norm = flcn::CVec3{ T(0.3244428422615251), T(0.48666426339228763), T(0.8111071056538127) };
 
             _expectedNormReflect = {
                 flcn::Vec4{ T(0.7894736842105263), T(-0.31578947368421056), T(-0.5263157894736843), T(0) },
@@ -151,7 +151,7 @@ namespace
 
         /// @test Verify that reflection factory for any plane returns correct reflection with x-axis normal(yz-plane)
         ///       at compile time.
-        constexpr auto X_AXIS                = flcn::Vec3(1, 0, 0);
+        constexpr auto X_AXIS                = flcn::CVec3(1, 0, 0);
         constexpr auto REFLECTION_MAT_NORM_X = flcn::Mat4<int>::makeReflection(X_AXIS);
         static_assert(REFLECTION_MAT_NORM_X[0] == flcn::Vec4(-1, 0, 0, 0));
         static_assert(REFLECTION_MAT_NORM_X[1] == flcn::Vec4(0, 1, 0, 0));
@@ -160,7 +160,7 @@ namespace
 
         /// @test Verify that reflection factory for any plane returns correct reflection with y-axis normal(zx-plane)
         ///       at compile time.
-        constexpr auto Y_AXIS                = flcn::Vec3(0, 1, 0);
+        constexpr auto Y_AXIS                = flcn::CVec3(0, 1, 0);
         constexpr auto REFLECTION_MAT_NORM_Y = flcn::Mat4<int>::makeReflection(Y_AXIS);
         static_assert(REFLECTION_MAT_NORM_Y[0] == flcn::Vec4(1, 0, 0, 0));
         static_assert(REFLECTION_MAT_NORM_Y[1] == flcn::Vec4(0, -1, 0, 0));
@@ -169,7 +169,7 @@ namespace
 
         /// @test Verify that reflection factory for any plane returns correct reflection with z-axis normal(xy-plane)
         ///       at compile time.
-        constexpr auto Z_AXIS                = flcn::Vec3(0, 0, 1);
+        constexpr auto Z_AXIS                = flcn::CVec3(0, 0, 1);
         constexpr auto REFLECTION_MAT_NORM_Z = flcn::Mat4<int>::makeReflection(Z_AXIS);
         static_assert(REFLECTION_MAT_NORM_Z[0] == flcn::Vec4(1, 0, 0, 0));
         static_assert(REFLECTION_MAT_NORM_Z[1] == flcn::Vec4(0, 1, 0, 0));

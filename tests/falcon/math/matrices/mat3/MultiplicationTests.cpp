@@ -39,14 +39,14 @@ namespace
 
         void SetUp() override
         {
-            _mat                 = { flcn::Vec3{ T(7), T(13), T(3) }, flcn::Vec3{ T(5), T(4), T(7) },
-                                     flcn::Vec3{ T(5.5), T(11.25), T(25.3) } };
+            _mat                 = { flcn::CVec3{ T(7), T(13), T(3) }, flcn::CVec3{ T(5), T(4), T(7) },
+                                     flcn::CVec3{ T(5.5), T(11.25), T(25.3) } };
             _scalar              = T(2.123456789123456);
-            _expectedFloatingMat = { flcn::Vec3{ T(14.864197523864192), T(27.604938258604928), T(6.370370367370368) },
-                                     flcn::Vec3{ T(10.61728394561728), T(8.493827156493824), T(14.864197523864192) },
-                                     flcn::Vec3{ T(11.679012340179007), T(23.88888887763888), T(53.72345676482344) } };
-            _expectedIntegralMat = { flcn::Vec3{ T(14), T(26), T(6) }, flcn::Vec3{ T(10), T(8), T(14) },
-                                     flcn::Vec3{ T(10), T(22), T(50) } };
+            _expectedFloatingMat = { flcn::CVec3{ T(14.864197523864192), T(27.604938258604928), T(6.370370367370368) },
+                                     flcn::CVec3{ T(10.61728394561728), T(8.493827156493824), T(14.864197523864192) },
+                                     flcn::CVec3{ T(11.679012340179007), T(23.88888887763888), T(53.72345676482344) } };
+            _expectedIntegralMat = { flcn::CVec3{ T(14), T(26), T(6) }, flcn::CVec3{ T(10), T(8), T(14) },
+                                     flcn::CVec3{ T(10), T(22), T(50) } };
         }
     };
 
@@ -64,15 +64,15 @@ namespace
     {
     protected:
         flcn::Mat3<T> _mat;
-        flcn::Vec3<T> _vec;
-        flcn::Vec3<T> _expectedFloatingColVector, _expectedIntegralColVector, _expectedFloatingRowVector,
+        flcn::CVec3<T> _vec;
+        flcn::CVec3<T> _expectedFloatingColVector, _expectedIntegralColVector, _expectedFloatingRowVector,
             _expectedIntegralRowVector;
 
         void SetUp() override
         {
-            _mat                       = { flcn::Vec3{ T(7.12345678912345), T(13.12345678912345), T(1.32893912338) },
-                                           flcn::Vec3{ T(5.12345678912345), T(4.12345678912345), T(3.3129381239321) },
-                                           flcn::Vec3{ T(2.238929123125), T(11.238924194839), T(9.2389291239898) } };
+            _mat                       = { flcn::CVec3{ T(7.12345678912345), T(13.12345678912345), T(1.32893912338) },
+                                           flcn::CVec3{ T(5.12345678912345), T(4.12345678912345), T(3.3129381239321) },
+                                           flcn::CVec3{ T(2.238929123125), T(11.238924194839), T(9.2389291239898) } };
             _vec                       = { T(2.123456789123456), T(3.123456832912), T(1.2318492394128) };
             _expectedFloatingColVector = { T(33.88727193442948), T(54.59119292006805), T(24.550731838459015) };
             _expectedIntegralColVector = { T(31), T(49), T(20) };
@@ -93,19 +93,19 @@ namespace
     {
     protected:
         flcn::Mat3<T> _mat;
-        flcn::Vec3<T> _vec, _expectedColVector, _expectedRowVector;
+        flcn::CVec3<T> _vec, _expectedColVector, _expectedRowVector;
 
         void SetUp() override
         {
             _mat = {
-                flcn::Vec3{ T(0.1234568989329), T(0.1234214891234), T(0.12348923829) },
-                flcn::Vec3{ T(-0.123489823149), T(-0.123489757623), T(0.89281239432) },
-                flcn::Vec3{ T(-0.38291023892), T(0.29381938232), T(-0.0038291382) },
+                flcn::CVec3{ T(0.1234568989329), T(0.1234214891234), T(0.12348923829) },
+                flcn::CVec3{ T(-0.123489823149), T(-0.123489757623), T(0.89281239432) },
+                flcn::CVec3{ T(-0.38291023892), T(0.29381938232), T(-0.0038291382) },
             };
-            _vec = flcn::Vec3{ T(0.8923764912287), T(0.78352829112384), T(0.234891238341) };
+            _vec = flcn::CVec3{ T(0.8923764912287), T(0.78352829112384), T(0.234891238341) };
 
-            _expectedColVector = flcn::Vec3{ T(-0.07652999600877063), T(0.08239631520624698), T(0.8088432317718919) };
-            _expectedRowVector = flcn::Vec3{ T(0.2358808028522597), T(0.0027566750622143033), T(-0.11238372794829783) };
+            _expectedColVector = flcn::CVec3{ T(-0.07652999600877063), T(0.08239631520624698), T(0.8088432317718919) };
+            _expectedRowVector = flcn::CVec3{ T(0.2358808028522597), T(0.0027566750622143033), T(-0.11238372794829783) };
         }
     };
     TYPED_TEST_SUITE(Mat3VectorFractionalMultiplicationTests, SupportedFloatingPointTypes);
@@ -123,19 +123,19 @@ namespace
 
         void SetUp() override
         {
-            _matA = { flcn::Vec3{ T(7.12345678912345), T(6.12345678912345), T(1.2389123488213) },
-                      flcn::Vec3{ T(5.12345678912345), T(4.12345678912345), T(2.53283924821338) },
-                      flcn::Vec3{ T(9.32189342348), T(8.238192312343), T(5.12398423821223) } };
-            _matB = { flcn::Vec3{ T(3.12345678912345), T(5.12345678912345), T(1.213849123421) },
-                      flcn::Vec3{ T(8.12345678912345), T(3.12345678912345), T(2.3218934118233) },
-                      flcn::Vec3{ T(7.23912389492341), T(4.291238423419123), T(4.18234983241234) } };
+            _matA = { flcn::CVec3{ T(7.12345678912345), T(6.12345678912345), T(1.2389123488213) },
+                      flcn::CVec3{ T(5.12345678912345), T(4.12345678912345), T(2.53283924821338) },
+                      flcn::CVec3{ T(9.32189342348), T(8.238192312343), T(5.12398423821223) } };
+            _matB = { flcn::CVec3{ T(3.12345678912345), T(5.12345678912345), T(1.213849123421) },
+                      flcn::CVec3{ T(8.12345678912345), T(3.12345678912345), T(2.3218934118233) },
+                      flcn::CVec3{ T(7.23912389492341), T(4.291238423419123), T(4.18234983241234) } };
 
-            _expectedFloatingMat = { flcn::Vec3{ T(59.81499110074553), T(50.25262787869462), T(23.066325405048886) },
-                                     flcn::Vec3{ T(95.51443223309786), T(81.75128018451636), T(29.872810121743093) },
-                                     flcn::Vec3{ T(112.54098028826937), T(96.47820080937791), T(41.267951710315614) } };
+            _expectedFloatingMat = { flcn::CVec3{ T(59.81499110074553), T(50.25262787869462), T(23.066325405048886) },
+                                     flcn::CVec3{ T(95.51443223309786), T(81.75128018451636), T(29.872810121743093) },
+                                     flcn::CVec3{ T(112.54098028826937), T(96.47820080937791), T(41.267951710315614) } };
 
-            _expectedIntegralMat = { flcn::Vec3{ T(55), T(46), T(18) }, flcn::Vec3{ T(89), T(76), T(24) },
-                                     flcn::Vec3{ T(105), T(90), T(35) } };
+            _expectedIntegralMat = { flcn::CVec3{ T(55), T(46), T(18) }, flcn::CVec3{ T(89), T(76), T(24) },
+                                     flcn::CVec3{ T(105), T(90), T(35) } };
         }
     };
     TYPED_TEST_SUITE(Mat3MatrixMultiplicationTests, SupportedArithmeticTypes);
@@ -155,16 +155,16 @@ namespace
 
         void SetUp() override
         {
-            _matA = { flcn::Vec3{ T(0.1234568989329), T(0.1234214891234), T(0.382348912394) },
-                      flcn::Vec3{ T(-0.123489823149), T(-0.123489757623), T(0.093218349323) },
-                      flcn::Vec3{ T(0.0123489823149), T(0.53489757623), T(-0.93218349323) } };
-            _matB = { flcn::Vec3{ T(0.8923764912287), T(0.78352829112384), T(0.0523812349234) },
-                      flcn::Vec3{ T(0.0123412348958), T(-0.0231423489589), T(0.3829123948324) },
-                      flcn::Vec3{ T(-0.539282348958), T(0.00033423489589), T(-0.8239123948324) } };
+            _matA = { flcn::CVec3{ T(0.1234568989329), T(0.1234214891234), T(0.382348912394) },
+                      flcn::CVec3{ T(-0.123489823149), T(-0.123489757623), T(0.093218349323) },
+                      flcn::CVec3{ T(0.0123489823149), T(0.53489757623), T(-0.93218349323) } };
+            _matB = { flcn::CVec3{ T(0.8923764912287), T(0.78352829112384), T(0.0523812349234) },
+                      flcn::CVec3{ T(0.0123412348958), T(-0.0231423489589), T(0.3829123948324) },
+                      flcn::CVec3{ T(-0.539282348958), T(0.00033423489589), T(-0.8239123948324) } };
 
-            _expectedMat = { flcn::Vec3{ T(0.014059119128298), T(0.041399312244975), T(0.365409472263106) },
-                             flcn::Vec3{ T(0.009110033561366), T(0.209199928556498), T(-0.354383247645329) },
-                             flcn::Vec3{ T(-0.076793880652601), T(-0.50730904817435), T(0.56187467155827) } };
+            _expectedMat = { flcn::CVec3{ T(0.014059119128298), T(0.041399312244975), T(0.365409472263106) },
+                             flcn::CVec3{ T(0.009110033561366), T(0.209199928556498), T(-0.354383247645329) },
+                             flcn::CVec3{ T(-0.076793880652601), T(-0.50730904817435), T(0.56187467155827) } };
         }
     };
     TYPED_TEST_SUITE(Mat3MatrixFractionalMultiplicationTests, SupportedFloatingPointTypes);
@@ -179,7 +179,7 @@ namespace
     {
         constexpr flcn::Mat3 MAT1(1, 2, 3, 4, 5, 6, 7, 8, 9);
         constexpr flcn::Mat3 MAT2(5, 6, 7, 8, 10, 11, 12, 13, 14);
-        constexpr flcn::Vec3 VEC(1, 2, 3);
+        constexpr flcn::CVec3 VEC(1, 2, 3);
 
 
         /// @test Verify that matrix * scalar multiplication returns 3D matrix at compile time.
@@ -208,13 +208,13 @@ namespace
         static_assert(BINARY_PRODUCT_2(2, 2) == 18);
 
         /// @test Verify matrix * vector multiplication returns 3D column vector at compile time.
-        constexpr flcn::Vec3 COL_VECTOR_PRODUCT = MAT1 * VEC;
+        constexpr flcn::CVec3 COL_VECTOR_PRODUCT = MAT1 * VEC;
         static_assert(COL_VECTOR_PRODUCT[0] == 14);
         static_assert(COL_VECTOR_PRODUCT[1] == 32);
         static_assert(COL_VECTOR_PRODUCT[2] == 50);
 
         /// @test Verify vector * matrix multiplication returns 3D row vector at compile time.
-        constexpr flcn::Vec3 ROW_VEC_PRODUCT = VEC * MAT1;
+        constexpr flcn::CVec3 ROW_VEC_PRODUCT = VEC * MAT1;
         static_assert(ROW_VEC_PRODUCT[0] == 30);
         static_assert(ROW_VEC_PRODUCT[1] == 36);
         static_assert(ROW_VEC_PRODUCT[2] == 42);
@@ -377,9 +377,9 @@ TYPED_TEST(Mat3VectorFractionalMultiplicationTests, ColumnFloatVector_ReturnsACo
 TEST(Mat3VectorMultiplicationTests, IdentityMatrixTimesColumnVector_ReturnsOriginalColumnVector)
 {
     const flcn::Mat3<float> iMatrix = flcn::Mat3<float>::identity();
-    const flcn::Vec3F vec{ 2.0f, 1.0f, 2.5 };
+    const flcn::CVec3F vec{ 2.0f, 1.0f, 2.5 };
 
-    const flcn::Vec3F transformedVector = iMatrix * vec;
+    const flcn::CVec3F transformedVector = iMatrix * vec;
     EXPECT_VEC_EQ(vec, transformedVector);
 }
 
@@ -387,7 +387,7 @@ TEST(Mat3VectorMultiplicationTests, IdentityMatrixTimesColumnVector_ReturnsOrigi
 TEST(Mat3VectorMultiplicationTests, ColumnVector_MixedType_PromotesType)
 {
     const flcn::Mat3 mat{ 1.0, 2.0, 3.0 };
-    const flcn::Vec3I vec{ 2, 1, 3 };
+    const flcn::CVec3I vec{ 2, 1, 3 };
 
     [[maybe_unused]] const auto transformedVector = mat * vec;
     static_assert(std::is_same_v<decltype(transformedVector)::value_type, double>);
@@ -418,9 +418,9 @@ TYPED_TEST(Mat3VectorFractionalMultiplicationTests, RowFloatVector_ReturnsARowVe
 TEST(Mat3VectorMultiplicationTests, RowVectorTimesIdentityMatrix_ReturnsOriginalVector)
 {
     const flcn::Mat3<float> iMatrix = flcn::Mat3<float>::identity();
-    const flcn::Vec3F vec{ 2.0f, 1.0f, 3.0f };
+    const flcn::CVec3F vec{ 2.0f, 1.0f, 3.0f };
 
-    const flcn::Vec3F transformedVector = vec * iMatrix;
+    const flcn::CVec3F transformedVector = vec * iMatrix;
 
     EXPECT_VEC_EQ(vec, transformedVector);
 }
@@ -429,7 +429,7 @@ TEST(Mat3VectorMultiplicationTests, RowVectorTimesIdentityMatrix_ReturnsOriginal
 TEST(Mat3VectorMultiplicationTests, RowVector_MixedType_PromotesType)
 {
     const flcn::Mat3 mat{ 1.0, 2.0, 3.0 };
-    const flcn::Vec3I vec{ 2, 1, 3 };
+    const flcn::CVec3I vec{ 2, 1, 3 };
 
     [[maybe_unused]] const auto transformedVector = vec * mat;
     static_assert(std::is_same_v<decltype(transformedVector)::value_type, double>);
@@ -454,7 +454,7 @@ TYPED_TEST(Mat3VectorMultiplicationTests, TimesEqualOperator_RowVector_ReturnsAT
 TEST(Mat3VectorMultiplicationTests, TimesEqualOperator_RowVector_IdentityMatrix_ReturnsOriginalRowVector)
 {
     const flcn::Mat3<float> iMatrix = flcn::Mat3<float>::identity();
-    flcn::Vec3F vec{ 2.0f, 1.0f, 3.0f };
+    flcn::CVec3F vec{ 2.0f, 1.0f, 3.0f };
 
     vec *= iMatrix;
 
@@ -465,7 +465,7 @@ TEST(Mat3VectorMultiplicationTests, TimesEqualOperator_RowVector_IdentityMatrix_
 TEST(Mat3VectorMultiplicationTests, TimesEqualOperator_MixedType_DoesNotPromoteType)
 {
     const flcn::Mat3<double> iMatrix = flcn::Mat3<double>::identity();
-    [[maybe_unused]] flcn::Vec3I vec{ 2, 1, 5 };
+    [[maybe_unused]] flcn::CVec3I vec{ 2, 1, 5 };
 
     (void) (vec *= iMatrix);
     static_assert(std::is_same_v<decltype(vec)::value_type, int>);
@@ -475,8 +475,8 @@ TEST(Mat3VectorMultiplicationTests, TimesEqualOperator_MixedType_DoesNotPromoteT
 TEST(Mat3VectorMultiplicationTests, TimesEqualOperator_MixedType_EnsuresMinimalPrecisionLoss)
 {
     const flcn::Mat3 mat{ 2.5, 3.5, 0.5, 1.5, 12.0, 3.25, 5.0, 11.5, 5.0 };
-    flcn::Vec3 vec{ 10, 20, 30 };
-    const flcn::Vec3 expected{ 205, 620, 220 };
+    flcn::CVec3 vec{ 10, 20, 30 };
+    const flcn::CVec3 expected{ 205, 620, 220 };
 
     vec *= mat;
 

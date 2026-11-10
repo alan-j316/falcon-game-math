@@ -6,7 +6,7 @@
  *
  * @brief Diagnostic and validation utilities for Vector types.
  *        Provides specialized testing helpers and assertion wrappers for @ref CVec2,
- *        @ref Vec3, and @ref Vec4 to ensure numerical stability and
+ *        @ref CVec3, and @ref Vec4 to ensure numerical stability and
  *        geometric correctness across the fgm library.
  *
  * @copyright Copyright (c) 2026 Alan Abraham P Kochumon
@@ -16,7 +16,7 @@
 #include <cmath>
 #include <falcon/math/common/MathTraits.h>
 #include <falcon/math/vectors/CVec2.h>
-#include <falcon/math/vectors/Vec3.h>
+#include <falcon/math/vectors/CVec3.h>
 #include <falcon/math/vectors/Vec4.h>
 #include <gtest/gtest.h>
 #include <type_traits>
@@ -135,7 +135,7 @@ namespace testutils
 
 
     /**
-     * @brief Performs a strict component-wise validation of a @ref flcn::Vec3 against discrete scalar values.
+     * @brief Performs a strict component-wise validation of a @ref flcn::CVec3 against discrete scalar values.
      *
      * @tparam T Numeric type of the vector and scalar components.
      *
@@ -148,7 +148,7 @@ namespace testutils
      *       internal state does not match the provided scalars.
      */
     template <flcn::Arithmetic T>
-    void EXPECT_VEC_CONTAINS(const flcn::Vec3<T>& vector, T x, T y, T z)
+    void EXPECT_VEC_CONTAINS(const flcn::CVec3<T>& vector, T x, T y, T z)
     {
         if constexpr (std::is_same_v<T, float>)
         {
@@ -362,7 +362,7 @@ namespace testutils
 
 
     /**
-     * @brief Validates that a @ref flcn::Vec3 components are positive `INFINITY`.
+     * @brief Validates that a @ref flcn::CVec3 components are positive `INFINITY`.
      *
      * @param Vec The vector to evaluate.
      */
@@ -373,7 +373,7 @@ namespace testutils
 
 
     /**
-     * @brief Validates that a @ref flcn::Vec3 components are negative `INFINITY`.
+     * @brief Validates that a @ref flcn::CVec3 components are negative `INFINITY`.
      *
      * @param Vec The vector to evaluate.
      */

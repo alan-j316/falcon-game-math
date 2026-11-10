@@ -27,7 +27,7 @@ target_precompile_headers(
 )
 
 if (FALCON_COMBINED_TEST_RUN)
-    add_test(NAME FALCONCommonTestSuite COMMAND FalconMathCommonTests)
+    add_test(NAME FalconCommonTestSuite COMMAND FalconMathCommonTests)
 else ()
     gtest_discover_tests(FalconMathCommonTests DISCOVERY_MODE POST_BUILD DISCOVERY_TIMEOUT 180)
 endif ()

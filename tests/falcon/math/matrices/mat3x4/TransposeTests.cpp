@@ -39,8 +39,8 @@ namespace
 
         void SetUp() override
         {
-            _matrix = { flcn::Vec3{ T(1), T(2), T(3) }, flcn::Vec3{ T(4), T(5), T(6) }, flcn::Vec3{ T(7), T(8), T(9) },
-                        flcn::Vec3{ T(10), T(11), T(12) } };
+            _matrix = { flcn::CVec3{ T(1), T(2), T(3) }, flcn::CVec3{ T(4), T(5), T(6) }, flcn::CVec3{ T(7), T(8), T(9) },
+                        flcn::CVec3{ T(10), T(11), T(12) } };
             _expectedTranspose = { flcn::Vec4{ T(1), T(4), T(7), T(10) }, flcn::Vec4{ T(2), T(5), T(8), T(11) },
                                    flcn::Vec4{ T(3), T(6), T(9), T(12) } };
         }

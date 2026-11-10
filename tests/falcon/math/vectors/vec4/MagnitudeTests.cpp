@@ -14,7 +14,7 @@
 
 
 /**
- * @addtogroup T_Falcon_Vec3_Magnitude
+ * @addtogroup T_Falcon_CVec3_Magnitude
  * @{
  */
 
@@ -25,7 +25,7 @@ namespace
      **************************************/
 
     /**
-     * @brief Test fixture for @ref Vec3 magnitude.
+     * @brief Test fixture for @ref CVec3 magnitude.
      * @tparam T The scalar type (int, float, double...) of the vector components.
      */
     template <typename T>
@@ -48,7 +48,7 @@ namespace
 
 
     /**
-     * @brief Test fixture for @ref Vec3 magnitude that returns a value with decimal places.
+     * @brief Test fixture for @ref CVec3 magnitude that returns a value with decimal places.
      * @tparam T The scalar type (int, float, double...) of the vector components.
      */
     template <typename T>

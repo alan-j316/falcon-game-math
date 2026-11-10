@@ -73,8 +73,8 @@ namespace
     {
     protected:
         flcn::Transform4<T> _transform;
-        flcn::Vec3<T> _vec;
-        flcn::Vec3<T> _expectedFPVector, _expectedIntVector;
+        flcn::CVec3<T> _vec;
+        flcn::CVec3<T> _expectedFPVector, _expectedIntVector;
 
         void SetUp() override
         {
@@ -130,19 +130,19 @@ namespace
     {
         constexpr flcn::Transform4 TRANSFORM_A(7, 5, 1, 4, 6, 4, 8, 1, 1, 2, 5, 4);
         constexpr flcn::Transform4 TRANSFORM_B(3, 8, 7, 5, 5, 3, 4, 3, 1, 2, 4, 7);
-        constexpr flcn::Vec3 VECTOR(2, 3, 1);
+        constexpr flcn::CVec3 VECTOR(2, 3, 1);
         constexpr flcn::Point3 POINT(2, 3, 1);
 
 
         /// @test Verify that Transform4 * Transform4 returns a valid Transform4 at compile time.
         constexpr auto TRANSFORMED_MAT = TRANSFORM_A * TRANSFORM_B;
-        static_assert(TRANSFORMED_MAT[0] == flcn::Vec3{ 47, 46, 18 });
-        static_assert(TRANSFORMED_MAT[1] == flcn::Vec3{ 73, 76, 24 });
-        static_assert(TRANSFORMED_MAT[2] == flcn::Vec3{ 73, 90, 35 });
-        static_assert(TRANSFORMED_MAT[3] == flcn::Vec3{ 61, 99, 50 });
+        static_assert(TRANSFORMED_MAT[0] == flcn::CVec3{ 47, 46, 18 });
+        static_assert(TRANSFORMED_MAT[1] == flcn::CVec3{ 73, 76, 24 });
+        static_assert(TRANSFORMED_MAT[2] == flcn::CVec3{ 73, 90, 35 });
+        static_assert(TRANSFORMED_MAT[3] == flcn::CVec3{ 61, 99, 50 });
 
 
-        /// @test Verify that Transform4 * Vec3 returns a valid Vec3 at compile time.
+        /// @test Verify that Transform4 * CVec3 returns a valid CVec3 at compile time.
         constexpr auto TRANSFORMED_VECTOR = TRANSFORM_A * VECTOR;
         static_assert(TRANSFORMED_VECTOR[0] == 30);
         static_assert(TRANSFORMED_VECTOR[1] == 32);
@@ -187,7 +187,7 @@ TYPED_TEST(Transform4VectorMultiplicationTests, MatrixTimesVectorReturnsATransfo
 TEST(Transform4VectorMultiplicationTests, MatTimesVec_MixedTypeScalarMultiplicationPromotesType)
 {
     const flcn::Transform4 mat{ 1.0, 2.0, 3.0, 4.0, 5.0, 6.0, 7.0, 8.0, 9.0, 10.0, 11.0, 12.0 };
-    const flcn::Vec3 vec{ 2, 1, 3 };
+    const flcn::CVec3 vec{ 2, 1, 3 };
 
     [[maybe_unused]] const auto transformedVector = mat * vec;
     static_assert(std::is_same_v<decltype(transformedVector)::value_type, double>);

@@ -1,7 +1,7 @@
-add_library(Vec3Tests OBJECT)
+add_library(CVec3Tests OBJECT)
 
 target_sources(
-        Vec3Tests PRIVATE
+        CVec3Tests PRIVATE
         AccessAndMutationTests.cpp
         AliasTests.cpp
         ArithmeticOperationTests.cpp
@@ -22,16 +22,16 @@ target_sources(
         TypeConversionTests.cpp
         UtilityTests.cpp
 
-        Vec3TestSetup.h
+        CVec3TestSetup.h
 )
 
 target_include_directories(
-        Vec3Tests PRIVATE
+        CVec3Tests PRIVATE
         ${FALCON_TEST_ROOT_DIR}/include
 )
 
 
 target_link_libraries(
-        Vec3Tests PRIVATE
+        CVec3Tests PRIVATE
         FalconMathTestSetup
 )

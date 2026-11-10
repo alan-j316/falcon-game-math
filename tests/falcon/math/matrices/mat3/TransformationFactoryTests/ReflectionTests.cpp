@@ -32,36 +32,36 @@ namespace
     class Mat3ReflectionTests: public testing::Test
     {
     protected:
-        flcn::Vec3<T> _xAxis, _yAxis, _zAxis;
+        flcn::CVec3<T> _xAxis, _yAxis, _zAxis;
         flcn::Mat3<T> _expectedReflectionX, _expectedReflectionY, _expectedReflectionZ, _expectedReflectionXY,
             _expectedReflectionYZ, _expectedReflectionZX, _expectedReflectionOrigin;
 
         void SetUp() override
         {
-            _xAxis = flcn::Vec3{ T(1), T(0), T(0) };
-            _yAxis = flcn::Vec3{ T(0), T(1), T(0) };
-            _zAxis = flcn::Vec3{ T(0), T(0), T(1) };
+            _xAxis = flcn::CVec3{ T(1), T(0), T(0) };
+            _yAxis = flcn::CVec3{ T(0), T(1), T(0) };
+            _zAxis = flcn::CVec3{ T(0), T(0), T(1) };
 
-            _expectedReflectionX = { flcn::Vec3{ T(1), T(0), T(0) }, flcn::Vec3{ T(0), T(-1), T(0) },
-                                     flcn::Vec3{ T(0), T(0), T(-1) } };
+            _expectedReflectionX = { flcn::CVec3{ T(1), T(0), T(0) }, flcn::CVec3{ T(0), T(-1), T(0) },
+                                     flcn::CVec3{ T(0), T(0), T(-1) } };
 
-            _expectedReflectionY = { flcn::Vec3{ T(-1), T(0), T(0) }, flcn::Vec3{ T(0), T(1), T(0) },
-                                     flcn::Vec3{ T(0), T(0), T(-1) } };
+            _expectedReflectionY = { flcn::CVec3{ T(-1), T(0), T(0) }, flcn::CVec3{ T(0), T(1), T(0) },
+                                     flcn::CVec3{ T(0), T(0), T(-1) } };
 
-            _expectedReflectionZ = { flcn::Vec3{ T(-1), T(0), T(0) }, flcn::Vec3{ T(0), T(-1), T(0) },
-                                     flcn::Vec3{ T(0), T(0), T(1) } };
+            _expectedReflectionZ = { flcn::CVec3{ T(-1), T(0), T(0) }, flcn::CVec3{ T(0), T(-1), T(0) },
+                                     flcn::CVec3{ T(0), T(0), T(1) } };
 
-            _expectedReflectionXY = { flcn::Vec3{ T(1), T(0), T(0) }, flcn::Vec3{ T(0), T(1), T(0) },
-                                      flcn::Vec3{ T(0), T(0), T(-1) } };
+            _expectedReflectionXY = { flcn::CVec3{ T(1), T(0), T(0) }, flcn::CVec3{ T(0), T(1), T(0) },
+                                      flcn::CVec3{ T(0), T(0), T(-1) } };
 
-            _expectedReflectionYZ = { flcn::Vec3{ T(-1), T(0), T(0) }, flcn::Vec3{ T(0), T(1), T(0) },
-                                      flcn::Vec3{ T(0), T(0), T(1) } };
+            _expectedReflectionYZ = { flcn::CVec3{ T(-1), T(0), T(0) }, flcn::CVec3{ T(0), T(1), T(0) },
+                                      flcn::CVec3{ T(0), T(0), T(1) } };
 
-            _expectedReflectionZX = { flcn::Vec3{ T(1), T(0), T(0) }, flcn::Vec3{ T(0), T(-1), T(0) },
-                                      flcn::Vec3{ T(0), T(0), T(1) } };
+            _expectedReflectionZX = { flcn::CVec3{ T(1), T(0), T(0) }, flcn::CVec3{ T(0), T(-1), T(0) },
+                                      flcn::CVec3{ T(0), T(0), T(1) } };
 
-            _expectedReflectionOrigin = { flcn::Vec3{ T(-1), T(0), T(0) }, flcn::Vec3{ T(0), T(-1), T(0) },
-                                          flcn::Vec3{ T(0), T(0), T(-1) } };
+            _expectedReflectionOrigin = { flcn::CVec3{ T(-1), T(0), T(0) }, flcn::CVec3{ T(0), T(-1), T(0) },
+                                          flcn::CVec3{ T(0), T(0), T(-1) } };
         }
     };
     TYPED_TEST_SUITE(Mat3ReflectionTests, SupportedSignedArithmeticTypes);
@@ -77,17 +77,17 @@ namespace
     class Mat3ReflectionArbitraryPlaneTests: public testing::Test
     {
     protected:
-        flcn::Vec3<T> _norm;
+        flcn::CVec3<T> _norm;
         flcn::Mat3<T> _expectedNormReflect;
 
         void SetUp() override
         {
-            _norm = flcn::Vec3{ T(0.3244428422615251), T(0.48666426339228763), T(0.8111071056538127) };
+            _norm = flcn::CVec3{ T(0.3244428422615251), T(0.48666426339228763), T(0.8111071056538127) };
 
             _expectedNormReflect = {
-                flcn::Vec3{ T(0.7894736842105263), T(-0.31578947368421056), T(-0.5263157894736843) },
-                flcn::Vec3{ T(-0.31578947368421056), T(0.5263157894736842), T(-0.7894736842105263) },
-                flcn::Vec3{ T(-0.5263157894736843), T(-0.7894736842105263), T(-0.3157894736842106) }
+                flcn::CVec3{ T(0.7894736842105263), T(-0.31578947368421056), T(-0.5263157894736843) },
+                flcn::CVec3{ T(-0.31578947368421056), T(0.5263157894736842), T(-0.7894736842105263) },
+                flcn::CVec3{ T(-0.5263157894736843), T(-0.7894736842105263), T(-0.3157894736842106) }
             };
         }
     };
@@ -192,7 +192,7 @@ namespace
 
 
         /// @test Verify that the general reflection factory for x-axis return a valid matrix at compile time.
-        constexpr auto REFLECTION_MAT_X_NORM = flcn::Mat3<int>::makeReflection(flcn::Vec3(1, 0, 0));
+        constexpr auto REFLECTION_MAT_X_NORM = flcn::Mat3<int>::makeReflection(flcn::CVec3(1, 0, 0));
         static_assert(REFLECTION_MAT_X_NORM(0, 0) == -1);
         static_assert(REFLECTION_MAT_X_NORM(0, 1) == 0);
         static_assert(REFLECTION_MAT_X_NORM(0, 2) == 0);
@@ -205,7 +205,7 @@ namespace
 
 
         /// @test Verify that the general reflection factory for y-axis return a valid matrix at compile time.
-        constexpr auto REFLECTION_MAT_Y_NORM = flcn::Mat3<int>::makeReflection(flcn::Vec3(0, 1, 0));
+        constexpr auto REFLECTION_MAT_Y_NORM = flcn::Mat3<int>::makeReflection(flcn::CVec3(0, 1, 0));
         static_assert(REFLECTION_MAT_Y_NORM(0, 0) == 1);
         static_assert(REFLECTION_MAT_Y_NORM(0, 1) == 0);
         static_assert(REFLECTION_MAT_Y_NORM(0, 2) == 0);
@@ -218,7 +218,7 @@ namespace
 
 
         /// @test Verify that the general reflection factory for z-axis return a valid matrix at compile time.
-        constexpr auto REFLECTION_MAT_Z_NORM = flcn::Mat3<int>::makeReflection(flcn::Vec3(0, 0, 1));
+        constexpr auto REFLECTION_MAT_Z_NORM = flcn::Mat3<int>::makeReflection(flcn::CVec3(0, 0, 1));
         static_assert(REFLECTION_MAT_Z_NORM(0, 0) == 1);
         static_assert(REFLECTION_MAT_Z_NORM(0, 1) == 0);
         static_assert(REFLECTION_MAT_Z_NORM(0, 2) == 0);

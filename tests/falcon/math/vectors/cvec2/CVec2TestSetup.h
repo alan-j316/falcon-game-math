@@ -4,7 +4,7 @@
  * @author Alan Abraham P Kochumon
  * @date Created on: April 03, 2026
  *
- * @brief Define test setups common to all @ref Vec3 tests.
+ * @brief Define test setups common to all @ref CVec3 tests.
  *
  * @copyright Copyright (c) 2026 Alan Abraham P Kochumon
  */
@@ -16,7 +16,7 @@
 #include "utils/VectorUtils.h"
 
 #include <falcon/math/common/MathTraits.h>
-#include <falcon/math/vectors/Vec3.h>
+#include <falcon/math/vectors/CVec3.h>
 #include <gtest/gtest.h>
 
 

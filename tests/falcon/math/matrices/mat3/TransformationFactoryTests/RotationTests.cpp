@@ -44,31 +44,31 @@ namespace
         {
             _angle = flcn::constants::PI<FP_T> / FP_T(2.0);
 #ifdef FALCON_LEFT_HANDED
-            _expectedMatX = { flcn::Vec3{ COM_T(1), COM_T(0), COM_T(0) }, flcn::Vec3{ COM_T(0), COM_T(0), COM_T(-1) },
-                              flcn::Vec3 {
+            _expectedMatX = { flcn::CVec3{ COM_T(1), COM_T(0), COM_T(0) }, flcn::CVec3{ COM_T(0), COM_T(0), COM_T(-1) },
+                              flcn::CVec3 {
                                   COM_T(0),
                                   COM_T(1),
                                   COM_T(0)
                               } };
-            _expectedMatY = { flcn::Vec3{ COM_T(0), COM_T(0), COM_T(1) }, flcn::Vec3{ COM_T(0), COM_T(1), COM_T(0) },
-                              flcn::Vec3 {
+            _expectedMatY = { flcn::CVec3{ COM_T(0), COM_T(0), COM_T(1) }, flcn::CVec3{ COM_T(0), COM_T(1), COM_T(0) },
+                              flcn::CVec3 {
                                   COM_T(-1),
                                   COM_T(0),
                                   COM_T(0)
                               } };
-            _expectedMatZ = { flcn::Vec3{ COM_T(0), COM_T(-1), COM_T(0) }, flcn::Vec3{ COM_T(1), COM_T(0), COM_T(0) },
-                              flcn::Vec3 {
+            _expectedMatZ = { flcn::CVec3{ COM_T(0), COM_T(-1), COM_T(0) }, flcn::CVec3{ COM_T(1), COM_T(0), COM_T(0) },
+                              flcn::CVec3 {
                                   COM_T(0),
                                   COM_T(0),
                                   COM_T(1)
                               } };
 #else
-            _expectedMatX = { flcn::Vec3{ COM_T(1), COM_T(0), COM_T(0) }, flcn::Vec3{ COM_T(0), COM_T(0), COM_T(1) },
-                              flcn::Vec3{ COM_T(0), COM_T(-1), COM_T(0) } };
-            _expectedMatY = { flcn::Vec3{ COM_T(0), COM_T(0), COM_T(-1) }, flcn::Vec3{ COM_T(0), COM_T(1), COM_T(0) },
-                              flcn::Vec3{ COM_T(1), COM_T(0), COM_T(0) } };
-            _expectedMatZ = { flcn::Vec3{ COM_T(0), COM_T(1), COM_T(0) }, flcn::Vec3{ COM_T(-1), COM_T(0), COM_T(0) },
-                              flcn::Vec3{ COM_T(0), COM_T(0), COM_T(1) } };
+            _expectedMatX = { flcn::CVec3{ COM_T(1), COM_T(0), COM_T(0) }, flcn::CVec3{ COM_T(0), COM_T(0), COM_T(1) },
+                              flcn::CVec3{ COM_T(0), COM_T(-1), COM_T(0) } };
+            _expectedMatY = { flcn::CVec3{ COM_T(0), COM_T(0), COM_T(-1) }, flcn::CVec3{ COM_T(0), COM_T(1), COM_T(0) },
+                              flcn::CVec3{ COM_T(1), COM_T(0), COM_T(0) } };
+            _expectedMatZ = { flcn::CVec3{ COM_T(0), COM_T(1), COM_T(0) }, flcn::CVec3{ COM_T(-1), COM_T(0), COM_T(0) },
+                              flcn::CVec3{ COM_T(0), COM_T(0), COM_T(1) } };
 
 #endif
         }
@@ -88,7 +88,7 @@ namespace
     protected:
         T _angle;
         flcn::CVec2<T> _center;
-        flcn::Vec3<T> _axis;
+        flcn::CVec3<T> _axis;
         flcn::Mat3<T> _expectedMatX, _expectedMatY, _expectedMatZ, _expectedMatXYZ, _expectedMatCenter,
             _expectedAxisRotation;
 
@@ -97,75 +97,75 @@ namespace
         {
             _angle  = flcn::constants::PI<T> / T(4.0);
             _center = flcn::CVec2{ T(1), T(2) };
-            _axis   = flcn::Vec3{ T(0.26726124191242440), T(0.53452248382484879), T(0.80178372573727319) };
+            _axis   = flcn::CVec3{ T(0.26726124191242440), T(0.53452248382484879), T(0.80178372573727319) };
 
 #ifdef FALCON_LEFT_HANDED
-            _expectedMatX = { flcn::Vec3{ T(1.0), T(0.0), T(0.0) },
-                              flcn::Vec3{ T(0.0), T(0.70710678118654757), T(-0.70710678118654757) }, flcn::Vec3 {
+            _expectedMatX = { flcn::CVec3{ T(1.0), T(0.0), T(0.0) },
+                              flcn::CVec3{ T(0.0), T(0.70710678118654757), T(-0.70710678118654757) }, flcn::CVec3 {
                                   T(0.0),
                                   T(0.70710678118654757),
                                   T(0.70710678118654757)
                               } };
 
-            _expectedMatY = { flcn::Vec3{ T(0.70710678118654757), T(0.0), T(0.70710678118654757) },
-                              flcn::Vec3{ T(0.0), T(1.0), T(0.0) }, flcn::Vec3 {
+            _expectedMatY = { flcn::CVec3{ T(0.70710678118654757), T(0.0), T(0.70710678118654757) },
+                              flcn::CVec3{ T(0.0), T(1.0), T(0.0) }, flcn::CVec3 {
                                   T(-0.70710678118654757),
                                   T(0.0),
                                   T(0.70710678118654757)
                               } };
 
-            _expectedMatZ = { flcn::Vec3{ T(0.70710678118654757), T(-0.70710678118654757), T(0.0) },
-                              flcn::Vec3{ T(0.70710678118654757), T(0.70710678118654757), T(0.0) }, flcn::Vec3 {
+            _expectedMatZ = { flcn::CVec3{ T(0.70710678118654757), T(-0.70710678118654757), T(0.0) },
+                              flcn::CVec3{ T(0.70710678118654757), T(0.70710678118654757), T(0.0) }, flcn::CVec3 {
                                   T(0.0),
                                   T(0.0),
                                   T(1.0)
                               } };
 
-            _expectedMatXYZ = { flcn::Vec3{ T(0.5), T(0.5), T(-0.70710678118654757) },
-                                flcn::Vec3{ T(-0.14644660940672627), T(0.85355339059327395), T(0.5) }, flcn::Vec3 {
+            _expectedMatXYZ = { flcn::CVec3{ T(0.5), T(0.5), T(-0.70710678118654757) },
+                                flcn::CVec3{ T(-0.14644660940672627), T(0.85355339059327395), T(0.5) }, flcn::CVec3 {
                                     T(0.85355339059327395),
                                     T(-0.14644660940672627),
                                     T(0.5)
                                 } };
 
-            _expectedMatCenter    = { flcn::Vec3{ T(0.70710678118654757), T(-0.70710678118654757), T(0.0) },
-                                      flcn::Vec3{ T(0.70710678118654757), T(0.70710678118654757), T(0.0) }, flcn::Vec3 {
+            _expectedMatCenter    = { flcn::CVec3{ T(0.70710678118654757), T(-0.70710678118654757), T(0.0) },
+                                      flcn::CVec3{ T(0.70710678118654757), T(0.70710678118654757), T(0.0) }, flcn::CVec3 {
                                        T(1.0),
                                        T(2.0),
                                        T(1.0)
                                    } };
             _expectedAxisRotation = {
-                flcn::Vec3{ T(0.72802772538750848), T(-0.52510482111191903), T(0.44072730561210993) },
-                flcn::Vec3{ T(0.60878859791576267), T(0.79079055799039111), T(-0.06345657129884830) },
-                flcn::Vec3{ T(-0.31520164040634457), T(0.31450790171037896), T(0.89539527899519555) },
+                flcn::CVec3{ T(0.72802772538750848), T(-0.52510482111191903), T(0.44072730561210993) },
+                flcn::CVec3{ T(0.60878859791576267), T(0.79079055799039111), T(-0.06345657129884830) },
+                flcn::CVec3{ T(-0.31520164040634457), T(0.31450790171037896), T(0.89539527899519555) },
             };
 
 #else
 
-            _expectedMatX = { flcn::Vec3{ T(1.0), T(0.0), T(0.0) },
-                              flcn::Vec3{ T(0.0), T(0.70710678118654757), T(0.70710678118654757) },
-                              flcn::Vec3{ T(0.0), T(-0.70710678118654757), T(0.70710678118654757) } };
+            _expectedMatX = { flcn::CVec3{ T(1.0), T(0.0), T(0.0) },
+                              flcn::CVec3{ T(0.0), T(0.70710678118654757), T(0.70710678118654757) },
+                              flcn::CVec3{ T(0.0), T(-0.70710678118654757), T(0.70710678118654757) } };
 
-            _expectedMatY = { flcn::Vec3{ T(0.70710678118654757), T(0.0), T(-0.70710678118654757) },
-                              flcn::Vec3{ T(0.0), T(1.0), T(0.0) },
-                              flcn::Vec3{ T(0.70710678118654757), T(0.0), T(0.70710678118654757) } };
+            _expectedMatY = { flcn::CVec3{ T(0.70710678118654757), T(0.0), T(-0.70710678118654757) },
+                              flcn::CVec3{ T(0.0), T(1.0), T(0.0) },
+                              flcn::CVec3{ T(0.70710678118654757), T(0.0), T(0.70710678118654757) } };
 
-            _expectedMatZ = { flcn::Vec3{ T(0.70710678118654757), T(0.70710678118654757), T(0.0) },
-                              flcn::Vec3{ T(-0.70710678118654757), T(0.70710678118654757), T(0.0) },
-                              flcn::Vec3{ T(0.0), T(0.0), T(1.0) } };
+            _expectedMatZ = { flcn::CVec3{ T(0.70710678118654757), T(0.70710678118654757), T(0.0) },
+                              flcn::CVec3{ T(-0.70710678118654757), T(0.70710678118654757), T(0.0) },
+                              flcn::CVec3{ T(0.0), T(0.0), T(1.0) } };
 
-            _expectedMatCenter = { flcn::Vec3{ T(0.70710678118654757), T(0.70710678118654757), T(0.0) },
-                                   flcn::Vec3{ T(-0.70710678118654757), T(0.70710678118654757), T(0.0) },
-                                   flcn::Vec3{ T(1.0), T(2.0), T(1.0) } };
+            _expectedMatCenter = { flcn::CVec3{ T(0.70710678118654757), T(0.70710678118654757), T(0.0) },
+                                   flcn::CVec3{ T(-0.70710678118654757), T(0.70710678118654757), T(0.0) },
+                                   flcn::CVec3{ T(1.0), T(2.0), T(1.0) } };
 
-            _expectedMatXYZ = { flcn::Vec3{ T(0.5), T(0.5), T(-0.70710678118654757) },
-                                flcn::Vec3{ T(-0.14644660940672627), T(0.85355339059327395), T(0.5) },
-                                flcn::Vec3{ T(0.85355339059327395), T(-0.14644660940672627), T(0.5) } };
+            _expectedMatXYZ = { flcn::CVec3{ T(0.5), T(0.5), T(-0.70710678118654757) },
+                                flcn::CVec3{ T(-0.14644660940672627), T(0.85355339059327395), T(0.5) },
+                                flcn::CVec3{ T(0.85355339059327395), T(-0.14644660940672627), T(0.5) } };
 
             _expectedAxisRotation = {
-                flcn::Vec3{ T(0.72802772538750848), T(0.60878859791576267), T(-0.31520164040634457) },
-                flcn::Vec3{ T(-0.52510482111191903), T(0.79079055799039111), T(0.31450790171037896) },
-                flcn::Vec3{ T(0.44072730561210993), T(-0.06345657129884830), T(0.89539527899519555) }
+                flcn::CVec3{ T(0.72802772538750848), T(0.60878859791576267), T(-0.31520164040634457) },
+                flcn::CVec3{ T(-0.52510482111191903), T(0.79079055799039111), T(0.31450790171037896) },
+                flcn::CVec3{ T(0.44072730561210993), T(-0.06345657129884830), T(0.89539527899519555) }
             };
 
 #endif

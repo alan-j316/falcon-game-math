@@ -55,14 +55,14 @@ namespace
         static_assert(VEC2_INIT_VEC.z() == 3);
         static_assert(VEC2_INIT_VEC.w() == 4);
 
-        /// @test Verify that Vec4 can be initialized with a scalar and Vec3 at compile time.
+        /// @test Verify that Vec4 can be initialized with a scalar and CVec3 at compile time.
         constexpr flcn::Vec4 VEC3_SCALAR_INIT_VEC(1, { 2, 3, 4 });
         static_assert(VEC3_SCALAR_INIT_VEC.x() == 1);
         static_assert(VEC3_SCALAR_INIT_VEC.y() == 2);
         static_assert(VEC3_SCALAR_INIT_VEC.z() == 3);
         static_assert(VEC3_SCALAR_INIT_VEC.w() == 4);
 
-        /// @test Verify that Vec4 can be initialized with a Vec3 and scalar at compile time.
+        /// @test Verify that Vec4 can be initialized with a CVec3 and scalar at compile time.
         constexpr flcn::Vec4 SCALAR_VEC3_INIT_VEC({ 1, 2, 3 }, 4);
         static_assert(SCALAR_VEC3_INIT_VEC.x() == 1);
         static_assert(SCALAR_VEC3_INIT_VEC.y() == 2);
@@ -126,14 +126,14 @@ TYPED_TEST(Vec4InitializationTests, Two2DVectorsCanInitializeA4DVector)
 
 /**
  * @test Verify that the parameterized constructor correctly composes a 4D vector from a
- *       @ref flcn::Vec3 instance and a scalar.
+ *       @ref flcn::CVec3 instance and a scalar.
  */
 TYPED_TEST(Vec4InitializationTests, 3DVectorAndScalarCanInitializeA4DVector)
 {
     const TypeParam a = static_cast<TypeParam>(3);
     const TypeParam b = static_cast<TypeParam>(1);
     const TypeParam c = static_cast<TypeParam>(6);
-    const flcn::Vec3 vec1(a, b, c);
+    const flcn::CVec3 vec1(a, b, c);
     const TypeParam scalar = static_cast<TypeParam>(4);
 
     const flcn::Vec4 vec(vec1, scalar);
@@ -143,14 +143,14 @@ TYPED_TEST(Vec4InitializationTests, 3DVectorAndScalarCanInitializeA4DVector)
 
 /**
  * @test Verify that the parameterized constructor correctly composes a 4D vector from a scalar and
- *        a @ref flcn::Vec3 instance.
+ *        a @ref flcn::CVec3 instance.
  */
 TYPED_TEST(Vec4InitializationTests, ScalarAnd3DVectorCanInitializeA4DVector)
 {
     const TypeParam a = static_cast<TypeParam>(3);
     const TypeParam b = static_cast<TypeParam>(1);
     const TypeParam c = static_cast<TypeParam>(6);
-    const flcn::Vec3 vec1(a, b, c);
+    const flcn::CVec3 vec1(a, b, c);
     const TypeParam scalar = static_cast<TypeParam>(4);
 
     const flcn::Vec4 vec(scalar, vec1);

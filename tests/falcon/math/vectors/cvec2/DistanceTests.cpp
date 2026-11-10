@@ -3,7 +3,7 @@
  * @author Alan Abraham P Kochumon
  * @date Created on: May 28, 2026
  *
- * @brief Verify @ref flcn::Vec3 distance (L1, L2, L3) calculation logic.
+ * @brief Verify @ref flcn::CVec3 distance (L1, L2, L3) calculation logic.
  *
  * @copyright Copyright (c) 2026 Alan Abraham P Kochumon
  */

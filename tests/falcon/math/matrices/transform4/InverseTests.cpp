@@ -61,17 +61,17 @@ namespace
 
         /// @test Verify that inverse using inverse returns a valid Transform4 at compile time.
         constexpr flcn::Transform4 INV_TRANSFORM = TRANSFORM.inverse();
-        static_assert(INV_TRANSFORM[0] == flcn::Vec3{ -5.0f, -6.0f, -2.0f });
-        static_assert(INV_TRANSFORM[1] == flcn::Vec3{ 3.0f, 3.0f, 1.0f });
-        static_assert(INV_TRANSFORM[2] == flcn::Vec3{ 2.0f, 2.0f, 1.0f });
-        static_assert(INV_TRANSFORM[3] == flcn::Vec3{ 2.0f, 0.0f, -1.0f });
+        static_assert(INV_TRANSFORM[0] == flcn::CVec3{ -5.0f, -6.0f, -2.0f });
+        static_assert(INV_TRANSFORM[1] == flcn::CVec3{ 3.0f, 3.0f, 1.0f });
+        static_assert(INV_TRANSFORM[2] == flcn::CVec3{ 2.0f, 2.0f, 1.0f });
+        static_assert(INV_TRANSFORM[3] == flcn::CVec3{ 2.0f, 0.0f, -1.0f });
 
         /// @test Verify that static variant of inverse using inverse returns a valid Transform4 at compile time.
         constexpr flcn::Transform4 INV_TRANSFORM_STATIC = flcn::Transform4<float>::inverse(TRANSFORM);
-        static_assert(INV_TRANSFORM_STATIC[0] == flcn::Vec3{ -5.0f, -6.0f, -2.0f });
-        static_assert(INV_TRANSFORM_STATIC[1] == flcn::Vec3{ 3.0f, 3.0f, 1.0f });
-        static_assert(INV_TRANSFORM_STATIC[2] == flcn::Vec3{ 2.0f, 2.0f, 1.0f });
-        static_assert(INV_TRANSFORM_STATIC[3] == flcn::Vec3{ 2.0f, 0.0f, -1.0f });
+        static_assert(INV_TRANSFORM_STATIC[0] == flcn::CVec3{ -5.0f, -6.0f, -2.0f });
+        static_assert(INV_TRANSFORM_STATIC[1] == flcn::CVec3{ 3.0f, 3.0f, 1.0f });
+        static_assert(INV_TRANSFORM_STATIC[2] == flcn::CVec3{ 2.0f, 2.0f, 1.0f });
+        static_assert(INV_TRANSFORM_STATIC[3] == flcn::CVec3{ 2.0f, 0.0f, -1.0f });
 
     } // namespace static_tests
 

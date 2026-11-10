@@ -43,7 +43,7 @@ namespace
     {
 
     protected:
-        flcn::Vec3<T> _vec3, _expectedFPVec3, _expectedIntVec3;
+        flcn::CVec3<T> _vec3, _expectedFPCVec3, _expectedIntCVec3;
         flcn::Vec4<T> _vec4, _expectedFPVec4, _expectedIntVec4;
 
         flcn::Mat3x4<T> _mat3x4;
@@ -51,10 +51,10 @@ namespace
         void SetUp() override
         {
 
-            _vec3            = flcn::Vec3{ T(1.32194213899999991), T(2.12304122299999998), T(3.02134123399999988) };
-            _expectedFPVec3  = { flcn::Vec3{ T(32.15467085860238683), T(24.40151006828770974),
+            _vec3            = flcn::CVec3{ T(1.32194213899999991), T(2.12304122299999998), T(3.02134123399999988) };
+            _expectedFPCVec3  = { flcn::CVec3{ T(32.15467085860238683), T(24.40151006828770974),
                                            T(16.28906864577547253) } };
-            _expectedIntVec3 = { flcn::Vec3{ T(30), T(23), T(15) } };
+            _expectedIntCVec3 = { flcn::CVec3{ T(30), T(23), T(15) } };
 
             _vec4            = { flcn::Vec4{ T(1.32194213899999991), T(2.12304122299999998), T(3.02134123399999988),
                                  T(4.01283041000000029) } };
@@ -62,10 +62,10 @@ namespace
                                          T(14.10190761507471002) };
             _expectedIntVec4 = flcn::Vec4{ T(9), T(3), T(18), T(13) };
 
-            _mat3x4           = { flcn::Vec3{ T(5.12390421300000032), T(2.01234000000000002), T(0.01283400000000000) },
-                                  flcn::Vec3{ T(1.01820339999999998), T(1.02384019999999998), T(0.25123420000000002) },
-                                  flcn::Vec3{ T(5.01238399999999995), T(5.01238401234000008), T(1.20830199999999999) },
-                                  flcn::Vec3{ T(2.01238399999999995), T(1.10234800000000011), T(3.01234499999999983) } };
+            _mat3x4           = { flcn::CVec3{ T(5.12390421300000032), T(2.01234000000000002), T(0.01283400000000000) },
+                                  flcn::CVec3{ T(1.01820339999999998), T(1.02384019999999998), T(0.25123420000000002) },
+                                  flcn::CVec3{ T(5.01238399999999995), T(5.01238401234000008), T(1.20830199999999999) },
+                                  flcn::CVec3{ T(2.01238399999999995), T(1.10234800000000011), T(3.01234499999999983) } };
         }
     };
     TYPED_TEST_SUITE(Mat3x4GeometricOpsTests, SupportedArithmeticTypes);
@@ -78,7 +78,7 @@ namespace
     namespace static_tests
     {
         // STATIC TEST SETUP
-        constexpr flcn::Vec3 ROW_VEC3(1, 2, 3);
+        constexpr flcn::CVec3 ROW_VEC3(1, 2, 3);
         constexpr flcn::Vec4 VEC4(1, 2, 3, 4);
 
         constexpr flcn::Mat3x4 MAT3X4(5, 1, 5, 2, 2, 1, 5, 1, 0, 0, 1, 3);
@@ -112,11 +112,11 @@ TYPED_TEST(Mat3x4GeometricOpsTests, Mat3x4Times4DVector_ReturnsAValid3DVector)
     const auto expectedVector = this->_mat3x4 * this->_vec4;
     if constexpr (std::is_floating_point_v<TypeParam>)
     {
-        EXPECT_VEC_EQ(this->_expectedFPVec3, expectedVector);
+        EXPECT_VEC_EQ(this->_expectedFPCVec3, expectedVector);
     }
     else
     {
-        EXPECT_VEC_EQ(this->_expectedIntVec3, expectedVector);
+        EXPECT_VEC_EQ(this->_expectedIntCVec3, expectedVector);
     }
 }
 

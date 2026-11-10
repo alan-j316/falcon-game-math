@@ -68,12 +68,12 @@ namespace
 
         void SetUp() override
         {
-            _matrix = { flcn::Vec3{ T(7), T(3), T(0) }, flcn::Vec3{ T(1), T(6), T(6) }, flcn::Vec3{ T(0), T(6), T(9) },
-                        flcn::Vec3{ T(27), T(24), T(30) } };
+            _matrix = { flcn::CVec3{ T(7), T(3), T(0) }, flcn::CVec3{ T(1), T(6), T(6) }, flcn::CVec3{ T(0), T(6), T(9) },
+                        flcn::CVec3{ T(27), T(24), T(30) } };
             _scalar = T(3);
-            _expectedMatrix = { flcn::Vec3{ T(2.333333333333333), T(1), T(0) },
-                                flcn::Vec3{ T(0.3333333333333333), T(2), T(2) }, flcn::Vec3{ T(0), T(2), T(3) },
-                                flcn::Vec3{ T(9), T(8), T(10) } };
+            _expectedMatrix = { flcn::CVec3{ T(2.333333333333333), T(1), T(0) },
+                                flcn::CVec3{ T(0.3333333333333333), T(2), T(2) }, flcn::CVec3{ T(0), T(2), T(3) },
+                                flcn::CVec3{ T(9), T(8), T(10) } };
         }
     };
     TYPED_TEST_SUITE(Mat3x4DivisionTests, SupportedArithmeticTypes);
@@ -142,7 +142,7 @@ TEST_P(Mat3x4IndexingTests, OutOfBoundAccess_TriggersAssertInDebugMode)
 TEST_P(Mat3x4ColumnIndexingTests, OutOfBoundMutation_TriggersAssertInDebugMode)
 {
     const auto col = GetParam();
-    EXPECT_DEBUG_DEATH(static_cast<void>(mat[col] = flcn::Vec3<int>::zero()), "");
+    EXPECT_DEBUG_DEATH(static_cast<void>(mat[col] = flcn::CVec3<int>::zero()), "");
 }
 
 

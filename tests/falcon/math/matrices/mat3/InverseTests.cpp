@@ -56,12 +56,12 @@ namespace
     INSTANTIATE_TEST_SUITE_P(
         Mat3SingularMatrixInverse, Mat3InverseSingularTests,
         ::testing::Values(
-            flcn::Mat3{ flcn::Vec3{ 1.0f, 2.0f, 3.0f }, flcn::Vec3{ 1.0f, 2.0f, 3.0f }, flcn::Vec3{ 7.0f, 8.0f, 9.0f } },
-            flcn::Mat3{ flcn::Vec3{ 1.0f, 1.0f, 5.0f }, flcn::Vec3{ 2.0f, 2.0f, 3.0f }, flcn::Vec3{ 3.0f, 3.0f, 9.0f } },
-            flcn::Mat3{ flcn::Vec3{ 0.0f, 0.0f, 0.0f }, flcn::Vec3{ 1.0f, 2.0f, 3.0f }, flcn::Vec3{ 1.0f, 8.0f, 9.0f } },
-            flcn::Mat3{ flcn::Vec3{ 0.0f, 5.0f, 1.0f }, flcn::Vec3{ 0.0f, 2.0f, 3.0f }, flcn::Vec3{ 0.0f, 8.0f, 9.0f } },
-            flcn::Mat3{ flcn::Vec3{ 1.0f, 2.0f, 3.0f }, flcn::Vec3{ 2.0f, 4.0f, 6.0f }, flcn::Vec3{ 7.0f, 8.0f, 9.0f } },
-            flcn::Mat3{ flcn::Vec3{ 1.0f, 2.0f, 1.0f }, flcn::Vec3{ 2.0f, 4.0f, 3.0f }, flcn::Vec3{ 3.0f, 6.0f, 9.0f } }));
+            flcn::Mat3{ flcn::CVec3{ 1.0f, 2.0f, 3.0f }, flcn::CVec3{ 1.0f, 2.0f, 3.0f }, flcn::CVec3{ 7.0f, 8.0f, 9.0f } },
+            flcn::Mat3{ flcn::CVec3{ 1.0f, 1.0f, 5.0f }, flcn::CVec3{ 2.0f, 2.0f, 3.0f }, flcn::CVec3{ 3.0f, 3.0f, 9.0f } },
+            flcn::Mat3{ flcn::CVec3{ 0.0f, 0.0f, 0.0f }, flcn::CVec3{ 1.0f, 2.0f, 3.0f }, flcn::CVec3{ 1.0f, 8.0f, 9.0f } },
+            flcn::Mat3{ flcn::CVec3{ 0.0f, 5.0f, 1.0f }, flcn::CVec3{ 0.0f, 2.0f, 3.0f }, flcn::CVec3{ 0.0f, 8.0f, 9.0f } },
+            flcn::Mat3{ flcn::CVec3{ 1.0f, 2.0f, 3.0f }, flcn::CVec3{ 2.0f, 4.0f, 6.0f }, flcn::CVec3{ 7.0f, 8.0f, 9.0f } },
+            flcn::Mat3{ flcn::CVec3{ 1.0f, 2.0f, 1.0f }, flcn::CVec3{ 2.0f, 4.0f, 3.0f }, flcn::CVec3{ 3.0f, 6.0f, 9.0f } }));
 
 
 

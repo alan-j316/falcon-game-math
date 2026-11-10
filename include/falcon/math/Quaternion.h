@@ -25,7 +25,7 @@
 
 #include "Quaternion.h"
 #include "common/MathTraits.h"
-#include "vectors/Vec3.h"
+#include "vectors/CVec3.h"
 
 #include <array>
 
@@ -82,7 +82,7 @@ namespace flcn
          * @param[in] complex The complex/vector component.
          * @param[in] real The real/scalar component.
          */
-        [[nodiscard]] constexpr Quaternion(const Vec3<T>& complex, T real) noexcept;
+        [[nodiscard]] constexpr Quaternion(const CVec3<T>& complex, T real) noexcept;
 
 
         /**
@@ -91,7 +91,7 @@ namespace flcn
          * @param[in] complex The complex/vector component.
          * @param[in] real The real/scalar component.
          */
-        [[nodiscard]] constexpr Quaternion(T real, const Vec3<T>& complex) noexcept;
+        [[nodiscard]] constexpr Quaternion(T real, const CVec3<T>& complex) noexcept;
 
 
         /**
@@ -214,7 +214,7 @@ namespace flcn
          *
          * @return A *new* 3D Vector containing the complex part (i, j, k) of the quaternion.
          */
-        [[nodiscard]] constexpr Vec3<T> getVectorPart() const noexcept;
+        [[nodiscard]] constexpr CVec3<T> getVectorPart() const noexcept;
 
 
         /**
@@ -1013,7 +1013,7 @@ namespace flcn
 
     template <typename T>
         requires Arithmetic<T>
-    Quaternion(Vec3<T>, T) -> Quaternion<T>;
+    Quaternion(CVec3<T>, T) -> Quaternion<T>;
 
 } // namespace flcn
 

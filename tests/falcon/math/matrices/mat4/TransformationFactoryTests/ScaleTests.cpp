@@ -84,7 +84,7 @@ namespace
     class Mat4ScaleFactoryDirectionVectorFPTests: public testing::Test
     {
     protected:
-        flcn::Vec3<T> _direction;
+        flcn::CVec3<T> _direction;
         T _scale;
         flcn::Mat4<T> _expectedMat;
 
@@ -111,7 +111,7 @@ namespace
     class Mat4ScaleFactoryDirectionVectorIntTests: public testing::Test
     {
     protected:
-        flcn::Vec3<T> _xAxis, _yAxis, _zAxis;
+        flcn::CVec3<T> _xAxis, _yAxis, _zAxis;
         T _scale;
         flcn::Mat4<T> _expectedMatX, _expectedMatY, _expectedMatZ;
 
@@ -158,7 +158,7 @@ namespace
 
         /// @test Verify that scale transformation factory for scaling along any direction is available at compile time.
         /// Tests scaling along x-axis.
-        constexpr auto SCALE_ANY_DIR = flcn::Mat4<int>::makeScale(2, flcn::Vec3(1, 0, 0));
+        constexpr auto SCALE_ANY_DIR = flcn::Mat4<int>::makeScale(2, flcn::CVec3(1, 0, 0));
         static_assert(SCALE_ANY_DIR[0] == flcn::Vec4(2, 0, 0, 0));
         static_assert(SCALE_ANY_DIR[1] == flcn::Vec4(0, 1, 0, 0));
         static_assert(SCALE_ANY_DIR[2] == flcn::Vec4(0, 0, 1, 0));

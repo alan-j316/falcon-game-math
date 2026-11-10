@@ -63,7 +63,7 @@ set_target_properties(
         Mat4TransformTests
         MatrixExtraOpTests
         Transform4Tests
-        PROPERTIES FOLDER "Test Intermediates/FALCON"
+        PROPERTIES FOLDER "Test Intermediates/Falcon"
 )
 
 

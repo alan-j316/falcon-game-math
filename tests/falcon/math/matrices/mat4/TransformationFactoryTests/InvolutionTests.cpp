@@ -33,12 +33,12 @@ namespace
     class Mat4InvolutionFactoryFPTests: public testing::Test
     {
     protected:
-        flcn::Vec3<T> _norm;
+        flcn::CVec3<T> _norm;
         flcn::Mat4<T> _expectedInvolution;
 
         void SetUp() override
         {
-            _norm = flcn::Vec3{ T(0.3244428422615251), T(0.48666426339228763), T(0.8111071056538127) };
+            _norm = flcn::CVec3{ T(0.3244428422615251), T(0.48666426339228763), T(0.8111071056538127) };
 
             _expectedInvolution = {
                 flcn::Vec4{ T(-0.7894736842105263), T(0.31578947368421056), T(0.5263157894736843), T(0) },
@@ -60,14 +60,14 @@ namespace
     class Mat4InvolutionFactoryIntTests: public ::testing::Test
     {
     protected:
-        flcn::Vec3<T> _xAxis, _yAxis, _zAxis;
+        flcn::CVec3<T> _xAxis, _yAxis, _zAxis;
         flcn::Mat4<T> _expectedInvolutionX, _expectedInvolutionY, _expectedInvolutionZ;
 
         void SetUp() override
         {
-            _xAxis = flcn::Vec3{ T(1), T(0), T(0) };
-            _yAxis = flcn::Vec3{ T(0), T(1), T(0) };
-            _zAxis = flcn::Vec3{ T(0), T(0), T(1) };
+            _xAxis = flcn::CVec3{ T(1), T(0), T(0) };
+            _yAxis = flcn::CVec3{ T(0), T(1), T(0) };
+            _zAxis = flcn::CVec3{ T(0), T(0), T(1) };
 
             _expectedInvolutionX = { flcn::Vec4{ T(1), T(0), T(0), T(0) }, flcn::Vec4{ T(0), T(-1), T(0), T(0) },
                                      flcn::Vec4{ T(0), T(0), T(-1), T(0) }, flcn::Vec4{ T(0), T(0), T(0), T(1) } };
@@ -90,7 +90,7 @@ namespace
     namespace static_tests
     {
         /// @test Verify that involution matrix transformation factory is available at compile time.
-        constexpr auto INVOLUTION_MAT = flcn::Mat4<int>::makeInvolution(flcn::Vec3{ 1, 0, 0 });
+        constexpr auto INVOLUTION_MAT = flcn::Mat4<int>::makeInvolution(flcn::CVec3{ 1, 0, 0 });
         static_assert(INVOLUTION_MAT[0] == flcn::Vec4{ 1, 0, 0, 0 });
         static_assert(INVOLUTION_MAT[1] == flcn::Vec4{ 0, -1, 0, 0 });
         static_assert(INVOLUTION_MAT[2] == flcn::Vec4{ 0, 0, -1, 0 });

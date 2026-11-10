@@ -3,19 +3,19 @@
  * @author Alan Abraham P Kochumon
  * @date Created on: April 03, 2026
  *
- * @brief Verify @ref flcn::Vec3 string representation.
+ * @brief Verify @ref flcn::CVec3 string representation.
  *
  * @copyright Copyright (c) 2026 Alan Abraham P Kochumon
  */
 
 
-#include "Vec3TestSetup.h"
+#include "CVec3TestSetup.h"
 
 #include <sstream>
 
 
 /**
- * @addtogroup T_Falcon_Vec3_String_Repr
+ * @addtogroup T_Falcon_CVec3_String_Repr
  * @{
  */
 
@@ -26,9 +26,9 @@ namespace
      **************************************/
 
     /**
-     * @brief Test fixture for @ref flcn::Vec3 string representation.
+     * @brief Test fixture for @ref flcn::CVec3 string representation.
      */
-    class Vec3StringRepresentationTests: public testing::Test
+    class CVec3StringRepresentationTests: public testing::Test
     {
     protected:
         /** @brief Switch to use full precision for testing. */
@@ -45,9 +45,9 @@ namespace
  *           RUNTIME TESTS            *
  **************************************/
 
-TEST_F(Vec3StringRepresentationTests, IntegralVector_ReturnsFormattedString)
+TEST_F(CVec3StringRepresentationTests, IntegralVector_ReturnsFormattedString)
 {
-    const flcn::Vec3 vec(1, 2, 3);
+    const flcn::CVec3 vec(1, 2, 3);
     std::stringstream ss;
 
     ss << vec;
@@ -56,9 +56,9 @@ TEST_F(Vec3StringRepresentationTests, IntegralVector_ReturnsFormattedString)
 }
 
 
-TEST_F(Vec3StringRepresentationTests, FloatingPointVector_ReturnsFormattedString)
+TEST_F(CVec3StringRepresentationTests, FloatingPointVector_ReturnsFormattedString)
 {
-    const flcn::Vec3 vec(1.2345f, 2.0f, 3.56789f);
+    const flcn::CVec3 vec(1.2345f, 2.0f, 3.56789f);
     std::stringstream ss;
 
     ss << vec;
@@ -67,9 +67,9 @@ TEST_F(Vec3StringRepresentationTests, FloatingPointVector_ReturnsFormattedString
 }
 
 
-TEST_F(Vec3StringRepresentationTests, DoublePrecisionFloatingPointVector_ReturnsFormattedString)
+TEST_F(CVec3StringRepresentationTests, DoublePrecisionFloatingPointVector_ReturnsFormattedString)
 {
-    const flcn::Vec3 vec(1.2345789777, 2.65831, 3.161285);
+    const flcn::CVec3 vec(1.2345789777, 2.65831, 3.161285);
     std::stringstream ss;
 
     ss << vec;

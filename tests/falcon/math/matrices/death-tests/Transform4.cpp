@@ -52,18 +52,18 @@ namespace
     {};
     INSTANTIATE_TEST_SUITE_P(
         Transform4InverseTestSuite, Transform4InverseSingularTests,
-        ::testing::Values(flcn::Transform4{ flcn::Vec3{ 1.0f, 2.0f, 3.0f }, flcn::Vec3{ 1.0f, 2.0f, 3.0f },
-                                           flcn::Vec3{ 7.0f, 8.0f, 9.0f }, flcn::Point3{ 1.0f, 85.0f, 19.0f } },
-                          flcn::Transform4{ flcn::Vec3{ 1.0f, 1.0f, 3.0f }, flcn::Vec3{ 2.0f, 2.0f, 3.0f },
-                                           flcn::Vec3{ 3.0f, 3.0f, 9.0f }, flcn::Point3{ 4.0f, 4.0f, 31.6f } },
-                          flcn::Transform4{ flcn::Vec3{ 0.0f, 0.0f, 0.0f }, flcn::Vec3{ 2.0f, 2.0f, 3.0f },
-                                           flcn::Vec3{ 3.0f, 3.0f, 9.0f }, flcn::Point3{ 4.0f, 4.0f, 31.6f } },
-                          flcn::Transform4{ flcn::Vec3{ 0.0f, 1.0f, 3.0f }, flcn::Vec3{ 0.0f, 2.0f, 3.0f },
-                                           flcn::Vec3{ 0.0f, 3.0f, 9.0f }, flcn::Point3{ 0.0f, 4.0f, 31.6f } },
-                          flcn::Transform4{ flcn::Vec3{ 1.0f, 2.0f, 3.0f }, flcn::Vec3{ 2.0f, 4.0f, 6.0f },
-                                           flcn::Vec3{ 3.0f, 3.0f, 9.0f }, flcn::Point3{ 4.0f, 4.0f, 31.6f } },
-                          flcn::Transform4{ flcn::Vec3{ 1.0f, 2.0f, 3.0f }, flcn::Vec3{ 2.0f, 4.0f, 5.0f },
-                                           flcn::Vec3{ 3.0f, 6.0f, 9.0f }, flcn::Point3{ 4.0f, 8.0f, 31.6f } }));
+        ::testing::Values(flcn::Transform4{ flcn::CVec3{ 1.0f, 2.0f, 3.0f }, flcn::CVec3{ 1.0f, 2.0f, 3.0f },
+                                           flcn::CVec3{ 7.0f, 8.0f, 9.0f }, flcn::Point3{ 1.0f, 85.0f, 19.0f } },
+                          flcn::Transform4{ flcn::CVec3{ 1.0f, 1.0f, 3.0f }, flcn::CVec3{ 2.0f, 2.0f, 3.0f },
+                                           flcn::CVec3{ 3.0f, 3.0f, 9.0f }, flcn::Point3{ 4.0f, 4.0f, 31.6f } },
+                          flcn::Transform4{ flcn::CVec3{ 0.0f, 0.0f, 0.0f }, flcn::CVec3{ 2.0f, 2.0f, 3.0f },
+                                           flcn::CVec3{ 3.0f, 3.0f, 9.0f }, flcn::Point3{ 4.0f, 4.0f, 31.6f } },
+                          flcn::Transform4{ flcn::CVec3{ 0.0f, 1.0f, 3.0f }, flcn::CVec3{ 0.0f, 2.0f, 3.0f },
+                                           flcn::CVec3{ 0.0f, 3.0f, 9.0f }, flcn::Point3{ 0.0f, 4.0f, 31.6f } },
+                          flcn::Transform4{ flcn::CVec3{ 1.0f, 2.0f, 3.0f }, flcn::CVec3{ 2.0f, 4.0f, 6.0f },
+                                           flcn::CVec3{ 3.0f, 3.0f, 9.0f }, flcn::Point3{ 4.0f, 4.0f, 31.6f } },
+                          flcn::Transform4{ flcn::CVec3{ 1.0f, 2.0f, 3.0f }, flcn::CVec3{ 2.0f, 4.0f, 5.0f },
+                                           flcn::CVec3{ 3.0f, 6.0f, 9.0f }, flcn::Point3{ 4.0f, 8.0f, 31.6f } }));
 
 
 } // namespace
@@ -93,7 +93,7 @@ TEST_P(Transform4IndexingTests, OutOfBoundAccessTriggersAssertInDebugMode)
 TEST_P(Transform4VectorIndexingTests, OutOfBoundMutationTriggersAssertInDebugMode)
 {
     const auto col = GetParam();
-    EXPECT_DEBUG_DEATH(static_cast<void>(transform[col] = flcn::Vec3<int>::zero()), "");
+    EXPECT_DEBUG_DEATH(static_cast<void>(transform[col] = flcn::CVec3<int>::zero()), "");
 }
 
 

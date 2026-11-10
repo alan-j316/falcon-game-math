@@ -68,10 +68,10 @@ namespace
 
         void SetUp() override
         {
-            _matrix         = { flcn::Vec3{ T(7), T(3), T(0) }, flcn::Vec3{ T(1), T(6), T(6) } };
+            _matrix         = { flcn::CVec3{ T(7), T(3), T(0) }, flcn::CVec3{ T(1), T(6), T(6) } };
             _scalar         = T(3);
-            _expectedMatrix = { flcn::Vec3{ T(2.333333333333333), T(1), T(0) },
-                                flcn::Vec3{ T(0.3333333333333333), T(2), T(2) } };
+            _expectedMatrix = { flcn::CVec3{ T(2.333333333333333), T(1), T(0) },
+                                flcn::CVec3{ T(0.3333333333333333), T(2), T(2) } };
         }
     };
     /** Test fixture for @ref flcn::Mat3x2 division, parameterized by @ref SupportedArithmeticTypes */
@@ -120,7 +120,7 @@ TEST_P(Mat3x2IndexingTests, OutOfBoundAccessTriggersAssertInDebugMode)
 TEST_P(Mat3x2ColumnIndexingTests, OutOfBoundMutationTriggersAssertInDebugMode)
 {
     const auto col = GetParam();
-    EXPECT_DEBUG_DEATH(static_cast<void>(mat[col] = flcn::Vec3<int>::zero()), "");
+    EXPECT_DEBUG_DEATH(static_cast<void>(mat[col] = flcn::CVec3<int>::zero()), "");
 }
 
 

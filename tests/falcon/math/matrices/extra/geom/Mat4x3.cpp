@@ -42,7 +42,7 @@ namespace
     {
 
     protected:
-        flcn::Vec3<T> _vec3, _expectedFPVec3, _expectedIntVec3;
+        flcn::CVec3<T> _vec3, _expectedFPCVec3, _expectedIntCVec3;
         flcn::Vec4<T> _vec4, _expectedFPVec4, _expectedIntVec4;
 
         flcn::Mat4x3<T> _mat4x3;
@@ -50,9 +50,9 @@ namespace
 
         void SetUp() override
         {
-            _vec3            = flcn::Vec3{ T(1.32194213899999991), T(2.12304122299999998), T(3.02134123399999988) };
-            _expectedFPVec3  = flcn::Vec3{ T(38.72380489544533333), T(17.47170271681091691), T(60.47003789345847480) };
-            _expectedIntVec3 = flcn::Vec3{ T(36), T(16), T(58) };
+            _vec3            = flcn::CVec3{ T(1.32194213899999991), T(2.12304122299999998), T(3.02134123399999988) };
+            _expectedFPCVec3  = flcn::CVec3{ T(38.72380489544533333), T(17.47170271681091691), T(60.47003789345847480) };
+            _expectedIntCVec3 = flcn::CVec3{ T(36), T(16), T(58) };
 
             _vec4            = flcn::Vec4{ T(1.32194213899999991), T(2.12304122299999998), T(3.02134123399999988),
                                T(4.01283041000000029) };
@@ -80,7 +80,7 @@ namespace
     namespace static_tests
     {
         // STATIC TEST SETUP
-        constexpr flcn::Vec3 VEC3(1, 2, 3);
+        constexpr flcn::CVec3 VEC3(1, 2, 3);
         constexpr flcn::Vec4 ROW_VEC4(1, 2, 3, 4);
 
         constexpr flcn::Mat4x3 MAT4X3(5, 1, 5, 2, 2, 1, 5, 1, 5, 3, 2, 9);
@@ -128,11 +128,11 @@ TYPED_TEST(Mat4x3GeometricOpsTests, 4DRowVectorTimesMat4x3_ReturnsAValid2DRowVec
     const auto expectedVector = this->_vec4 * this->_mat4x3;
     if constexpr (std::is_floating_point_v<TypeParam>)
     {
-        EXPECT_VEC_EQ(this->_expectedFPVec3, expectedVector);
+        EXPECT_VEC_EQ(this->_expectedFPCVec3, expectedVector);
     }
     else
     {
-        EXPECT_VEC_EQ(this->_expectedIntVec3, expectedVector);
+        EXPECT_VEC_EQ(this->_expectedIntCVec3, expectedVector);
     }
 }
 

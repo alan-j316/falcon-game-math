@@ -16,7 +16,7 @@
 
 
 /**
- * @addtogroup T_Falcon_Vec3_String_Repr
+ * @addtogroup T_Falcon_CVec3_String_Repr
  * @{
  */
 
@@ -27,7 +27,7 @@ namespace
      **************************************/
 
     /**
-     * @brief Test fixture for @ref flcn::Vec3 string representation.
+     * @brief Test fixture for @ref flcn::CVec3 string representation.
      */
     class Vec4StringRepresentationTests: public testing::Test
     {

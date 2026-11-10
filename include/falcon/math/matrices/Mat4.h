@@ -1298,7 +1298,7 @@ namespace flcn
          * @return A new @ref Mat4 representing the linear rotation around @p center.
          */
         template <std::floating_point U>
-        [[nodiscard]] static constexpr Mat4 makeRotationX(U angle, const Vec3<T>& center) noexcept
+        [[nodiscard]] static constexpr Mat4 makeRotationX(U angle, const CVec3<T>& center) noexcept
             requires SignedStrictArithmetic<T>;
 
 
@@ -1376,7 +1376,7 @@ namespace flcn
          * @return A new @ref Mat4 representing the linear rotation around @p center.
          */
         template <std::floating_point U>
-        [[nodiscard]] static constexpr Mat4 makeRotationY(U angle, const Vec3<T>& center) noexcept
+        [[nodiscard]] static constexpr Mat4 makeRotationY(U angle, const CVec3<T>& center) noexcept
             requires SignedStrictArithmetic<T>;
 
 
@@ -1454,7 +1454,7 @@ namespace flcn
          * @return A new @ref Mat4 representing the linear rotation around @p center.
          */
         template <std::floating_point U>
-        [[nodiscard]] static constexpr Mat4 makeRotationZ(U angle, const Vec3<T>& center) noexcept
+        [[nodiscard]] static constexpr Mat4 makeRotationZ(U angle, const CVec3<T>& center) noexcept
             requires SignedStrictArithmetic<T>;
 
 
@@ -1480,17 +1480,17 @@ namespace flcn
          * @return A new @ref Mat4 representing the linear rotation around @p axis
          *         promoted to the nearest floating point type.
          *
-         * @relatedalso makeRotationNonNorm(U, const Vec3<T>&) // TODO:
-         * @relatedalso makeRotation(U, const Vec3<T>&, const Vec3<T>&)
+         * @relatedalso makeRotationNonNorm(U, const CVec3<T>&) // TODO:
+         * @relatedalso makeRotation(U, const CVec3<T>&, const CVec3<T>&)
          * @relatedalso makeRotationX(U)
-         * @relatedalso makeRotationX(U, const Vec3<T>&)
+         * @relatedalso makeRotationX(U, const CVec3<T>&)
          * @relatedalso makeRotationY(U)
-         * @relatedalso makeRotationY(U, const Vec3<T>&)
+         * @relatedalso makeRotationY(U, const CVec3<T>&)
          * @relatedalso makeRotationZ(U)
-         * @relatedalso makeRotationZ(U, const Vec3<T>&)
+         * @relatedalso makeRotationZ(U, const CVec3<T>&)
          */
         template <std::floating_point U>
-        [[nodiscard]] static constexpr PromotedFloatMat4<T, U> makeRotation(U angle, const Vec3<T>& axis) noexcept
+        [[nodiscard]] static constexpr PromotedFloatMat4<T, U> makeRotation(U angle, const CVec3<T>& axis) noexcept
             requires StrictArithmetic<T>;
 
 
@@ -1518,18 +1518,18 @@ namespace flcn
          * @return A new @ref Mat4 representing the linear rotation around @p axis
          *         promoted to the nearest floating point type.
          *
-         * @relatedalso makeRotationNonNorm(U, const Vec3<T>&) // TODO:
-         * @relatedalso makeRotation(U, const Vec3<T>&)
+         * @relatedalso makeRotationNonNorm(U, const CVec3<T>&) // TODO:
+         * @relatedalso makeRotation(U, const CVec3<T>&)
          * @relatedalso makeRotationX(U)
-         * @relatedalso makeRotationX(U, const Vec3<T>&)
+         * @relatedalso makeRotationX(U, const CVec3<T>&)
          * @relatedalso makeRotationY(U)
-         * @relatedalso makeRotationY(U, const Vec3<T>&)
+         * @relatedalso makeRotationY(U, const CVec3<T>&)
          * @relatedalso makeRotationZ(U)
-         * @relatedalso makeRotationZ(U, const Vec3<T>&)
+         * @relatedalso makeRotationZ(U, const CVec3<T>&)
          */
         template <std::floating_point U>
-        [[nodiscard]] static constexpr PromotedFloatMat4<T, U> makeRotation(U angle, const Vec3<T>& axis,
-                                                                            const Vec3<T>& center) noexcept
+        [[nodiscard]] static constexpr PromotedFloatMat4<T, U> makeRotation(U angle, const CVec3<T>& axis,
+                                                                            const CVec3<T>& center) noexcept
             requires StrictArithmetic<T>;
 
 
@@ -1558,10 +1558,10 @@ namespace flcn
         //  * @return A new @ref Mat4 representing the linear rotation around @p axis
         //  *         promoted to the nearest floating point type.
         //  *
-        //  * @relatedalso makeRotation(U, const Vec3<T>&)
+        //  * @relatedalso makeRotation(U, const CVec3<T>&)
         //  */
         // template <std::floating_point U>
-        // [[nodiscard]] static constexpr PromotedFloatMat4<T, U> makeRotationNonNorm(U angle, const Vec3<T>& axis)
+        // [[nodiscard]] static constexpr PromotedFloatMat4<T, U> makeRotationNonNorm(U angle, const CVec3<T>& axis)
         // noexcept
         //     requires StrictArithmetic<T>;
 
@@ -1602,7 +1602,7 @@ namespace flcn
          *
          * @return A new @ref Mat4 representing the scale matrix along a given vec.
          */
-        [[nodiscard]] static constexpr Mat4 makeScale(T scale, const Vec3<T>& direction) noexcept
+        [[nodiscard]] static constexpr Mat4 makeScale(T scale, const CVec3<T>& direction) noexcept
             requires SignedStrictArithmetic<T>;
 
 
@@ -1616,7 +1616,7 @@ namespace flcn
          *
          * @return A new @ref Mat4 representing the reflection across coordinate axis, plane or the origin.
          *
-         * @relatedalso makeReflection(const Vec3<T>&)
+         * @relatedalso makeReflection(const CVec3<T>&)
          */
         template <reflect::RT On>
         [[nodiscard]] static constexpr Mat4 makeReflection() noexcept
@@ -1640,7 +1640,7 @@ namespace flcn
          *
          * @relatedalso makeReflection<RT>()
          */
-        [[nodiscard]] static constexpr Mat4 makeReflection(const Vec3<T>& normal) noexcept
+        [[nodiscard]] static constexpr Mat4 makeReflection(const CVec3<T>& normal) noexcept
             requires SignedStrictArithmetic<T>;
 
 
@@ -1655,7 +1655,7 @@ namespace flcn
          *
          * @return A new @ref Mat4 representing the involution matrix across a given plane.
          */
-        [[nodiscard]] static constexpr Mat4 makeInvolution(const Vec3<T>& normal) noexcept
+        [[nodiscard]] static constexpr Mat4 makeInvolution(const CVec3<T>& normal) noexcept
             requires SignedStrictArithmetic<T>;
 
 
@@ -1669,8 +1669,8 @@ namespace flcn
          *
          * @relatedalso makeShearY(T, T)
          * @relatedalso makeShearZ(T, T)
-         * @relatedalso makeShearByAngle(T, const Vec3<T>&, const Vec3<T>&)
-         * @relatedalso makeShear(T, const Vec3<T>&, const Vec3<T>&)
+         * @relatedalso makeShearByAngle(T, const CVec3<T>&, const CVec3<T>&)
+         * @relatedalso makeShear(T, const CVec3<T>&, const CVec3<T>&)
          */
         [[nodiscard]] static constexpr Mat4 makeShearX(T shearY, T shearZ) noexcept
             requires StrictArithmetic<T>;
@@ -1686,8 +1686,8 @@ namespace flcn
          *
          * @relatedalso makeShearX(T, T)
          * @relatedalso makeShearZ(T, T)
-         * @relatedalso makeShearByAngle(T, const Vec3<T>&, const Vec3<T>&)
-         * @relatedalso makeShear(T, const Vec3<T>&, const Vec3<T>&)
+         * @relatedalso makeShearByAngle(T, const CVec3<T>&, const CVec3<T>&)
+         * @relatedalso makeShear(T, const CVec3<T>&, const CVec3<T>&)
          */
         [[nodiscard]] static constexpr Mat4 makeShearY(T shearX, T shearZ) noexcept
             requires StrictArithmetic<T>;
@@ -1703,8 +1703,8 @@ namespace flcn
          *
          * @relatedalso makeShearX(T, T)
          * @relatedalso makeShearY(T, T)
-         * @relatedalso makeShearByAngle(T, const Vec3<T>&, const Vec3<T>&)
-         * @relatedalso makeShear(T, const Vec3<T>&, const Vec3<T>&)
+         * @relatedalso makeShearByAngle(T, const CVec3<T>&, const CVec3<T>&)
+         * @relatedalso makeShear(T, const CVec3<T>&, const CVec3<T>&)
          */
         [[nodiscard]] static constexpr Mat4 makeShearZ(T shearX, T shearY) noexcept
             requires StrictArithmetic<T>;
@@ -1721,8 +1721,8 @@ namespace flcn
          * @param[in] normal     The unit vector orthogonal to shear direction.
          *
          * @code
-         *      const flcn::Vec3 xAxis(1.0f, 0.0f, 0.0f);
-         *      const flcn::Vec3 zAxis(0.0f, 0.0f, 1.0f);
+         *      const flcn::CVec3 xAxis(1.0f, 0.0f, 0.0f);
+         *      const flcn::CVec3 zAxis(0.0f, 0.0f, 1.0f);
          *      const auto shearAngle = 3.1415f / 4.0f;
          *      const auto shearMat = flcn::Mat4<float>::makeShearByAngle(shearAngle, xAxis, zAxis);
          * @endcode
@@ -1732,10 +1732,10 @@ namespace flcn
          * @relatedalso makeShearX(T, T)
          * @relatedalso makeShearY(T, T)
          * @relatedalso makeShearZ(T, T)
-         * @relatedalso makeShear(T, const Vec3<T>&, const Vec3<T>&)
+         * @relatedalso makeShear(T, const CVec3<T>&, const CVec3<T>&)
          */
-        [[nodiscard]] static constexpr Mat4 makeShearByAngle(T shearAngle, const Vec3<T>& direction,
-                                                             const Vec3<T>& normal) noexcept
+        [[nodiscard]] static constexpr Mat4 makeShearByAngle(T shearAngle, const CVec3<T>& direction,
+                                                             const CVec3<T>& normal) noexcept
             requires std::floating_point<T>;
 
 
@@ -1751,8 +1751,8 @@ namespace flcn
          * @param[in] normal     The unit vector orthogonal to shear direction.
          *
          * @code
-         *      const flcn::Vec3 xAxis(1.0f, 0.0f, 0.0f);
-         *      const flcn::Vec3 zAxis(0.0f, 0.0f, 1.0f);
+         *      const flcn::CVec3 xAxis(1.0f, 0.0f, 0.0f);
+         *      const flcn::CVec3 zAxis(0.0f, 0.0f, 1.0f);
          *      const auto shearAngle = 3.1415f / 4.0f;
          *      const auto shearValue = std::tan(shearAngle);
          *      const auto shearMat = flcn::Mat4<float>makeShear(shearValue, xAxis, zAxis);
@@ -1763,10 +1763,10 @@ namespace flcn
          * @relatedalso makeShearX(T, T)
          * @relatedalso makeShearY(T, T)
          * @relatedalso makeShearZ(T, T)
-         * @relatedalso makeShearByAngle(T, const Vec3<T>&, const Vec3<T>&)
+         * @relatedalso makeShearByAngle(T, const CVec3<T>&, const CVec3<T>&)
          */
-        [[nodiscard]] static constexpr Mat4 makeShear(T shearFactor, const Vec3<T>& direction,
-                                                      const Vec3<T>& normal) noexcept
+        [[nodiscard]] static constexpr Mat4 makeShear(T shearFactor, const CVec3<T>& direction,
+                                                      const CVec3<T>& normal) noexcept
             requires std::floating_point<T>;
 
 
@@ -1779,7 +1779,7 @@ namespace flcn
          * @return A 4D affine transform matrix.
          */
         [[nodiscard]] static constexpr Mat4 makeAffine(const Mat3<T>& linearTransform,
-                                                       const Vec3<T>& translation) noexcept;
+                                                       const CVec3<T>& translation) noexcept;
 
 
         /** @} */

@@ -38,9 +38,9 @@ namespace
 
         void SetUp() override
         {
-            _matA        = { flcn::Vec3<T>{ 1, 2, 3 }, flcn::Vec3<T>{ 4, 5, 6 }, flcn::Vec3<T>{ 7, 8, 9 } };
-            _matB        = { flcn::Vec3<T>{ 10, 11, 12 }, flcn::Vec3<T>{ 13, 14, 15 }, flcn::Vec3<T>{ 16, 17, 18 } };
-            _expectedSum = { flcn::Vec3<T>{ 11, 13, 15 }, flcn::Vec3<T>{ 17, 19, 21 }, flcn::Vec3<T>{ 23, 25, 27 } };
+            _matA        = { flcn::CVec3<T>{ 1, 2, 3 }, flcn::CVec3<T>{ 4, 5, 6 }, flcn::CVec3<T>{ 7, 8, 9 } };
+            _matB        = { flcn::CVec3<T>{ 10, 11, 12 }, flcn::CVec3<T>{ 13, 14, 15 }, flcn::CVec3<T>{ 16, 17, 18 } };
+            _expectedSum = { flcn::CVec3<T>{ 11, 13, 15 }, flcn::CVec3<T>{ 17, 19, 21 }, flcn::CVec3<T>{ 23, 25, 27 } };
         }
     };
     TYPED_TEST_SUITE(Mat3AdditionTests, SupportedArithmeticTypes);
@@ -86,9 +86,9 @@ TYPED_TEST(Mat3AdditionTests, PlusOperator_ReturnsMatrixSum)
 
 TEST(Mat3AdditionTests, PlusOperator_MixedType_PromotesType)
 {
-    const flcn::Mat3 mat1{ flcn::Vec3{ 1.0f, 2.0f, 3.0f }, flcn::Vec3{ -3.0f, -4.0f, 10.0f },
-                          flcn::Vec3{ 4.5f, 3.25f, 3.16f } };
-    const flcn::Mat3 mat2{ flcn::Vec3{ 10.0, 2.0, -1.0 }, flcn::Vec3{ 3.0, -8.0, 12.0 }, flcn::Vec3{ 3.25, 5.1, 0.0 } };
+    const flcn::Mat3 mat1{ flcn::CVec3{ 1.0f, 2.0f, 3.0f }, flcn::CVec3{ -3.0f, -4.0f, 10.0f },
+                          flcn::CVec3{ 4.5f, 3.25f, 3.16f } };
+    const flcn::Mat3 mat2{ flcn::CVec3{ 10.0, 2.0, -1.0 }, flcn::CVec3{ 3.0, -8.0, 12.0 }, flcn::CVec3{ 3.25, 5.1, 0.0 } };
 
     [[maybe_unused]] const flcn::Mat3 sum = mat1 + mat2;
     static_assert(std::is_same_v<decltype(sum)::value_type, double>);
@@ -104,8 +104,8 @@ TYPED_TEST(Mat3AdditionTests, PlusEqualsOperator_ReturnsSameMatrixWithSum)
 
 TEST(Mat3AdditionTests, PlusEqualsOperator_MixedType_DoesNotPromoteType)
 {
-    flcn::Mat3 mat1{ flcn::Vec3{ 1.0f, 2.0f, 3.0f }, flcn::Vec3{ -3.0f, -4.0f, 10.0f }, flcn::Vec3{ 4.5f, 3.25f, 3.16f } };
-    constexpr flcn::Mat3 mat2{ flcn::Vec3{ 10.0, 2.0, -1.0 }, flcn::Vec3{ 3.0, -8.0, 12.0 }, flcn::Vec3{ 3.25, 5.1, 0.0 } };
+    flcn::Mat3 mat1{ flcn::CVec3{ 1.0f, 2.0f, 3.0f }, flcn::CVec3{ -3.0f, -4.0f, 10.0f }, flcn::CVec3{ 4.5f, 3.25f, 3.16f } };
+    constexpr flcn::Mat3 mat2{ flcn::CVec3{ 10.0, 2.0, -1.0 }, flcn::CVec3{ 3.0, -8.0, 12.0 }, flcn::CVec3{ 3.25, 5.1, 0.0 } };
 
     mat1 += mat2;
     static_assert(std::is_same_v<decltype(mat1)::value_type, float>);

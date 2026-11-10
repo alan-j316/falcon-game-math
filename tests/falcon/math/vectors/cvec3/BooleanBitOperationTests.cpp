@@ -3,18 +3,18 @@
  * @author Alan Abraham P Kochumon
  * @date Created on: April 02, 2026
  *
- * @brief Verify @ref flcn::Vec3 bitwise operator(&, |, !) logic.
+ * @brief Verify @ref flcn::CVec3 bitwise operator(&, |, !) logic.
  *
  * @copyright Copyright (c) 2026 Alan Abraham P Kochumon
  */
 
 
-#include "Vec3TestSetup.h"
+#include "CVec3TestSetup.h"
 
 
 
 /**
- * @addtogroup T_Falcon_Vec3_Bool_Bit
+ * @addtogroup T_Falcon_CVec3_Bool_Bit
  * @{
  */
 
@@ -25,16 +25,16 @@ namespace
      **************************************/
 
     /**
-     * @brief Test fixture for @ref flcn::Vec3 boolean bitwise operations.
+     * @brief Test fixture for @ref flcn::CVec3 boolean bitwise operations.
      */
-    class BooleanVec3BitOperationsTests: public testing::Test
+    class BooleanCVec3BitOperationsTests: public testing::Test
     {
     protected:
-        flcn::Vec3<bool> _vecA;
-        flcn::Vec3<bool> _vecB;
-        flcn::Vec3<bool> _expectedConjunctionVector;
-        flcn::Vec3<bool> _expectedDisjunctionVec;
-        flcn::Vec3<bool> _expectedInvertedVec;
+        flcn::CVec3<bool> _vecA;
+        flcn::CVec3<bool> _vecB;
+        flcn::CVec3<bool> _expectedConjunctionVector;
+        flcn::CVec3<bool> _expectedDisjunctionVec;
+        flcn::CVec3<bool> _expectedInvertedVec;
 
         void SetUp() override
         {
@@ -54,8 +54,8 @@ namespace
 
     namespace static_tests
     {
-        constexpr flcn::Vec3 VEC_A(true, false, true);
-        constexpr flcn::Vec3 VEC_B(false, false, true);
+        constexpr flcn::CVec3 VEC_A(true, false, true);
+        constexpr flcn::CVec3 VEC_B(false, false, true);
 
         /// @test Verify that vector AND returns a valid vector at compile time.
         constexpr auto AND_VEC = VEC_A & VEC_B;
@@ -90,7 +90,7 @@ namespace
  * @test Verify that the bitwise AND operator perform a component-wise logical conjunction and
  *       returns the correct boolean mask.
  */
-TEST_F(BooleanVec3BitOperationsTests, BitwiseAND_PerformComponentwiseConjunction)
+TEST_F(BooleanCVec3BitOperationsTests, BitwiseAND_PerformComponentwiseConjunction)
 {
     const auto mask = this->_vecA & this->_vecB;
 
@@ -101,7 +101,7 @@ TEST_F(BooleanVec3BitOperationsTests, BitwiseAND_PerformComponentwiseConjunction
  * @test Verify that the compound bitwise AND operator performs a component-wise logical conjunction in-place
  *       and updates the calling vector with the resulting mask.
  */
-TEST_F(BooleanVec3BitOperationsTests, CompoundBitwiseAND_PerformInPlaceConjunction)
+TEST_F(BooleanCVec3BitOperationsTests, CompoundBitwiseAND_PerformInPlaceConjunction)
 {
     this->_vecA &= this->_vecB;
     EXPECT_VEC_EQ(this->_expectedConjunctionVector, this->_vecA);
@@ -112,7 +112,7 @@ TEST_F(BooleanVec3BitOperationsTests, CompoundBitwiseAND_PerformInPlaceConjuncti
  * @test Verify that the bitwise OR operator performs a component-wise logical disjunction and
  *       returns the correct boolean mask.
  */
-TEST_F(BooleanVec3BitOperationsTests, BitwiseOR_PerformComponentwiseDisjunction)
+TEST_F(BooleanCVec3BitOperationsTests, BitwiseOR_PerformComponentwiseDisjunction)
 {
     const auto mask = this->_vecA | this->_vecB;
     EXPECT_VEC_EQ(this->_expectedDisjunctionVec, mask);
@@ -123,7 +123,7 @@ TEST_F(BooleanVec3BitOperationsTests, BitwiseOR_PerformComponentwiseDisjunction)
  * @test Verify that the compound bitwise OR operator performs a component-wise logical disjunction in-place
  *       and updates the calling vector with the resulting mask.
  */
-TEST_F(BooleanVec3BitOperationsTests, CompoundBitwiseOR_PerformInPlaceDisjunction)
+TEST_F(BooleanCVec3BitOperationsTests, CompoundBitwiseOR_PerformInPlaceDisjunction)
 {
     this->_vecA |= this->_vecB;
     EXPECT_VEC_EQ(this->_expectedConjunctionVector, this->_vecA);
@@ -134,7 +134,7 @@ TEST_F(BooleanVec3BitOperationsTests, CompoundBitwiseOR_PerformInPlaceDisjunctio
  * @test Verify that the bitwise NOT operator performs a component-wise logical inversion and
  *       returns the correct boolean mask.
  */
-TEST_F(BooleanVec3BitOperationsTests, BitwiseNOT_PerformComponentwiseInversion)
+TEST_F(BooleanCVec3BitOperationsTests, BitwiseNOT_PerformComponentwiseInversion)
 {
     const auto mask = !this->_vecA;
     EXPECT_VEC_EQ(this->_expectedInvertedVec, mask);

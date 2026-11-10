@@ -40,11 +40,11 @@ namespace
 
         void SetUp() override
         {
-            _matA = { flcn::Vec3<T>(5, 6, 5), flcn::Vec3<T>(7, 8, 12), flcn::Vec3<T>(17, 81, 22),
-                      flcn::Vec3<T>(22, 32, 11) };
-            _matB = { flcn::Vec3<T>(1, 2, 5), flcn::Vec3<T>(3, 4, 11), flcn::Vec3<T>(0, 1, 19), flcn::Vec3<T>(21, 14, 11) };
-            _expectedDifference = { flcn::Vec3<T>(4, 4, 0), flcn::Vec3<T>(4, 4, 1), flcn::Vec3<T>(17, 80, 3),
-                                    flcn::Vec3<T>(1, 18, 0) };
+            _matA = { flcn::CVec3<T>(5, 6, 5), flcn::CVec3<T>(7, 8, 12), flcn::CVec3<T>(17, 81, 22),
+                      flcn::CVec3<T>(22, 32, 11) };
+            _matB = { flcn::CVec3<T>(1, 2, 5), flcn::CVec3<T>(3, 4, 11), flcn::CVec3<T>(0, 1, 19), flcn::CVec3<T>(21, 14, 11) };
+            _expectedDifference = { flcn::CVec3<T>(4, 4, 0), flcn::CVec3<T>(4, 4, 1), flcn::CVec3<T>(17, 80, 3),
+                                    flcn::CVec3<T>(1, 18, 0) };
         }
     };
     TYPED_TEST_SUITE(Mat3x4SubtractionTests, SupportedArithmeticTypes);

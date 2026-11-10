@@ -11,7 +11,7 @@
 
 #include "vectors/CVec2.h"
 #include "vectors/Vec2.h"
-#include "vectors/Vec3.h"
+#include "vectors/CVec3.h"
 #include "vectors/Vec4.h"
 #include "common/MathTraits.h"
 

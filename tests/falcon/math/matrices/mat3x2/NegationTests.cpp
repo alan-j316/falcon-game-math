@@ -37,8 +37,8 @@ namespace
 
         void SetUp() override
         {
-            _matA        = { flcn::Vec3<T>(-1, 2, 3), flcn::Vec3<T>(5, 6, 7) };
-            _expectedMat = { flcn::Vec3<T>(1, -2, -3), flcn::Vec3<T>(-5, -6, -7) };
+            _matA        = { flcn::CVec3<T>(-1, 2, 3), flcn::CVec3<T>(5, 6, 7) };
+            _expectedMat = { flcn::CVec3<T>(1, -2, -3), flcn::CVec3<T>(-5, -6, -7) };
         }
     };
     TYPED_TEST_SUITE(Mat3x2NegationTests, SupportedSignedArithmeticTypes);

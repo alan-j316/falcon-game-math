@@ -1,6 +1,6 @@
 #pragma once
 /**
- * @file Vec3.h
+ * @file CVec3.h
  * @author Alan Abraham P Kochumon
  * @date Created on: January 19, 2026
  *
@@ -35,10 +35,10 @@
 namespace flcn
 {
     template <Arithmetic T>
-    struct Vec3
+    struct CVec3
     {
         /**
-         * @addtogroup FALCON_Vec3_Members
+         * @addtogroup FALCON_CVec3_Members
          * @{
          */
 
@@ -50,65 +50,65 @@ namespace flcn
 
 
         /**
-         * @addtogroup FALCON_Vec3_Init
+         * @addtogroup FALCON_CVec3_Init
          * @{
          */
 
         /**
-         * @brief Initialize an uninitialized @ref Vec3 instance.
+         * @brief Initialize an uninitialized @ref CVec3 instance.
          *
          * @warning The components are left uninitialized (containing garbage data)
          *          to maximize SIMD optimization and maintain triviality.
          *
          * @note Use value-initialization (`{}`) or the static helper
-         *       @ref flcn::Vec3<T>::ZERO() to guarantee a zeroed vector.
+         *       @ref flcn::CVec3<T>::ZERO() to guarantee a zeroed vector.
          */
-        Vec3() = default;
+        CVec3() = default;
 
 
         /**
-         * @brief Initialize @ref Vec3 with passed in values.
+         * @brief Initialize @ref CVec3 with passed in values.
          *
-         * @param[in] v1 The first entry of @ref Vec3.
-         * @param[in] v2 The second entry of @ref Vec3.
-         * @param[in] v3 The third entry of @ref Vec3.
+         * @param[in] v1 The first entry of @ref CVec3.
+         * @param[in] v2 The second entry of @ref CVec3.
+         * @param[in] v3 The third entry of @ref CVec3.
          */
-        [[nodiscard]] constexpr Vec3(T v1, T v2, T v3) noexcept;
+        [[nodiscard]] constexpr CVec3(T v1, T v2, T v3) noexcept;
 
 
         /**
-         * @brief Initialize @ref Vec3 with 1 @ref CVec2 and 1 @ref T value.
+         * @brief Initialize @ref CVec3 with 1 @ref CVec2 and 1 @ref T value.
          *
-         * @param[in] vec The first two entries of @ref Vec3.
-         * @param[in] v   The last entry of @ref Vec3.
+         * @param[in] vec The first two entries of @ref CVec3.
+         * @param[in] v   The last entry of @ref CVec3.
          */
-        [[nodiscard]] constexpr Vec3(CVec2<T> vec, T v) noexcept;
+        [[nodiscard]] constexpr CVec3(CVec2<T> vec, T v) noexcept;
 
 
         /**
-         * @brief Initialize @ref Vec3 with 1 @ref T value and 1 @ref CVec2.
+         * @brief Initialize @ref CVec3 with 1 @ref T value and 1 @ref CVec2.
          *
-         * @param[in] v   The first entry of @ref Vec3.
-         * @param[in] vec The last two entries of @ref Vec3.
+         * @param[in] v   The first entry of @ref CVec3.
+         * @param[in] vec The last two entries of @ref CVec3.
          */
-        [[nodiscard]] constexpr Vec3(T v, CVec2<T> vec) noexcept;
+        [[nodiscard]] constexpr CVec3(T v, CVec2<T> vec) noexcept;
 
 
         /**
-         * @brief Initialize @ref Vec3 from another @ref Vec3 of a different type.
+         * @brief Initialize @ref CVec3 from another @ref CVec3 of a different type.
          *
          * @tparam U Numeric type of the source vector.
          *
          * @param[in] other The source vector to be converted.
          */
         template <Arithmetic U>
-        [[nodiscard]] explicit constexpr Vec3(const Vec3<U>& other) noexcept;
+        [[nodiscard]] explicit constexpr CVec3(const CVec3<U>& other) noexcept;
 
         /** @} */
 
 
         /**
-         * @addtogroup FALCON_Vec3_Access
+         * @addtogroup FALCON_CVec3_Access
          * @{
          */
 
@@ -268,7 +268,7 @@ namespace flcn
 
 
         /**
-         * @addtogroup FALCON_Vec3_Swizzle
+         * @addtogroup FALCON_CVec3_Swizzle
          * @{
          */
 
@@ -307,13 +307,13 @@ namespace flcn
          */
         template <std::size_t... Indices>
         [[nodiscard("Swizzling returns a new vector and does not mutate the original.")]]
-        static constexpr auto swizzle(const Vec3& vec) noexcept;
+        static constexpr auto swizzle(const CVec3& vec) noexcept;
 
         /** @} */
 
 
         /**
-         * @addtogroup FALCON_Vec3_Equality
+         * @addtogroup FALCON_CVec3_Equality
          * @{
          */
 
@@ -334,7 +334,7 @@ namespace flcn
          */
         template <Arithmetic U>
             requires StrictSignedness<T, U>
-        [[nodiscard]] constexpr bool allEq(const Vec3<U>& rhs,
+        [[nodiscard]] constexpr bool allEq(const CVec3<U>& rhs,
                                            double epsilon = std::is_same_v<T, double> || std::is_same_v<U, double>
                                                ? Config::DOUBLE_EPSILON
                                                : Config::FLOAT_EPSILON) const noexcept;
@@ -357,7 +357,7 @@ namespace flcn
          */
         template <Arithmetic U>
             requires StrictSignedness<T, U>
-        [[nodiscard]] static constexpr bool allEq(const Vec3& lhs, const Vec3<U>& rhs,
+        [[nodiscard]] static constexpr bool allEq(const CVec3& lhs, const CVec3<U>& rhs,
                                                   double epsilon = std::is_same_v<T, double> ||
                                                           std::is_same_v<U, double>
                                                       ? Config::DOUBLE_EPSILON
@@ -381,7 +381,7 @@ namespace flcn
          */
         template <Arithmetic U>
             requires StrictSignedness<T, U>
-        [[nodiscard]] constexpr bool anyNeq(const Vec3<U>& rhs,
+        [[nodiscard]] constexpr bool anyNeq(const CVec3<U>& rhs,
                                             double epsilon = std::is_same_v<T, double> || std::is_same_v<U, double>
                                                 ? Config::DOUBLE_EPSILON
                                                 : Config::FLOAT_EPSILON) const noexcept;
@@ -405,7 +405,7 @@ namespace flcn
          */
         template <Arithmetic U>
             requires StrictSignedness<T, U>
-        [[nodiscard]] static constexpr bool anyNeq(const Vec3& lhs, const Vec3<U>& rhs,
+        [[nodiscard]] static constexpr bool anyNeq(const CVec3& lhs, const CVec3<U>& rhs,
                                                    double epsilon = std::is_same_v<T, double> ||
                                                            std::is_same_v<U, double>
                                                        ? Config::DOUBLE_EPSILON
@@ -413,7 +413,7 @@ namespace flcn
 
 
         /**
-         * @copybrief allEq(const Vec3<U>&, double) const
+         * @copybrief allEq(const CVec3<U>&, double) const
          *
          * @note To obtain a component-wise boolean mask, use @ref eq.
          *
@@ -425,11 +425,11 @@ namespace flcn
          */
         template <Arithmetic U>
             requires StrictSignedness<T, U>
-        [[nodiscard]] constexpr bool operator==(const Vec3<U>& rhs) const noexcept;
+        [[nodiscard]] constexpr bool operator==(const CVec3<U>& rhs) const noexcept;
 
 
         /**
-         * @copybrief anyNeq(const Vec3<U>&, double) const
+         * @copybrief anyNeq(const CVec3<U>&, double) const
          *
          * @note To obtain a component-wise boolean mask, use @ref eq.
          *
@@ -441,7 +441,7 @@ namespace flcn
          */
         template <Arithmetic U>
             requires StrictSignedness<T, U>
-        [[nodiscard]] constexpr bool operator!=(const Vec3<U>& rhs) const noexcept;
+        [[nodiscard]] constexpr bool operator!=(const CVec3<U>& rhs) const noexcept;
 
 
         /**
@@ -456,11 +456,11 @@ namespace flcn
          * @param[in] epsilon The maximum allowable difference for `std::floating_point` types.
          *                    Defaults to @ref DOUBLE_EPSILON or @ref FLOAT_EPSILON based on type promotion.
          *
-         * @return A @ref Vec3<bool> mask containing the results of each component comparison.
+         * @return A @ref CVec3<bool> mask containing the results of each component comparison.
          */
         template <Arithmetic U>
             requires StrictSignedness<T, U>
-        [[nodiscard]] constexpr Vec3<bool> eq(const Vec3<U>& rhs,
+        [[nodiscard]] constexpr CVec3<bool> eq(const CVec3<U>& rhs,
                                               double epsilon = std::is_same_v<T, double> || std::is_same_v<U, double>
                                                   ? Config::DOUBLE_EPSILON
                                                   : Config::FLOAT_EPSILON) const noexcept;
@@ -477,11 +477,11 @@ namespace flcn
          * @param[in] epsilon The maximum allowable difference for `std::floating_point` types.
          *                    Defaults to @ref DOUBLE_EPSILON or @ref FLOAT_EPSILON based on type promotion.
          *
-         * @return A @ref Vec3<bool> mask containing the results of each component comparison.
+         * @return A @ref CVec3<bool> mask containing the results of each component comparison.
          */
         template <Arithmetic U>
             requires StrictSignedness<T, U>
-        [[nodiscard]] static constexpr Vec3<bool> eq(const Vec3& lhs, const Vec3<U>& rhs,
+        [[nodiscard]] static constexpr CVec3<bool> eq(const CVec3& lhs, const CVec3<U>& rhs,
                                                      double epsilon = std::is_same_v<T, double> ||
                                                              std::is_same_v<U, double>
                                                          ? Config::DOUBLE_EPSILON
@@ -500,11 +500,11 @@ namespace flcn
          * @param[in] epsilon The maximum allowable difference for `std::floating_point` types.
          *                    Defaults to @ref DOUBLE_EPSILON or @ref FLOAT_EPSILON based on type promotion.
          *
-         * @return A @ref Vec3<bool> mask containing the results of each component comparison.
+         * @return A @ref CVec3<bool> mask containing the results of each component comparison.
          */
         template <Arithmetic U>
             requires StrictSignedness<T, U>
-        [[nodiscard]] constexpr Vec3<bool> neq(const Vec3<U>& rhs,
+        [[nodiscard]] constexpr CVec3<bool> neq(const CVec3<U>& rhs,
                                                double epsilon = std::is_same_v<T, double> || std::is_same_v<U, double>
                                                    ? Config::DOUBLE_EPSILON
                                                    : Config::FLOAT_EPSILON) const noexcept;
@@ -521,11 +521,11 @@ namespace flcn
          * @param[in] epsilon The maximum allowable difference for `std::floating_point` types.
          *                    Defaults to @ref DOUBLE_EPSILON or @ref FLOAT_EPSILON based on type promotion.
          *
-         * @return A @ref Vec3<bool> mask containing the results of each component comparison.
+         * @return A @ref CVec3<bool> mask containing the results of each component comparison.
          */
         template <Arithmetic U>
             requires StrictSignedness<T, U>
-        [[nodiscard]] static constexpr Vec3<bool> neq(const Vec3& lhs, const Vec3<U>& rhs,
+        [[nodiscard]] static constexpr CVec3<bool> neq(const CVec3& lhs, const CVec3<U>& rhs,
                                                       double epsilon = std::is_same_v<T, double> ||
                                                               std::is_same_v<U, double>
                                                           ? Config::DOUBLE_EPSILON
@@ -535,7 +535,7 @@ namespace flcn
 
 
         /**
-         * @addtogroup FALCON_Vec3_Comparison
+         * @addtogroup FALCON_CVec3_Comparison
          * @{
          */
 
@@ -547,11 +547,11 @@ namespace flcn
          *
          * @param[in] rhs The vector to compare against.
          *
-         * @return A @ref Vec3<bool> mask containing the results of each component comparison.
+         * @return A @ref CVec3<bool> mask containing the results of each component comparison.
          */
         template <StrictArithmetic U>
             requires StrictSignedness<T, U>
-        [[nodiscard]] constexpr Vec3<bool> gt(const Vec3<U>& rhs) const noexcept
+        [[nodiscard]] constexpr CVec3<bool> gt(const CVec3<U>& rhs) const noexcept
             requires StrictArithmetic<T>;
 
 
@@ -564,11 +564,11 @@ namespace flcn
          * @param[in]  lhs The vector to compare.
          * @param[in]  rhs The vector to compare against.
          *
-         * @return A @ref Vec3<bool> mask containing the results of each component comparison.
+         * @return A @ref CVec3<bool> mask containing the results of each component comparison.
          */
         template <StrictArithmetic U>
             requires StrictSignedness<T, U>
-        [[nodiscard]] static constexpr Vec3<bool> gt(const Vec3& lhs, const Vec3<U>& rhs) noexcept
+        [[nodiscard]] static constexpr CVec3<bool> gt(const CVec3& lhs, const CVec3<U>& rhs) noexcept
             requires StrictArithmetic<T>;
 
 
@@ -580,11 +580,11 @@ namespace flcn
          *
          * @param[in] rhs The vector to compare against.
          *
-         * @return A @ref Vec3<bool> mask containing the results of each component comparison.
+         * @return A @ref CVec3<bool> mask containing the results of each component comparison.
          */
         template <StrictArithmetic U>
             requires StrictSignedness<T, U>
-        [[nodiscard]] constexpr Vec3<bool> gte(const Vec3<U>& rhs) const noexcept
+        [[nodiscard]] constexpr CVec3<bool> gte(const CVec3<U>& rhs) const noexcept
             requires StrictArithmetic<T>;
 
 
@@ -597,11 +597,11 @@ namespace flcn
          * @param[in]  lhs The vector to compare.
          * @param[in]  rhs The vector to compare against.
          *
-         * @return A @ref Vec3<bool> mask containing the results of each component comparison.
+         * @return A @ref CVec3<bool> mask containing the results of each component comparison.
          */
         template <StrictArithmetic U>
             requires StrictSignedness<T, U>
-        [[nodiscard]] static constexpr Vec3<bool> gte(const Vec3& lhs, const Vec3<U>& rhs) noexcept
+        [[nodiscard]] static constexpr CVec3<bool> gte(const CVec3& lhs, const CVec3<U>& rhs) noexcept
             requires StrictArithmetic<T>;
 
 
@@ -616,11 +616,11 @@ namespace flcn
          *
          * @param[in] rhs The vector to compare against.
          *
-         * @return A @ref Vec3<bool> mask containing the results of each component comparison.
+         * @return A @ref CVec3<bool> mask containing the results of each component comparison.
          */
         template <StrictArithmetic U>
             requires StrictSignedness<T, U>
-        [[nodiscard]] constexpr Vec3<bool> lt(const Vec3<U>& rhs) const noexcept
+        [[nodiscard]] constexpr CVec3<bool> lt(const CVec3<U>& rhs) const noexcept
             requires StrictArithmetic<T>;
 
 
@@ -636,11 +636,11 @@ namespace flcn
          * @param[in]  lhs The vector to compare.
          * @param[in]  rhs The vector to compare against.
          *
-         * @return A @ref Vec3<bool> mask containing the results of each component comparison.
+         * @return A @ref CVec3<bool> mask containing the results of each component comparison.
          */
         template <StrictArithmetic U>
             requires StrictSignedness<T, U>
-        [[nodiscard]] static constexpr Vec3<bool> lt(const Vec3& lhs, const Vec3<U>& rhs) noexcept
+        [[nodiscard]] static constexpr CVec3<bool> lt(const CVec3& lhs, const CVec3<U>& rhs) noexcept
             requires StrictArithmetic<T>;
 
 
@@ -655,11 +655,11 @@ namespace flcn
          *
          * @param[in] rhs The vector to compare against.
          *
-         * @return A @ref Vec3<bool> mask containing the results of each component comparison.
+         * @return A @ref CVec3<bool> mask containing the results of each component comparison.
          */
         template <StrictArithmetic U>
             requires StrictSignedness<T, U>
-        [[nodiscard]] constexpr Vec3<bool> lte(const Vec3<U>& rhs) const noexcept
+        [[nodiscard]] constexpr CVec3<bool> lte(const CVec3<U>& rhs) const noexcept
             requires StrictArithmetic<T>;
 
 
@@ -675,49 +675,49 @@ namespace flcn
          * @param[in]  lhs The vector to compare.
          * @param[in]  rhs The vector to compare against.
          *
-         * @return A @ref Vec3<bool> mask containing the results of each component comparison.
+         * @return A @ref CVec3<bool> mask containing the results of each component comparison.
          */
         template <StrictArithmetic U>
             requires StrictSignedness<T, U>
-        [[nodiscard]] static constexpr Vec3<bool> lte(const Vec3& lhs, const Vec3<U>& rhs) noexcept
+        [[nodiscard]] static constexpr CVec3<bool> lte(const CVec3& lhs, const CVec3<U>& rhs) noexcept
             requires StrictArithmetic<T>;
 
 
 #ifdef ENABLE_FALCON_SHADER_OPERATORS
 
         /**
-         * @copydoc gt(const Vec3<U>&) const
+         * @copydoc gt(const CVec3<U>&) const
          */
         template <StrictArithmetic U>
             requires StrictSignedness<T, U>
-        [[nodiscard]] constexpr Vec3<bool> operator>(const Vec3<U>& rhs) const noexcept
+        [[nodiscard]] constexpr CVec3<bool> operator>(const CVec3<U>& rhs) const noexcept
             requires StrictArithmetic<T>;
 
 
         /**
-         * @copydoc gte(const Vec3<U>&) const
+         * @copydoc gte(const CVec3<U>&) const
          */
         template <StrictArithmetic U>
             requires StrictSignedness<T, U>
-        [[nodiscard]] constexpr Vec3<bool> operator>=(const Vec3<U>& rhs) const noexcept
+        [[nodiscard]] constexpr CVec3<bool> operator>=(const CVec3<U>& rhs) const noexcept
             requires StrictArithmetic<T>;
 
 
         /**
-         * @copydoc lt(const Vec3<U>&) const
+         * @copydoc lt(const CVec3<U>&) const
          */
         template <StrictArithmetic U>
             requires StrictSignedness<T, U>
-        [[nodiscard]] constexpr Vec3<bool> operator<(const Vec3<U>& rhs) const noexcept
+        [[nodiscard]] constexpr CVec3<bool> operator<(const CVec3<U>& rhs) const noexcept
             requires StrictArithmetic<T>;
 
 
         /**
-         * @copydoc lte(const Vec3<U>&) const
+         * @copydoc lte(const CVec3<U>&) const
          */
         template <StrictArithmetic U>
             requires StrictSignedness<T, U>
-        [[nodiscard]] constexpr Vec3<bool> operator<=(const Vec3<U>& rhs) const noexcept
+        [[nodiscard]] constexpr CVec3<bool> operator<=(const CVec3<U>& rhs) const noexcept
             requires StrictArithmetic<T>;
 #endif
 
@@ -725,7 +725,7 @@ namespace flcn
 
 
         /**
-         * @addtogroup FALCON_Vec3_Bitwise
+         * @addtogroup FALCON_CVec3_Bitwise
          * @{
          */
 
@@ -733,13 +733,13 @@ namespace flcn
          * @brief Perform component-wise logical AND between this vector and @p rhs vector.
          *        Compute the conjunction between each component pair.
          *
-         * @note Only available for @ref bVec3 and vectors with `bool` value_type.
+         * @note Only available for @ref bCVec3 and vectors with `bool` value_type.
          *
          * @param[in] rhs The vector to combine with.
          *
-         * @return A @ref Vec3<bool> mask containing the results of component-wise AND.
+         * @return A @ref CVec3<bool> mask containing the results of component-wise AND.
          */
-        [[nodiscard]] constexpr Vec3 operator&(const Vec3& rhs) const noexcept
+        [[nodiscard]] constexpr CVec3 operator&(const CVec3& rhs) const noexcept
             requires std::is_same_v<T, bool>;
 
 
@@ -747,13 +747,13 @@ namespace flcn
          * @brief Perform an in-place component-wise logical AND between this vector and @p rhs vector.
          *        Compute the conjunction between each component pair in-place and update the calling vector.
          *
-         * @note Only available for @ref bVec3 and vectors with `bool` value_type.
+         * @note Only available for @ref bCVec3 and vectors with `bool` value_type.
          *
          * @param[in] rhs The vector to combine with.
          *
          * @return A reference to this vector (*this).
          */
-        constexpr Vec3& operator&=(const Vec3& rhs) noexcept
+        constexpr CVec3& operator&=(const CVec3& rhs) noexcept
             requires std::is_same_v<T, bool>;
 
 
@@ -761,13 +761,13 @@ namespace flcn
          * @brief Perform component-wise logical OR between this vector and @p rhs vector.
          *        Compute the disjunction between each component pair.
          *
-         * @note Only available for @ref bVec3 and vectors with `bool` value_type.
+         * @note Only available for @ref bCVec3 and vectors with `bool` value_type.
          *
          * @param[in] rhs The vector to combine with.
          *
-         * @return A @ref Vec3<bool> mask containing the results of component-wise OR.
+         * @return A @ref CVec3<bool> mask containing the results of component-wise OR.
          */
-        [[nodiscard]] constexpr Vec3 operator|(const Vec3& rhs) const noexcept
+        [[nodiscard]] constexpr CVec3 operator|(const CVec3& rhs) const noexcept
             requires std::is_same_v<T, bool>;
 
 
@@ -775,50 +775,50 @@ namespace flcn
          * @brief Perform an in-place component-wise logical OR between this vector and @p rhs vector.
          *        Compute the disjunction between each component pair in-place and update the calling vector.
          *
-         * @note Only available for @ref bVec3 and vectors with `bool` value_type.
+         * @note Only available for @ref bCVec3 and vectors with `bool` value_type.
          *
          * @param[in] rhs The vector to combine with.
          *
          * @return A reference to this vector (*this).
          */
-        constexpr Vec3& operator|=(const Vec3& rhs) noexcept
+        constexpr CVec3& operator|=(const CVec3& rhs) noexcept
             requires std::is_same_v<T, bool>;
 
 
         /**
          * @brief Apply a component-wise logical NOT on this vector.
-         *        Invert each boolean component and returns a new @ref Vec3<bool>.
+         *        Invert each boolean component and returns a new @ref CVec3<bool>.
          *
-         * @note Only available for @ref bVec3 and vectors with `bool` value_type.
+         * @note Only available for @ref bCVec3 and vectors with `bool` value_type.
          *
-         * @return A @ref Vec3<bool> with inverted values.
+         * @return A @ref CVec3<bool> with inverted values.
          */
-        [[nodiscard]] constexpr Vec3 operator!() const noexcept
+        [[nodiscard]] constexpr CVec3 operator!() const noexcept
             requires std::is_same_v<T, bool>;
 
         /** @} */
 
 
         /**
-         * @addtogroup FALCON_Vec3_Arithmetic
+         * @addtogroup FALCON_CVec3_Arithmetic
          * @{
          */
 
         /**
          * @brief Compute the component-wise sum of this vector with @p rhs vector and return a new vector.
          *
-         * @note Promotes the result to the wider type using @ref PromotedVec3<T, U>.
+         * @note Promotes the result to the wider type using @ref PromotedCVec3<T, U>.
          * @note Operation is restricted to numeric types via @ref StrictArithmetic.
          *
          * @tparam U Numeric type of the RHS vector. Must satisfy @ref StrictArithmetic.
          *
          * @param[in] rhs The vector to add.
          *
-         * @return A new @ref Vec3 containing the component-wise sum.
+         * @return A new @ref CVec3 containing the component-wise sum.
          */
         template <StrictArithmetic U>
             requires StrictSignedness<T, U>
-        [[nodiscard]] constexpr PromotedVec3<T, U> operator+(const Vec3<U>& rhs) const noexcept
+        [[nodiscard]] constexpr PromotedCVec3<T, U> operator+(const CVec3<U>& rhs) const noexcept
             requires StrictArithmetic<T>;
 
 
@@ -835,25 +835,25 @@ namespace flcn
          */
         template <StrictArithmetic U>
             requires StrictSignedness<T, U>
-        constexpr Vec3& operator+=(const Vec3<U>& rhs) noexcept
+        constexpr CVec3& operator+=(const CVec3<U>& rhs) noexcept
             requires StrictArithmetic<T>;
 
 
         /**
          * @brief Compute the component-wise difference between this vector and @p rhs vector and return a new vector.
          *
-         * @note Promotes the result to the wider type using @ref PromotedVec3<T, U>.
+         * @note Promotes the result to the wider type using @ref PromotedCVec3<T, U>.
          * @note Operation is restricted to numeric types via @ref StrictArithmetic.
          *
          * @tparam U Numeric type of the RHS vector. Must satisfy @ref StrictArithmetic.
          *
          * @param[in] rhs The vector to subtract.
          *
-         * @return A new @ref Vec3 containing the component-wise difference.
+         * @return A new @ref CVec3 containing the component-wise difference.
          */
         template <StrictArithmetic U>
             requires StrictSignedness<T, U>
-        [[nodiscard]] constexpr PromotedVec3<T, U> operator-(const Vec3<U>& rhs) const noexcept
+        [[nodiscard]] constexpr PromotedCVec3<T, U> operator-(const CVec3<U>& rhs) const noexcept
             requires StrictArithmetic<T>;
 
 
@@ -870,35 +870,35 @@ namespace flcn
          */
         template <StrictArithmetic U>
             requires StrictSignedness<T, U>
-        constexpr Vec3& operator-=(const Vec3<U>& rhs) noexcept
+        constexpr CVec3& operator-=(const CVec3<U>& rhs) noexcept
             requires StrictArithmetic<T>;
 
 
         /**
-         * @brief Negate each component of this vector and return a new @ref Vec3<T>.
+         * @brief Negate each component of this vector and return a new @ref CVec3<T>.
          *
          * @note Operation is restricted to numeric types via @ref SignedStrictArithmetic.
          *
-         * @return A new @ref flcn::Vec3 with negated components.
+         * @return A new @ref flcn::CVec3 with negated components.
          */
-        [[nodiscard]] constexpr Vec3 operator-() const noexcept
+        [[nodiscard]] constexpr CVec3 operator-() const noexcept
             requires SignedStrictArithmetic<T>;
 
 
         /**
          * @brief Compute the component-wise product between this vector and @p scalar and return a new vector.
          *
-         * @note Promotes the result to the wider type using @ref PromotedVec3<T, S>.
+         * @note Promotes the result to the wider type using @ref PromotedCVec3<T, S>.
          * @note Operation is restricted to numeric types via @ref StrictArithmetic.
          *
          * @tparam S Numeric type of the scalar. Must satisfy @ref StrictArithmetic.
          *
          * @param[in] scalar The value to scale by.
          *
-         * @return A new @ref Vec3 scaled by @p scalar.
+         * @return A new @ref CVec3 scaled by @p scalar.
          */
         template <StrictArithmetic S>
-        [[nodiscard]] constexpr PromotedVec3<T, S> operator*(S scalar) const noexcept
+        [[nodiscard]] constexpr PromotedCVec3<T, S> operator*(S scalar) const noexcept
             requires StrictArithmetic<T>;
 
 
@@ -914,14 +914,14 @@ namespace flcn
          * @return A reference to this vector (*this).
          */
         template <StrictArithmetic S>
-        constexpr Vec3& operator*=(S scalar) noexcept
+        constexpr CVec3& operator*=(S scalar) noexcept
             requires StrictArithmetic<T>;
 
 
         /**
          * @brief Compute the component-wise division of this vector by @p scalar and return a new vector.
          *
-         * @note Promotes the result to the wider type using @ref PromotedVec3<T, S>.
+         * @note Promotes the result to the wider type using @ref PromotedCVec3<T, S>.
          * @note Operation is restricted to numeric types via @ref StrictArithmetic.
          * @note Performs assertion for division by zero in **Debug mode**.
          *
@@ -929,10 +929,10 @@ namespace flcn
          *
          * @param[in] scalar The value to scale by.
          *
-         * @return A new @ref Vec3 scaled by @p scalar.
+         * @return A new @ref CVec3 scaled by @p scalar.
          */
         template <StrictArithmetic S>
-        [[nodiscard]] constexpr PromotedVec3<T, S> operator/(S scalar) const noexcept
+        [[nodiscard]] constexpr PromotedCVec3<T, S> operator/(S scalar) const noexcept
             requires StrictArithmetic<T>;
 
 
@@ -949,7 +949,7 @@ namespace flcn
          * @return A reference to this vector (*this).
          */
         template <StrictArithmetic S>
-        constexpr Vec3& operator/=(S scalar) noexcept
+        constexpr CVec3& operator/=(S scalar) noexcept
             requires StrictArithmetic<T>;
 
 
@@ -958,18 +958,18 @@ namespace flcn
          *
          * @note If @p scalar is zero (or below the epsilon threshold) or this vector contains NaN components,
          *       returns a zero vector.
-         * @note Promotes the result to the wider type using @ref PromotedVec3<T, S>.
+         * @note Promotes the result to the wider type using @ref PromotedCVec3<T, S>.
          * @note Operation is restricted to numeric types via @ref flcn::StrictArithmetic.
          *
          * @tparam S Numeric type of the scalar. Must satisfy @ref flcn::StrictArithmetic.
          *
          * @param[in] scalar The value to divide the vector components by.
          *
-         * @return A new @ref Vec3 resulting from the division or a zero-vector if the @p scalar is below the
+         * @return A new @ref CVec3 resulting from the division or a zero-vector if the @p scalar is below the
          *         epsilon threshold or if either of the vectors has NaN(Not-a-Number) component(s).
          */
         template <StrictArithmetic S>
-        [[nodiscard]] constexpr PromotedVec3<T, S> safeDiv(S scalar) const noexcept
+        [[nodiscard]] constexpr PromotedCVec3<T, S> safeDiv(S scalar) const noexcept
             requires StrictArithmetic<T>;
 
 
@@ -978,7 +978,7 @@ namespace flcn
          *
          * @note If @p scalar is zero (or below the epsilon threshold) or this vector contains NaN components,
          *       returns a zero vector.
-         * @note Promotes the result to the wider type using @ref PromotedVec3<T, S>.
+         * @note Promotes the result to the wider type using @ref PromotedCVec3<T, S>.
          * @note Operation is restricted to numeric types via @ref flcn::StrictArithmetic.
          *
          * @tparam S Numeric type of the scalar. Must satisfy @ref flcn::StrictArithmetic.
@@ -986,11 +986,11 @@ namespace flcn
          * @param[in] vec The vector to divide.
          * @param[in] scalar The value to divide the vector components by.
          *
-         * @return A new @ref Vec3 resulting from the division or a zero-vector if the @p scalar is below the
+         * @return A new @ref CVec3 resulting from the division or a zero-vector if the @p scalar is below the
          *         epsilon threshold or if either of the vectors has NaN(Not-a-Number) component(s).
          */
         template <StrictArithmetic S>
-        [[nodiscard]] static constexpr PromotedVec3<T, S> safeDiv(const Vec3& vec, S scalar) noexcept
+        [[nodiscard]] static constexpr PromotedCVec3<T, S> safeDiv(const CVec3& vec, S scalar) noexcept
             requires StrictArithmetic<T>;
 
 
@@ -1000,7 +1000,7 @@ namespace flcn
          *
          * @note If @p scalar is zero (or below the epsilon threshold) or this vector contains NaN components,
          *       returns a zero vector.
-         * @note Promotes the result to the wider type using @ref PromotedVec3<T, S>.
+         * @note Promotes the result to the wider type using @ref PromotedCVec3<T, S>.
          * @note Operation is restricted to numeric types via @ref flcn::StrictArithmetic.
          * @note In the event of multiple failure conditions, data corruption (NaN) takes precedence over mathematical
          *       invalidity (Division by Zero) when reporting status.
@@ -1011,11 +1011,11 @@ namespace flcn
          * @param[out] status The status flag to store the status of the current operation result.
          *                    For details on status codes see @ref OperationStatus.
          *
-         * @return A new @ref Vec3 resulting from the division or a zero-vector if the @p scalar is below the
+         * @return A new @ref CVec3 resulting from the division or a zero-vector if the @p scalar is below the
          *         epsilon threshold or if either of the vectors+ has NaN(Not-a-Number) component(s).
          */
         template <StrictArithmetic S>
-        [[nodiscard]] constexpr PromotedVec3<T, S> tryDiv(S scalar, OperationStatus& status) const noexcept
+        [[nodiscard]] constexpr PromotedCVec3<T, S> tryDiv(S scalar, OperationStatus& status) const noexcept
             requires StrictArithmetic<T>;
 
 
@@ -1025,7 +1025,7 @@ namespace flcn
          *
          * @note If @p scalar is zero (or below the epsilon threshold) or this vector contains NaN components,
          *       returns a zero vector.
-         * @note Promotes the result to the wider type using @ref PromotedVec3<T, S>.
+         * @note Promotes the result to the wider type using @ref PromotedCVec3<T, S>.
          * @note Operation is restricted to numeric types via @ref flcn::StrictArithmetic.
          * @note In the event of multiple failure conditions, data corruption (NaN) takes precedence over mathematical
          *       invalidity (Division by Zero) when reporting status.
@@ -1037,11 +1037,11 @@ namespace flcn
          * @param[out] status The status flag to store the status of the current operation result.
          *                    For details on status codes see @ref OperationStatus.
          *
-         * @return A new @ref Vec3 resulting from the division or a zero-vector if the @p scalar is below the
+         * @return A new @ref CVec3 resulting from the division or a zero-vector if the @p scalar is below the
          *         epsilon threshold or if either of the vectors+ has NaN(Not-a-Number) component(s).
          */
         template <StrictArithmetic S>
-        [[nodiscard]] static constexpr PromotedVec3<T, S> tryDiv(const Vec3& vec, S scalar,
+        [[nodiscard]] static constexpr PromotedCVec3<T, S> tryDiv(const CVec3& vec, S scalar,
                                                                  OperationStatus& status) noexcept
             requires StrictArithmetic<T>;
 
@@ -1049,7 +1049,7 @@ namespace flcn
 
 
         /**
-         * @addtogroup FALCON_Vec3_Product
+         * @addtogroup FALCON_CVec3_Product
          * @{
          */
 
@@ -1068,7 +1068,7 @@ namespace flcn
          */
         template <StrictArithmetic U>
             requires StrictSignedness<T, U>
-        [[nodiscard]] constexpr PromotedValue_t<T, U> dot(const Vec3<U>& rhs) const noexcept
+        [[nodiscard]] constexpr PromotedValue_t<T, U> dot(const CVec3<U>& rhs) const noexcept
             requires StrictArithmetic<T>;
 
 
@@ -1088,7 +1088,7 @@ namespace flcn
          */
         template <StrictArithmetic U>
             requires StrictSignedness<T, U>
-        [[nodiscard]] static constexpr PromotedValue_t<T, U> dot(const Vec3& lhs, const Vec3<U>& rhs) noexcept
+        [[nodiscard]] static constexpr PromotedValue_t<T, U> dot(const CVec3& lhs, const CVec3<U>& rhs) noexcept
             requires StrictArithmetic<T>;
 
 
@@ -1107,7 +1107,7 @@ namespace flcn
          */
         template <StrictArithmetic U>
             requires StrictSignedness<T, U>
-        [[nodiscard]] constexpr PromotedMat3<T, U> tensorProduct(const Vec3<U>& rhs) const noexcept
+        [[nodiscard]] constexpr PromotedMat3<T, U> tensorProduct(const CVec3<U>& rhs) const noexcept
             requires StrictArithmetic<T>;
 
 
@@ -1127,7 +1127,7 @@ namespace flcn
          */
         template <StrictArithmetic U>
             requires StrictSignedness<T, U>
-        [[nodiscard]] static constexpr PromotedMat3<T, U> tensorProduct(const Vec3& lhs, const Vec3<U>& rhs) noexcept
+        [[nodiscard]] static constexpr PromotedMat3<T, U> tensorProduct(const CVec3& lhs, const CVec3<U>& rhs) noexcept
             requires StrictArithmetic<T>;
 
 
@@ -1138,7 +1138,7 @@ namespace flcn
          *           \begin{bmatrix} a_y b_z - a_z b_y \\ a_z b_x - a_x b_z \\ a_x b_y - a_y b_x \end {bmatrix}
          *       \f$
          *
-         * @note Promotes the result to the wider type using @ref PromotedVec3<T, U>.
+         * @note Promotes the result to the wider type using @ref PromotedCVec3<T, U>.
          * @note Operation is restricted to numeric types via @ref SignedStrictArithmetic.
          *
          * @tparam U Numeric type of the RHS vector. Must satisfy @ref SignedStrictArithmetic.
@@ -1148,7 +1148,7 @@ namespace flcn
          * @return The vector cross product of the two vectors.
          */
         template <SignedStrictArithmetic U>
-        constexpr PromotedVec3<T, U> cross(const Vec3<U>& rhs) const noexcept
+        constexpr PromotedCVec3<T, U> cross(const CVec3<U>& rhs) const noexcept
             requires SignedStrictArithmetic<T>;
 
 
@@ -1159,7 +1159,7 @@ namespace flcn
          *           \begin{bmatrix} a_y b_z - a_z b_y \\ a_z b_x - a_x b_z \\ a_x b_y - a_y b_x \end {bmatrix}
          *       \f$
          *
-         * @note Promotes the result to the wider type using @ref PromotedVec3<T, U>.
+         * @note Promotes the result to the wider type using @ref PromotedCVec3<T, U>.
          * @note Operation is restricted to numeric types via @ref SignedStrictArithmetic.
          *
          * @tparam U Numeric type of the RHS vector. Must satisfy @ref SignedStrictArithmetic.
@@ -1170,14 +1170,14 @@ namespace flcn
          * @return The vector cross product of the two vectors.
          */
         template <SignedStrictArithmetic U>
-        static constexpr PromotedVec3<T, U> cross(const Vec3& lhs, const Vec3<U>& rhs) noexcept
+        static constexpr PromotedCVec3<T, U> cross(const CVec3& lhs, const CVec3<U>& rhs) noexcept
             requires SignedStrictArithmetic<T>;
 
         /** @} */
 
 
         /**
-         * @addtogroup FALCON_Vec3_Mag
+         * @addtogroup FALCON_CVec3_Mag
          * @{
          */
 
@@ -1205,7 +1205,7 @@ namespace flcn
          *
          * @return The scalar magnitude of @p Vec.
          */
-        [[nodiscard]] static constexpr Magnitude<T> mag(const Vec3& vec) noexcept
+        [[nodiscard]] static constexpr Magnitude<T> mag(const CVec3& vec) noexcept
             requires StrictArithmetic<T>;
 
 
@@ -1227,7 +1227,7 @@ namespace flcn
          *
          * @return The scalar magnitude of @p Vec.
          */
-        [[nodiscard]] static constexpr T magSq(const Vec3& vector) noexcept
+        [[nodiscard]] static constexpr T magSq(const CVec3& vector) noexcept
             requires StrictArithmetic<T>;
 
 
@@ -1249,7 +1249,7 @@ namespace flcn
          *
          * @return The Manhattan length.
          */
-        [[nodiscard]] static constexpr T manhattanNorm(const Vec3& vec) noexcept
+        [[nodiscard]] static constexpr T manhattanNorm(const CVec3& vec) noexcept
             requires StrictArithmetic<T>;
 
 
@@ -1271,7 +1271,7 @@ namespace flcn
          *
          * @return The Chebyshev length.
          */
-        [[nodiscard]] static constexpr T chebyshevNorm(const Vec3& vec) noexcept
+        [[nodiscard]] static constexpr T chebyshevNorm(const CVec3& vec) noexcept
             requires StrictArithmetic<T>;
 
         /** @} */
@@ -1279,7 +1279,7 @@ namespace flcn
 
 
         /**
-         * @addtogroup FALCON_Vec3_Dist
+         * @addtogroup FALCON_CVec3_Dist
          * @{
          */
 
@@ -1298,7 +1298,7 @@ namespace flcn
          */
         template <StrictArithmetic U>
             requires StrictSignedness<T, U>
-        [[nodiscard]] constexpr Magnitude<PromotedValue_t<T, U>> dist(const Vec3<U>& rhs) const noexcept
+        [[nodiscard]] constexpr Magnitude<PromotedValue_t<T, U>> dist(const CVec3<U>& rhs) const noexcept
             requires StrictArithmetic<T>;
 
 
@@ -1318,8 +1318,8 @@ namespace flcn
          */
         template <StrictArithmetic U>
             requires StrictSignedness<T, U>
-        [[nodiscard]] static constexpr Magnitude<PromotedValue_t<T, U>> dist(const Vec3<U>& lhs,
-                                                                             const Vec3<U>& rhs) noexcept
+        [[nodiscard]] static constexpr Magnitude<PromotedValue_t<T, U>> dist(const CVec3<U>& lhs,
+                                                                             const CVec3<U>& rhs) noexcept
             requires StrictArithmetic<T>;
 
 
@@ -1338,7 +1338,7 @@ namespace flcn
          */
         template <StrictArithmetic U>
             requires StrictSignedness<T, U>
-        [[nodiscard]] constexpr PromotedValue_t<T, U> distSq(const Vec3<U>& rhs) const noexcept
+        [[nodiscard]] constexpr PromotedValue_t<T, U> distSq(const CVec3<U>& rhs) const noexcept
             requires StrictArithmetic<T>;
 
 
@@ -1358,7 +1358,7 @@ namespace flcn
          */
         template <StrictArithmetic U>
             requires StrictSignedness<T, U>
-        [[nodiscard]] static constexpr PromotedValue_t<T, U> distSq(const Vec3<U>& lhs, const Vec3<U>& rhs) noexcept
+        [[nodiscard]] static constexpr PromotedValue_t<T, U> distSq(const CVec3<U>& lhs, const CVec3<U>& rhs) noexcept
             requires StrictArithmetic<T>;
 
 
@@ -1377,7 +1377,7 @@ namespace flcn
          */
         template <StrictArithmetic U>
             requires StrictSignedness<T, U>
-        [[nodiscard]] constexpr PromotedValue_t<T, U> manhattanDist(const Vec3<U>& rhs) const noexcept
+        [[nodiscard]] constexpr PromotedValue_t<T, U> manhattanDist(const CVec3<U>& rhs) const noexcept
             requires StrictArithmetic<T>;
 
 
@@ -1397,8 +1397,8 @@ namespace flcn
          */
         template <StrictArithmetic U>
             requires StrictSignedness<T, U>
-        [[nodiscard]] static constexpr PromotedValue_t<T, U> manhattanDist(const Vec3<U>& lhs,
-                                                                           const Vec3<U>& rhs) noexcept
+        [[nodiscard]] static constexpr PromotedValue_t<T, U> manhattanDist(const CVec3<U>& lhs,
+                                                                           const CVec3<U>& rhs) noexcept
             requires StrictArithmetic<T>;
 
 
@@ -1417,7 +1417,7 @@ namespace flcn
          */
         template <StrictArithmetic U>
             requires StrictSignedness<T, U>
-        [[nodiscard]] constexpr PromotedValue_t<T, U> chebyshevDist(const Vec3<U>& rhs) const noexcept
+        [[nodiscard]] constexpr PromotedValue_t<T, U> chebyshevDist(const CVec3<U>& rhs) const noexcept
             requires StrictArithmetic<T>;
 
 
@@ -1437,8 +1437,8 @@ namespace flcn
          */
         template <StrictArithmetic U>
             requires StrictSignedness<T, U>
-        [[nodiscard]] static constexpr PromotedValue_t<T, U> chebyshevDist(const Vec3<U>& lhs,
-                                                                           const Vec3<U>& rhs) noexcept
+        [[nodiscard]] static constexpr PromotedValue_t<T, U> chebyshevDist(const CVec3<U>& lhs,
+                                                                           const CVec3<U>& rhs) noexcept
             requires StrictArithmetic<T>;
 
         /** @} */
@@ -1446,7 +1446,7 @@ namespace flcn
 
 
         /**
-         * @addtogroup FALCON_Vec3_Normalize
+         * @addtogroup FALCON_CVec3_Normalize
          * @{
          */
 
@@ -1458,9 +1458,9 @@ namespace flcn
          *       corresponding floating-point representation via @ref Magnitude.
          * @note Performs assertion for division by zero, resulting from zero-length vector, in **Debug mode**.
          *
-         * @return A new @ref Vec3 with a magnitude of 1.0.
+         * @return A new @ref CVec3 with a magnitude of 1.0.
          */
-        [[nodiscard]] constexpr Vec3<Magnitude<T>> normalize() const noexcept
+        [[nodiscard]] constexpr CVec3<Magnitude<T>> normalize() const noexcept
             requires StrictArithmetic<T>;
 
 
@@ -1474,9 +1474,9 @@ namespace flcn
          *
          * @param[in] vec The vector to normalize.
          *
-         * @return A new @ref Vec3 with a magnitude of 1.0.
+         * @return A new @ref CVec3 with a magnitude of 1.0.
          */
-        [[nodiscard]] static constexpr Vec3<Magnitude<T>> normalize(const Vec3& vec) noexcept
+        [[nodiscard]] static constexpr CVec3<Magnitude<T>> normalize(const CVec3& vec) noexcept
             requires StrictArithmetic<T>;
 
 
@@ -1489,10 +1489,10 @@ namespace flcn
          * @note To maintain precision, result components are promoted to their
          *       corresponding floating-point representation via @ref Magnitude.
          *
-         * @return A @ref flcn::Vec3 with a magnitude of 1.0, or a zero-vector if the original magnitude is below the
+         * @return A @ref flcn::CVec3 with a magnitude of 1.0, or a zero-vector if the original magnitude is below the
          *         epsilon threshold or if this vector has NaN(Not-a-Number) component(s).
          */
-        [[nodiscard]] constexpr Vec3<Magnitude<T>> safeNormalize() const noexcept
+        [[nodiscard]] constexpr CVec3<Magnitude<T>> safeNormalize() const noexcept
             requires StrictArithmetic<T>;
 
 
@@ -1507,10 +1507,10 @@ namespace flcn
          *
          * @param[in] vec The vector to be normalized.
          *
-         * @return A @ref flcn::Vec3 with a magnitude of 1.0, or a zero-vector if the original magnitude is below the
+         * @return A @ref flcn::CVec3 with a magnitude of 1.0, or a zero-vector if the original magnitude is below the
          *         epsilon threshold or if the vector has NaN(Not-a-Number) component(s).
          */
-        [[nodiscard]] static constexpr Vec3<Magnitude<T>> safeNormalize(const Vec3& vec) noexcept
+        [[nodiscard]] static constexpr CVec3<Magnitude<T>> safeNormalize(const CVec3& vec) noexcept
             requires StrictArithmetic<T>;
 
 
@@ -1527,10 +1527,10 @@ namespace flcn
          * @param[out] status The status flag to store the status of the current operation result.*
          *                    For details on status codes see @ref OperationStatus.
          *
-         * @return A @ref flcn::Vec3 with a magnitude of 1.0, or a zero-vector if the original magnitude is below the
+         * @return A @ref flcn::CVec3 with a magnitude of 1.0, or a zero-vector if the original magnitude is below the
          *         epsilon threshold or if this vector has NaN(Not-a-Number) component(s).
          */
-        [[nodiscard]] constexpr Vec3<Magnitude<T>> tryNormalize(OperationStatus& status) const noexcept
+        [[nodiscard]] constexpr CVec3<Magnitude<T>> tryNormalize(OperationStatus& status) const noexcept
             requires StrictArithmetic<T>;
 
 
@@ -1548,10 +1548,10 @@ namespace flcn
          * @param[out] status The status flag to store the status of the current operation result.*
          *                    For details on status codes see @ref OperationStatus.
          *
-         * @return A @ref flcn::Vec3 with a magnitude of 1.0, or a zero-vector if the original magnitude is below the
+         * @return A @ref flcn::CVec3 with a magnitude of 1.0, or a zero-vector if the original magnitude is below the
          *         epsilon threshold or if the vector has NaN(Not-a-Number) component(s).
          */
-        [[nodiscard]] static constexpr Vec3<Magnitude<T>> tryNormalize(const Vec3& vec,
+        [[nodiscard]] static constexpr CVec3<Magnitude<T>> tryNormalize(const CVec3& vec,
                                                                        OperationStatus& status) noexcept
             requires StrictArithmetic<T>;
 
@@ -1559,7 +1559,7 @@ namespace flcn
 
 
         /**
-         * @addtogroup FALCON_Vec3_Proj
+         * @addtogroup FALCON_CVec3_Proj
          * @{
          */
 
@@ -1579,11 +1579,11 @@ namespace flcn
          *
          * @param[in] onto           The vector to project onto.
          *
-         * @return The projected @ref Vec3.
+         * @return The projected @ref CVec3.
          */
         template <StrictArithmetic U>
             requires StrictSignedness<T, U>
-        [[nodiscard]] constexpr PromotedFloatVec3<T, U> project(const Vec3<U>& onto) const noexcept
+        [[nodiscard]] constexpr PromotedFloatCVec3<T, U> project(const CVec3<U>& onto) const noexcept
             requires StrictArithmetic<T>;
 
 
@@ -1601,11 +1601,11 @@ namespace flcn
          *
          * @param[in] onto The vector to project onto.
          *
-         * @return The projected @ref Vec3.
+         * @return The projected @ref CVec3.
          */
         template <StrictArithmetic U>
             requires StrictSignedness<T, U>
-        [[nodiscard]] constexpr PromotedVec3<T, U> projectNorm(const Vec3<U>& onto) const noexcept
+        [[nodiscard]] constexpr PromotedCVec3<T, U> projectNorm(const CVec3<U>& onto) const noexcept
             requires StrictArithmetic<T>;
 
 
@@ -1626,11 +1626,11 @@ namespace flcn
          * @param[in] vec  The vector to project.
          * @param[in] onto The vector to project onto.
          *
-         * @return The projected @ref Vec3.
+         * @return The projected @ref CVec3.
          */
         template <StrictArithmetic U>
             requires StrictSignedness<T, U>
-        [[nodiscard]] static constexpr PromotedFloatVec3<T, U> project(const Vec3& vec, const Vec3<U>& onto) noexcept
+        [[nodiscard]] static constexpr PromotedFloatCVec3<T, U> project(const CVec3& vec, const CVec3<U>& onto) noexcept
             requires StrictArithmetic<T>;
 
 
@@ -1649,11 +1649,11 @@ namespace flcn
          * @param[in] vec  The vector to project.
          * @param[in] onto The vector to project onto.
          *
-         * @return The projected @ref Vec3.
+         * @return The projected @ref CVec3.
          */
         template <StrictArithmetic U>
             requires StrictSignedness<T, U>
-        [[nodiscard]] static constexpr PromotedVec3<T, U> projectNorm(const Vec3& vec, const Vec3<U>& onto) noexcept
+        [[nodiscard]] static constexpr PromotedCVec3<T, U> projectNorm(const CVec3& vec, const CVec3<U>& onto) noexcept
             requires StrictArithmetic<T>;
 
 
@@ -1674,12 +1674,12 @@ namespace flcn
          *
          * @param[in] onto The vector to project onto.
          *
-         * @return The projected @ref Vec3 or a zero-vector if projected onto a zero-length vector
+         * @return The projected @ref CVec3 or a zero-vector if projected onto a zero-length vector
          *         or if either of the vectors has NaN(Not-a-Number) component(s).
          */
         template <StrictArithmetic U>
             requires StrictSignedness<T, U>
-        [[nodiscard]] constexpr PromotedFloatVec3<T, U> safeProject(const Vec3<U>& onto) const noexcept
+        [[nodiscard]] constexpr PromotedFloatCVec3<T, U> safeProject(const CVec3<U>& onto) const noexcept
             requires StrictArithmetic<T>;
 
 
@@ -1698,12 +1698,12 @@ namespace flcn
          *
          * @param[in] onto The vector to project onto.
          *
-         * @return The projected @ref Vec3 or a zero-vector if projected onto a zero-length vector
+         * @return The projected @ref CVec3 or a zero-vector if projected onto a zero-length vector
          *         or if either of the vectors has NaN(Not-a-Number) component(s).
          */
         template <StrictArithmetic U>
             requires StrictSignedness<T, U>
-        [[nodiscard]] constexpr PromotedVec3<T, U> safeProjectNorm(const Vec3<U>& onto) const noexcept
+        [[nodiscard]] constexpr PromotedCVec3<T, U> safeProjectNorm(const CVec3<U>& onto) const noexcept
             requires StrictArithmetic<T>;
 
 
@@ -1725,13 +1725,13 @@ namespace flcn
          * @param[in] vec  The vector to project.
          * @param[in] onto The vector to project onto.
          *
-         * @return The projected @ref Vec3 or a zero-vector if projected onto a zero-length vector
+         * @return The projected @ref CVec3 or a zero-vector if projected onto a zero-length vector
          *         or if either of the vectors has NaN(Not-a-Number) component(s).
          */
         template <StrictArithmetic U>
             requires StrictSignedness<T, U>
-        [[nodiscard]] static constexpr PromotedFloatVec3<T, U> safeProject(const Vec3& vec,
-                                                                           const Vec3<U>& onto) noexcept
+        [[nodiscard]] static constexpr PromotedFloatCVec3<T, U> safeProject(const CVec3& vec,
+                                                                           const CVec3<U>& onto) noexcept
             requires StrictArithmetic<T>;
 
 
@@ -1751,12 +1751,12 @@ namespace flcn
          * @param[in] vec  The vector to project.
          * @param[in] onto The vector to project onto.
          *
-         * @return The projected @ref Vec3 or a zero-vector if projected onto a zero-length vector
+         * @return The projected @ref CVec3 or a zero-vector if projected onto a zero-length vector
          *         or if either of the vectors has NaN(Not-a-Number) component(s).
          */
         template <StrictArithmetic U>
             requires StrictSignedness<T, U>
-        [[nodiscard]] static constexpr PromotedVec3<T, U> safeProjectNorm(const Vec3& vec, const Vec3<U>& onto) noexcept
+        [[nodiscard]] static constexpr PromotedCVec3<T, U> safeProjectNorm(const CVec3& vec, const CVec3<U>& onto) noexcept
             requires StrictArithmetic<T>;
 
 
@@ -1780,12 +1780,12 @@ namespace flcn
          * @param[out] status The status flag to store the status of the current operation result.
          *                    For details on status codes see @ref OperationStatus.
          *
-         * @return The projected @ref Vec3 or a zero-vector if projected onto a zero-length vector or if either
+         * @return The projected @ref CVec3 or a zero-vector if projected onto a zero-length vector or if either
          *         vector has NaN(Not-a-Number) component(s).
          */
         template <StrictArithmetic U>
             requires StrictSignedness<T, U>
-        [[nodiscard]] constexpr PromotedFloatVec3<T, U> tryProject(const Vec3<U>& onto,
+        [[nodiscard]] constexpr PromotedFloatCVec3<T, U> tryProject(const CVec3<U>& onto,
                                                                    OperationStatus& status) const noexcept
             requires StrictArithmetic<T>;
 
@@ -1808,12 +1808,12 @@ namespace flcn
          * @param[out] status The status flag to store the status of the current operation result.
          *                    For details on status codes see @ref OperationStatus.
          *
-         * @return The projected @ref Vec3 or a zero-vector if projected onto a zero-length vector or if either
+         * @return The projected @ref CVec3 or a zero-vector if projected onto a zero-length vector or if either
          *         vector has NaN(Not-a-Number) component(s).
          */
         template <StrictArithmetic U>
             requires StrictSignedness<T, U>
-        [[nodiscard]] constexpr PromotedVec3<T, U> tryProjectNorm(const Vec3<U>& onto,
+        [[nodiscard]] constexpr PromotedCVec3<T, U> tryProjectNorm(const CVec3<U>& onto,
                                                                   OperationStatus& status) const noexcept
             requires StrictArithmetic<T>;
 
@@ -1839,12 +1839,12 @@ namespace flcn
          * @param[out] status The status flag to store the status of the current operation result.
          *                    For details on status codes see @ref OperationStatus.
          *
-         * @return The projected @ref Vec3 or a zero-vector if projected onto a zero-length vector or if either
+         * @return The projected @ref CVec3 or a zero-vector if projected onto a zero-length vector or if either
          *         vector has NaN(Not-a-Number) component(s).
          */
         template <StrictArithmetic U>
             requires StrictSignedness<T, U>
-        [[nodiscard]] static constexpr PromotedFloatVec3<T, U> tryProject(const Vec3& vec, const Vec3<U>& onto,
+        [[nodiscard]] static constexpr PromotedFloatCVec3<T, U> tryProject(const CVec3& vec, const CVec3<U>& onto,
                                                                           OperationStatus& status) noexcept
             requires StrictArithmetic<T>;
 
@@ -1868,12 +1868,12 @@ namespace flcn
          * @param[out] status The status flag to store the status of the current operation result.
          *                    For details on status codes see @ref OperationStatus.
          *
-         * @return The projected @ref Vec3 or a zero-vector if projected onto a zero-length vector or if either
+         * @return The projected @ref CVec3 or a zero-vector if projected onto a zero-length vector or if either
          *         vector has NaN(Not-a-Number) component(s).
          */
         template <StrictArithmetic U>
             requires StrictSignedness<T, U>
-        [[nodiscard]] static constexpr PromotedVec3<T, U> tryProjectNorm(const Vec3& vec, const Vec3<U>& onto,
+        [[nodiscard]] static constexpr PromotedCVec3<T, U> tryProjectNorm(const CVec3& vec, const CVec3<U>& onto,
                                                                          OperationStatus& status) noexcept
             requires StrictArithmetic<T>;
 
@@ -1892,11 +1892,11 @@ namespace flcn
          *
          * @param[in] from The vector to reject from.
          *
-         * @return The perpendicular @ref Vec3 component.
+         * @return The perpendicular @ref CVec3 component.
          */
         template <StrictArithmetic U>
             requires StrictSignedness<T, U>
-        [[nodiscard]] constexpr PromotedFloatVec3<T, U> reject(const Vec3<U>& from) const noexcept
+        [[nodiscard]] constexpr PromotedFloatCVec3<T, U> reject(const CVec3<U>& from) const noexcept
             requires StrictArithmetic<T>;
 
 
@@ -1912,11 +1912,11 @@ namespace flcn
          *
          * @param[in] from The vector to reject from.
          *
-         * @return The perpendicular @ref Vec3 component.
+         * @return The perpendicular @ref CVec3 component.
          */
         template <StrictArithmetic U>
             requires StrictSignedness<T, U>
-        [[nodiscard]] constexpr PromotedVec3<T, U> rejectNorm(const Vec3<U>& from) const noexcept
+        [[nodiscard]] constexpr PromotedCVec3<T, U> rejectNorm(const CVec3<U>& from) const noexcept
             requires StrictArithmetic<T>;
 
 
@@ -1934,11 +1934,11 @@ namespace flcn
          * @param[in] vector The vector to be rejected.
          * @param[in] from   The vector to reject from.
          *
-         * @return The perpendicular @ref Vec3 component.
+         * @return The perpendicular @ref CVec3 component.
          */
         template <StrictArithmetic U>
             requires StrictSignedness<T, U>
-        [[nodiscard]] static constexpr PromotedFloatVec3<T, U> reject(const Vec3& vector, const Vec3<U>& from) noexcept
+        [[nodiscard]] static constexpr PromotedFloatCVec3<T, U> reject(const CVec3& vector, const CVec3<U>& from) noexcept
             requires StrictArithmetic<T>;
 
 
@@ -1955,11 +1955,11 @@ namespace flcn
          * @param[in] vector The vector to be rejected.
          * @param[in] from   The vector to reject from.
          *
-         * @return The perpendicular @ref Vec3 component.
+         * @return The perpendicular @ref CVec3 component.
          */
         template <StrictArithmetic U>
             requires StrictSignedness<T, U>
-        [[nodiscard]] static constexpr PromotedVec3<T, U> rejectNorm(const Vec3& vector, const Vec3<U>& from) noexcept
+        [[nodiscard]] static constexpr PromotedCVec3<T, U> rejectNorm(const CVec3& vector, const CVec3<U>& from) noexcept
             requires StrictArithmetic<T>;
 
 
@@ -1977,12 +1977,12 @@ namespace flcn
          *
          * @param[in] from The vector to reject from.
          *
-         * @return The perpendicular @ref Vec3 component or a zero-vector if projected onto a zero-length vector
+         * @return The perpendicular @ref CVec3 component or a zero-vector if projected onto a zero-length vector
          *         or if either of the vectors has NaN(Not-a-Number) component(s).
          */
         template <StrictArithmetic U>
             requires StrictSignedness<T, U>
-        [[nodiscard]] constexpr PromotedFloatVec3<T, U> safeReject(const Vec3<U>& from) const noexcept
+        [[nodiscard]] constexpr PromotedFloatCVec3<T, U> safeReject(const CVec3<U>& from) const noexcept
             requires StrictArithmetic<T>;
 
 
@@ -1999,12 +1999,12 @@ namespace flcn
          *
          * @param[in] from The vector to reject from.
          *
-         * @return The perpendicular @ref Vec3 component or a zero-vector if projected onto a zero-length vector
+         * @return The perpendicular @ref CVec3 component or a zero-vector if projected onto a zero-length vector
          *         or if either of the vectors has NaN(Not-a-Number) component(s).
          */
         template <StrictArithmetic U>
             requires StrictSignedness<T, U>
-        [[nodiscard]] constexpr PromotedVec3<T, U> safeRejectNorm(const Vec3<U>& from) const noexcept
+        [[nodiscard]] constexpr PromotedCVec3<T, U> safeRejectNorm(const CVec3<U>& from) const noexcept
             requires StrictArithmetic<T>;
 
 
@@ -2023,12 +2023,12 @@ namespace flcn
          * @param[in] vec  The vector to reject.
          * @param[in] from The vector to reject from.
          *
-         * @return The perpendicular @ref Vec3 component or a zero-vector if projected onto a zero-length vector
+         * @return The perpendicular @ref CVec3 component or a zero-vector if projected onto a zero-length vector
          *         or if either of the vectors has NaN(Not-a-Number) component(s).
          */
         template <StrictArithmetic U>
             requires StrictSignedness<T, U>
-        [[nodiscard]] static constexpr PromotedFloatVec3<T, U> safeReject(const Vec3& vec, const Vec3<U>& from) noexcept
+        [[nodiscard]] static constexpr PromotedFloatCVec3<T, U> safeReject(const CVec3& vec, const CVec3<U>& from) noexcept
             requires StrictArithmetic<T>;
 
 
@@ -2046,12 +2046,12 @@ namespace flcn
          * @param[in] vec  The vector to reject.
          * @param[in] from The vector to reject from.
          *
-         * @return The perpendicular @ref Vec3 component or a zero-vector if projected onto a zero-length vector
+         * @return The perpendicular @ref CVec3 component or a zero-vector if projected onto a zero-length vector
          *         or if either of the vectors has NaN(Not-a-Number) component(s).
          */
         template <StrictArithmetic U>
             requires StrictSignedness<T, U>
-        [[nodiscard]] static constexpr PromotedVec3<T, U> safeRejectNorm(const Vec3& vec, const Vec3<U>& from) noexcept
+        [[nodiscard]] static constexpr PromotedCVec3<T, U> safeRejectNorm(const CVec3& vec, const CVec3<U>& from) noexcept
             requires StrictArithmetic<T>;
 
 
@@ -2071,12 +2071,12 @@ namespace flcn
          * @param[out] status The status flag to store the status of the current operation result.
          *                    For details on status codes see @ref OperationStatus.
          *
-         * @return The perpendicular @ref Vec3 component or a zero-vector if projected onto a zero-length vector
+         * @return The perpendicular @ref CVec3 component or a zero-vector if projected onto a zero-length vector
          *         or if either of the vectors has NaN(Not-a-Number) component(s).
          */
         template <StrictArithmetic U>
             requires StrictSignedness<T, U>
-        [[nodiscard]] constexpr PromotedFloatVec3<T, U> tryReject(const Vec3<U>& from,
+        [[nodiscard]] constexpr PromotedFloatCVec3<T, U> tryReject(const CVec3<U>& from,
                                                                   OperationStatus& status) const noexcept
             requires StrictArithmetic<T>;
 
@@ -2097,12 +2097,12 @@ namespace flcn
          * @param[out] status The status flag to store the status of the current operation result.
          *                    For details on status codes see @ref OperationStatus.
          *
-         * @return The perpendicular @ref Vec3 component or a zero-vector if projected onto a zero-length vector
+         * @return The perpendicular @ref CVec3 component or a zero-vector if projected onto a zero-length vector
          *         or if either of the vectors has NaN(Not-a-Number) component(s).
          */
         template <StrictArithmetic U>
             requires StrictSignedness<T, U>
-        [[nodiscard]] constexpr PromotedVec3<T, U> tryRejectNorm(const Vec3<U>& from,
+        [[nodiscard]] constexpr PromotedCVec3<T, U> tryRejectNorm(const CVec3<U>& from,
                                                                  OperationStatus& status) const noexcept
             requires StrictArithmetic<T>;
 
@@ -2125,12 +2125,12 @@ namespace flcn
          * @param[out] status The status flag to store the status of the current operation result.
          *                    For details on status codes see @ref OperationStatus.
          *
-         * @return The perpendicular @ref Vec3 component or a zero-vector if projected onto a zero-length vector
+         * @return The perpendicular @ref CVec3 component or a zero-vector if projected onto a zero-length vector
          *         or if either of the vectors has NaN(Not-a-Number) component(s).
          */
         template <StrictArithmetic U>
             requires StrictSignedness<T, U>
-        [[nodiscard]] static constexpr PromotedFloatVec3<T, U> tryReject(const Vec3& vec, const Vec3<U>& from,
+        [[nodiscard]] static constexpr PromotedFloatCVec3<T, U> tryReject(const CVec3& vec, const CVec3<U>& from,
                                                                          OperationStatus& status) noexcept
             requires StrictArithmetic<T>;
 
@@ -2151,12 +2151,12 @@ namespace flcn
          * @param[out] status The status flag to store the status of the current operation result.
          *                    For details on status codes see @ref OperationStatus.
          *
-         * @return The perpendicular @ref Vec3 component or a zero-vector if projected onto a zero-length vector
+         * @return The perpendicular @ref CVec3 component or a zero-vector if projected onto a zero-length vector
          *         or if either of the vectors has NaN(Not-a-Number) component(s).
          */
         template <StrictArithmetic U>
             requires StrictSignedness<T, U>
-        [[nodiscard]] static constexpr PromotedVec3<T, U> tryRejectNorm(const Vec3& vec, const Vec3<U>& from,
+        [[nodiscard]] static constexpr PromotedCVec3<T, U> tryRejectNorm(const CVec3& vec, const CVec3<U>& from,
                                                                         OperationStatus& status) noexcept
             requires StrictArithmetic<T>;
 
@@ -2164,7 +2164,7 @@ namespace flcn
 
 
         /**
-         * @addtogroup FALCON_Vec3_Utils
+         * @addtogroup FALCON_CVec3_Utils
          * @{
          */
 
@@ -2187,7 +2187,7 @@ namespace flcn
          *
          * @return True if at least one component is positive or negative infinity.
          */
-        [[nodiscard]] static constexpr bool hasInf(const Vec3& vec) noexcept;
+        [[nodiscard]] static constexpr bool hasInf(const CVec3& vec) noexcept;
 
 
         /**
@@ -2209,13 +2209,13 @@ namespace flcn
          *
          * @return True if at least one component is NaN.
          */
-        [[nodiscard]] static constexpr bool hasNaN(const Vec3& vec) noexcept;
+        [[nodiscard]] static constexpr bool hasNaN(const CVec3& vec) noexcept;
 
         /** @} */
 
 
         /**
-         * @addtogroup FALCON_Vec3_Log
+         * @addtogroup FALCON_CVec3_Log
          * @{
          */
 
@@ -2228,7 +2228,7 @@ namespace flcn
          *
          * @return A reference to the output stream @p os.
          */
-        friend std::ostream& operator<<(std::ostream& os, const Vec3& vector)
+        friend std::ostream& operator<<(std::ostream& os, const CVec3& vector)
         {
             const std::streamsize oldPrecision     = os.precision();
             const std::ios_base::fmtflags oldFlags = os.flags();
@@ -2248,7 +2248,7 @@ namespace flcn
         /** @} */
 
         /**
-         * @addtogroup FALCON_Vec3_Const
+         * @addtogroup FALCON_CVec3_Const
          * @{
          */
 
@@ -2263,17 +2263,17 @@ namespace flcn
         /**
          * @brief A 3D vector with all components set to one (1, 1, 1).
          */
-        static constexpr Vec3 one()
+        static constexpr CVec3 one()
             requires StrictArithmetic<T>
-        { return Vec3{ T(1), T(1), T(1) }; }
+        { return CVec3{ T(1), T(1), T(1) }; }
 
 
         /**
          * @brief A 3D vector with all components set to zero (0, 0, 0).
          */
-        static constexpr Vec3 zero()
+        static constexpr CVec3 zero()
             requires StrictArithmetic<T>
-        { return Vec3{ T(0), T(0), T(0) }; }
+        { return CVec3{ T(0), T(0), T(0) }; }
 
 
         /**
@@ -2281,9 +2281,9 @@ namespace flcn
          *
          * @note Constrained to floating point types.
          */
-        static constexpr Vec3 inf()
+        static constexpr CVec3 inf()
             requires std::floating_point<T>
-        { return Vec3{ T(constants::INFINITY_D), T(constants::INFINITY_D), T(constants::INFINITY_D) }; }
+        { return CVec3{ T(constants::INFINITY_D), T(constants::INFINITY_D), T(constants::INFINITY_D) }; }
 
 
         /**
@@ -2291,9 +2291,9 @@ namespace flcn
          *
          * @note Constrained to floating point types.
          */
-        static constexpr Vec3 infNeg()
+        static constexpr CVec3 infNeg()
             requires std::floating_point<T>
-        { return Vec3{ T(-constants::INFINITY_D), T(-constants::INFINITY_D), T(-constants::INFINITY_D) }; }
+        { return CVec3{ T(-constants::INFINITY_D), T(-constants::INFINITY_D), T(-constants::INFINITY_D) }; }
 
 
         /**
@@ -2301,9 +2301,9 @@ namespace flcn
          *
          * @note Constrained to floating point types.
          */
-        static constexpr Vec3 qnan()
+        static constexpr CVec3 qnan()
             requires std::floating_point<T>
-        { return Vec3{ T(constants::NaN_D), T(constants::NaN_D), T(constants::NaN_D) }; }
+        { return CVec3{ T(constants::NaN_D), T(constants::NaN_D), T(constants::NaN_D) }; }
 
 
         /**
@@ -2311,9 +2311,9 @@ namespace flcn
          *
          * @note Constrained to signed types.
          */
-        static constexpr Vec3 right()
+        static constexpr CVec3 right()
             requires std::is_signed_v<T>
-        { return Vec3{ T(1), T(0), T(0) }; }
+        { return CVec3{ T(1), T(0), T(0) }; }
 
 
         /**
@@ -2321,9 +2321,9 @@ namespace flcn
          *
          * @note Constrained to signed types.
          */
-        static constexpr Vec3 left()
+        static constexpr CVec3 left()
             requires std::is_signed_v<T>
-        { return Vec3{ T(-1), T(0), T(0) }; }
+        { return CVec3{ T(-1), T(0), T(0) }; }
 
 
         /**
@@ -2331,9 +2331,9 @@ namespace flcn
          *
          * @note Constrained to signed types.
          */
-        static constexpr Vec3 up()
+        static constexpr CVec3 up()
             requires std::is_signed_v<T>
-        { return Vec3{ T(0), T(1), T(0) }; }
+        { return CVec3{ T(0), T(1), T(0) }; }
 
 
         /**
@@ -2341,9 +2341,9 @@ namespace flcn
          *
          * @note Constrained to signed types.
          */
-        static constexpr Vec3 down()
+        static constexpr CVec3 down()
             requires std::is_signed_v<T>
-        { return Vec3{ T(0), T(-1), T(0) }; }
+        { return CVec3{ T(0), T(-1), T(0) }; }
 
 
 #ifdef FALCON_LEFT_HANDED
@@ -2353,9 +2353,9 @@ namespace flcn
          * @note Left Handed Coordinate System.
          * @note Constrained to signed types.
          */
-        static constexpr Vec3 forward()
+        static constexpr CVec3 forward()
             requires std::is_signed_v<T>
-        { return Vec3{ T(0), T(0), T(1) }; }
+        { return CVec3{ T(0), T(0), T(1) }; }
 
 
         /**
@@ -2364,9 +2364,9 @@ namespace flcn
          * @note Left Handed Coordinate System.
          * @note Constrained to signed types.
          */
-        static constexpr Vec3 backward()
+        static constexpr CVec3 backward()
             requires std::is_signed_v<T>
-        { return Vec3{ T(0), T(0), T(-1) }; }
+        { return CVec3{ T(0), T(0), T(-1) }; }
 #else
         /**
          * @brief A 3D unit vector aligned with the negative Z-axis (0, 0, -1).
@@ -2374,9 +2374,9 @@ namespace flcn
          * @note Right Handed Coordinate System.
          * @note Constrained to signed types.
          */
-        static constexpr Vec3 forward()
+        static constexpr CVec3 forward()
             requires std::is_signed_v<T>
-        { return Vec3{ T(0), T(0), T(-1) }; }
+        { return CVec3{ T(0), T(0), T(-1) }; }
 
 
         /**
@@ -2385,9 +2385,9 @@ namespace flcn
          * @note Right Handed Coordinate System
          * @note Constrained to signed types.
          */
-        static constexpr Vec3 backward()
+        static constexpr CVec3 backward()
             requires std::is_signed_v<T>
-        { return Vec3{ T(0), T(0), T(1) }; }
+        { return CVec3{ T(0), T(0), T(1) }; }
 
 #endif
 
@@ -2406,7 +2406,7 @@ namespace flcn
      *************************************/
 
     /**
-     * @addtogroup FALCON_Vec3_Arithmetic
+     * @addtogroup FALCON_CVec3_Arithmetic
      * @{
      */
 
@@ -2414,7 +2414,7 @@ namespace flcn
      * @brief Scale the vector by a scalar value.
      *        Multiply @p scalar by each component of the vector and returns a new vector.
      *
-     * @note Promotes the result to the wider type using @ref PromotedVec3<T, S>.
+     * @note Promotes the result to the wider type using @ref PromotedCVec3<T, S>.
      * @note Operation is restricted to numeric types via @ref StrictArithmetic.
      *
      * @tparam S Numeric type of the scalar. Must satisfy @ref StrictArithmetic.
@@ -2422,17 +2422,17 @@ namespace flcn
      * @param[in] scalar The value to scale by.
      * @param[in] vector The vector to scale[RHS].
      *
-     * @return A new @ref Vec3 scaled by @p scalar.
+     * @return A new @ref CVec3 scaled by @p scalar.
      */
     template <StrictArithmetic T, StrictArithmetic S>
-    [[nodiscard]] constexpr PromotedVec3<T, S> operator*(S scalar, const Vec3<T>& vector) noexcept
+    [[nodiscard]] constexpr PromotedCVec3<T, S> operator*(S scalar, const CVec3<T>& vector) noexcept
         requires StrictArithmetic<T>;
 
     /** @} */
 
 
     /**
-     * @addtogroup FALCON_Vec3_Alias
+     * @addtogroup FALCON_CVec3_Alias
      * @{
      */
 
@@ -2442,32 +2442,32 @@ namespace flcn
      *                                   *
      *************************************/
 
-    using Vec3B   = Vec3<int8_t>;   ///< Signed Byte (8-bit) vector
-    using Vec3UB  = Vec3<uint8_t>;  ///< Unsigned Byte (8-bit) vector
-    using Vec3I   = Vec3<int32_t>;  ///< Signed Int (32-bit) vector
-    using Vec3U   = Vec3<uint32_t>; ///< Unsigned Int (32-bit) vector
-    using Vec3F   = Vec3<float>;    ///< Single Precision Floating Point (32-bit) vector
-    using Vec3LL  = Vec3<int64_t>;  ///< Signed Long Long (64-bit) vector
-    using Vec3D   = Vec3<double>;   ///< Double Precision Floating Point (64-bit) vector
-    using Vec3ULL = Vec3<uint64_t>; ///< Unsigned Long Long (64-bit) vector
+    using CVec3B   = CVec3<int8_t>;   ///< Signed Byte (8-bit) vector
+    using CVec3UB  = CVec3<uint8_t>;  ///< Unsigned Byte (8-bit) vector
+    using CVec3I   = CVec3<int32_t>;  ///< Signed Int (32-bit) vector
+    using CVec3U   = CVec3<uint32_t>; ///< Unsigned Int (32-bit) vector
+    using CVec3F   = CVec3<float>;    ///< Single Precision Floating Point (32-bit) vector
+    using CVec3LL  = CVec3<int64_t>;  ///< Signed Long Long (64-bit) vector
+    using CVec3D   = CVec3<double>;   ///< Double Precision Floating Point (64-bit) vector
+    using CVec3ULL = CVec3<uint64_t>; ///< Unsigned Long Long (64-bit) vector
 
     /** @} */
 
 
 
-    /** @brief Template deduction guide for Vec3. */
+    /** @brief Template deduction guide for CVec3. */
     template <typename T>
         requires Arithmetic<T>
-    Vec3(T, T, T) -> Vec3<T>;
+    CVec3(T, T, T) -> CVec3<T>;
 
     template <typename T>
         requires Arithmetic<T>
-    Vec3(CVec2<T>, T) -> Vec3<T>;
+    CVec3(CVec2<T>, T) -> CVec3<T>;
 
     template <typename T>
         requires Arithmetic<T>
-    Vec3(T, CVec2<T>) -> Vec3<T>;
+    CVec3(T, CVec2<T>) -> CVec3<T>;
 
 } // namespace flcn
 
-#include "Vec3.tpp"
+#include "CVec3.tpp"

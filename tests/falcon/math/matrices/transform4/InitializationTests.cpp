@@ -35,7 +35,7 @@ namespace
     protected:
         std::vector<T> _elements;
         std::vector<T> _expectedElements;
-        flcn::Vec3<T> _firstAxis, _secondAxis, _thirdAxis;
+        flcn::CVec3<T> _firstAxis, _secondAxis, _thirdAxis;
         flcn::Point3<T> _translation;
         T _diagonal0, _diagonal1, _diagonal2, _diagonal3;
 
@@ -43,9 +43,9 @@ namespace
         {
             _elements         = { T(1), T(2), T(3), T(4), T(5), T(6), T(7), T(8), T(9), T(10), T(11), T(12) };
             _expectedElements = { T(1), T(2), T(3), T(4), T(5), T(6), T(7), T(8), T(9), T(10), T(11), T(12) };
-            _firstAxis        = flcn::Vec3{ T(1), T(5), T(9) };
-            _secondAxis       = flcn::Vec3{ T(2), T(6), T(10) };
-            _thirdAxis        = flcn::Vec3{ T(3), T(7), T(11) };
+            _firstAxis        = flcn::CVec3{ T(1), T(5), T(9) };
+            _secondAxis       = flcn::CVec3{ T(2), T(6), T(10) };
+            _thirdAxis        = flcn::CVec3{ T(3), T(7), T(11) };
             _translation      = flcn::Point3{ T(4), T(8), T(12) };
         }
     };
@@ -77,7 +77,7 @@ namespace
 
         /// @test Verify that the matrix can be initialized at compile time using transformation axis and an origin
         /// point.
-        constexpr flcn::Transform4 MAT2(flcn::Vec3(1, 5, 9), flcn::Vec3(2, 6, 10), flcn::Vec3(3, 7, 11),
+        constexpr flcn::Transform4 MAT2(flcn::CVec3(1, 5, 9), flcn::CVec3(2, 6, 10), flcn::CVec3(3, 7, 11),
                                        flcn::Point3(4, 8, 12));
         static_assert(MAT2(0, 0) == 1);
         static_assert(MAT2(0, 1) == 2);

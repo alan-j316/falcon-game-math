@@ -29,19 +29,19 @@ namespace flcn
     template <Arithmetic T>
     FALCON_INLINE constexpr Mat3<T>::Mat3(const T m00, const T m01, const T m02, const T m10, const T m11, const T m12,
                                        const T m20, const T m21, const T m22) noexcept
-        : _data{ Vec3{ T(m00), T(m10), T(m20) }, Vec3{ T(m01), T(m11), T(m21) }, Vec3{ T(m02), T(m12), T(m22) } }
+        : _data{ CVec3{ T(m00), T(m10), T(m20) }, CVec3{ T(m01), T(m11), T(m21) }, CVec3{ T(m02), T(m12), T(m22) } }
     {}
 
 
     template <Arithmetic T>
-    FALCON_INLINE constexpr Mat3<T>::Mat3(const Vec3<T>& col0, const Vec3<T>& col1, const Vec3<T>& col2) noexcept
+    FALCON_INLINE constexpr Mat3<T>::Mat3(const CVec3<T>& col0, const CVec3<T>& col1, const CVec3<T>& col2) noexcept
         : _data{ col0, col1, col2 }
     {}
 
 
     template <Arithmetic T>
     FALCON_INLINE constexpr Mat3<T>::Mat3(T d0, T d1, T d2) noexcept
-        : _data{ Vec3{ T(d0), T(0), T(0) }, Vec3{ T(0), T(d1), T(0) }, Vec3{ T(0), T(0), T(d2) } }
+        : _data{ CVec3{ T(d0), T(0), T(0) }, CVec3{ T(0), T(d1), T(0) }, CVec3{ T(0), T(0), T(d2) } }
     {}
 
 
@@ -69,7 +69,7 @@ namespace flcn
      *************************************/
 
     template <Arithmetic T>
-    FALCON_INLINE constexpr Vec3<T>& Mat3<T>::operator[](const std::size_t col) noexcept
+    FALCON_INLINE constexpr CVec3<T>& Mat3<T>::operator[](const std::size_t col) noexcept
     {
         FALCON_ASSERT_MSG(col < COLUMNS, flcn::messages::assertion::MAT_OUT_OF_BOUNDS_ACCESS);
         return _data[col];
@@ -77,7 +77,7 @@ namespace flcn
 
 
     template <Arithmetic T>
-    FALCON_INLINE constexpr const Vec3<T>& Mat3<T>::operator[](const std::size_t col) const noexcept
+    FALCON_INLINE constexpr const CVec3<T>& Mat3<T>::operator[](const std::size_t col) const noexcept
     {
         FALCON_ASSERT_MSG(col < COLUMNS, flcn::messages::assertion::MAT_OUT_OF_BOUNDS_ACCESS);
         return _data[col];
@@ -260,7 +260,7 @@ namespace flcn
     template <Arithmetic T>
     template <StrictArithmetic U>
         requires StrictSignedness<T, U>
-    FALCON_INLINE constexpr PromotedVec3<T, U> Mat3<T>::operator*(const Vec3<U>& vec) const noexcept
+    FALCON_INLINE constexpr PromotedCVec3<T, U> Mat3<T>::operator*(const CVec3<U>& vec) const noexcept
         requires StrictArithmetic<T>
     {
         using R = PromotedValue_t<T, U>;
@@ -270,7 +270,7 @@ namespace flcn
         {
             if (!std::is_constant_evaluated())
             {
-                return Vec3<R>(std::fma(static_cast<R>(_data[0][0]), static_cast<R>(vec[0]),
+                return CVec3<R>(std::fma(static_cast<R>(_data[0][0]), static_cast<R>(vec[0]),
                                         std::fma(static_cast<R>(_data[1][0]), static_cast<R>(vec[1]),
                                                  static_cast<R>(_data[2][0]) * static_cast<R>(vec[2]))),
                                std::fma(static_cast<R>(_data[0][1]), static_cast<R>(vec[0]),
@@ -291,12 +291,12 @@ namespace flcn
         R z = static_cast<R>(_data[0][2]) * static_cast<R>(vec[0]) +
             static_cast<R>(_data[1][2]) * static_cast<R>(vec[1]) + static_cast<R>(_data[2][2]) * static_cast<R>(vec[2]);
 
-        return Vec3<R>(x, y, z);
+        return CVec3<R>(x, y, z);
     }
 
 
     template <StrictArithmetic T, StrictArithmetic U>
-    FALCON_INLINE constexpr PromotedVec3<T, U> operator*(const Vec3<T>& vec, const Mat3<U>& matrix) noexcept
+    FALCON_INLINE constexpr PromotedCVec3<T, U> operator*(const CVec3<T>& vec, const Mat3<U>& matrix) noexcept
     {
         using R = PromotedValue_t<T, U>;
 #if defined(FP_FAST_FMA) || defined(FP_FAST_FMAF) || defined(__FMA__) || defined(__AVX2__)
@@ -305,7 +305,7 @@ namespace flcn
         {
             if (!std::is_constant_evaluated())
             {
-                return Vec3<R>(std::fma(static_cast<R>(vec[0]), static_cast<R>(matrix(0, 0)), // x
+                return CVec3<R>(std::fma(static_cast<R>(vec[0]), static_cast<R>(matrix(0, 0)), // x
                                         std::fma(static_cast<R>(vec[1]), static_cast<R>(matrix(1, 0)),
                                                  static_cast<R>(vec[2]) * static_cast<R>(matrix(2, 0)))),
                                std::fma(static_cast<R>(vec[0]), static_cast<R>(matrix(0, 1)), // y
@@ -330,12 +330,12 @@ namespace flcn
             static_cast<R>(vec[1]) * static_cast<R>(matrix(1, 2)) +
             static_cast<R>(vec[2]) * static_cast<R>(matrix(2, 2));
 
-        return Vec3<R>(x, y, z);
+        return CVec3<R>(x, y, z);
     }
 
 
     template <StrictArithmetic T, StrictArithmetic U>
-    FALCON_INLINE constexpr Vec3<T>& operator*=(Vec3<T>& vec, const Mat3<U>& matrix) noexcept
+    FALCON_INLINE constexpr CVec3<T>& operator*=(CVec3<T>& vec, const Mat3<U>& matrix) noexcept
     {
         using R = PromotedValue_t<T, U>;
 #if defined(FP_FAST_FMA) || defined(FP_FAST_FMAF) || defined(__FMA__) || defined(__AVX2__)
@@ -400,9 +400,9 @@ namespace flcn
         requires StrictArithmetic<T>
     {
         const auto mat = *this * rhs;
-        _data[0]       = static_cast<Vec3<T>>(mat[0]);
-        _data[1]       = static_cast<Vec3<T>>(mat[1]);
-        _data[2]       = static_cast<Vec3<T>>(mat[2]);
+        _data[0]       = static_cast<CVec3<T>>(mat[0]);
+        _data[1]       = static_cast<CVec3<T>>(mat[1]);
+        _data[2]       = static_cast<CVec3<T>>(mat[2]);
         return *this;
     }
 
@@ -609,9 +609,9 @@ namespace flcn
     {
         using R = Magnitude<T>;
 
-        const auto row0 = static_cast<Vec3<R>>(_data[1].cross(_data[2])); // b X c
-        const auto row1 = static_cast<Vec3<R>>(_data[2].cross(_data[0])); // c X a
-        const auto row2 = static_cast<Vec3<R>>(_data[0].cross(_data[1])); // a X b
+        const auto row0 = static_cast<CVec3<R>>(_data[1].cross(_data[2])); // b X c
+        const auto row1 = static_cast<CVec3<R>>(_data[2].cross(_data[0])); // c X a
+        const auto row2 = static_cast<CVec3<R>>(_data[0].cross(_data[1])); // a X b
 
         // Since the cross product is already computed, it takes less operation compared to calling determinant.
         R det = _data[0].dot(row0); // a.(b X c) Scalar triple product
@@ -635,9 +635,9 @@ namespace flcn
     {
         using R = Magnitude<T>;
 
-        const auto row0 = static_cast<Vec3<R>>(_data[1].cross(_data[2])); // b X c
-        const auto row1 = static_cast<Vec3<R>>(_data[2].cross(_data[0])); // c X a
-        const auto row2 = static_cast<Vec3<R>>(_data[0].cross(_data[1])); // a X b
+        const auto row0 = static_cast<CVec3<R>>(_data[1].cross(_data[2])); // b X c
+        const auto row1 = static_cast<CVec3<R>>(_data[2].cross(_data[0])); // c X a
+        const auto row2 = static_cast<CVec3<R>>(_data[0].cross(_data[1])); // a X b
 
         // Since the cross product is already computed, it takes less operation compared to calling determinant.
         R det = _data[0].dot(row0); // a.(b X c) Scalar triple product
@@ -676,9 +676,9 @@ namespace flcn
     {
         using R = Magnitude<T>;
 
-        const auto row0 = static_cast<Vec3<R>>(_data[1].cross(_data[2])); // b X c
-        const auto row1 = static_cast<Vec3<R>>(_data[2].cross(_data[0])); // c X a
-        const auto row2 = static_cast<Vec3<R>>(_data[0].cross(_data[1])); // a X b
+        const auto row0 = static_cast<CVec3<R>>(_data[1].cross(_data[2])); // b X c
+        const auto row1 = static_cast<CVec3<R>>(_data[2].cross(_data[0])); // c X a
+        const auto row2 = static_cast<CVec3<R>>(_data[0].cross(_data[1])); // a X b
 
         // Since the cross product is already computed, it takes less operation compared to calling determinant.
         R det = _data[0].dot(row0); // a.(b X c) Scalar triple product
@@ -838,7 +838,7 @@ namespace flcn
 
     template <Arithmetic T>
     template <std::floating_point U>
-    FALCON_INLINE constexpr PromotedFloatMat3<T, U> Mat3<T>::makeRotation(U angle, const Vec3<T>& axis) noexcept
+    FALCON_INLINE constexpr PromotedFloatMat3<T, U> Mat3<T>::makeRotation(U angle, const CVec3<T>& axis) noexcept
         requires StrictArithmetic<T>
     {
         using S = Magnitude<std::common_type_t<T, U>>;
@@ -878,7 +878,7 @@ namespace flcn
 
 
     template <Arithmetic T>
-    FALCON_INLINE constexpr Mat3<T> Mat3<T>::makeScale(T scale, const Vec3<T>& direction) noexcept
+    FALCON_INLINE constexpr Mat3<T> Mat3<T>::makeScale(T scale, const CVec3<T>& direction) noexcept
         requires SignedStrictArithmetic<T>
     {
 
@@ -910,7 +910,7 @@ namespace flcn
 
 
     template <Arithmetic T>
-    FALCON_INLINE constexpr Mat3<T> Mat3<T>::makeReflection(const Vec3<T>& normal) noexcept
+    FALCON_INLINE constexpr Mat3<T> Mat3<T>::makeReflection(const CVec3<T>& normal) noexcept
         requires SignedStrictArithmetic<T>
     {
         T ax = normal.x();
@@ -921,7 +921,7 @@ namespace flcn
     }
 
     template <Arithmetic T>
-    FALCON_INLINE constexpr Mat3<T> Mat3<T>::makeInvolution(const Vec3<T>& normal) noexcept
+    FALCON_INLINE constexpr Mat3<T> Mat3<T>::makeInvolution(const CVec3<T>& normal) noexcept
         requires SignedStrictArithmetic<T>
     {
         T x  = static_cast<T>(2 * normal.x() * normal.x() - 1);
@@ -965,8 +965,8 @@ namespace flcn
 
 
     template <Arithmetic T>
-    FALCON_INLINE constexpr Mat3<T> Mat3<T>::makeShearByAngle(const T shearAngle, const Vec3<T>& direction,
-                                                           const Vec3<T>& normal) noexcept
+    FALCON_INLINE constexpr Mat3<T> Mat3<T>::makeShearByAngle(const T shearAngle, const CVec3<T>& direction,
+                                                           const CVec3<T>& normal) noexcept
         requires std::floating_point<T>
     {
         const auto t = std::tan(shearAngle);
@@ -979,8 +979,8 @@ namespace flcn
 
 
     template <Arithmetic T>
-    FALCON_INLINE constexpr Mat3<T> Mat3<T>::makeShear(const T shearFactor, const Vec3<T>& direction,
-                                                    const Vec3<T>& normal) noexcept
+    FALCON_INLINE constexpr Mat3<T> Mat3<T>::makeShear(const T shearFactor, const CVec3<T>& direction,
+                                                    const CVec3<T>& normal) noexcept
         requires std::floating_point<T>
     {
         T x = direction.x() * shearFactor;

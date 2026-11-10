@@ -33,7 +33,7 @@ namespace
     {
     protected:
         std::vector<T> _elements;
-        flcn::Vec3<T> _col0, _col1, _col2, _col3;
+        flcn::CVec3<T> _col0, _col1, _col2, _col3;
 
         void SetUp() override
         {
@@ -73,7 +73,7 @@ namespace
 
 
         /// @test Verify that the matrix can be initialized at compile time using column vectors.
-        constexpr flcn::Mat3x4 MAT2(flcn::Vec3(1, 5, 9), flcn::Vec3(2, 6, 10), flcn::Vec3(3, 7, 11), flcn::Vec3(4, 8, 12));
+        constexpr flcn::Mat3x4 MAT2(flcn::CVec3(1, 5, 9), flcn::CVec3(2, 6, 10), flcn::CVec3(3, 7, 11), flcn::CVec3(4, 8, 12));
         static_assert(MAT2(0, 0) == 1);
         static_assert(MAT2(0, 1) == 2);
         static_assert(MAT2(0, 2) == 3);

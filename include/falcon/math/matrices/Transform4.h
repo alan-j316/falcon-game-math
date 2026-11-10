@@ -78,8 +78,8 @@ namespace flcn
          * @param[in] thirdAxis  The 3D-vector to use as the third orthogonal axis.
          * @param[in] origin     The origin point.
          */
-        [[nodiscard]] constexpr Transform4(const Vec3<T>& firstAxis, const Vec3<T>& secondAxis,
-                                           const Vec3<T>& thirdAxis, const Point3<T>& origin) noexcept;
+        [[nodiscard]] constexpr Transform4(const CVec3<T>& firstAxis, const CVec3<T>& secondAxis,
+                                           const CVec3<T>& thirdAxis, const Point3<T>& origin) noexcept;
 
         /**
          * @brief Initialize @ref Transform4 from another @ref Transform4 of a different type.
@@ -109,7 +109,7 @@ namespace flcn
          *
          * @return A reference to the column vector.
          */
-        [[nodiscard]] constexpr Vec3<T>& operator[](std::size_t col) noexcept;
+        [[nodiscard]] constexpr CVec3<T>& operator[](std::size_t col) noexcept;
 
 
         /**
@@ -192,18 +192,18 @@ namespace flcn
          *            \end{bmatrix}
          *        \f$
          *
-         * @note Promotes the result to the wider type using @ref PromotedVec3<T, U>.
+         * @note Promotes the result to the wider type using @ref PromotedCVec3<T, U>.
          * @note Operation is restricted to numeric types via @ref StrictArithmetic.
          *
          * @tparam U Numeric type of the column vector. Must satisfy @ref StrictArithmetic.
          *
          * @param[in] vec The column vector to transform.
          *
-         * @return A new @ref Vec3 with applied linear transformations.
+         * @return A new @ref CVec3 with applied linear transformations.
          */
         template <StrictArithmetic U>
             requires StrictSignedness<T, U>
-        [[nodiscard]] constexpr PromotedVec3<T, U> operator*(const Vec3<U>& vec) const noexcept
+        [[nodiscard]] constexpr PromotedCVec3<T, U> operator*(const CVec3<U>& vec) const noexcept
             requires StrictArithmetic<T>;
 
 
@@ -418,7 +418,7 @@ namespace flcn
     Transform4(T, Args...) -> Transform4<T>;
 
     template <StrictArithmetic T>
-    Transform4(Vec3<T>, Vec3<T>, Vec3<T>, Point3<T>) -> Transform4<T>;
+    Transform4(CVec3<T>, CVec3<T>, CVec3<T>, Point3<T>) -> Transform4<T>;
 
 } // namespace flcn
 

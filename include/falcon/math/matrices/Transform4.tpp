@@ -31,8 +31,8 @@ namespace flcn
 
 
     template <StrictArithmetic T>
-    FALCON_INLINE constexpr Transform4<T>::Transform4(const Vec3<T>& firstAxis, const Vec3<T>& secondAxis,
-                                                   const Vec3<T>& thirdAxis, const Point3<T>& origin) noexcept
+    FALCON_INLINE constexpr Transform4<T>::Transform4(const CVec3<T>& firstAxis, const CVec3<T>& secondAxis,
+                                                   const CVec3<T>& thirdAxis, const Point3<T>& origin) noexcept
         : Mat4<T>{ firstAxis.x(), secondAxis.x(), thirdAxis.x(), origin.x(),
                    firstAxis.y(), secondAxis.y(), thirdAxis.y(), origin.y(),
                    firstAxis.z(), secondAxis.z(), thirdAxis.z(), origin.z(),
@@ -67,10 +67,10 @@ namespace flcn
      *************************************/
 
     template <StrictArithmetic T>
-    FALCON_INLINE constexpr Vec3<T>& Transform4<T>::operator[](std::size_t col) noexcept
+    FALCON_INLINE constexpr CVec3<T>& Transform4<T>::operator[](std::size_t col) noexcept
     {
         FALCON_ASSERT_MSG(col < COLUMNS, flcn::messages::assertion::MAT_OUT_OF_BOUNDS_ACCESS);
-        return *reinterpret_cast<Vec3<T>*>(&(this->_data[col]));
+        return *reinterpret_cast<CVec3<T>*>(&(this->_data[col]));
     }
 
 
@@ -84,7 +84,7 @@ namespace flcn
         }
         else
         {
-            return *reinterpret_cast<const Vec3<T>*>(&(this->_data[col]));
+            return *reinterpret_cast<const CVec3<T>*>(&(this->_data[col]));
         }
     }
 
@@ -122,12 +122,12 @@ namespace flcn
     template <StrictArithmetic T>
     template <StrictArithmetic U>
         requires StrictSignedness<T, U>
-    FALCON_INLINE constexpr PromotedVec3<T, U> Transform4<T>::operator*(const Vec3<U>& vec) const noexcept
+    FALCON_INLINE constexpr PromotedCVec3<T, U> Transform4<T>::operator*(const CVec3<U>& vec) const noexcept
         requires StrictArithmetic<T>
     {
-        // NOTE: The last column entry is ignored since we have an implied w entry for Vec3 of 0 (<x, y, z, 0>).
+        // NOTE: The last column entry is ignored since we have an implied w entry for CVec3 of 0 (<x, y, z, 0>).
         using R = std::common_type_t<T, U>;
-        return Vec3<R>{ static_cast<R>((*this)(0, 0) * vec.x() + (*this)(0, 1) * vec.y() + (*this)(0, 2) * vec.z()),
+        return CVec3<R>{ static_cast<R>((*this)(0, 0) * vec.x() + (*this)(0, 1) * vec.y() + (*this)(0, 2) * vec.z()),
                         static_cast<R>((*this)(1, 0) * vec.x() + (*this)(1, 1) * vec.y() + (*this)(1, 2) * vec.z()),
                         static_cast<R>((*this)(2, 0) * vec.x() + (*this)(2, 1) * vec.y() + (*this)(2, 2) * vec.z()) };
     }
@@ -213,10 +213,10 @@ namespace flcn
     {
         using R = Magnitude<T>;
 
-        auto a = static_cast<Vec3<R>>((*this)[0]);
-        auto b = static_cast<Vec3<R>>((*this)[1]);
-        auto c = static_cast<Vec3<R>>((*this)[2]);
-        auto d = static_cast<Vec3<R>>((*this)[3]);
+        auto a = static_cast<CVec3<R>>((*this)[0]);
+        auto b = static_cast<CVec3<R>>((*this)[1]);
+        auto c = static_cast<CVec3<R>>((*this)[2]);
+        auto d = static_cast<CVec3<R>>((*this)[3]);
 
         auto s = a.cross(b);
         auto t = c.cross(d);

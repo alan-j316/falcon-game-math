@@ -27,8 +27,8 @@ namespace
     namespace static_tests
     {
         constexpr flcn::Mat3x2 MAT(1, 2, 3, 4, 5, 6);
-        constexpr flcn::Vec3 VEC0(1, 3, 5);
-        constexpr flcn::Vec3 VEC1(2, 4, 6);
+        constexpr flcn::CVec3 VEC0(1, 3, 5);
+        constexpr flcn::CVec3 VEC1(2, 4, 6);
 
         /// @test Verify that matrix elements are accessible as (row, column) during at compile time.
         static_assert(MAT(0, 0) == 1);
@@ -74,8 +74,8 @@ TEST(Mat3x2AccessTests, AccessibleAsColumnVectors)
 {
     constexpr flcn::Mat3x2 mat(1.0f, 2.0f, 3.0f, 4.0f, 5.0f, 6.0f);
 
-    EXPECT_VEC_EQ(flcn::Vec3(1.0f, 3.0f, 5.0f), mat[0]);
-    EXPECT_VEC_EQ(flcn::Vec3(2.0f, 4.0f, 6.0f), mat[1]);
+    EXPECT_VEC_EQ(flcn::CVec3(1.0f, 3.0f, 5.0f), mat[0]);
+    EXPECT_VEC_EQ(flcn::CVec3(2.0f, 4.0f, 6.0f), mat[1]);
 }
 
 
@@ -106,8 +106,8 @@ TEST(Mat3x2MutationTests, ElementsCanBeMutatedUsingIndex)
 
 TEST(Mat3x2MutationTests, ColumnsCanBeMutatedUsingIndex)
 {
-    const flcn::Vec3 col0 = { 1.0f, 3.0f, 5.0f };
-    const flcn::Vec3 col1 = { 2.0f, 4.0f, 6.0f };
+    const flcn::CVec3 col0 = { 1.0f, 3.0f, 5.0f };
+    const flcn::CVec3 col1 = { 2.0f, 4.0f, 6.0f };
     flcn::Mat3x2<float> mat;
 
     mat[0] = col0;

@@ -39,9 +39,9 @@ namespace
 
         void SetUp() override
         {
-            _matA        = { flcn::Vec3<T>(1, 2, 3), flcn::Vec3<T>(4, 5, 6) };
-            _matB        = { flcn::Vec3<T>(5, 6, 1), flcn::Vec3<T>(7, 8, 5) };
-            _expectedSum = { flcn::Vec3<T>(6, 8, 4), flcn::Vec3<T>(11, 13, 11) };
+            _matA        = { flcn::CVec3<T>(1, 2, 3), flcn::CVec3<T>(4, 5, 6) };
+            _matB        = { flcn::CVec3<T>(5, 6, 1), flcn::CVec3<T>(7, 8, 5) };
+            _expectedSum = { flcn::CVec3<T>(6, 8, 4), flcn::CVec3<T>(11, 13, 11) };
         }
     };
     TYPED_TEST_SUITE(Mat3x2AdditionTests, SupportedArithmeticTypes);
@@ -85,10 +85,10 @@ TYPED_TEST(Mat3x2AdditionTests, PlusOperator_ReturnsMatrixSum)
 
 TEST(Mat3x2AdditionTests, PlusOperator_MixedType_PromotesType)
 {
-    const flcn::Mat3x2 mat1{ flcn::Vec3{ 1.0f, 2.0f, 3.0f }, flcn::Vec3{ -3.0f, -4.0f, 12.0f } };
+    const flcn::Mat3x2 mat1{ flcn::CVec3{ 1.0f, 2.0f, 3.0f }, flcn::CVec3{ -3.0f, -4.0f, 12.0f } };
     const flcn::Mat3x2 mat2{
-        flcn::Vec3{ 10.0, 2.0, 2.5 },
-        flcn::Vec3{ 3.0, 8.0, 3.5 },
+        flcn::CVec3{ 10.0, 2.0, 2.5 },
+        flcn::CVec3{ 3.0, 8.0, 3.5 },
     };
 
     [[maybe_unused]] const flcn::Mat3x2 sum = mat1 + mat2;
@@ -105,10 +105,10 @@ TYPED_TEST(Mat3x2AdditionTests, PlusEqualsOperator_ReturnsSameMatrixWithSum)
 
 TEST(Mat3x2AdditionTests, PlusEqualsOperator_MixedType_DoesNotPromoteType)
 {
-    flcn::Mat3x2 mat1{ flcn::Vec3{ 1.0f, 2.0f, 3.0f }, flcn::Vec3{ -3.0f, -4.0f, 12.0f } };
+    flcn::Mat3x2 mat1{ flcn::CVec3{ 1.0f, 2.0f, 3.0f }, flcn::CVec3{ -3.0f, -4.0f, 12.0f } };
     const flcn::Mat3x2 mat2{
-        flcn::Vec3{ 10.0, 2.0, 2.5 },
-        flcn::Vec3{ 3.0, 8.0, 3.5 },
+        flcn::CVec3{ 10.0, 2.0, 2.5 },
+        flcn::CVec3{ 3.0, 8.0, 3.5 },
     };
 
     mat1 += mat2;

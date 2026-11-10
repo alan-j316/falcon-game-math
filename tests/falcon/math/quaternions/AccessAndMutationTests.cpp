@@ -46,7 +46,7 @@ namespace
         static_assert(QUATERNION.s() == 4);
 
         /// @test Verify that quaternion's getVectorPart returns a valid 3D vector at compile time.
-        static_assert(QUATERNION.getVectorPart() == flcn::Vec3{ 1, 2, 3 });
+        static_assert(QUATERNION.getVectorPart() == flcn::CVec3{ 1, 2, 3 });
 
         /// @test Verify that quaternion's getScalarPart returns the fourth component of the vector at compile time.
         static_assert(QUATERNION.getScalarPart() == 4);

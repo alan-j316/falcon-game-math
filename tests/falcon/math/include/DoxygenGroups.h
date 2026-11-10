@@ -4,7 +4,7 @@
  * @author Alan Abraham P Kochumon
  * @date Created on: March 18, 2026
  *
- * @brief Doxygen groups for organizing FALCON Math test harness.
+ * @brief Doxygen groups for organizing Falcon Math test harness.
  *
  * @copyright Copyright (c) 2026 Alan Abraham P Kochumon
  */
@@ -12,7 +12,7 @@
 
 // clang-format off
 /**
- * @defgroup FALCONTestSuite Test Suite
+ * @defgroup FalconTestSuite Test Suite
  * @brief Master test suite for Falcon Game Math Library.
  * @{
  */
@@ -20,7 +20,7 @@
     /**
      * @defgroup MathTests Mathematics
      * @brief Test suite for mathematical components.
-     * @ingroup FALCONTestSuite
+     * @ingroup FalconTestSuite
      * @{
      */
 
@@ -32,7 +32,7 @@
          */
 
             /**
-             * @defgroup FALCON_CVec2_Tests Constexpr-Capable 2D Vector Tests
+             * @defgroup Falcon_CVec2_Tests Constexpr-Capable 2D Vector Tests
              * @brief Verification of 2D Euclidean vector operations.
              * @ingroup VectorTests
              * @{
@@ -61,7 +61,7 @@
              */
 
             /**
-              * @defgroup FALCON_Vec2_Tests Simd-Accelerated 2D Vector Tests
+              * @defgroup Falcon_Vec2_Tests Simd-Accelerated 2D Vector Tests
               * @brief Verification of 2D Euclidean vector operations(Simd-Accelerated).
               * @ingroup VectorTests
               * @{
@@ -92,38 +92,38 @@
 
 
             /**
-             * @defgroup FALCON_Vec3_Tests 3D Vector Tests
+             * @defgroup Falcon_CVec3_Tests 3D Vector Tests
              * @brief Verification of 3D Euclidean vector operations.
              * @ingroup VectorTests
              * @{
-             *   @defgroup T_Falcon_Vec3_Access Component Access and Mutation
-             *   @defgroup T_Falcon_Vec3_Alias Spatial Aliasing
-             *   @defgroup T_Falcon_Vec3_Const Vector Constants
-             *   @defgroup T_Falcon_Vec3_Arithmetic Arithmetic Operations(+, -, *, /)
-             *   @defgroup T_Falcon_Vec3_Bool_Bit Boolean Bitwise Operation
-             *   @defgroup T_Falcon_Vec3_Comp Vector Comparisons(>, >=, <, <=)
-             *   @defgroup T_Falcon_Vec3_Equality Component-wise and Masked Equality and Inequality
-             *   @defgroup T_Falcon_Vec3_Init Initialization
-             *   @defgroup T_Falcon_Vec3_Magnitude Scalar Length(Magnitude)
-             *   @defgroup T_Falcon_Vec3_Norm P-Norm (Length)
-             *   @defgroup T_Falcon_Vec3_Dist Vector Distance
-             *   @defgroup T_Falcon_Vec3_Normalize Vector Normalization
-             *   @defgroup T_Falcon_Vec3_Product Dot and Cross Product
-             *   @defgroup T_Falcon_Vec3_Proj Vector Projection
-             *   @defgroup T_Falcon_Vec3_Rej Vector Rejection
-             *   @defgroup T_Falcon_Vec3_String_Repr Formatted String Representation
-             *   @defgroup T_Falcon_Vec3_Type_Conv Conversion Constructor
-             *   @defgroup T_Falcon_Vec3_Negation Negation(-)
-             *   @defgroup T_Falcon_Vec3_Utils Vector Utilities
-             *   @defgroup T_Falcon_Vec3_Swizzle Vector Swizzling
-             *   @defgroup T_Falcon_Vec3_Ptr Internal Storage Access(Raw Pointer)
-             *   @defgroup T_Falcon_Vec3_Conv Constexpr Vec to SIMD Accelerated Vec conversion.
+             *   @defgroup T_Falcon_CVec3_Access Component Access and Mutation
+             *   @defgroup T_Falcon_CVec3_Alias Spatial Aliasing
+             *   @defgroup T_Falcon_CVec3_Const Vector Constants
+             *   @defgroup T_Falcon_CVec3_Arithmetic Arithmetic Operations(+, -, *, /)
+             *   @defgroup T_Falcon_CVec3_Bool_Bit Boolean Bitwise Operation
+             *   @defgroup T_Falcon_CVec3_Comp Vector Comparisons(>, >=, <, <=)
+             *   @defgroup T_Falcon_CVec3_Equality Component-wise and Masked Equality and Inequality
+             *   @defgroup T_Falcon_CVec3_Init Initialization
+             *   @defgroup T_Falcon_CVec3_Magnitude Scalar Length(Magnitude)
+             *   @defgroup T_Falcon_CVec3_Norm P-Norm (Length)
+             *   @defgroup T_Falcon_CVec3_Dist Vector Distance
+             *   @defgroup T_Falcon_CVec3_Normalize Vector Normalization
+             *   @defgroup T_Falcon_CVec3_Product Dot and Cross Product
+             *   @defgroup T_Falcon_CVec3_Proj Vector Projection
+             *   @defgroup T_Falcon_CVec3_Rej Vector Rejection
+             *   @defgroup T_Falcon_CVec3_String_Repr Formatted String Representation
+             *   @defgroup T_Falcon_CVec3_Type_Conv Conversion Constructor
+             *   @defgroup T_Falcon_CVec3_Negation Negation(-)
+             *   @defgroup T_Falcon_CVec3_Utils Vector Utilities
+             *   @defgroup T_Falcon_CVec3_Swizzle Vector Swizzling
+             *   @defgroup T_Falcon_CVec3_Ptr Internal Storage Access(Raw Pointer)
+             *   @defgroup T_Falcon_CVec3_Conv Constexpr Vec to SIMD Accelerated Vec conversion.
              * @}
              */
 
 
             /**
-             * @defgroup FALCON_Vec4_Tests 4D Vector Tests
+             * @defgroup Falcon_Vec4_Tests 4D Vector Tests
              * @brief Verification of 4D Euclidean vector operations.
              * @ingroup VectorTests
              * @{
@@ -153,7 +153,7 @@
              */
 
             /**
-             * @defgroup FALCON_Point3_Tests 3D Point Tests
+             * @defgroup Falcon_Point3_Tests 3D Point Tests
              * @brief Verification of 3D Point<x, y, z, w> operations.
              * @ingroup VectorTests
              * @{
@@ -174,7 +174,7 @@
          */
         
             /**
-             * @defgroup FALCON_Mat2x2_Tests 2x2 Matrix Test Suite
+             * @defgroup Falcon_Mat2x2_Tests 2x2 Matrix Test Suite
              * @brief Verification of 2x2 square matrix operations.
              * @ingroup MatrixTests
              * @{
@@ -203,7 +203,7 @@
              */
 
             /**
-             * @defgroup FALCON_Mat2x3_Tests 2x3 Matrix Test Suite
+             * @defgroup Falcon_Mat2x3_Tests 2x3 Matrix Test Suite
              * @brief Verification of 2x3 matrix operations.
              * @ingroup MatrixTests
              * @{
@@ -229,7 +229,7 @@
              */
 
             /**
-             * @defgroup FALCON_Mat2x4_Tests 2x4 Matrix Test Suite
+             * @defgroup Falcon_Mat2x4_Tests 2x4 Matrix Test Suite
              * @brief Verification of 2x4 matrix operations.
              * @ingroup MatrixTests
              * @{
@@ -256,7 +256,7 @@
 
 
             /**
-             * @defgroup FALCON_Mat3x2_Tests 3x2 Matrix Test Suite
+             * @defgroup Falcon_Mat3x2_Tests 3x2 Matrix Test Suite
              * @brief Verification of 3x2 matrix operations.
              * @ingroup MatrixTests
              * @{
@@ -282,7 +282,7 @@
              */
 
             /**
-             * @defgroup FALCON_Mat3x3_Tests 3x3 Matrix Test Suite
+             * @defgroup Falcon_Mat3x3_Tests 3x3 Matrix Test Suite
              * @brief Verification of 3x3 square matrix operations.
              * @ingroup MatrixTests
              * @{
@@ -311,7 +311,7 @@
              */
 
             /**
-             * @defgroup FALCON_Mat3x4_Tests 3x4 Matrix Test Suite
+             * @defgroup Falcon_Mat3x4_Tests 3x4 Matrix Test Suite
              * @brief Verification of 3x4 matrix operations.
              * @ingroup MatrixTests
              * @{
@@ -342,7 +342,7 @@
 
 
             /**
-             * @defgroup FALCON_Mat4x2_Tests 4x2 Matrix Test Suite
+             * @defgroup Falcon_Mat4x2_Tests 4x2 Matrix Test Suite
              * @brief Verification of 4x2 matrix operations.
              * @ingroup MatrixTests
              * @{
@@ -373,7 +373,7 @@
 
 
             /**
-             * @defgroup FALCON_Mat4x3_Tests 4x3 Matrix Test Suite
+             * @defgroup Falcon_Mat4x3_Tests 4x3 Matrix Test Suite
              * @brief Verification of 4x3  matrix operations.
              * @ingroup MatrixTests
              * @{
@@ -404,7 +404,7 @@
 
 
             /**
-             * @defgroup FALCON_Mat4x4_Tests 4x4 Matrix Test Suite
+             * @defgroup Falcon_Mat4x4_Tests 4x4 Matrix Test Suite
              * @brief Verification of 4x4 square matrix operations.
              * @ingroup MatrixTests
              * @{
@@ -433,7 +433,7 @@
              */
 
             /**
-             * @defgroup FALCON_Transform4_Tests 4D Transformation Matrix Tests
+             * @defgroup Falcon_Transform4_Tests 4D Transformation Matrix Tests
              * @brief Verification of 4D transformation matrix operations.
              * @ingroup MatrixTests
              * @{
@@ -463,7 +463,7 @@
         /** @} */ // End of MatrixTests
 
         /**
-         * @defgroup FALCON_Quaternion_Tests Quaternion Tests
+         * @defgroup Falcon_Quaternion_Tests Quaternion Tests
          * @brief Verification of quaternion operations.
          * @ingroup VectorTests
          * @{
@@ -485,8 +485,8 @@
          */
 
         /**
-         * @defgroup FALCON_Common_Tests Common
-         * @brief Verify general function operations exposed by FALCON library.
+         * @defgroup Falcon_Common_Tests Common
+         * @brief Verify general function operations exposed by Falcon library.
          * @ingroup MathTests
          * @{
          *   @defgroup T_Op_Status Operation Status
@@ -496,7 +496,7 @@
 
         /**
         * @defgroup T_Falcon_Header_Alias Header Alias
-        * @brief Verify FALCON Header Alias point to correct structs and functions.
+        * @brief Verify Falcon Header Alias point to correct structs and functions.
         * @ingroup MathTests
         */
 
@@ -505,7 +505,7 @@
     /**
      * @defgroup T_Utils Test Utilities
      * @brief Diagnostic and validation utilities for testing.
-     * @ingroup FALCONTestSuite
+     * @ingroup FalconTestSuite
      * @{
      *   @defgroup Vector_Utils Vector Validation Utilities
      *   @defgroup Matrix_Utils Matrix Validation Utilities
@@ -529,5 +529,5 @@
      * @brief Validates logic of all fgm utility functions.
      */
 
-/** @} */ // End of FALCONTestSuite
+/** @} */ // End of FalconTestSuite
 // clang-format on

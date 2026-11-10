@@ -32,12 +32,14 @@ namespace flcn
 
     // TODO: Update (Vec2, T) and (T, Vec2) inits to use direct register loads instead of access and loads
     template <Arithmetic T>
-    FALCON_INLINE constexpr Vec3<T>::Vec3(const Vec2<T> vec, T v) noexcept: _data{ vec.template get<0>(), vec.template get<1>(), v, T(0) }
+    FALCON_INLINE constexpr Vec3<T>::Vec3(const Vec2<T> vec, T v) noexcept
+        : _data{ vec.template get<0>(), vec.template get<1>(), v, T(0) }
     {}
 
 
     template <Arithmetic T>
-    FALCON_INLINE constexpr Vec3<T>::Vec3(T v, const Vec2<T> vec) noexcept: _data{ v, vec.template get<0>(), vec.template get<1>(), T(0) }
+    FALCON_INLINE constexpr Vec3<T>::Vec3(T v, const Vec2<T> vec) noexcept
+        : _data{ v, vec.template get<0>(), vec.template get<1>(), T(0) }
     {}
 
     // TODO: Add
@@ -266,7 +268,7 @@ namespace flcn
     FALCON_INLINE constexpr void Vec3<T>::store(T* pBuffer) const noexcept
     {
         // TODO: Add death test for Vec3 and Vec2 unaligned address with aligned store
-        constexpr size_t alignment = sizeof(T) > 4 ? 32 : 16;
+        [[maybe_unused]] constexpr size_t alignment = sizeof(T) > 4 ? 32 : 16;
         FALCON_ASSERT_MSG(reinterpret_cast<uintptr_t>(pBuffer) % alignment == 0,
                           "[Vec3/Store]: pBuffer must be aligned to 32(double, uint64_t, int64_t) or 16 bytes (for "
                           "other types). For unaligned store, use storeUnaligned");

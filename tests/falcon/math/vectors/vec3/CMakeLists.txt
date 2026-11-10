@@ -19,7 +19,7 @@ target_sources(
         #        RejectionTests.cpp
         #        StringRepresentationTests.cpp
         SwizzlingTests.cpp
-        #        TypeConversionTests.cpp
+        TypeConversionTests.cpp
         #        UtilityTests.cpp
 
         Vec3TestSetup.h

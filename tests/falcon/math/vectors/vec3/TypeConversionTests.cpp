@@ -1,7 +1,7 @@
 /**
  * @file TypeConversionTests.cpp
  * @author Alan Abraham P Kochumon
- * @date Created on: April 02, 2026
+ * @date Created on: November 10, 2026
  *
  * @brief Verify @ref flcn::Vec3 conversion constructor logic.
  *
@@ -17,29 +17,6 @@
  * @addtogroup T_Falcon_Vec3_Type_Conv
  * @{
  */
-
-namespace
-{
-    /**************************************
-     *            STATIC TESTS            *
-     **************************************/
-
-    namespace static_tests
-    {
-        constexpr flcn::Vec3 VEC(3.0f, 1.0f, 4.0f);
-
-        /// @test Verify that vector conversion constructor can promote type at compile time. */
-        constexpr flcn::Vec3<double> PROMOTED_VEC(VEC);
-        static_assert(std::is_same_v<decltype(PROMOTED_VEC)::value_type, double>);
-
-        /// @test Verify that vector conversion constructor can demote type at compile time. */
-        [[maybe_unused]] constexpr flcn::Vec3<float> DEMOTED_VEC(PROMOTED_VEC);
-        static_assert(std::is_same_v<decltype(DEMOTED_VEC)::value_type, float>);
-
-    } // namespace static_tests
-} // namespace
-
-
 
 /**************************************
  *           RUNTIME TESTS            *

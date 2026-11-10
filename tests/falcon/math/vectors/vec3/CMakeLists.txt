@@ -7,7 +7,7 @@ target_sources(
         ArithmeticOperationTests.cpp
         #        BooleanBitOperationTests.cpp
         ComparisonTests.cpp
-        #        ConstantsTests.cpp
+        ConstantsTests.cpp
         #        DistanceTests.cpp
         EqualityTests.cpp
         InitializationTests.cpp

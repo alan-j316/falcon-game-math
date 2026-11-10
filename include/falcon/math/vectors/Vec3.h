@@ -846,7 +846,7 @@ namespace flcn
 
         /** @} */
 
-// TODO: add bitwise to all operators
+        // TODO: add bitwise to all operators
         //
         //         /**
         //          * @addtogroup Falcon_Vec3_Bitwise
@@ -2428,152 +2428,151 @@ namespace flcn
         //
         //         /** @} */
         //
-        //         /**
-        //          * @addtogroup Falcon_Vec3_Const
-        //          * @{
-        //          */
-        //
-        //         /*************************************
-        //          *                                   *
-        //          *            CONSTANTS              *
-        //          *                                   *
-        //          *************************************/
-        //
-        //         // NOLINTBEGIN
-        //
-        //         /**
-        //          * @brief A 3D vector with all components set to one (1, 1, 1).
-        //          */
-        //         static constexpr Vec3 one()
-        //             requires StrictArithmetic<T>
-        //         { return Vec3{ T(1), T(1), T(1) }; }
-        //
-        //
-        //         /**
-        //          * @brief A 3D vector with all components set to zero (0, 0, 0).
-        //          */
-        //         static constexpr Vec3 zero()
-        //             requires StrictArithmetic<T>
-        //         { return Vec3{ T(0), T(0), T(0) }; }
-        //
-        //
-        //         /**
-        //          * @brief A 3D vector with all components set to positive infinity.
-        //          *
-        //          * @note Constrained to floating point types.
-        //          */
-        //         static constexpr Vec3 inf()
-        //             requires std::floating_point<T>
-        //         { return Vec3{ T(constants::INFINITY_D), T(constants::INFINITY_D), T(constants::INFINITY_D) }; }
-        //
-        //
-        //         /**
-        //          * @brief A 3D vector with all components set to negative infinity.
-        //          *
-        //          * @note Constrained to floating point types.
-        //          */
-        //         static constexpr Vec3 infNeg()
-        //             requires std::floating_point<T>
-        //         { return Vec3{ T(-constants::INFINITY_D), T(-constants::INFINITY_D), T(-constants::INFINITY_D) }; }
-        //
-        //
-        //         /**
-        //          * @brief A 3D vector with all components set to Not-A-Number (NaN).
-        //          *
-        //          * @note Constrained to floating point types.
-        //          */
-        //         static constexpr Vec3 qnan()
-        //             requires std::floating_point<T>
-        //         { return Vec3{ T(constants::NaN_D), T(constants::NaN_D), T(constants::NaN_D) }; }
-        //
-        //
-        //         /**
-        //          * @brief A 3D unit vector aligned with the positive X-axis (1, 0, 0).
-        //          *
-        //          * @note Constrained to signed types.
-        //          */
-        //         static constexpr Vec3 right()
-        //             requires std::is_signed_v<T>
-        //         { return Vec3{ T(1), T(0), T(0) }; }
-        //
-        //
-        //         /**
-        //          * @brief A 3D unit vector aligned with the negative X-axis (-1, 0, 0).
-        //          *
-        //          * @note Constrained to signed types.
-        //          */
-        //         static constexpr Vec3 left()
-        //             requires std::is_signed_v<T>
-        //         { return Vec3{ T(-1), T(0), T(0) }; }
-        //
-        //
-        //         /**
-        //          * @brief A 3D unit vector aligned with the positive Y-axis (0, 1, 0).
-        //          *
-        //          * @note Constrained to signed types.
-        //          */
-        //         static constexpr Vec3 up()
-        //             requires std::is_signed_v<T>
-        //         { return Vec3{ T(0), T(1), T(0) }; }
-        //
-        //
-        //         /**
-        //          * @brief A 3D unit vector aligned with the negative Y-axis (0, -1, 0).
-        //          *
-        //          * @note Constrained to signed types.
-        //          */
-        //         static constexpr Vec3 down()
-        //             requires std::is_signed_v<T>
-        //         { return Vec3{ T(0), T(-1), T(0) }; }
-        //
-        //
-        // #ifdef FALCON_LEFT_HANDED
-        //         /**
-        //          * @brief A 3D unit vector aligned with the positive Z-axis (0, 0, 1).
-        //          *
-        //          * @note Left Handed Coordinate System.
-        //          * @note Constrained to signed types.
-        //          */
-        //         static constexpr Vec3 forward()
-        //             requires std::is_signed_v<T>
-        //         { return Vec3{ T(0), T(0), T(1) }; }
-        //
-        //
-        //         /**
-        //          * @brief A 3D unit vector aligned with the negative Z-axis (0, 0, -1).
-        //          *
-        //          * @note Left Handed Coordinate System.
-        //          * @note Constrained to signed types.
-        //          */
-        //         static constexpr Vec3 backward()
-        //             requires std::is_signed_v<T>
-        //         { return Vec3{ T(0), T(0), T(-1) }; }
-        // #else
-        //         /**
-        //          * @brief A 3D unit vector aligned with the negative Z-axis (0, 0, -1).
-        //          *
-        //          * @note Right Handed Coordinate System.
-        //          * @note Constrained to signed types.
-        //          */
-        //         static constexpr Vec3 forward()
-        //             requires std::is_signed_v<T>
-        //         { return Vec3{ T(0), T(0), T(-1) }; }
-        //
-        //
-        //         /**
-        //          * @brief A 3D unit vector aligned with the positive Z-axis (0, 0, 1).
-        //          *
-        //          * @note Right Handed Coordinate System
-        //          * @note Constrained to signed types.
-        //          */
-        //         static constexpr Vec3 backward()
-        //             requires std::is_signed_v<T>
-        //         { return Vec3{ T(0), T(0), T(1) }; }
-        //
-        // #endif
-        //
-        //         // NOLINTEND
-        //         /** @} */
+
+
+        /**
+         * @addtogroup Falcon_Vec3_Const
+         * @{
+         */
+
+        /// +---------------------------------------------------------------------------------------+
+        /// |                                CONSTANTS                                              |
+        /// +---------------------------------------------------------------------------------------+
+        // NOLINTBEGIN
+
+        /**
+         * @brief A 3D vector with all components set to one (1, 1, 1).
+         */
+        static constexpr Vec3 one()
+            requires StrictArithmetic<T>
+        { return Vec3{ T(1), T(1), T(1) }; }
+
+
+        /**
+         * @brief A 3D vector with all components set to zero (0, 0, 0).
+         */
+        static constexpr Vec3 zero()
+            requires StrictArithmetic<T>
+        { return Vec3{ T(0), T(0), T(0) }; }
+
+
+        /**
+         * @brief A 3D vector with all components set to positive infinity.
+         *
+         * @note Constrained to floating point types.
+         */
+        static constexpr Vec3 inf()
+            requires std::floating_point<T>
+        { return Vec3{ T(constants::INFINITY_D), T(constants::INFINITY_D), T(constants::INFINITY_D) }; }
+
+
+        /**
+         * @brief A 3D vector with all components set to negative infinity.
+         *
+         * @note Constrained to floating point types.
+         */
+        static constexpr Vec3 infNeg()
+            requires std::floating_point<T>
+        { return Vec3{ T(-constants::INFINITY_D), T(-constants::INFINITY_D), T(-constants::INFINITY_D) }; }
+
+
+        /**
+         * @brief A 3D vector with all components set to Not-A-Number (NaN).
+         *
+         * @note Constrained to floating point types.
+         */
+        static constexpr Vec3 qnan()
+            requires std::floating_point<T>
+        { return Vec3{ T(constants::NaN_D), T(constants::NaN_D), T(constants::NaN_D) }; }
+
+
+        /**
+         * @brief A 3D unit vector aligned with the positive X-axis (1, 0, 0).
+         *
+         * @note Constrained to signed types.
+         */
+        static constexpr Vec3 right()
+            requires std::is_signed_v<T>
+        { return Vec3{ T(1), T(0), T(0) }; }
+
+
+        /**
+         * @brief A 3D unit vector aligned with the negative X-axis (-1, 0, 0).
+         *
+         * @note Constrained to signed types.
+         */
+        static constexpr Vec3 left()
+            requires std::is_signed_v<T>
+        { return Vec3{ T(-1), T(0), T(0) }; }
+
+
+        /**
+         * @brief A 3D unit vector aligned with the positive Y-axis (0, 1, 0).
+         *
+         * @note Constrained to signed types.
+         */
+        static constexpr Vec3 up()
+            requires std::is_signed_v<T>
+        { return Vec3{ T(0), T(1), T(0) }; }
+
+
+        /**
+         * @brief A 3D unit vector aligned with the negative Y-axis (0, -1, 0).
+         *
+         * @note Constrained to signed types.
+         */
+        static constexpr Vec3 down()
+            requires std::is_signed_v<T>
+        { return Vec3{ T(0), T(-1), T(0) }; }
+
+
+#ifdef FALCON_LEFT_HANDED
+        /**
+         * @brief A 3D unit vector aligned with the positive Z-axis (0, 0, 1).
+         *
+         * @note Left Handed Coordinate System.
+         * @note Constrained to signed types.
+         */
+        static constexpr Vec3 forward()
+            requires std::is_signed_v<T>
+        { return Vec3{ T(0), T(0), T(1) }; }
+
+
+        /**
+         * @brief A 3D unit vector aligned with the negative Z-axis (0, 0, -1).
+         *
+         * @note Left Handed Coordinate System.
+         * @note Constrained to signed types.
+         */
+        static constexpr Vec3 backward()
+            requires std::is_signed_v<T>
+        { return Vec3{ T(0), T(0), T(-1) }; }
+#else
+        /**
+         * @brief A 3D unit vector aligned with the negative Z-axis (0, 0, -1).
+         *
+         * @note Right Handed Coordinate System.
+         * @note Constrained to signed types.
+         */
+        static constexpr Vec3 forward()
+            requires std::is_signed_v<T>
+        { return Vec3{ T(0), T(0), T(-1) }; }
+
+
+        /**
+         * @brief A 3D unit vector aligned with the positive Z-axis (0, 0, 1).
+         *
+         * @note Right Handed Coordinate System
+         * @note Constrained to signed types.
+         */
+        static constexpr Vec3 backward()
+            requires std::is_signed_v<T>
+        { return Vec3{ T(0), T(0), T(1) }; }
+
+#endif
+
+        // NOLINTEND
+        /** @} */
 
     private:
         internal::Vec3SimdStore<T>::Type _data;

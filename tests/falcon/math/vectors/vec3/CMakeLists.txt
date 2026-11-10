@@ -3,7 +3,7 @@ add_library(Vec3Tests OBJECT)
 target_sources(
         Vec3Tests PRIVATE
         AccessAndMutationTests.cpp
-        #        AliasTests.cpp
+                AliasTests.cpp
         #        ArithmeticOperationTests.cpp
         #        BooleanBitOperationTests.cpp
         #        ComparisonTests.cpp

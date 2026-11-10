@@ -2633,27 +2633,25 @@ namespace flcn
     //         requires StrictArithmetic<T>;
     //
     //     /** @} */
-    //
-    //
-    //     /**
-    //      * @addtogroup Falcon_Vec3_Alias
-    //      * @{
-    //      */
-    //
-    //     /*************************************
-    //      *                                   *
-    //      *             ALIASES               *
-    //      *                                   *
-    //      *************************************/
-    //
-    //     using Vec3B   = Vec3<int8_t>;   ///< Signed Byte (8-bit) vector
-    //     using Vec3UB  = Vec3<uint8_t>;  ///< Unsigned Byte (8-bit) vector
-    //     using Vec3I   = Vec3<int32_t>;  ///< Signed Int (32-bit) vector
-    //     using Vec3U   = Vec3<uint32_t>; ///< Unsigned Int (32-bit) vector
-    //     using Vec3F   = Vec3<float>;    ///< Single Precision Floating Point (32-bit) vector
-    //     using Vec3LL  = Vec3<int64_t>;  ///< Signed Long Long (64-bit) vector
-    //     using Vec3D   = Vec3<double>;   ///< Double Precision Floating Point (64-bit) vector
-    //     using Vec3ULL = Vec3<uint64_t>; ///< Unsigned Long Long (64-bit) vector
+
+
+    /**
+     * @addtogroup Falcon_Vec3_Alias
+     * @{
+     */
+
+    /*************************************
+     *             ALIASES               *
+     *************************************/
+
+    using Vec3B   = Vec3<int8_t>;   ///< Signed Byte (8-bit) vector
+    using Vec3UB  = Vec3<uint8_t>;  ///< Unsigned Byte (8-bit) vector
+    using Vec3I   = Vec3<int32_t>;  ///< Signed Int (32-bit) vector
+    using Vec3U   = Vec3<uint32_t>; ///< Unsigned Int (32-bit) vector
+    using Vec3F   = Vec3<float>;    ///< Single Precision Floating Point (32-bit) vector
+    using Vec3LL  = Vec3<int64_t>;  ///< Signed Long Long (64-bit) vector
+    using Vec3D   = Vec3<double>;   ///< Double Precision Floating Point (64-bit) vector
+    using Vec3ULL = Vec3<uint64_t>; ///< Unsigned Long Long (64-bit) vector
 
     /** @} */
 

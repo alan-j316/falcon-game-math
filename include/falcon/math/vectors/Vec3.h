@@ -1030,139 +1030,139 @@ namespace flcn
         constexpr Vec3& operator*=(S scalar) noexcept
             requires StrictArithmetic<T>;
 
+/**
+         * @brief Compute the component-wise division of this vector by @p scalar and return a new vector.
+         *
+         * @note Operation is restricted to numeric types via @ref StrictArithmetic.
+         * @note Performs assertion for division by zero in **Debug mode**.
+         *
+         * @warning The scalar value will be cast to the numeric type of the vector.
+         *
+         * @tparam S Numeric type of the scalar. Must satisfy @ref StrictArithmetic.
+         *
+         * @param[in] scalar The value to scale by.
+         *
+         * @return A new @ref Vec3 scaled by @p scalar.
+         */
+        template <StrictArithmetic S>
+        [[nodiscard]] constexpr Vec3 operator/(S scalar) const noexcept
+            requires StrictArithmetic<T>;
 
-        //         /**
-        //          * @brief Compute the component-wise division of this vector by @p scalar and return a new vector.
-        //          *
-        //          * @note Promotes the result to the wider type using @ref PromotedVec3<T, S>.
-        //          * @note Operation is restricted to numeric types via @ref StrictArithmetic.
-        //          * @note Performs assertion for division by zero in **Debug mode**.
-        //          *
-        //          * @tparam S Numeric type of the scalar. Must satisfy @ref StrictArithmetic.
-        //          *
-        //          * @param[in] scalar The value to scale by.
-        //          *
-        //          * @return A new @ref Vec3 scaled by @p scalar.
-        //          */
-        //         template <StrictArithmetic S>
-        //         [[nodiscard]] constexpr PromotedVec3<T, S> operator/(S scalar) const noexcept
-        //             requires StrictArithmetic<T>;
+
+        /**
+         * @brief Compute the component-wise division of this vector by @p scalar in-place.
+         *
+         * @note Operation is restricted to numeric types via @ref StrictArithmetic.
+         * @note Performs assertion for division by zero in **Debug mode**.
+         *
+         * @warning The scalar value will be cast to the numeric type of the vector.
+         *
+         * @tparam S Numeric type of the scalar. Must satisfy @ref StrictArithmetic.
+         *
+         * @param[in] scalar The value to scale by.
+         *
+         * @return A reference to this vector (*this).
+         */
+        template <StrictArithmetic S>
+        constexpr Vec3& operator/=(S scalar) noexcept
+            requires StrictArithmetic<T>;
+
+
+        // /**
+        //  * @brief Compute the component-wise division of this vector by @p scalar and return a new vector.
+        //  *
+        //  * @note If @p scalar is zero (or below the epsilon threshold) or this vector contains NaN
+        //  *       components, returns a zero vector.
+        //  * @note Operation is restricted to numeric types via @ref flcn::StrictArithmetic.
+        //  *
+        //  * @warning The scalar value will be cast to the numeric type of the vector.
+        //  *
+        //  * @tparam S Numeric type of the scalar. Must satisfy @ref flcn::StrictArithmetic.
+        //  *
+        //  * @param[in] scalar The value to divide the vector components by.
+        //  *
+        //  * @return A new @ref Vec3 resulting from the division or a zero-vector if the @p scalar is below the
+        //  *         epsilon threshold or if either of the vectors contains NaN(Not-a-Number) component(s).
+        //  */
+        // template <StrictArithmetic S>
+        // [[nodiscard]] constexpr Vec3 safeDiv(S scalar) const noexcept
+        //     requires StrictArithmetic<T>;
         //
         //
-        //         /**
-        //          * @brief Compute the component-wise division of this vector by @p scalar in-place.
-        //          *
-        //          * @note Operation is restricted to numeric types via @ref StrictArithmetic.
-        //          * @note Performs assertion for division by zero in **Debug mode**.
-        //          *
-        //          * @tparam S Numeric type of the scalar. Must satisfy @ref StrictArithmetic.
-        //          *
-        //          * @param[in] scalar The value to scale by.
-        //          *
-        //          * @return A reference to this vector (*this).
-        //          */
-        //         template <StrictArithmetic S>
-        //         constexpr Vec3& operator/=(S scalar) noexcept
-        //             requires StrictArithmetic<T>;
+        // /**
+        //  * @brief Compute the component-wise division of @p Vec by @p scalar and return a new vector.
+        //  *
+        //  * @note If @p scalar is zero (or below the epsilon threshold) or this vector contains NaN
+        //  *       components, returns a zero vector.
+        //  * @note Operation is restricted to numeric types via @ref flcn::StrictArithmetic.
+        //  *
+        //  * @warning The scalar value will be cast to the numeric type of the vector.
+        //  *
+        //  * @tparam S Numeric type of the scalar. Must satisfy @ref flcn::StrictArithmetic.
+        //  *
+        //  * @param[in] vec The vector to divide.
+        //  * @param[in] scalar The value to divide the vector components by.
+        //  *
+        //  * @return A new @ref Vec3 resulting from the division or a zero-vector if the @p scalar is below the
+        //  *         epsilon threshold or if either of the vectors contains NaN(Not-a-Number) component(s).
+        //  */
+        // template <StrictArithmetic S>
+        // [[nodiscard]] static constexpr Vec3 safeDiv(const Vec3& vec, S scalar) noexcept
+        //     requires StrictArithmetic<T>;
         //
         //
-        //         /**
-        //          * @brief Compute the component-wise division of this vector by @p scalar and return a new vector.
-        //          *
-        //          * @note If @p scalar is zero (or below the epsilon threshold) or this vector contains NaN
-        //          components,
-        //          *       returns a zero vector.
-        //          * @note Promotes the result to the wider type using @ref PromotedVec3<T, S>.
-        //          * @note Operation is restricted to numeric types via @ref flcn::StrictArithmetic.
-        //          *
-        //          * @tparam S Numeric type of the scalar. Must satisfy @ref flcn::StrictArithmetic.
-        //          *
-        //          * @param[in] scalar The value to divide the vector components by.
-        //          *
-        //          * @return A new @ref Vec3 resulting from the division or a zero-vector if the @p scalar is below the
-        //          *         epsilon threshold or if either of the vectors has NaN(Not-a-Number) component(s).
-        //          */
-        //         template <StrictArithmetic S>
-        //         [[nodiscard]] constexpr PromotedVec3<T, S> safeDiv(S scalar) const noexcept
-        //             requires StrictArithmetic<T>;
+        // /**
+        //  * @brief Compute the component-wise division of this vector by @p scalar, return a new vector,
+        //  *        and updates @p status to reflect the result of the operation.
+        //  *
+        //  * @note If @p scalar is zero (or below the epsilon threshold) or this vector contains NaN
+        //  *       components, returns a zero vector.
+        //  * @note Operation is restricted to numeric types via @ref flcn::StrictArithmetic.
+        //  * @note In the event of multiple failure conditions, data corruption (NaN) takes precedence over
+        //  *       mathematical invalidity (Division by Zero) when reporting status.
+        //  *
+        //  * @warning The scalar value will be cast to the numeric type of the vector.
+        //  *
+        //  * @tparam S Numeric type of the scalar. Must satisfy @ref flcn::StrictArithmetic.
+        //  *
+        //  * @param[in] scalar  The value to divide the vector components by.
+        //  * @param[out] status The status flag to store the status of the current operation result.
+        //  *                    For details on status codes see @ref OperationStatus.
+        //  *
+        //  * @return A new @ref Vec3 resulting from the division or a zero-vector if the @p scalar is below the
+        //  *         epsilon threshold or if either of the vectors+ has NaN(Not-a-Number) component(s).
+        //  */
+        // template <StrictArithmetic S>
+        // [[nodiscard]] constexpr Vec3 tryDiv(S scalar, OperationStatus& status) const noexcept
+        //     requires StrictArithmetic<T>;
         //
         //
-        //         /**
-        //          * @brief Compute the component-wise division of @p Vec by @p scalar and return a new vector.
-        //          *
-        //          * @note If @p scalar is zero (or below the epsilon threshold) or this vector contains NaN
-        //          components,
-        //          *       returns a zero vector.
-        //          * @note Promotes the result to the wider type using @ref PromotedVec3<T, S>.
-        //          * @note Operation is restricted to numeric types via @ref flcn::StrictArithmetic.
-        //          *
-        //          * @tparam S Numeric type of the scalar. Must satisfy @ref flcn::StrictArithmetic.
-        //          *
-        //          * @param[in] vec The vector to divide.
-        //          * @param[in] scalar The value to divide the vector components by.
-        //          *
-        //          * @return A new @ref Vec3 resulting from the division or a zero-vector if the @p scalar is below the
-        //          *         epsilon threshold or if either of the vectors has NaN(Not-a-Number) component(s).
-        //          */
-        //         template <StrictArithmetic S>
-        //         [[nodiscard]] static constexpr PromotedVec3<T, S> safeDiv(const Vec3& vec, S scalar) noexcept
-        //             requires StrictArithmetic<T>;
-        //
-        //
-        //         /**
-        //          * @brief Compute the component-wise division of this vector by @p scalar, return a new vector,
-        //          *        and updates @p status to reflect the result of the operation.
-        //          *
-        //          * @note If @p scalar is zero (or below the epsilon threshold) or this vector contains NaN
-        //          components,
-        //          *       returns a zero vector.
-        //          * @note Promotes the result to the wider type using @ref PromotedVec3<T, S>.
-        //          * @note Operation is restricted to numeric types via @ref flcn::StrictArithmetic.
-        //          * @note In the event of multiple failure conditions, data corruption (NaN) takes precedence over
-        //          mathematical
-        //          *       invalidity (Division by Zero) when reporting status.
-        //          *
-        //          * @tparam S Numeric type of the scalar. Must satisfy @ref flcn::StrictArithmetic.
-        //          *
-        //          * @param[in] scalar  The value to divide the vector components by.
-        //          * @param[out] status The status flag to store the status of the current operation result.
-        //          *                    For details on status codes see @ref OperationStatus.
-        //          *
-        //          * @return A new @ref Vec3 resulting from the division or a zero-vector if the @p scalar is below the
-        //          *         epsilon threshold or if either of the vectors+ has NaN(Not-a-Number) component(s).
-        //          */
-        //         template <StrictArithmetic S>
-        //         [[nodiscard]] constexpr PromotedVec3<T, S> tryDiv(S scalar, OperationStatus& status) const noexcept
-        //             requires StrictArithmetic<T>;
-        //
-        //
-        //         /**
-        //          * @brief Compute the component-wise division of @p Vec by @p scalar, return a new vector,
-        //          *        and updates @p status to reflect the result of the operation.
-        //          *
-        //          * @note If @p scalar is zero (or below the epsilon threshold) or this vector contains NaN
-        //          components,
-        //          *       returns a zero vector.
-        //          * @note Promotes the result to the wider type using @ref PromotedVec3<T, S>.
-        //          * @note Operation is restricted to numeric types via @ref flcn::StrictArithmetic.
-        //          * @note In the event of multiple failure conditions, data corruption (NaN) takes precedence over
-        //          mathematical
-        //          *       invalidity (Division by Zero) when reporting status.
-        //          *
-        //          * @tparam S Numeric type of the scalar. Must satisfy @ref flcn::StrictArithmetic.
-        //          *
-        //          * @param[in] vec     The vector to divide.
-        //          * @param[in] scalar  The value to divide the vector components by.
-        //          * @param[out] status The status flag to store the status of the current operation result.
-        //          *                    For details on status codes see @ref OperationStatus.
-        //          *
-        //          * @return A new @ref Vec3 resulting from the division or a zero-vector if the @p scalar is below the
-        //          *         epsilon threshold or if either of the vectors+ has NaN(Not-a-Number) component(s).
-        //          */
-        //         template <StrictArithmetic S>
-        //         [[nodiscard]] static constexpr PromotedVec3<T, S> tryDiv(const Vec3& vec, S scalar,
-        //                                                                  OperationStatus& status) noexcept
-        //             requires StrictArithmetic<T>;
+        // /**
+        //  * @brief Compute the component-wise division of @p Vec by @p scalar, return a new vector,
+        //  *        and updates @p status to reflect the result of the operation.
+        //  *
+        //  * @note If @p scalar is zero (or below the epsilon threshold) or this vector contains NaN
+        //  *       components, returns a zero vector.
+        //  * @note Operation is restricted to numeric types via @ref flcn::StrictArithmetic.
+        //  * @note In the event of multiple failure conditions, data corruption (NaN) takes precedence over
+        //  *       mathematical invalidity (Division by Zero) when reporting status.
+        //  *
+        //  * @warning The scalar value will be cast to the numeric type of the vector.
+        //  *
+        //  * @tparam S Numeric type of the scalar. Must satisfy @ref flcn::StrictArithmetic.
+        //  *
+        //  * @param[in] vec     The vector to divide.
+        //  * @param[in] scalar  The value to divide the vector components by.
+        //  * @param[out] status The status flag to store the status of the current operation result.
+        //  *                    For details on status codes see @ref OperationStatus.
+        //  *
+        //  * @return A new @ref Vec3 resulting from the division or a zero-vector if the @p scalar is below the
+        //  *         epsilon threshold or if either of the vectors+ has NaN(Not-a-Number) component(s).
+        //  */
+        // template <StrictArithmetic S>
+        // [[nodiscard]] static constexpr Vec3 tryDiv(const Vec3& vec, S scalar, OperationStatus& status) noexcept
+        //     requires StrictArithmetic<T>;
+
 
         /** @} */
 

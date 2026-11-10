@@ -287,70 +287,70 @@ TYPED_TEST(Vec3ScalarMultiplicationTests, VectorTimesEqualScalarReturnsTheSameVe
     }
 }
 
-//
-//
-// /**************************************
-//  *        SCALAR DIVISION TESTS       *
-//  **************************************/
-//
-// #ifndef ENABLE_DEBUG_TESTS
-// /**
-//  * @test Verify that dividing a float vector by zero returns an
-//  *       infinity vector of float type.
-//  */
-// TEST(Vec3ScalarDivision, FloatVectorDivisionByZeroReturnsInfinityVector)
-// {
-//     const flcn::Vec3 vec(1.0f, 2.0f, 3.0f);
-//     EXPECT_VEC_INF(vec / 0);
-// }
-//
-//
-// /**
-//  * @test Verify that dividing a double vector by zero returns an
-//  *       infinity vector of double type.
-//  */
-// TEST(Vec3ScalarDivision, DoubleVectorDivisionByZeroReturnsInfinityVector)
-// {
-//     const flcn::Vec3 vec(1.0, 2.0, 3.0);
-//     EXPECT_VEC_INF(vec / 0);
-// }
-// #endif
-//
-// /** @test Verify that dividing a vector by one returns the original vector. */
-// TYPED_TEST(Vec3ScalarDivisionTests, DivisionByOneReturnsOriginalVector)
-// {
-//     const flcn::Vec3 result = this->_vec / 1;
-//
-//     EXPECT_VEC_EQ(result, this->_vec);
-// }
-//
-//
-// /**
-//  * @test Verify that the binary division operator (vector / scalar) perform a component-wise divide and
-//  *       returns a vector instance.
-//  */
-// TYPED_TEST(Vec3ScalarDivisionTests, ScalarDivision_ReturnsVectorWithDividedComponents)
-// {
-//     const flcn::Vec3 result = this->_vec / this->_scalar;
-//
-//     EXPECT_VEC_EQ(this->_expectedScaledVec, result);
-// }
-//
-//
-// /**
-//  * @test Verify that the compound division assignment operator perform a component-wise divide and
-//  *       mutates the vector in-place.
-//  */
-// TYPED_TEST(Vec3ScalarDivisionTests, DivideEqualsOperator_ReturnsSameVectorWithDividedComponents)
-// {
-//     this->_vec /= this->_scalar;
-//
-//     EXPECT_VEC_EQ(this->_expectedScaledVec, this->_vec);
-// }
-//
-//
-//
-//
+
+
+/**************************************
+ *        SCALAR DIVISION TESTS       *
+ **************************************/
+
+#ifndef ENABLE_DEBUG_TESTS
+/**
+ * @test Verify that dividing a float vector by zero returns an
+ *       infinity vector of float type.
+ */
+TEST(Vec3ScalarDivision, FloatVectorDivisionByZeroReturnsInfinityVector)
+{
+    const flcn::Vec3 vec(1.0f, 2.0f, 3.0f);
+    EXPECT_VEC_INF(vec / 0);
+}
+
+
+/**
+ * @test Verify that dividing a double vector by zero returns an
+ *       infinity vector of double type.
+ */
+TEST(Vec3ScalarDivision, DoubleVectorDivisionByZeroReturnsInfinityVector)
+{
+    const flcn::Vec3 vec(1.0, 2.0, 3.0);
+    EXPECT_VEC_INF(vec / 0);
+}
+#endif
+
+/** @test Verify that dividing a vector by one returns the original vector. */
+TYPED_TEST(Vec3ScalarDivisionTests, DivisionByOneReturnsOriginalVector)
+{
+    const flcn::Vec3 result = this->_vec / 1;
+
+    EXPECT_VEC_EQ(result, this->_vec);
+}
+
+
+/**
+ * @test Verify that the binary division operator (vector / scalar) perform a component-wise divide and
+ *       returns a vector instance.
+ */
+TYPED_TEST(Vec3ScalarDivisionTests, ScalarDivision_ReturnsVectorWithDividedComponents)
+{
+    const flcn::Vec3 result = this->_vec / this->_scalar;
+
+    EXPECT_VEC_EQ(this->_expectedScaledVec, result);
+}
+
+
+/**
+ * @test Verify that the compound division assignment operator perform a component-wise divide and
+ *       mutates the vector in-place.
+ */
+TYPED_TEST(Vec3ScalarDivisionTests, DivideEqualsOperator_ReturnsSameVectorWithDividedComponents)
+{
+    this->_vec /= this->_scalar;
+
+    EXPECT_VEC_EQ(this->_expectedScaledVec, this->_vec);
+}
+
+
+
+
 // /**************************************
 //  *        SAFE DIVISION TESTS         *
 //  **************************************/

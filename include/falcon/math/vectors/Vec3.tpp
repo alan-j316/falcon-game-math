@@ -32,12 +32,12 @@ namespace flcn
 
     // TODO: Update (Vec2, T) and (T, Vec2) inits to use direct register loads instead of access and loads
     template <Arithmetic T>
-    FALCON_INLINE constexpr Vec3<T>::Vec3(const Vec2<T> vec, T v) noexcept: _data{ vec.x(), vec.y(), v, T(0) }
+    FALCON_INLINE constexpr Vec3<T>::Vec3(const Vec2<T> vec, T v) noexcept: _data{ vec.template get<0>(), vec.template get<1>(), v, T(0) }
     {}
 
 
     template <Arithmetic T>
-    FALCON_INLINE constexpr Vec3<T>::Vec3(T v, const Vec2<T> vec) noexcept: _data{ v, vec.x(), vec.y(), T(0) }
+    FALCON_INLINE constexpr Vec3<T>::Vec3(T v, const Vec2<T> vec) noexcept: _data{ v, vec.template get<0>(), vec.template get<1>(), T(0) }
     {}
 
     // TODO: Add
@@ -525,6 +525,111 @@ namespace flcn
         *this = *this * scalar;
         return *this;
     }
+
+
+
+    /*************************************
+     *             DIVISION              *
+     *************************************/
+
+    template <Arithmetic T>
+    template <StrictArithmetic S>
+    FALCON_INLINE constexpr Vec3<T> Vec3<T>::operator/(S scalar) const noexcept
+        requires StrictArithmetic<T>
+    {
+        if constexpr (std::is_floating_point_v<T>)
+        {
+            FALCON_ASSERT_MSG(flcn::abs(scalar) >= flcn::Config::EPSILON<T>,
+                              flcn::messages::assertion::VEC_DIV_BY_ZERO);
+        }
+        else
+        {
+            FALCON_ASSERT_MSG(scalar != 0, flcn::messages::assertion::VEC_DIV_BY_ZERO);
+        }
+
+        // TODO: Benchmark this vs 1.0 / scalar and then multiplying
+        return Vec3(_data / static_cast<T>(scalar));
+    }
+
+
+    template <Arithmetic T>
+    template <StrictArithmetic S>
+    FALCON_INLINE constexpr Vec3<T>& Vec3<T>::operator/=(S scalar) noexcept
+        requires StrictArithmetic<T>
+    {
+        *this = *this / scalar;
+        return *this;
+    }
+
+
+    // template <Arithmetic T>
+    // template <StrictArithmetic S>
+    // FALCON_INLINE constexpr Vec3<T> Vec3<T>::safeDiv(S scalar) const noexcept
+    //     requires StrictArithmetic<T>
+    // {
+    //     if constexpr (std::is_floating_point_v<T>)
+    //     {
+    //         if (hasNaN() | flcn::isnan(scalar) | (flcn::abs(scalar) <= std::numeric_limits<S>::epsilon()))
+    //         {
+    //             return Vec3<T>::zero();
+    //         }
+    //     }
+    //     if constexpr (std::is_integral_v<T>)
+    //     {
+    //         if (scalar == 0)
+    //         {
+    //             return Vec3<T>::zero();
+    //         }
+    //     }
+    //
+    //     return *this / scalar;
+    // }
+    //
+    // template <Arithmetic T>
+    // template <StrictArithmetic S>
+    // FALCON_INLINE constexpr Vec3<T> Vec3<T>::safeDiv(const Vec3& vec, S scalar) noexcept
+    //     requires StrictArithmetic<T>
+    // { return vec.safeDiv(scalar); }
+    //
+    //
+    // template <Arithmetic T>
+    // template <StrictArithmetic S>
+    // FALCON_INLINE constexpr Vec3<T> Vec3<T>::tryDiv(S scalar, OperationStatus& status) const noexcept
+    //     requires StrictArithmetic<T>
+    // {
+    //     if constexpr (std::is_floating_point_v<T>)
+    //     {
+    //         if (hasNaN() | flcn::isnan(scalar))
+    //         {
+    //             status = OperationStatus::NANOPERAND;
+    //             return Vec3<T>::zero();
+    //         }
+    //         if (flcn::abs(scalar) <= std::numeric_limits<S>::epsilon())
+    //         {
+    //             status = OperationStatus::DIVISIONBYZERO;
+    //             return Vec3<T>::zero();
+    //         }
+    //     }
+    //
+    //     if constexpr (std::is_integral_v<T>)
+    //     {
+    //         if (scalar == 0)
+    //         {
+    //             status = OperationStatus::DIVISIONBYZERO;
+    //             return Vec3<T>::zero();
+    //         }
+    //     }
+    //
+    //     status = OperationStatus::SUCCESS;
+    //     return *this / scalar;
+    // }
+    //
+    //
+    // template <Arithmetic T>
+    // template <StrictArithmetic S>
+    // FALCON_INLINE constexpr Vec3<T> Vec3<T>::tryDiv(const Vec3& vec, S scalar, OperationStatus& status) noexcept
+    //     requires StrictArithmetic<T>
+    // { return vec.tryDiv(scalar, status); }
 
 
 } // namespace flcn

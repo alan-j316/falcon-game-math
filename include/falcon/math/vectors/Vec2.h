@@ -894,7 +894,6 @@ namespace flcn
          * @brief Compute the component-wise difference between this vector and @p rhs vector and return a
          *        new vector.
          *
-         * @note Promotes the result to the wider type using @ref Vec2.
          * @note Both operands must be of the same numeric type.
          *
          * @tparam U Numeric type of the RHS vector. Must satisfy @ref StrictArithmetic.
@@ -1080,7 +1079,6 @@ namespace flcn
          *
          * @note If @p scalar is zero (or below the epsilon threshold) or this vector contains NaN
          *       components, returns a zero vector.
-         * @note Promotes the result to the wider type using @ref PromotedVec2<T, S>.
          * @note Operation is restricted to numeric types via @ref flcn::StrictArithmetic.
          * @note In the event of multiple failure conditions, data corruption (NaN) takes precedence over
          *       mathematical invalidity (Division by Zero) when reporting status.

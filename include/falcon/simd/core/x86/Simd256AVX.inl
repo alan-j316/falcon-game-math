@@ -183,7 +183,23 @@ namespace flcn
                 }
                 else if constexpr (std::is_integral_v<T>)
                 {
-                    return Simd256<SimdBackend::ARCH_AVX, T, Lane>(_mm256_castpd_si256(_reg));
+                    if constexpr (CURRENT_SIMD_BACKEND >= SimdBackend::ARCH_AVX2)
+                    {
+                        return Simd256<SimdBackend::ARCH_AVX, T, Lane>(_mm256_castpd_si256(_reg));
+                    }
+                    else
+                    {
+                        // For "casting" float-reg to integral we need to extract the 128-bit lanes
+                        // and initialize the fallback/emulated register
+                        const auto loLane = Simd128<SimdBackend::ARCH_SSE2, T, Lane / 2>(
+                            _mm_castpd_si128(_mm256_castpd256_pd128(_reg)));
+                        const auto hiLane = Simd128<SimdBackend::ARCH_SSE2, T, Lane / 2>(
+                            _mm_castpd_si128(_mm256_extractf128_pd(_reg, 1)));
+                        const auto emulated =
+                            typename simd::internal::Simd256Register<SimdBackend::ARCH_AVX, T, Lane>::Type(loLane,
+                                                                                                           hiLane);
+                        return Simd256<SimdBackend::ARCH_AVX, T, Lane>(emulated);
+                    }
                 }
                 else
                 {
@@ -198,7 +214,23 @@ namespace flcn
                 }
                 else if constexpr (std::is_integral_v<T>)
                 {
-                    return Simd256<SimdBackend::ARCH_AVX, T, Lane>(_mm256_castps_si256(_reg));
+                    if constexpr (CURRENT_SIMD_BACKEND >= SimdBackend::ARCH_AVX2)
+                    {
+                        return Simd256<SimdBackend::ARCH_AVX, T, Lane>(_mm256_castps_si256(_reg));
+                    }
+                    else
+                    {
+                        // For "casting" float-reg to integral we need to extract the 128-bit lanes
+                        // and initialize the fallback/emulated register
+                        const auto loLane = Simd128<SimdBackend::ARCH_SSE2, T, Lane / 2>(
+                            _mm_castps_si128(_mm256_castps256_ps128(_reg)));
+                        const auto hiLane = Simd128<SimdBackend::ARCH_SSE2, T, Lane / 2>(
+                            _mm_castps_si128(_mm256_extractf128_ps(_reg, 1)));
+                        const auto emulated =
+                            typename simd::internal::Simd256Register<SimdBackend::ARCH_AVX, T, Lane>::Type(loLane,
+                                                                                                           hiLane);
+                        return Simd256<SimdBackend::ARCH_AVX, T, Lane>(emulated);
+                    }
                 }
                 else
                 {
@@ -209,11 +241,35 @@ namespace flcn
             {
                 if constexpr (types::IsFP64<T>)
                 {
-                    return Simd256<SimdBackend::ARCH_AVX, T, Lane>(_mm256_castsi256_pd(_reg));
+                    if constexpr (CURRENT_SIMD_BACKEND >= SimdBackend::ARCH_AVX2)
+                    {
+                        return Simd256<SimdBackend::ARCH_AVX, T, Lane>(_mm256_castsi256_pd(_reg));
+                    }
+                    else
+                    {
+                        // For converting a Simd256 emulated into a native register we need extract them
+                        // and set the upper and lower lanes
+                        const auto loLane  = *((*_reg).lower);
+                        const auto hiLane  = *((*_reg).upper);
+                        const auto castReg = _mm256_castpd_si256(_mm256_setr_m128d(loLane, hiLane));
+                        return Simd256<SimdBackend::ARCH_AVX, T, Lane>(castReg);
+                    }
                 }
                 else if constexpr (types::IsFP32<T>)
                 {
-                    return Simd256<SimdBackend::ARCH_AVX, T, Lane>(_mm256_castsi256_ps(_reg));
+                    if constexpr (CURRENT_SIMD_BACKEND >= SimdBackend::ARCH_AVX2)
+                    {
+                        return Simd256<SimdBackend::ARCH_AVX, T, Lane>(_mm256_castsi256_ps(_reg));
+                    }
+                    else
+                    {
+                        // For converting a Simd256 emulated into a native register we need extract them
+                        // and set the upper and lower lanes
+                        const auto loLane  = *((*_reg).lower);
+                        const auto hiLane  = *((*_reg).upper);
+                        const auto castReg = _mm256_castps_si256(_mm256_setr_m128(loLane, hiLane));
+                        return Simd256<SimdBackend::ARCH_AVX, T, Lane>(castReg);
+                    }
                 }
                 else
                 {
@@ -223,7 +279,6 @@ namespace flcn
         }
         else
         {
-            // Emulated Register will `set` the correct values so we don't need to assign.
             return Simd256<SimdBackend::ARCH_AVX, T, Lane>(_reg.template cast<T>());
         }
     }

@@ -43,7 +43,7 @@ namespace flcn
     template <typename T>
     FALCON_INLINE constexpr Simd256<SimdBackend::ARCH_SSE2, T, Lane> Simd256<SimdBackend::ARCH_SSE2, DataType,
                                                                              Lane>::cast() noexcept
-    { return Simd256(_lower.template cast<T>(), _upper.template cast<T>()); }
+    { return Simd256<SimdBackend::ARCH_SSE2, T, Lane>(_lower.template cast<T>(), _upper.template cast<T>()); }
 
 
     template <typename DataType, size_t Lane>

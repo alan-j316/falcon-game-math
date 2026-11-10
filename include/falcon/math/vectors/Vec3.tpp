@@ -217,4 +217,40 @@ namespace flcn
 
 
 
+    /// +---------------------------------------------------------------------------------------+
+    /// |                                 SWIZZLING                                             |
+    /// +---------------------------------------------------------------------------------------+
+
+    template <Arithmetic T>
+    template <size_t... Indices>
+    FALCON_INLINE constexpr auto Vec3<T>::swizzle() const noexcept
+    {
+        constexpr size_t swizzleDimension = sizeof...(Indices);
+
+        static_assert(((Indices < DIMENSION) && ...), "Index out of bounds!");
+        static_assert(swizzleDimension > 0 && swizzleDimension <= DIMENSION &&
+                      "Swizzle must return a scalar, or a 2D, or 3D vector.");
+
+        if constexpr (swizzleDimension == 3)
+        {
+            return Vec3(_data.template getAt<Indices>()...);
+        }
+        else if constexpr (swizzleDimension == 2)
+        {
+            return Vec2(_data.template getAt<Indices>()...);
+        }
+        else
+        {
+            return T(_data.template getAt<Indices>()...);
+        }
+    }
+
+
+    template <Arithmetic T>
+    template <size_t... Indices>
+    FALCON_INLINE constexpr auto Vec3<T>::swizzle(const Vec3& vec) noexcept
+    { return vec.swizzle<Indices...>(); }
+
+
+
 } // namespace flcn

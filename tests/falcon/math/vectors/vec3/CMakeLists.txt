@@ -3,24 +3,24 @@ add_library(Vec3Tests OBJECT)
 target_sources(
         Vec3Tests PRIVATE
         AccessAndMutationTests.cpp
-#        AliasTests.cpp
-#        ArithmeticOperationTests.cpp
-#        BooleanBitOperationTests.cpp
-#        ComparisonTests.cpp
-#        ConstantsTests.cpp
-#        DistanceTests.cpp
-#        EqualityTests.cpp
+        #        AliasTests.cpp
+        #        ArithmeticOperationTests.cpp
+        #        BooleanBitOperationTests.cpp
+        #        ComparisonTests.cpp
+        #        ConstantsTests.cpp
+        #        DistanceTests.cpp
+        #        EqualityTests.cpp
         InitializationTests.cpp
-#        MagnitudeTests.cpp
-#        NormalizationTests.cpp
-#        PNormTests.cpp
-#        ProductTests.cpp
-#        ProjectionTests.cpp
-#        RejectionTests.cpp
-#        StringRepresentationTests.cpp
-#        SwizzlingTests.cpp
-#        TypeConversionTests.cpp
-#        UtilityTests.cpp
+        #        MagnitudeTests.cpp
+        #        NormalizationTests.cpp
+        #        PNormTests.cpp
+        #        ProductTests.cpp
+        #        ProjectionTests.cpp
+        #        RejectionTests.cpp
+        #        StringRepresentationTests.cpp
+        SwizzlingTests.cpp
+        #        TypeConversionTests.cpp
+        #        UtilityTests.cpp
 
         Vec3TestSetup.h
 )

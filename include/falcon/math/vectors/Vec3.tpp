@@ -441,4 +441,90 @@ namespace flcn
 #endif
 
 
+    // TODO: BITWISE OPS
+
+
+
+    /// +---------------------------------------------------------------------------------------+
+    /// |                             ARITHMETIC OPERATORS                                      |
+    /// +---------------------------------------------------------------------------------------+
+
+    /*************************************
+     *            ADDITION               *
+     *************************************/
+
+    template <Arithmetic T>
+    FALCON_INLINE constexpr Vec3<T> Vec3<T>::operator+(const Vec3& rhs) const noexcept
+        requires StrictArithmetic<T>
+    { return Vec3(_data + rhs._data); }
+
+
+    template <Arithmetic T>
+    FALCON_INLINE constexpr Vec3<T>& Vec3<T>::operator+=(const Vec3& rhs) noexcept
+        requires StrictArithmetic<T>
+    {
+        *this = *this + rhs;
+        return *this;
+    }
+
+
+    /*************************************
+     *           SUBTRACTION             *
+     *************************************/
+
+    template <Arithmetic T>
+    FALCON_INLINE constexpr Vec3<T> Vec3<T>::operator-(const Vec3 rhs) const noexcept
+        requires StrictArithmetic<T>
+    { return Vec3(_data - rhs._data); }
+
+
+    template <Arithmetic T>
+    FALCON_INLINE constexpr Vec3<T>& Vec3<T>::operator-=(const Vec3& rhs) noexcept
+        requires StrictArithmetic<T>
+    {
+        *this = *this - rhs;
+        return *this;
+    }
+
+
+    /**************************************
+     *         INVERT OPERATION           *
+     **************************************/
+
+    template <Arithmetic T>
+    FALCON_INLINE constexpr Vec3<T> Vec3<T>::operator-() const noexcept
+        requires SignedStrictArithmetic<T>
+    { return Vec3(-_data); }
+
+
+    /*************************************
+     *           MULTIPLICATION          *
+     *************************************/
+
+    template <Arithmetic T>
+    template <StrictArithmetic S>
+    FALCON_INLINE constexpr Vec3<T> Vec3<T>::operator*(S scalar) const noexcept
+        requires StrictArithmetic<T>
+    {
+        using RegType = internal::Vec3SimdStore<T>::Type;
+        return Vec3(_data * RegType(static_cast<T>(scalar)));
+    }
+
+
+    template <StrictArithmetic T, StrictArithmetic S>
+    FALCON_INLINE constexpr Vec3<T> operator*(S scalar, const Vec3<T>& vector) noexcept
+        requires StrictArithmetic<T>
+    { return vector * scalar; }
+
+
+    template <Arithmetic T>
+    template <StrictArithmetic S>
+    FALCON_INLINE constexpr Vec3<T>& Vec3<T>::operator*=(S scalar) noexcept
+        requires StrictArithmetic<T>
+    {
+        *this = *this * scalar;
+        return *this;
+    }
+
+
 } // namespace flcn

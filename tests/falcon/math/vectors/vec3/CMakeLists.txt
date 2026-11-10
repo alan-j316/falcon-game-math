@@ -4,7 +4,7 @@ target_sources(
         Vec3Tests PRIVATE
         AccessAndMutationTests.cpp
         AliasTests.cpp
-        #        ArithmeticOperationTests.cpp
+        ArithmeticOperationTests.cpp
         #        BooleanBitOperationTests.cpp
         ComparisonTests.cpp
         #        ConstantsTests.cpp

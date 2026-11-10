@@ -846,7 +846,7 @@ namespace flcn
 
         /** @} */
 
-
+// TODO: add bitwise to all operators
         //
         //         /**
         //          * @addtogroup Falcon_Vec3_Bitwise
@@ -921,129 +921,116 @@ namespace flcn
         //             requires std::is_same_v<T, bool>;
         //
         //         /** @} */
-        //
-        //
-        //         /**
-        //          * @addtogroup Falcon_Vec3_Arithmetic
-        //          * @{
-        //          */
-        //
-        //         /**
-        //          * @brief Compute the component-wise sum of this vector with @p rhs vector and return a new vector.
-        //          *
-        //          * @note Promotes the result to the wider type using @ref PromotedVec3<T, U>.
-        //          * @note Operation is restricted to numeric types via @ref StrictArithmetic.
-        //          *
-        //          * @tparam U Numeric type of the RHS vector. Must satisfy @ref StrictArithmetic.
-        //          *
-        //          * @param[in] rhs The vector to add.
-        //          *
-        //          * @return A new @ref Vec3 containing the component-wise sum.
-        //          */
-        //         template <StrictArithmetic U>
-        //             requires StrictSignedness<T, U>
-        //         [[nodiscard]] constexpr PromotedVec3<T, U> operator+(const Vec3<U>& rhs) const noexcept
-        //             requires StrictArithmetic<T>;
-        //
-        //
-        //         /**
-        //          * @brief Compute the component-wise sum of this vector with @p rhs vector in-place.
-        //          *
-        //          * @note Operation is restricted to numeric types via @ref StrictArithmetic.
-        //          *
-        //          * @tparam U Numeric type of the RHS vector. Must satisfy @ref StrictArithmetic.
-        //          *
-        //          * @param[in] rhs The vector to add.
-        //          *
-        //          * @return A reference to this vector (*this).
-        //          */
-        //         template <StrictArithmetic U>
-        //             requires StrictSignedness<T, U>
-        //         constexpr Vec3& operator+=(const Vec3<U>& rhs) noexcept
-        //             requires StrictArithmetic<T>;
-        //
-        //
-        //         /**
-        //          * @brief Compute the component-wise difference between this vector and @p rhs vector and return a
-        //          new vector.
-        //          *
-        //          * @note Promotes the result to the wider type using @ref PromotedVec3<T, U>.
-        //          * @note Operation is restricted to numeric types via @ref StrictArithmetic.
-        //          *
-        //          * @tparam U Numeric type of the RHS vector. Must satisfy @ref StrictArithmetic.
-        //          *
-        //          * @param[in] rhs The vector to subtract.
-        //          *
-        //          * @return A new @ref Vec3 containing the component-wise difference.
-        //          */
-        //         template <StrictArithmetic U>
-        //             requires StrictSignedness<T, U>
-        //         [[nodiscard]] constexpr PromotedVec3<T, U> operator-(const Vec3<U>& rhs) const noexcept
-        //             requires StrictArithmetic<T>;
-        //
-        //
-        //         /**
-        //          * @brief Compute the component-wise difference between this vector and @p rhs vector in-place.
-        //          *
-        //          * @note Operation is restricted to numeric types via @ref StrictArithmetic.
-        //          *
-        //          * @tparam U Numeric type of the RHS vector. Must satisfy @ref StrictArithmetic.
-        //          *
-        //          * @param[in] rhs The vector to subtract.
-        //          *
-        //          * @return A reference to this vector (*this).
-        //          */
-        //         template <StrictArithmetic U>
-        //             requires StrictSignedness<T, U>
-        //         constexpr Vec3& operator-=(const Vec3<U>& rhs) noexcept
-        //             requires StrictArithmetic<T>;
-        //
-        //
-        //         /**
-        //          * @brief Negate each component of this vector and return a new @ref Vec3<T>.
-        //          *
-        //          * @note Operation is restricted to numeric types via @ref SignedStrictArithmetic.
-        //          *
-        //          * @return A new @ref flcn::Vec3 with negated components.
-        //          */
-        //         [[nodiscard]] constexpr Vec3 operator-() const noexcept
-        //             requires SignedStrictArithmetic<T>;
-        //
-        //
-        //         /**
-        //          * @brief Compute the component-wise product between this vector and @p scalar and return a new
-        //          vector.
-        //          *
-        //          * @note Promotes the result to the wider type using @ref PromotedVec3<T, S>.
-        //          * @note Operation is restricted to numeric types via @ref StrictArithmetic.
-        //          *
-        //          * @tparam S Numeric type of the scalar. Must satisfy @ref StrictArithmetic.
-        //          *
-        //          * @param[in] scalar The value to scale by.
-        //          *
-        //          * @return A new @ref Vec3 scaled by @p scalar.
-        //          */
-        //         template <StrictArithmetic S>
-        //         [[nodiscard]] constexpr PromotedVec3<T, S> operator*(S scalar) const noexcept
-        //             requires StrictArithmetic<T>;
-        //
-        //
-        //         /**
-        //          * @brief Compute the component-wise product between this vector and @p scalar in-place.
-        //          *
-        //          * @note Operation is restricted to numeric types via @ref StrictArithmetic.
-        //          *
-        //          * @tparam S Numeric type of the scalar. Must satisfy @ref StrictArithmetic.
-        //          *
-        //          * @param[in] scalar The value to scale by.
-        //          *
-        //          * @return A reference to this vector (*this).
-        //          */
-        //         template <StrictArithmetic S>
-        //         constexpr Vec3& operator*=(S scalar) noexcept
-        //             requires StrictArithmetic<T>;
-        //
-        //
+
+        /**
+         * @addtogroup Falcon_Vec3_Arithmetic
+         * @{
+         */
+
+        /**
+         * @brief Compute the component-wise sum of this vector with @p rhs vector and return a new vector.
+         *
+         * @note Operation is restricted to numeric types via @ref StrictArithmetic.
+         * @note Both operands must be of the same numeric type.
+         *
+         * @param[in] rhs The vector to add.
+         *
+         * @return A new @ref Vec3 containing the component-wise sum.
+         */
+        [[nodiscard]] constexpr Vec3 operator+(const Vec3& rhs) const noexcept
+            requires StrictArithmetic<T>;
+
+
+        /**
+         * @brief Compute the component-wise sum of this vector with @p rhs vector in-place.
+         *
+         * @note Operation is restricted to numeric types via @ref StrictArithmetic.
+         *@note Both operands must be of the same numeric type.
+         *
+         * @param[in] rhs The vector to add.
+         *
+         * @return A reference to this vector (*this).
+         */
+        constexpr Vec3& operator+=(const Vec3& rhs) noexcept
+            requires StrictArithmetic<T>;
+
+
+        /**
+         * @brief Compute the component-wise difference between this vector and @p rhs vector and return a
+         *        new vector.
+         *
+         * @note Promotes the result to the wider type using @ref Vec3.
+         * @note Both operands must be of the same numeric type.
+         *
+         * @tparam U Numeric type of the RHS vector. Must satisfy @ref StrictArithmetic.
+         *
+         * @param[in] rhs The vector to subtract.
+         *
+         * @return A new @ref Vec3 containing the component-wise difference.
+         */
+        [[nodiscard]] constexpr Vec3 operator-(const Vec3 rhs) const noexcept
+            requires StrictArithmetic<T>;
+
+
+        /**
+         * @brief Compute the component-wise difference between this vector and @p rhs vector in-place.
+         *
+         * @note Operation is restricted to numeric types via @ref StrictArithmetic.
+         * @note Both operands must be of the same numeric type.
+         *
+         * @param[in] rhs The vector to subtract.
+         *
+         * @return A reference to this vector (*this).
+         */
+        constexpr Vec3& operator-=(const Vec3& rhs) noexcept
+            requires StrictArithmetic<T>;
+
+
+        /**
+         * @brief Negate each component of this vector and return a new @ref Vec3<T>.
+         *
+         * @note Operation is restricted to numeric types via @ref SignedStrictArithmetic.
+         *
+         * @return A new @ref flcn::Vec3 with negated components.
+         */
+        [[nodiscard]] constexpr Vec3 operator-() const noexcept
+            requires SignedStrictArithmetic<T>;
+
+
+        /**
+         * @brief Compute the component-wise product between this vector and @p scalar and
+         *        return a new vector.
+         *
+         * @warning The scalar value will be cast to the numeric type of the vector.
+         *
+         * @tparam S Numeric type of the scalar. Must satisfy @ref StrictArithmetic.
+         *
+         * @param[in] scalar The value to scale by.
+         *
+         * @return A new @ref Vec3 scaled by @p scalar.
+         */
+        template <StrictArithmetic S>
+        [[nodiscard]] constexpr Vec3 operator*(S scalar) const noexcept
+            requires StrictArithmetic<T>;
+
+
+        /**
+         * @brief Compute the component-wise product between this vector and @p scalar in-place.
+         *
+         * @note Operation is restricted to numeric types via @ref StrictArithmetic.
+         * @warning The scalar value will be cast to the numeric type of the vector.
+         *
+         * @tparam S Numeric type of the scalar. Must satisfy @ref StrictArithmetic.
+         *
+         * @param[in] scalar The value to scale by.
+         *
+         * @return A reference to this vector (*this).
+         */
+        template <StrictArithmetic S>
+        constexpr Vec3& operator*=(S scalar) noexcept
+            requires StrictArithmetic<T>;
+
+
         //         /**
         //          * @brief Compute the component-wise division of this vector by @p scalar and return a new vector.
         //          *
@@ -1176,10 +1163,10 @@ namespace flcn
         //         [[nodiscard]] static constexpr PromotedVec3<T, S> tryDiv(const Vec3& vec, S scalar,
         //                                                                  OperationStatus& status) noexcept
         //             requires StrictArithmetic<T>;
-        //
-        //         /** @} */
-        //
-        //
+
+        /** @} */
+
+
         //         /**
         //          * @addtogroup Falcon_Vec3_Product
         //          * @{

@@ -22,6 +22,11 @@ namespace flcn
 
 
     template <Arithmetic T>
+    FALCON_INLINE constexpr Vec3<T>::Vec3(const typename internal::Vec3SimdStore<T>::Type& reg) noexcept: _data{ reg }
+    {}
+
+
+    template <Arithmetic T>
     FALCON_INLINE constexpr Vec3<T>::Vec3(T v1, T v2, T v3) noexcept: _data{ v1, v2, v3, T(0) }
     {}
 
@@ -330,24 +335,24 @@ namespace flcn
     /// |                                EQUALITY (MASK)                                        |
     /// +---------------------------------------------------------------------------------------+
 
-    // template <Arithmetic T>
-    // FALCON_INLINE constexpr Vec3<Mask_t<T>> Vec3<T>::eq(const Vec3& rhs) const noexcept
-    // {}
-    //
-    //
-    // template <Arithmetic T>
-    // FALCON_INLINE constexpr Vec3<Mask_t<T>> Vec3<T>::eq(const Vec3& lhs, const Vec3& rhs) noexcept
-    // {}
-    //
-    //
-    // template <Arithmetic T>
-    // FALCON_INLINE constexpr Vec3<Mask_t<T>> Vec3<T>::neq(const Vec3& rhs) const noexcept
-    // {}
-    //
-    //
-    // template <Arithmetic T>
-    // FALCON_INLINE constexpr Vec3<Mask_t<T>> Vec3<T>::neq(const Vec3& lhs, const Vec3& rhs) noexcept
-    // {}
+    template <Arithmetic T>
+    FALCON_INLINE constexpr Vec3<Mask_t<T>> Vec3<T>::eq(const Vec3& rhs) const noexcept
+    { return Vec3<Mask_t<T>>((_data == rhs._data).template cast<Mask_t<T>>()); }
+
+
+    template <Arithmetic T>
+    FALCON_INLINE constexpr Vec3<Mask_t<T>> Vec3<T>::eq(const Vec3& lhs, const Vec3& rhs) noexcept
+    { return lhs.eq(rhs); }
+
+
+    template <Arithmetic T>
+    FALCON_INLINE constexpr Vec3<Mask_t<T>> Vec3<T>::neq(const Vec3& rhs) const noexcept
+    { return Vec3<Mask_t<T>>((_data != rhs._data).template cast<Mask_t<T>>()); }
+
+
+    template <Arithmetic T>
+    FALCON_INLINE constexpr Vec3<Mask_t<T>> Vec3<T>::neq(const Vec3& lhs, const Vec3& rhs) noexcept
+    { return lhs.neq(rhs); }
 
 
 

@@ -108,6 +108,13 @@ namespace flcn
 
 
         /**
+         * @brief Initialize a @ref Vec3 with its underlying register.
+         * @param reg The register to bind to this vector.
+         */
+        [[nodiscard]] explicit constexpr Vec3(const internal::Vec3SimdStore<T>::Type& reg) noexcept;
+
+
+        /**
          * @brief Initialize @ref Vec3 with passed in values.
          *
          * @param[in] v1 The first entry of @ref Vec3.
@@ -591,68 +598,68 @@ namespace flcn
         [[nodiscard]] constexpr bool operator!=(const Vec3& rhs) const noexcept;
 
 
-        // /**
-        //  * @brief Perform component-wise equality check between this vector and @p rhs vector.
-        //  *        Compare each component pair and returns a boolean mask.
-        //  *
-        //  * @note To obtain a single scalar result, use @ref allEq or @ref operator==.
-        //  *
-        //  * @param[in] rhs The vector to compare against.
-        //  *
-        //  * @note Use @ref toBool to convert mask vector to a boolean vector.
-        //  * @note For direct comparisons use @ref flcn::TrueMask<T> or flcn::FalseMask<T>.
-        //  *
-        //  * @return A @ref Mask_t(unsigned integral) Vec3 with `true` represented by 111...111 and `false` by 000...000.
-        //  */
-        // [[nodiscard]] constexpr Vec3<Mask_t<T>> eq(const Vec3& rhs) const noexcept;
-        //
-        //
-        // /**
-        //  * @brief Perform component-wise equality check between @p lhs and @p rhs vector.
-        //  *        Compare each component pair and returns a boolean mask.
-        //  *
-        //  * @tparam U Numeric type of the RHS vector. Must satisfy @ref Arithmetic.
-        //  *
-        //  * @param[in] lhs The vector to compare.
-        //  * @param[in] rhs The vector to compare against.
-        //  *
-        //  * @note Use @ref toBool to convert mask vector to a boolean vector.
-        //  * @note For direct comparisons use @ref flcn::TrueMask<T> or flcn::FalseMask<T>.
-        //  *
-        //  * @return A @ref Mask_t(unsigned integral) Vec3 with `true` represented by 111...111 and `false` by 000...000.
-        //  */
-        // [[nodiscard]] static constexpr Vec3<Mask_t<T>> eq(const Vec3& lhs, const Vec3& rhs) noexcept;
-        //
-        //
-        // /**
-        //  * @brief Perform component-wise inequality check between this vector and @p rhs vector.
-        //  *        Compare each component pair and returns a boolean mask.
-        //  *
-        //  * @note To obtain a single scalar result, use @ref anyNeq or @ref operator!=.
-        //  *
-        //  * @param[in] rhs The vector to compare against.
-        //  *
-        //  * @note Use @ref toBool to convert mask vector to a boolean vector.
-        //  * @note For direct comparisons use @ref flcn::TrueMask<T> or flcn::FalseMask<T>.
-        //  *
-        //  * @return A @ref Mask_t(unsigned integral) Vec3 with `true` represented by 111...111 and `false` by 000...000.
-        //  */
-        // [[nodiscard]] constexpr Vec3<Mask_t<T>> neq(const Vec3& rhs) const noexcept;
-        //
-        //
-        // /**
-        //  * @brief Perform component-wise inequality check between @p lhs vector and @p rhs vector.
-        //  *        Compare each component pair and returns a boolean mask.
-        //  *
-        //  * @param[in] lhs The vector to compare.
-        //  * @param[in] rhs The vector to compare against.
-        //  *
-        //  * @note Use @ref toBool to convert mask vector to a boolean vector.
-        //  * @note For direct comparisons use @ref flcn::TrueMask<T> or flcn::FalseMask<T>.
-        //  *
-        //  * @return A @ref Mask_t(unsigned integral) Vec3 with `true` represented by 111...111 and `false` by 000...000.
-        //  */
-        // [[nodiscard]] static constexpr Vec3<Mask_t<T>> neq(const Vec3& lhs, const Vec3& rhs) noexcept;
+        /**
+         * @brief Perform component-wise equality check between this vector and @p rhs vector.
+         *        Compare each component pair and returns a boolean mask.
+         *
+         * @note To obtain a single scalar result, use @ref allEq or @ref operator==.
+         *
+         * @param[in] rhs The vector to compare against.
+         *
+         * @note Use @ref toBool to convert mask vector to a boolean vector.
+         * @note For direct comparisons use @ref flcn::TrueMask<T> or flcn::FalseMask<T>.
+         *
+         * @return A @ref Mask_t(unsigned integral) Vec3 with `true` represented by 111...111 and `false` by 000...000.
+         */
+        [[nodiscard]] constexpr Vec3<Mask_t<T>> eq(const Vec3& rhs) const noexcept;
+
+
+        /**
+         * @brief Perform component-wise equality check between @p lhs and @p rhs vector.
+         *        Compare each component pair and returns a boolean mask.
+         *
+         * @tparam U Numeric type of the RHS vector. Must satisfy @ref Arithmetic.
+         *
+         * @param[in] lhs The vector to compare.
+         * @param[in] rhs The vector to compare against.
+         *
+         * @note Use @ref toBool to convert mask vector to a boolean vector.
+         * @note For direct comparisons use @ref flcn::TrueMask<T> or flcn::FalseMask<T>.
+         *
+         * @return A @ref Mask_t(unsigned integral) Vec3 with `true` represented by 111...111 and `false` by 000...000.
+         */
+        [[nodiscard]] static constexpr Vec3<Mask_t<T>> eq(const Vec3& lhs, const Vec3& rhs) noexcept;
+
+
+        /**
+         * @brief Perform component-wise inequality check between this vector and @p rhs vector.
+         *        Compare each component pair and returns a boolean mask.
+         *
+         * @note To obtain a single scalar result, use @ref anyNeq or @ref operator!=.
+         *
+         * @param[in] rhs The vector to compare against.
+         *
+         * @note Use @ref toBool to convert mask vector to a boolean vector.
+         * @note For direct comparisons use @ref flcn::TrueMask<T> or flcn::FalseMask<T>.
+         *
+         * @return A @ref Mask_t(unsigned integral) Vec3 with `true` represented by 111...111 and `false` by 000...000.
+         */
+        [[nodiscard]] constexpr Vec3<Mask_t<T>> neq(const Vec3& rhs) const noexcept;
+
+
+        /**
+         * @brief Perform component-wise inequality check between @p lhs vector and @p rhs vector.
+         *        Compare each component pair and returns a boolean mask.
+         *
+         * @param[in] lhs The vector to compare.
+         * @param[in] rhs The vector to compare against.
+         *
+         * @note Use @ref toBool to convert mask vector to a boolean vector.
+         * @note For direct comparisons use @ref flcn::TrueMask<T> or flcn::FalseMask<T>.
+         *
+         * @return A @ref Mask_t(unsigned integral) Vec3 with `true` represented by 111...111 and `false` by 000...000.
+         */
+        [[nodiscard]] static constexpr Vec3<Mask_t<T>> neq(const Vec3& lhs, const Vec3& rhs) noexcept;
 
         /** @} */
 

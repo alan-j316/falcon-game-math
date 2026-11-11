@@ -564,6 +564,33 @@ namespace flcn
     }
 
 
+
+    /// +---------------------------------------------------------------------------------------+
+    /// |                               UTILITIES                                               |
+    /// +---------------------------------------------------------------------------------------+
+
+    template <Arithmetic T>
+    FALCON_INLINE constexpr bool Vec3<T>::hasNaN() const noexcept
+    {
+        if constexpr (std::is_floating_point_v<T>)
+        {
+            // Since nan is not equal to anything we need to query for nan
+            // and use that property to convert from -nan(returned if an entry is nan) to a boolean.
+            T isNan = _data.hasNan().horizontalOr();
+            return isNan != isNan;
+        }
+        else
+        {
+            return false;
+        }
+    }
+
+
+    template <Arithmetic T>
+    FALCON_INLINE constexpr bool Vec3<T>::hasNaN(const Vec3& vec) noexcept
+    { return vec.hasNaN(); }
+
+
     // template <Arithmetic T>
     // template <StrictArithmetic S>
     // FALCON_INLINE constexpr Vec3<T> Vec3<T>::safeDiv(S scalar) const noexcept

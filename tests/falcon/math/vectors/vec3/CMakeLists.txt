@@ -21,7 +21,7 @@ target_sources(
         #        StringRepresentationTests.cpp
         SwizzlingTests.cpp
         TypeConversionTests.cpp
-        #        UtilityTests.cpp
+        UtilityTests.cpp
 
         Vec3TestSetup.h
 )

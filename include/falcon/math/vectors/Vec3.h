@@ -968,7 +968,7 @@ namespace flcn
          *
          * @return A new @ref Vec3 containing the component-wise difference.
          */
-        [[nodiscard]] constexpr Vec3 operator-(const Vec3 rhs) const noexcept
+        [[nodiscard]] constexpr Vec3 operator-(Vec3 rhs) const noexcept
             requires StrictArithmetic<T>;
 
 
@@ -2342,13 +2342,13 @@ namespace flcn
         //             requires StrictArithmetic<T>;
         //
         //         /** @} */
-        //
-        //
-        //         /**
-        //          * @addtogroup Falcon_Vec3_Utils
-        //          * @{
-        //          */
-        //
+
+
+        /**
+         * @addtogroup Falcon_Vec3_Utils
+         * @{
+         */
+
         //         /**
         //          * @brief Check if any component of this vector is an IEEE 754 infinity.
         //          *
@@ -2369,30 +2369,31 @@ namespace flcn
         //          * @return True if at least one component is positive or negative infinity.
         //          */
         //         [[nodiscard]] static constexpr bool hasInf(const Vec3& vec) noexcept;
-        //
-        //
-        //         /**
-        //          * @brief Check if any component of this vector is an IEEE NaN(Not-a-Number).
-        //          *
-        //          * @note Always return false for integral types.
-        //          *
-        //          * @return True if at least one component is NaN.
-        //          */
-        //         [[nodiscard]] constexpr bool hasNaN() const noexcept;
-        //
-        //
-        //         /**
-        //          * @brief Check if any component of this vector is an IEEE NaN(Not-a-Number).
-        //          *
-        //          * @note Always return false for integral types.
-        //          *
-        //          * @param[in] vec The vector to evaluate for indefinite components.
-        //          *
-        //          * @return True if at least one component is NaN.
-        //          */
-        //         [[nodiscard]] static constexpr bool hasNaN(const Vec3& vec) noexcept;
-        //
-        //         /** @} */
+
+
+        /**
+         * @brief Check if any component of this vector is an IEEE NaN(Not-a-Number).
+         *
+         * @note Always return false for integral types.
+         *
+         * @return True if at least one component is NaN.
+         */
+        [[nodiscard]] constexpr bool hasNaN() const noexcept;
+
+
+        /**
+         * @brief Check if any component of this vector is an IEEE NaN(Not-a-Number).
+         *
+         * @note Always return false for integral types.
+         *
+         * @param[in] vec The vector to evaluate for indefinite components.
+         *
+         * @return True if at least one component is NaN.
+         */
+        [[nodiscard]] static constexpr bool hasNaN(const Vec3& vec) noexcept;
+
+        /** @} */
+
         //
         //
         //         /**

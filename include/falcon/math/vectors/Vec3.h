@@ -2344,31 +2344,32 @@ namespace flcn
         //         /** @} */
 
 
+
         /**
          * @addtogroup Falcon_Vec3_Utils
          * @{
          */
 
-        //         /**
-        //          * @brief Check if any component of this vector is an IEEE 754 infinity.
-        //          *
-        //          * @note Always return false for integral types.
-        //          *
-        //          * @return True if at least one component is positive or negative infinity.
-        //          */
-        //         [[nodiscard]] constexpr bool hasInf() const noexcept;
-        //
-        //
-        //         /**
-        //          * @brief Check if any component of a vector is an IEEE 754 infinity.
-        //          *
-        //          * @note Always return false for integral types.
-        //          *
-        //          * @param[in] vec The vector to evaluate for indefinite components.
-        //          *
-        //          * @return True if at least one component is positive or negative infinity.
-        //          */
-        //         [[nodiscard]] static constexpr bool hasInf(const Vec3& vec) noexcept;
+        /**
+         * @brief Check if any component of this vector is an IEEE 754 infinity.
+         *
+         * @note Always return false for integral types.
+         *
+         * @return True if at least one component is positive or negative infinity.
+         */
+        [[nodiscard]] constexpr bool hasInf() const noexcept;
+
+
+        /**
+         * @brief Check if any component of a vector is an IEEE 754 infinity.
+         *
+         * @note Always return false for integral types.
+         *
+         * @param[in] vec The vector to evaluate for indefinite components.
+         *
+         * @return True if at least one component is positive or negative infinity.
+         */
+        [[nodiscard]] static constexpr bool hasInf(const Vec3& vec) noexcept;
 
 
         /**

@@ -81,43 +81,43 @@ namespace
  *      INFINITY CHECKER TESTS        *
  **************************************/
 
-// /**
-//  * @test Verify that @ref std::Vec3::hasInf returns True if any of components are IEE754 infinity
-//  *       and False otherwise.
-//  */
-// TEST_P(Vec3InfCheckerTests, ReturnTrueIfAnyComponentIsInfinity)
-// {
-//     const auto& [vec, expected] = GetParam();
-//     EXPECT_EQ(expected, vec.hasInf());
-// }
-//
-//
-//
-// /** @test Verify that @ref std::Vec3::hasInf returns False for integral types. */
-// TYPED_TEST(Vec3UtilsIntTests, HasInf_ReturnsFalseForIntegrals)
-// {
-//     const auto value = TypeParam(1);
-//     EXPECT_FALSE(flcn::Vec3(value, value, value).hasInf());
-// }
-//
-//
-// /**
-//  * @test Verify that the static variant of @ref std::Vec3::hasInf returns True if any of components are IEE754
-//  *       infinity and False otherwise.
-//  */
-// TEST_P(Vec3InfCheckerTests, StaticWrapper_ReturnTrueIfAnyComponentIsInfinity)
-// {
-//     const auto& [vec, expected] = GetParam();
-//     EXPECT_EQ(expected, flcn::Vec3<float>::hasInf(vec));
-// }
-//
-//
-// /** @test Verify that the static variant of @ref std::Vec3::hasInf returns False for integral types. */
-// TYPED_TEST(Vec3UtilsIntTests, StaticWrapper_HasInf_ReturnsFalseForIntegrals)
-// {
-//     const auto value = TypeParam(1);
-//     EXPECT_FALSE(flcn::Vec3<TypeParam>::hasInf(flcn::Vec3(value, value, value)));
-// }
+/**
+ * @test Verify that @ref std::Vec3::hasInf returns True if any of components are IEE754 infinity
+ *       and False otherwise.
+ */
+TEST_P(Vec3InfCheckerTests, ReturnTrueIfAnyComponentIsInfinity)
+{
+    const auto& [vec, expected] = GetParam();
+    EXPECT_EQ(expected, vec.hasInf());
+}
+
+
+
+/** @test Verify that @ref std::Vec3::hasInf returns False for integral types. */
+TYPED_TEST(Vec3UtilsIntTests, HasInf_ReturnsFalseForIntegrals)
+{
+    const auto value = TypeParam(1);
+    EXPECT_FALSE(flcn::Vec3(value, value, value).hasInf());
+}
+
+
+/**
+ * @test Verify that the static variant of @ref std::Vec3::hasInf returns True if any of components are IEE754
+ *       infinity and False otherwise.
+ */
+TEST_P(Vec3InfCheckerTests, StaticWrapper_ReturnTrueIfAnyComponentIsInfinity)
+{
+    const auto& [vec, expected] = GetParam();
+    EXPECT_EQ(expected, flcn::Vec3<float>::hasInf(vec));
+}
+
+
+/** @test Verify that the static variant of @ref std::Vec3::hasInf returns False for integral types. */
+TYPED_TEST(Vec3UtilsIntTests, StaticWrapper_HasInf_ReturnsFalseForIntegrals)
+{
+    const auto value = TypeParam(1);
+    EXPECT_FALSE(flcn::Vec3<TypeParam>::hasInf(flcn::Vec3(value, value, value)));
+}
 
 
 /**************************************

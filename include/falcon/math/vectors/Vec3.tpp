@@ -570,6 +570,25 @@ namespace flcn
     /// +---------------------------------------------------------------------------------------+
 
     template <Arithmetic T>
+    FALCON_INLINE constexpr bool Vec3<T>::hasInf() const noexcept
+    {
+        if constexpr (std::is_floating_point_v<T>)
+        {
+            return _data.hasInf().horizontalOr();
+        }
+        else
+        {
+            return false;
+        }
+    }
+
+
+    template <Arithmetic T>
+    FALCON_INLINE constexpr bool Vec3<T>::hasInf(const Vec3& vec) noexcept
+    { return vec.hasInf(); }
+
+
+    template <Arithmetic T>
     FALCON_INLINE constexpr bool Vec3<T>::hasNaN() const noexcept
     {
         if constexpr (std::is_floating_point_v<T>)

@@ -1163,7 +1163,7 @@ namespace flcn
         [[nodiscard]] static constexpr Vec3 tryDiv(const Vec3& vec, S scalar, OperationStatus& status) noexcept
             requires StrictArithmetic<T>;
 
-
+// TODO: Add pairwise product(Hadamard)
         /** @} */
 
 

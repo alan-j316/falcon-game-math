@@ -373,8 +373,7 @@ TEST(Vec4ScalarMultiplication, MultiplicationByOneReturnsOriginalVector)
 
 
 /**
- * @test Verify that the binary multiplication operator (vector * scalar) perform a component-wise (Hadamard) product
- *       and returns a new vector instance.
+ * @test Verify that the binary multiplication operator (vector * scalar) returns a vector-scalar product.
  */
 TYPED_TEST(Vec4ScalarMultiplicationTests, VectorTimesScalarReturnsScaledVector)
 {
@@ -392,8 +391,7 @@ TYPED_TEST(Vec4ScalarMultiplicationTests, VectorTimesScalarReturnsScaledVector)
 
 
 /**
- * @test Verify that the binary multiplication operator (scalar * vector) perform a component-wise (Hadamard) product
- *       and returns a new vector instance.
+ * @test Verify that the binary multiplication operator (vector * scalar) returns a vector-scalar product.
  */
 TYPED_TEST(Vec4ScalarMultiplicationTests, ScalarTimesAVectorReturnsScaledVector)
 {
@@ -411,8 +409,7 @@ TYPED_TEST(Vec4ScalarMultiplicationTests, ScalarTimesAVectorReturnsScaledVector)
 
 
 /**
- * @test Verify that the compound multiplication assignment operator performs a component-wise (Hadamard) product
- *       and mutates the vector in-place.
+ Verify that the compound multiplication operator (vector * scalar) performs a vector-scalar product in-place.
  */
 TYPED_TEST(Vec4ScalarMultiplicationTests, VectorTimesEqualScalarReturnsTheSameVectorWithScaledComponents)
 {

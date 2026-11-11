@@ -583,16 +583,17 @@ namespace flcn
     FALCON_INLINE constexpr Vec2<T> Vec2<T>::safeDiv(S scalar) const noexcept
         requires StrictArithmetic<T>
     {
-        if constexpr (std::is_floating_point_v<T>)
+        if constexpr (std::is_floating_point_v<T> || std::is_floating_point_v<S>)
         {
-            if (hasNaN() | flcn::isnan(scalar) | (flcn::abs(scalar) <= std::numeric_limits<S>::epsilon()))
+            if (hasNaN() || flcn::isnan(scalar) || (flcn::abs(scalar) <= std::numeric_limits<S>::epsilon()))
             {
                 return Vec2<T>::zero();
             }
         }
         if constexpr (std::is_integral_v<T>)
         {
-            if (scalar == 0)
+            // Since the division will cast operand to T, casting inf to integral is UB(Undefined Behaviour)
+            if (scalar == 0 || flcn::isinf(scalar))
             {
                 return Vec2<T>::zero();
             }
@@ -600,6 +601,7 @@ namespace flcn
 
         return *this / scalar;
     }
+
 
     template <Arithmetic T>
     template <StrictArithmetic S>
@@ -613,9 +615,9 @@ namespace flcn
     FALCON_INLINE constexpr Vec2<T> Vec2<T>::tryDiv(S scalar, OperationStatus& status) const noexcept
         requires StrictArithmetic<T>
     {
-        if constexpr (std::is_floating_point_v<T>)
+        if constexpr (std::is_floating_point_v<T> || std::is_floating_point_v<S>)
         {
-            if (hasNaN() | flcn::isnan(scalar))
+            if (hasNaN() || flcn::isnan(scalar))
             {
                 status = OperationStatus::NANOPERAND;
                 return Vec2<T>::zero();
@@ -632,6 +634,12 @@ namespace flcn
             if (scalar == 0)
             {
                 status = OperationStatus::DIVISIONBYZERO;
+                return Vec2<T>::zero();
+            }
+            // Since the division will cast operand to T, casting inf to integral is UB(Undefined Behaviour)
+            if (hasInf())
+            {
+                status = OperationStatus::INFOPERAND;
                 return Vec2<T>::zero();
             }
         }

@@ -138,15 +138,15 @@ namespace
     TYPED_TEST_SUITE(Vec3NegationTests, SupportedSignedArithmeticTypes);
 
 
-    // /// @brief Test fixture for @ref flcn::Vec3 division with NaN vectors.
-    // class Vec3DivisionNaNTests: public testing::TestWithParam<flcn::Vec3<float>>
-    // {};
-    // INSTANTIATE_TEST_SUITE_P(Vec3InvalidDivision, Vec3DivisionNaNTests,
-    //                          ::testing::Values(flcn::Vec3<float>(flcn::constants::NaN, 3.0f, 3.0f),
-    //                                            flcn::Vec3<float>(3.0f, flcn::constants::NaN, 3.0f),
-    //                                            flcn::Vec3<float>(3.0f, 3.0f, flcn::constants::NaN),
-    //                                            flcn::Vec3<float>(flcn::constants::NaN, flcn::constants::NaN,
-    //                                                             flcn::constants::NaN)));
+    /// @brief Test fixture for @ref flcn::Vec3 division with NaN vectors.
+    class Vec3DivisionNaNTests: public testing::TestWithParam<flcn::Vec3<float>>
+    {};
+    INSTANTIATE_TEST_SUITE_P(Vec3InvalidDivision, Vec3DivisionNaNTests,
+                             ::testing::Values(flcn::Vec3<float>(flcn::constants::NaN, 3.0f, 3.0f),
+                                               flcn::Vec3<float>(3.0f, flcn::constants::NaN, 3.0f),
+                                               flcn::Vec3<float>(3.0f, 3.0f, flcn::constants::NaN),
+                                               flcn::Vec3<float>(flcn::constants::NaN, flcn::constants::NaN,
+                                                                flcn::constants::NaN)));
 } // namespace
 
 
@@ -350,296 +350,307 @@ TYPED_TEST(Vec3ScalarDivisionTests, DivideEqualsOperator_ReturnsSameVectorWithDi
 
 
 
+/**************************************
+ *        SAFE DIVISION TESTS         *
+ **************************************/
 
-// /**************************************
-//  *        SAFE DIVISION TESTS         *
-//  **************************************/
-//
-// /**
-//  * @test Verify that dividing a vector using @ref flcn::Vec3::safeDiv perform a component-wise divide and
-//  *       returns a new vector instance.
-//  */
-// TYPED_TEST(Vec3ScalarDivisionTests, SafeDiv_ReturnsVectorWithDividedComponents)
-// {
-//     const auto result = this->_vec.safeDiv(this->_scalar);
-//
-//     EXPECT_VEC_EQ(this->_expectedScaledVec, result);
-// }
-//
-//
-// /**
-//  * @test Verify that dividing a vector by integral zero using @ref flcn::Vec3::safeDiv
-//  *       perform a component-wise divide and returns a new vector instance.
-//  */
-// TYPED_TEST(Vec3ScalarDivisionTests, SafeDiv_ByIntegralZero_ReturnsZeroVector)
-// {
-//     const auto result = this->_vec.safeDiv(0);
-//     EXPECT_VEC_ZERO(result);
-// }
-//
-//
-// /**
-//  * @test Verify that dividing a vector by floating point zero using @ref flcn::Vec3::safeDiv
-//  *       perform a component-wise divide and returns a new vector instance.
-//  */
-// TYPED_TEST(Vec3ScalarDivisionTests, SafeDiv_ByFloatZero_ReturnsZeroVector)
-// {
-//     const auto result = this->_vec.safeDiv(0.0f);
-//     EXPECT_VEC_ZERO(result);
-// }
-//
-//
-// /**
-//  * @test Verify that dividing a vector using static variant of @ref flcn::Vec3::safeDiv
-//  *       perform a component-wise divide and returns a new vector instance.
-//  */
-// TYPED_TEST(Vec3ScalarDivisionTests, StaticWrapper_SafeDiv_ReturnsVectorWithDividedComponents)
-// {
-//     const auto result = flcn::Vec3<TypeParam>::safeDiv(this->_vec, this->_scalar);
-//     EXPECT_VEC_EQ(this->_expectedScaledVec, result);
-// }
-//
-//
-// /**
-//  * @test Verify that dividing a vector by integral zero using static variant of @ref flcn::Vec3::safeDiv
-//  *       perform a component-wise divide and returns a new vector instance.
-//  */
-// TEST(Vec3ScalarDivision, StaticWrapper_SafeDiv_ByIntergralZero_ReturnsZeroVector)
-// {
-//     const flcn::Vec3 vec(1, 2, 3);
-//     EXPECT_VEC_ZERO(flcn::Vec3<int>::safeDiv(vec, 0));
-// }
-//
-//
-// /**
-//  * @test Verify that dividing a vector by floating point zero using static variant @ref flcn::Vec3::safeDiv
-//  *       perform a component-wise divide and returns a new vector instance.
-//  */
-// TYPED_TEST(Vec3ScalarDivisionTests, StaticWrapper_SafeDiv_ByFloatZero_ReturnsZeroVector)
-// {
-//     const auto result = flcn::Vec3<TypeParam>::safeDiv(this->_vec, 0.0f);
-//     EXPECT_VEC_ZERO(result);
-// }
-//
-//
-// /**
-//  * @test Verify that dividing a vector by NaN using @ref flcn::Vec3::safeDiv
-//  *       returns a zero vector.
-//  */
-// TYPED_TEST(Vec3ScalarDivisionTests, SafeDiv_ByNaN_ReturnsZeroVector)
-// {
-//     const auto result = this->_vec.safeDiv(flcn::constants::NaN);
-//
-//     EXPECT_VEC_ZERO(result);
-// }
-//
-//
-// /**
-//  * @test Verify that dividing a vector by NaN using static variant of @ref flcn::Vec3::safeDiv
-//  *       returns a zero vector.
-//  */
-// TYPED_TEST(Vec3ScalarDivisionTests, StaticWrapper_SafeDiv_ByNaN_ReturnsZeroVector)
-// {
-//     const auto result = flcn::Vec3<TypeParam>::safeDiv(this->_vec, flcn::constants::INFINITY_F);
-//
-//     EXPECT_VEC_ZERO(result);
-// }
-//
-//
-// /**************************************
-//  *         TRY DIVISION TESTS         *
-//  **************************************/
-//
-// /**
-//  * @test Verify that dividing a vector using @ref flcn::Vec3::tryDiv perform a component-wise divide and
-//  *       returns a new vector instance and sets the flag to @ref flcn::OperationStatus::SUCCESS.
-//  */
-// TYPED_TEST(Vec3ScalarDivisionTests, TryDivide_ReturnsVectorWithDividedComponentsAndSetsCorrectFlag)
-// {
-//     flcn::OperationStatus flag;
-//     const auto result = this->_vec.tryDiv(this->_scalar, flag);
-//
-//     EXPECT_EQ(flcn::OperationStatus::SUCCESS, flag);
-//     EXPECT_VEC_EQ(this->_expectedScaledVec, result);
-// }
-//
-//
-// /**
-//  * @test Verify that dividing a vector by integral zero using @ref flcn::Vec3::tryDiv returns zero vector and
-//  *       sets the flag to @ref flcn::OperationStatus::DIVISIONBYZERO.
-//  */
-// TYPED_TEST(Vec3ScalarDivisionTests, TryDivideByIntegralZero_ReturnsZeroVectorAndSetsCorrectFlag)
-// {
-//     flcn::OperationStatus flag;
-//     const auto result = this->_vec.tryDiv(0, flag);
-//
-//     EXPECT_VEC_ZERO(result);
-//     EXPECT_EQ(flcn::OperationStatus::DIVISIONBYZERO, flag);
-// }
-//
-//
-// /**
-//  * @test Verify that dividing a vector by floating point zero using @ref flcn::Vec3::tryDiv returns zero vector and
-//  *       sets the flag to @ref flcn::OperationStatus::DIVISIONBYZERO.
-//  */
-// TYPED_TEST(Vec3ScalarDivisionTests, TryDivideByFloatZero_ReturnsZeroVectorAndSetsCorrectFlag)
-// {
-//     flcn::OperationStatus flag;
-//     const auto result = this->_vec.tryDiv(0.0, flag);
-//
-//     EXPECT_VEC_ZERO(result);
-//     EXPECT_EQ(flcn::OperationStatus::DIVISIONBYZERO, flag);
-// }
-//
-//
-// /**
-//  * @test Verify that dividing a NaN vector by zero using @ref flcn::Vec3::tryDiv
-//  *       @ref flcn::OperationStatus::NANOPERAND takes precedence over @ref flcn::OperationStatus::NANOPERAND.
-//  */
-// TEST(Vec3ScalarDivision, TryDivideNaNVectorByZero_NaNOperandStatusTakesPrecedence)
-// {
-//     flcn::OperationStatus flag;
-//     [[maybe_unused]] const auto result = flcn::Vec3<double>::qnan().tryDiv(0, flag);
-//     EXPECT_EQ(flcn::OperationStatus::NANOPERAND, flag);
-// }
-//
-//
-// /**
-//  * @test Verify that dividing a vector by NaN using @ref flcn::Vec3::tryDiv returns a zero vector and
-//  *       sets the flag to @ref flcn::OperationStatus::NANOPERAND.
-//  */
-// TYPED_TEST(Vec3ScalarDivisionTests, TryDivideByNaN_ReturnsZeroVectorAndSetsCorrectFlag)
-// {
-//     flcn::OperationStatus flag;
-//     const auto result = this->_vec.tryDiv(flcn::constants::NaN, flag);
-//
-//     EXPECT_VEC_ZERO(result);
-//     EXPECT_EQ(flcn::OperationStatus::NANOPERAND, flag);
-// }
-//
-//
-// /**
-//  * @test Verify that dividing a vector using static variant of @ref flcn::Vec3::tryDiv
-//  *       perform a component-wise divide and returns a new vector instance and
-//  *       sets the flag to @ref flcn::OperationStatus::SUCCESS.
-//  */
-// TYPED_TEST(Vec3ScalarDivisionTests, StaticWrapper_TryDivide_ReturnsVectorWithDividedComponentsAndSetsCorrectFlag)
-// {
-//     flcn::OperationStatus flag;
-//     const auto result = flcn::Vec3<TypeParam>::tryDiv(this->_vec, this->_scalar, flag);
-//
-//     EXPECT_VEC_EQ(this->_expectedScaledVec, result);
-//     EXPECT_EQ(flcn::OperationStatus::SUCCESS, flag);
-// }
-//
-//
-// /**
-//  * @test Verify that dividing a vector by integral zero using static variant of @ref flcn::Vec3::tryDiv
-//  *       returns zero vector and sets the flag to @ref flcn::OperationStatus::DIVISIONBYZERO.
-//  */
-// TYPED_TEST(Vec3ScalarDivisionTests, StaticWrapper_TryDivideByIntegralZero_ReturnsZeroVectorAndSetsCorrectFlag)
-// {
-//     flcn::OperationStatus flag;
-//     const auto result = flcn::Vec3<TypeParam>::tryDiv(this->_vec, 0, flag);
-//
-//     EXPECT_VEC_ZERO(result);
-//     EXPECT_EQ(flcn::OperationStatus::DIVISIONBYZERO, flag);
-// }
-//
-//
-// /**
-//  * @test Verify that dividing a vector by floating point zero using static variant of @ref flcn::Vec3::tryDiv
-//  *       returns zero vector and sets the flag to @ref flcn::OperationStatus::DIVISIONBYZERO.
-//  */
-// TYPED_TEST(Vec3ScalarDivisionTests, StaticWrapper_TryDivideByFloatZero_ReturnsZeroVectorAndSetsCorrectFlag)
-// {
-//     flcn::OperationStatus flag;
-//     const auto result = flcn::Vec3<TypeParam>::tryDiv(this->_vec, 0.0, flag);
-//
-//     EXPECT_VEC_ZERO(result);
-//     EXPECT_EQ(flcn::OperationStatus::DIVISIONBYZERO, flag);
-// }
-//
-//
-// /**
-//  * @test Verify that dividing a vector by floating point zero using static variant of @ref flcn::Vec3::tryDiv
-//  *       returns zero vector and sets the flag to @ref flcn::OperationStatus::NANOPERAND.
-//  */
-// TEST(Vec3ScalarDivision, StaticWrapper_TryDivideNaNVector_ReturnsZeroVectorAndSetsCorrectFlag)
-// {
-//     flcn::OperationStatus flag;
-//     const auto result = flcn::Vec3<double>::tryDiv(flcn::Vec3<double>::qnan(), 3, flag);
-//
-//     EXPECT_VEC_ZERO(result);
-//     EXPECT_EQ(flcn::OperationStatus::NANOPERAND, flag);
-// }
-//
-//
-// /**
-//  * @test Verify that dividing a vector by NaN using static variant of @ref flcn::Vec3::tryDiv returns zero vector
-//  * and sets the flag to @ref flcn::OperationStatus::NANOPERAND.
-//  */
-// TYPED_TEST(Vec3ScalarDivisionTests, StaticWrapper_TryDivideByNaN_ReturnsZeroVectorAndSetsCorrectFlag)
-// {
-//     flcn::OperationStatus flag;
-//     const auto result = flcn::Vec3<TypeParam>::tryDiv(this->_vec, flcn::constants::NaN, flag);
-//
-//     EXPECT_VEC_ZERO(result);
-//     EXPECT_EQ(flcn::OperationStatus::NANOPERAND, flag);
-// }
-//
-//
-// /**************************************
-//  *                                    *
-//  *         NaN DIVISION TESTS         *
-//  *                                    *
-//  **************************************/
-//
-// /**
-//  * @test Verify that dividing a nan vector by a scalar using @ref flcn::Vec3::safeDiv
-//  *       returns vector with NaN-components as zero.
-//  */
-// TEST_P(Vec3DivisionNaNTests, SafeDiv_ReturnsVectorWithNaNComponentsAsZero)
-// {
-//     const auto& vec = GetParam();
-//     EXPECT_VEC_ZERO(vec.safeDiv(3));
-// }
-//
-// /**
-//  * @test Verify that dividing a nan vector by a scalar using static variant of @ref flcn::Vec3::safeDiv
-//  *       returns zero vector.
-//  */
-// TEST_P(Vec3DivisionNaNTests, StaticWrapper_SafeDiv_ReturnsVectorWithNaNComponentsAsZero)
-// {
-//     const auto& vec = GetParam();
-//     EXPECT_VEC_ZERO(flcn::Vec3<float>::safeDiv(vec, 3));
-// }
-//
-//
-// /**
-//  * @test Verify that dividing a nan vector by a scalar using @ref flcn::Vec3::tryDiv
-//  *       returns zero vector and sets flag to OperationStatus::NANOPERAND.
-//  */
-// TEST_P(Vec3DivisionNaNTests, TryDiv_ReturnsVectorWithNaNComponentsAsZero)
-// {
-//     const auto& vec = GetParam();
-//     flcn::OperationStatus flag;
-//     EXPECT_VEC_ZERO(vec.tryDiv(3, flag));
-//     EXPECT_EQ(flcn::OperationStatus::NANOPERAND, flag);
-// }
-//
-//
-// /**
-//  * @test Verify that dividing a nan vector by a scalar using static variant of @ref flcn::Vec3::tryDiv
-//  *       returns zero vector and sets flag to OperationStatus::NANOPERAND.
-//  */
-// TEST_P(Vec3DivisionNaNTests, StaticWrapper_TryDiv_ReturnsVectorWithNaNComponentsAsZero)
-// {
-//     const auto& vec = GetParam();
-//     flcn::OperationStatus flag;
-//     EXPECT_VEC_ZERO(flcn::Vec3<float>::tryDiv(vec, 3, flag));
-//     EXPECT_EQ(flcn::OperationStatus::NANOPERAND, flag);
-// }
+/**
+ * @test Verify that dividing a vector using @ref flcn::Vec3::safeDiv perform a component-wise divide and
+ *       returns a new vector instance.
+ */
+TYPED_TEST(Vec3ScalarDivisionTests, SafeDiv_ReturnsVectorWithDividedComponents)
+{
+    const auto result = this->_vec.safeDiv(this->_scalar);
+
+    EXPECT_VEC_EQ(this->_expectedScaledVec, result);
+}
+
+
+/**
+ * @test Verify that dividing a vector by integral zero using @ref flcn::Vec3::safeDiv
+ *       perform a component-wise divide and returns a new vector instance.
+ */
+TYPED_TEST(Vec3ScalarDivisionTests, SafeDiv_ByIntegralZero_ReturnsZeroVector)
+{
+    const auto result = this->_vec.safeDiv(0);
+    EXPECT_VEC_ZERO(result);
+}
+
+
+/**
+ * @test Verify that dividing a vector by floating point zero using @ref flcn::Vec3::safeDiv
+ *       perform a component-wise divide and returns a new vector instance.
+ */
+TYPED_TEST(Vec3ScalarDivisionTests, SafeDiv_ByFloatZero_ReturnsZeroVector)
+{
+    const auto result = this->_vec.safeDiv(0.0f);
+    EXPECT_VEC_ZERO(result);
+}
+
+
+/**
+ * @test Verify that dividing a vector using static variant of @ref flcn::Vec3::safeDiv
+ *       perform a component-wise divide and returns a new vector instance.
+ */
+TYPED_TEST(Vec3ScalarDivisionTests, StaticWrapper_SafeDiv_ReturnsVectorWithDividedComponents)
+{
+    const auto result = flcn::Vec3<TypeParam>::safeDiv(this->_vec, this->_scalar);
+    EXPECT_VEC_EQ(this->_expectedScaledVec, result);
+}
+
+
+/**
+ * @test Verify that dividing a vector by integral zero using static variant of @ref flcn::Vec3::safeDiv
+ *       perform a component-wise divide and returns a new vector instance.
+ */
+TEST(Vec3ScalarDivision, StaticWrapper_SafeDiv_ByIntergralZero_ReturnsZeroVector)
+{
+    const flcn::Vec3 vec(1, 2, 3);
+    EXPECT_VEC_ZERO(flcn::Vec3<int>::safeDiv(vec, 0));
+}
+
+
+/**
+ * @test Verify that dividing a vector by floating point zero using static variant @ref flcn::Vec3::safeDiv
+ *       perform a component-wise divide and returns a new vector instance.
+ */
+TYPED_TEST(Vec3ScalarDivisionTests, StaticWrapper_SafeDiv_ByFloatZero_ReturnsZeroVector)
+{
+    const auto result = flcn::Vec3<TypeParam>::safeDiv(this->_vec, 0.0f);
+    EXPECT_VEC_ZERO(result);
+}
+
+
+/**
+ * @test Verify that dividing a vector by NaN using @ref flcn::Vec3::safeDiv
+ *       returns a zero vector.
+ */
+TYPED_TEST(Vec3ScalarDivisionTests, SafeDiv_ByNaN_ReturnsZeroVector)
+{
+    if constexpr (std::is_integral_v<TypeParam>)
+    {
+        GTEST_SKIP() << "NaN tests only applicable for floating-point types.";
+    }
+    else
+    {
+        const auto result = flcn::Vec3<TypeParam>::safeDiv(this->_vec, flcn::constants::INFINITY_F);
+        EXPECT_VEC_ZERO(result);
+    }
+}
+
+
+/**
+ * @test Verify that dividing a vector by NaN using static variant of @ref flcn::Vec3::safeDiv
+ *       returns a zero vector.
+ */
+TYPED_TEST(Vec3ScalarDivisionTests, StaticWrapper_SafeDiv_ByNaN_ReturnsZeroVector)
+{
+    if constexpr (std::is_integral_v<TypeParam>)
+    {
+        GTEST_SKIP() << "NaN tests only applicable for floating-point types.";
+    }
+    else
+    {
+        const auto result = this->_vec.safeDiv(flcn::constants::NaN);
+        EXPECT_VEC_ZERO(result);
+    }
+}
+
+
+/**************************************
+ *         TRY DIVISION TESTS         *
+ **************************************/
+
+/**
+ * @test Verify that dividing a vector using @ref flcn::Vec3::tryDiv perform a component-wise divide and
+ *       returns a new vector instance and sets the flag to @ref flcn::OperationStatus::SUCCESS.
+ */
+TYPED_TEST(Vec3ScalarDivisionTests, TryDivide_ReturnsVectorWithDividedComponentsAndSetsCorrectFlag)
+{
+    flcn::OperationStatus flag;
+    const auto result = this->_vec.tryDiv(this->_scalar, flag);
+
+    EXPECT_EQ(flcn::OperationStatus::SUCCESS, flag);
+    EXPECT_VEC_EQ(this->_expectedScaledVec, result);
+}
+
+
+/**
+ * @test Verify that dividing a vector by integral zero using @ref flcn::Vec3::tryDiv returns zero vector and
+ *       sets the flag to @ref flcn::OperationStatus::DIVISIONBYZERO.
+ */
+TYPED_TEST(Vec3ScalarDivisionTests, TryDivideByIntegralZero_ReturnsZeroVectorAndSetsCorrectFlag)
+{
+    flcn::OperationStatus flag;
+    const auto result = this->_vec.tryDiv(0, flag);
+
+    EXPECT_VEC_ZERO(result);
+    EXPECT_EQ(flcn::OperationStatus::DIVISIONBYZERO, flag);
+}
+
+
+/**
+ * @test Verify that dividing a vector by floating point zero using @ref flcn::Vec3::tryDiv returns zero vector and
+ *       sets the flag to @ref flcn::OperationStatus::DIVISIONBYZERO.
+ */
+TYPED_TEST(Vec3ScalarDivisionTests, TryDivideByFloatZero_ReturnsZeroVectorAndSetsCorrectFlag)
+{
+    flcn::OperationStatus flag;
+    const auto result = this->_vec.tryDiv(0.0, flag);
+
+    EXPECT_VEC_ZERO(result);
+    EXPECT_EQ(flcn::OperationStatus::DIVISIONBYZERO, flag);
+}
+
+
+/**
+ * @test Verify that dividing a NaN vector by zero using @ref flcn::Vec3::tryDiv
+ *       @ref flcn::OperationStatus::NANOPERAND takes precedence over @ref flcn::OperationStatus::NANOPERAND.
+ */
+TEST(Vec3ScalarDivision, TryDivideNaNVectorByZero_NaNOperandStatusTakesPrecedence)
+{
+    flcn::OperationStatus flag;
+    [[maybe_unused]] const auto result = flcn::Vec3<double>::qnan().tryDiv(0, flag);
+    EXPECT_EQ(flcn::OperationStatus::NANOPERAND, flag);
+}
+
+
+/**
+ * @test Verify that dividing a vector by NaN using @ref flcn::Vec3::tryDiv returns a zero vector and
+ *       sets the flag to @ref flcn::OperationStatus::NANOPERAND.
+ */
+TYPED_TEST(Vec3ScalarDivisionTests, TryDivideByNaN_ReturnsZeroVectorAndSetsCorrectFlag)
+{
+    flcn::OperationStatus flag;
+    const auto result = this->_vec.tryDiv(flcn::constants::NaN, flag);
+
+    EXPECT_VEC_ZERO(result);
+    EXPECT_EQ(flcn::OperationStatus::NANOPERAND, flag);
+}
+
+
+/**
+ * @test Verify that dividing a vector using static variant of @ref flcn::Vec3::tryDiv
+ *       perform a component-wise divide and returns a new vector instance and
+ *       sets the flag to @ref flcn::OperationStatus::SUCCESS.
+ */
+TYPED_TEST(Vec3ScalarDivisionTests, StaticWrapper_TryDivide_ReturnsVectorWithDividedComponentsAndSetsCorrectFlag)
+{
+    flcn::OperationStatus flag;
+    const auto result = flcn::Vec3<TypeParam>::tryDiv(this->_vec, this->_scalar, flag);
+
+    EXPECT_VEC_EQ(this->_expectedScaledVec, result);
+    EXPECT_EQ(flcn::OperationStatus::SUCCESS, flag);
+}
+
+
+/**
+ * @test Verify that dividing a vector by integral zero using static variant of @ref flcn::Vec3::tryDiv
+ *       returns zero vector and sets the flag to @ref flcn::OperationStatus::DIVISIONBYZERO.
+ */
+TYPED_TEST(Vec3ScalarDivisionTests, StaticWrapper_TryDivideByIntegralZero_ReturnsZeroVectorAndSetsCorrectFlag)
+{
+    flcn::OperationStatus flag;
+    const auto result = flcn::Vec3<TypeParam>::tryDiv(this->_vec, 0, flag);
+
+    EXPECT_VEC_ZERO(result);
+    EXPECT_EQ(flcn::OperationStatus::DIVISIONBYZERO, flag);
+}
+
+
+/**
+ * @test Verify that dividing a vector by floating point zero using static variant of @ref flcn::Vec3::tryDiv
+ *       returns zero vector and sets the flag to @ref flcn::OperationStatus::DIVISIONBYZERO.
+ */
+TYPED_TEST(Vec3ScalarDivisionTests, StaticWrapper_TryDivideByFloatZero_ReturnsZeroVectorAndSetsCorrectFlag)
+{
+    flcn::OperationStatus flag;
+    const auto result = flcn::Vec3<TypeParam>::tryDiv(this->_vec, 0.0, flag);
+
+    EXPECT_VEC_ZERO(result);
+    EXPECT_EQ(flcn::OperationStatus::DIVISIONBYZERO, flag);
+}
+
+
+/**
+ * @test Verify that dividing a vector by floating point zero using static variant of @ref flcn::Vec3::tryDiv
+ *       returns zero vector and sets the flag to @ref flcn::OperationStatus::NANOPERAND.
+ */
+TEST(Vec3ScalarDivision, StaticWrapper_TryDivideNaNVector_ReturnsZeroVectorAndSetsCorrectFlag)
+{
+    flcn::OperationStatus flag;
+    const auto result = flcn::Vec3<double>::tryDiv(flcn::Vec3<double>::qnan(), 3, flag);
+
+    EXPECT_VEC_ZERO(result);
+    EXPECT_EQ(flcn::OperationStatus::NANOPERAND, flag);
+}
+
+
+/**
+ * @test Verify that dividing a vector by NaN using static variant of @ref flcn::Vec3::tryDiv returns zero vector
+ * and sets the flag to @ref flcn::OperationStatus::NANOPERAND.
+ */
+TYPED_TEST(Vec3ScalarDivisionTests, StaticWrapper_TryDivideByNaN_ReturnsZeroVectorAndSetsCorrectFlag)
+{
+    flcn::OperationStatus flag;
+    const auto result = flcn::Vec3<TypeParam>::tryDiv(this->_vec, flcn::constants::NaN, flag);
+
+    EXPECT_VEC_ZERO(result);
+    EXPECT_EQ(flcn::OperationStatus::NANOPERAND, flag);
+}
+
+
+/**************************************
+ *                                    *
+ *         NaN DIVISION TESTS         *
+ *                                    *
+ **************************************/
+
+/**
+ * @test Verify that dividing a nan vector by a scalar using @ref flcn::Vec3::safeDiv
+ *       returns vector with NaN-components as zero.
+ */
+TEST_P(Vec3DivisionNaNTests, SafeDiv_ReturnsVectorWithNaNComponentsAsZero)
+{
+    const auto& vec = GetParam();
+    EXPECT_VEC_ZERO(vec.safeDiv(3));
+}
+
+/**
+ * @test Verify that dividing a nan vector by a scalar using static variant of @ref flcn::Vec3::safeDiv
+ *       returns zero vector.
+ */
+TEST_P(Vec3DivisionNaNTests, StaticWrapper_SafeDiv_ReturnsVectorWithNaNComponentsAsZero)
+{
+    const auto& vec = GetParam();
+    EXPECT_VEC_ZERO(flcn::Vec3<float>::safeDiv(vec, 3));
+}
+
+
+/**
+ * @test Verify that dividing a nan vector by a scalar using @ref flcn::Vec3::tryDiv
+ *       returns zero vector and sets flag to OperationStatus::NANOPERAND.
+ */
+TEST_P(Vec3DivisionNaNTests, TryDiv_ReturnsVectorWithNaNComponentsAsZero)
+{
+    const auto& vec = GetParam();
+    flcn::OperationStatus flag;
+    EXPECT_VEC_ZERO(vec.tryDiv(3, flag));
+    EXPECT_EQ(flcn::OperationStatus::NANOPERAND, flag);
+}
+
+
+/**
+ * @test Verify that dividing a nan vector by a scalar using static variant of @ref flcn::Vec3::tryDiv
+ *       returns zero vector and sets flag to OperationStatus::NANOPERAND.
+ */
+TEST_P(Vec3DivisionNaNTests, StaticWrapper_TryDiv_ReturnsVectorWithNaNComponentsAsZero)
+{
+    const auto& vec = GetParam();
+    flcn::OperationStatus flag;
+    EXPECT_VEC_ZERO(flcn::Vec3<float>::tryDiv(vec, 3, flag));
+    EXPECT_EQ(flcn::OperationStatus::NANOPERAND, flag);
+}
 
 
 /**************************************

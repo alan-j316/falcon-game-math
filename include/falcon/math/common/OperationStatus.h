@@ -28,7 +28,8 @@ namespace flcn
     {
         SUCCESS = 0,    ///< Flag indicating operation success.
         DIVISIONBYZERO, ///< Flag indicating that division by zero has occured.
-        NANOPERAND      ///< Flag indicating that one or more operands are NaN.
+        NANOPERAND,     ///< Flag indicating that one or more operands are NaN.
+        INFOPERAND      ///< Flag indicating that one or more operands are Infinity.
     };
 
 

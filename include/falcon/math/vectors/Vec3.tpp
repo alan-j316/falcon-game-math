@@ -564,6 +564,84 @@ namespace flcn
     }
 
 
+    template <Arithmetic T>
+    template <StrictArithmetic S>
+    FALCON_INLINE constexpr Vec3<T> Vec3<T>::safeDiv(S scalar) const noexcept
+        requires StrictArithmetic<T>
+    {
+        if constexpr (std::is_floating_point_v<T> || std::is_floating_point_v<S>)
+        {
+            if (hasNaN() || flcn::isnan(scalar) || (flcn::abs(scalar) <= std::numeric_limits<S>::epsilon()))
+            {
+                return Vec3<T>::zero();
+            }
+        }
+        else if constexpr (std::is_integral_v<T>)
+        {
+            // Since the division will cast operand to T, casting inf to integral is UB(Undefined Behaviour)
+            if (scalar == 0 || flcn::isinf(scalar))
+            {
+                return Vec3<T>::zero();
+            }
+        }
+
+        return *this / scalar;
+    }
+
+
+    template <Arithmetic T>
+    template <StrictArithmetic S>
+    FALCON_INLINE constexpr Vec3<T> Vec3<T>::safeDiv(const Vec3& vec, S scalar) noexcept
+        requires StrictArithmetic<T>
+    { return vec.safeDiv(scalar); }
+
+
+    template <Arithmetic T>
+    template <StrictArithmetic S>
+    FALCON_INLINE constexpr Vec3<T> Vec3<T>::tryDiv(S scalar, OperationStatus& status) const noexcept
+        requires StrictArithmetic<T>
+    {
+        if constexpr (std::is_floating_point_v<T> || std::is_floating_point_v<S>)
+        {
+            if (hasNaN() || flcn::isnan(scalar))
+            {
+                status = OperationStatus::NANOPERAND;
+                return Vec3<T>::zero();
+            }
+            if (flcn::abs(scalar) <= std::numeric_limits<S>::epsilon())
+            {
+                status = OperationStatus::DIVISIONBYZERO;
+                return Vec3<T>::zero();
+            }
+        }
+
+        if constexpr (std::is_integral_v<T>)
+        {
+            if (scalar == 0)
+            {
+                status = OperationStatus::DIVISIONBYZERO;
+                return Vec3<T>::zero();
+            }
+            // Since the division will cast operand to T, casting inf to integral is UB(Undefined Behaviour)
+            if (hasInf())
+            {
+                status = OperationStatus::INFOPERAND;
+                return Vec3<T>::zero();
+            }
+        }
+
+        status = OperationStatus::SUCCESS;
+        return *this / scalar;
+    }
+
+
+    template <Arithmetic T>
+    template <StrictArithmetic S>
+    FALCON_INLINE constexpr Vec3<T> Vec3<T>::tryDiv(const Vec3& vec, S scalar, OperationStatus& status) noexcept
+        requires StrictArithmetic<T>
+    { return vec.tryDiv(scalar, status); }
+
+
 
     /// +---------------------------------------------------------------------------------------+
     /// |                               UTILITIES                                               |

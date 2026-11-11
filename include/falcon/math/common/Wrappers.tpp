@@ -97,11 +97,14 @@ namespace flcn
     {
         if (std::is_constant_evaluated())
         {
-            if (std::numeric_limits<T>::has_infinity)
+            if constexpr (std::numeric_limits<T>::has_infinity)
             {
                 return std::numeric_limits<T>::infinity() == num || -std::numeric_limits<T>::infinity() == num;
             }
-            return false;
+            else
+            {
+                return false;
+            }
         }
         return std::isinf(num);
     }

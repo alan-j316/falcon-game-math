@@ -643,7 +643,6 @@ TYPED_TEST(CVec3ScalarDivisionTests, StaticWrapper_SafeDiv_ByFloatZero_ReturnsZe
 TYPED_TEST(CVec3ScalarDivisionTests, SafeDiv_ByNaN_ReturnsZeroVector)
 {
     const auto result = this->_vec.safeDiv(flcn::constants::NaN);
-
     EXPECT_VEC_ZERO(result);
 }
 

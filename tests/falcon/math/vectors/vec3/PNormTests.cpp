@@ -88,30 +88,30 @@ TYPED_TEST(Vec3ManhattanNormTests, StaticWrapper_ReturnsSumOfAbsoluteValueOfComp
     EXPECT_MAG_EQ(this->_norm, magnitude);
 }
 
-//
-//
-// /**************************************
-//  *           CHEBYSHEV NORM           *
-//  **************************************/
-//
-// /** @test Verify that taking the chebyshev norm of a non-unit vector returns non-unit scalar. */
-// TYPED_TEST(Vec3ChebyshevNormTests, ReturnsLongestAbsoluteComponent)
-// {
-//     const auto magnitude = this->_vec.chebyshevNorm();
-//
-//     EXPECT_MAG_EQ(this->_norm, magnitude);
-// }
-//
-//
-// /**
-//  * @test Verify that taking the chebyshev norm of a non-unit vector using static variant of
-//  *        @ref flcn::Vec3::chebyshevNorm returns non-unit scalar.
-//  */
-// TYPED_TEST(Vec3ChebyshevNormTests, StaticWrapper_ReturnsLongestAbsoluteComponent)
-// {
-//     const auto magnitude = flcn::Vec3<TypeParam>::chebyshevNorm(this->_vec);
-//
-//     EXPECT_MAG_EQ(this->_norm, magnitude);
-// }
+
+
+/**************************************
+ *           CHEBYSHEV NORM           *
+ **************************************/
+
+/** @test Verify that taking the chebyshev norm of a non-unit vector returns non-unit scalar. */
+TYPED_TEST(Vec3ChebyshevNormTests, ReturnsLongestAbsoluteComponent)
+{
+    const auto magnitude = this->_vec.chebyshevNorm();
+
+    EXPECT_MAG_EQ(this->_norm, magnitude);
+}
+
+
+/**
+ * @test Verify that taking the chebyshev norm of a non-unit vector using static variant of
+ *        @ref flcn::Vec3::chebyshevNorm returns non-unit scalar.
+ */
+TYPED_TEST(Vec3ChebyshevNormTests, StaticWrapper_ReturnsLongestAbsoluteComponent)
+{
+    const auto magnitude = flcn::Vec3<TypeParam>::chebyshevNorm(this->_vec);
+
+    EXPECT_MAG_EQ(this->_norm, magnitude);
+}
 
 /** @} */

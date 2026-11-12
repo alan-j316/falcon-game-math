@@ -686,7 +686,7 @@ TYPED_TEST(Simd128ArithmeticTests, FMA_StaticWrapper_ReturnsAValidResult)
 }
 
 
-/// @test Verify that fmsub operation returns a valid result (a * b - c)(static wrapper).
+/// @test Verify that fmSub operation returns a valid result (a * b - c)(static wrapper).
 TYPED_TEST(Simd128ArithmeticTests, FMSub_StaticWrapper_ReturnsAValidResult)
 {
     using Type            = TypeParam::Type;

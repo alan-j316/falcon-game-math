@@ -511,7 +511,7 @@ namespace flcn
          * @param b The register containing the multiplier.
          * @param c The register containing the addend.
          *
-         * @return A new register with the fused-multiply add result.
+         * @return A new register with the fused-multiply-add result.
          */
         [[nodiscard]] constexpr Simd128 fma(Simd128 b, Simd128 c) const noexcept;
 
@@ -523,7 +523,7 @@ namespace flcn
          * @param b The register containing the multiplier.
          * @param c The register containing the the subtrahend.
          *
-         * @return A new register with the fused-multiply subtraction result.
+         * @return A new register with the fused-multiply-subtract result.
          */
         [[nodiscard]] constexpr Simd128 fmSub(Simd128 b, Simd128 c) const noexcept;
 

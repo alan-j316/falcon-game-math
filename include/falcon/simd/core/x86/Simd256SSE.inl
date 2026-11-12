@@ -401,6 +401,12 @@ namespace flcn
 
 
     template <typename DataType, size_t Lane>
+    FALCON_INLINE constexpr Simd256<SimdBackend::ARCH_SSE2, DataType, Lane> Simd256<
+        SimdBackend::ARCH_SSE2, DataType, Lane>::fmSub(Simd256 b, Simd256 c) const noexcept
+    { return Simd256(_lower.fmSub(b._lower, c._lower), _upper.fmSub(b._upper, c._upper)); }
+
+
+    template <typename DataType, size_t Lane>
     FALCON_INLINE constexpr DataType Simd256<SimdBackend::ARCH_SSE2, DataType, Lane>::horizontalAdd() const noexcept
     { return _lower.horizontalAdd() + _upper.horizontalAdd(); }
 

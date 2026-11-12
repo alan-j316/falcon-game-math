@@ -214,6 +214,20 @@ namespace flcn
     { return reg.sqrt(); }
 
 
+    template <typename DataType, size_t Lane>
+    FALCON_INLINE constexpr _REG_256_AVX<DataType, Lane> fma(_REG_256_AVX<DataType, Lane> a,
+                                                             _REG_256_AVX<DataType, Lane> b,
+                                                             _REG_256_AVX<DataType, Lane> c) noexcept
+    { return a.fma(b, c); }
+
+
+    template <typename DataType, size_t Lane>
+    FALCON_INLINE constexpr _REG_256_AVX<DataType, Lane> fmSub(_REG_256_AVX<DataType, Lane> a,
+                                                               _REG_256_AVX<DataType, Lane> b,
+                                                               _REG_256_AVX<DataType, Lane> c) noexcept
+    { return a.fmSub(b, c); }
+
+
 #undef _FALCON_SIMD256_SUPPORT_NATIVE_INTRINSIC
 
 } // namespace flcn

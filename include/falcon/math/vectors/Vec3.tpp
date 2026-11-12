@@ -824,7 +824,7 @@ namespace flcn
      **************************************/
 
     template <Arithmetic T>
-    constexpr T Vec3<T>::manhattanDist(const Vec3& rhs) const noexcept
+    FALCON_INLINE constexpr T Vec3<T>::manhattanDist(const Vec3& rhs) const noexcept
         requires StrictArithmetic<T>
     {
         // For unsigned integrals taking their difference and then, abs will cause wrap around
@@ -850,9 +850,46 @@ namespace flcn
     }
 
     template <Arithmetic T>
-    constexpr T Vec3<T>::manhattanDist(const Vec3& lhs, const Vec3& rhs) noexcept
+    FALCON_INLINE constexpr T Vec3<T>::manhattanDist(const Vec3& lhs, const Vec3& rhs) noexcept
         requires StrictArithmetic<T>
     { return lhs.manhattanDist(rhs); }
+
+
+    /**************************************
+     *             CHEBYSHEV              *
+     **************************************/
+
+    template <Arithmetic T>
+    FALCON_INLINE constexpr T Vec3<T>::chebyshevDist(const Vec3& rhs) const noexcept
+        requires StrictArithmetic<T>
+    {
+        // For unsigned integrals taking difference and then abs will cause wrap around
+        // when the difference is negative.
+        // To circumvent this, we can take both differences and selectively take
+        // whichever is greater.
+        if constexpr (std::is_signed_v<T>)
+        {
+            const auto diff = rhs._data - _data;
+            const auto abs  = diff.abs();
+            return abs.horizontalMax();
+        }
+        else
+        {
+            // For unsigned number we need to manually do diff abs a mask and selection
+            // a > b ? a - b : b - a
+            const auto diff1 = rhs._data - _data; // b - a
+            const auto diff2 = _data - rhs._data; // a - b
+            const auto mask  = _data > rhs._data; // a > b
+            const auto abs   = diff1.blend(diff2, mask);
+            return abs.horizontalMax();
+        }
+    }
+
+
+    template <Arithmetic T>
+    FALCON_INLINE constexpr T Vec3<T>::chebyshevDist(const Vec3& lhs, const Vec3& rhs) noexcept
+        requires StrictArithmetic<T>
+    { return lhs.chebyshevDist(rhs); }
 
 
 

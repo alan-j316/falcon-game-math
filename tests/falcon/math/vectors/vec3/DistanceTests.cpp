@@ -267,55 +267,55 @@ TYPED_TEST(Vec3DistanceSignedTests, StaticWrapper_ManhattanDist_HandlesNegativeN
 }
 
 
-// /**************************************
-//  *        CHEBYSHEV DISTANCE          *
-//  **************************************/
-//
-//
-// /** @test Verify that the @ref flcn::Vec3::chebyshevDist function returns the Chebyshev distance. */
-// TYPED_TEST(Vec3DistanceTests, ChebyshevDist_ReturnsChebyshevDistance)
-// { EXPECT_MAG_EQ(this->_distChebyshev, this->_vecA.chebyshevDist(this->_vecB)); }
-//
-//
-// /** @test Verify that the @ref flcn::Vec3::chebyshevDist function returns zero for the same vector. */
-// TYPED_TEST(Vec3DistanceTests, ChebyshevDist_BetweenSameVectorReturnsZero)
-// {
-//     constexpr auto zero = TypeParam(0);
-//     const auto distance = this->_vecA.chebyshevDist(this->_vecA);
-//     EXPECT_MAG_EQ(zero, distance);
-// }
-//
-//
-// /** @test Verify that the @ref flcn::Vec3::chebyshevDist function handles negative coordinates. */
-// TYPED_TEST(Vec3DistanceSignedTests, ChebyshevDist_HandlesNegativeNumbers)
-// {
-//     const auto distance = this->_vecA.chebyshevDist(this->_vecB);
-//     EXPECT_MAG_EQ(this->_distChebyshev, distance);
-// }
-//
-//
-// /**
-//  * @test Verify that the static variant of  @ref flcn::Vec3::chebyshevDist function
-//  *        returns the Chebyshev distance.
-//  */
-// TYPED_TEST(Vec3DistanceTests, StaticWrapper_ChebyshevDist_ReturnsChebyshevDistance)
-// { EXPECT_MAG_EQ(this->_distChebyshev, flcn::Vec3<TypeParam>::chebyshevDist(this->_vecA, this->_vecB)); }
-//
-//
-// /** @test Verify that the @ref flcn::Vec3::chebyshevDist function returns zero for the same vector. */
-// TYPED_TEST(Vec3DistanceTests, StaticWrapper_ChebyshevDist_BetweenSameVectorReturnsZero)
-// {
-//     constexpr auto zero = TypeParam(0);
-//     const auto distance = flcn::Vec3<TypeParam>::chebyshevDist(this->_vecA, this->_vecA);
-//     EXPECT_MAG_EQ(zero, distance);
-// }
-//
-//
-// /** @test Verify that the static variant of @ref flcn::Vec3::chebyshevDist function handles negative coordinates. */
-// TYPED_TEST(Vec3DistanceSignedTests, StaticWrapper_ChebyshevDist_HandlesNegativeNumbers)
-// {
-//     const auto distance = flcn::Vec3<TypeParam>::chebyshevDist(this->_vecA, this->_vecB);
-//     EXPECT_MAG_EQ(this->_distChebyshev, distance);
-// }
+/**************************************
+ *        CHEBYSHEV DISTANCE          *
+ **************************************/
+
+
+/** @test Verify that the @ref flcn::Vec3::chebyshevDist function returns the Chebyshev distance. */
+TYPED_TEST(Vec3DistanceTests, ChebyshevDist_ReturnsChebyshevDistance)
+{ EXPECT_MAG_EQ(this->_distChebyshev, this->_vecA.chebyshevDist(this->_vecB)); }
+
+
+/** @test Verify that the @ref flcn::Vec3::chebyshevDist function returns zero for the same vector. */
+TYPED_TEST(Vec3DistanceTests, ChebyshevDist_BetweenSameVectorReturnsZero)
+{
+    constexpr auto zero = TypeParam(0);
+    const auto distance = this->_vecA.chebyshevDist(this->_vecA);
+    EXPECT_MAG_EQ(zero, distance);
+}
+
+
+/** @test Verify that the @ref flcn::Vec3::chebyshevDist function handles negative coordinates. */
+TYPED_TEST(Vec3DistanceSignedTests, ChebyshevDist_HandlesNegativeNumbers)
+{
+    const auto distance = this->_vecA.chebyshevDist(this->_vecB);
+    EXPECT_MAG_EQ(this->_distChebyshev, distance);
+}
+
+
+/**
+ * @test Verify that the static variant of  @ref flcn::Vec3::chebyshevDist function
+ *        returns the Chebyshev distance.
+ */
+TYPED_TEST(Vec3DistanceTests, StaticWrapper_ChebyshevDist_ReturnsChebyshevDistance)
+{ EXPECT_MAG_EQ(this->_distChebyshev, flcn::Vec3<TypeParam>::chebyshevDist(this->_vecA, this->_vecB)); }
+
+
+/** @test Verify that the @ref flcn::Vec3::chebyshevDist function returns zero for the same vector. */
+TYPED_TEST(Vec3DistanceTests, StaticWrapper_ChebyshevDist_BetweenSameVectorReturnsZero)
+{
+    constexpr auto zero = TypeParam(0);
+    const auto distance = flcn::Vec3<TypeParam>::chebyshevDist(this->_vecA, this->_vecA);
+    EXPECT_MAG_EQ(zero, distance);
+}
+
+
+/** @test Verify that the static variant of @ref flcn::Vec3::chebyshevDist function handles negative coordinates. */
+TYPED_TEST(Vec3DistanceSignedTests, StaticWrapper_ChebyshevDist_HandlesNegativeNumbers)
+{
+    const auto distance = flcn::Vec3<TypeParam>::chebyshevDist(this->_vecA, this->_vecB);
+    EXPECT_MAG_EQ(this->_distChebyshev, distance);
+}
 
 /** @} */

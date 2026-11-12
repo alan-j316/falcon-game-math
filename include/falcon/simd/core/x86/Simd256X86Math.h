@@ -86,6 +86,38 @@ namespace flcn
     [[nodiscard]] constexpr _REG_256_SSE<DataType, Lane> sqrt(_REG_256_SSE<DataType, Lane> reg) noexcept;
 
 
+    /**
+     * @brief Perform a fused multiply and add (a * b + c).
+     *
+     * @note Register arithmetic is limited to same data types and lanes.
+     * @param a The register containing the multiplicand.
+     * @param b The register containing the multiplier.
+     * @param c The register containing the addend.
+     *
+     * @return A new register with the fused-multiply add result.
+     */
+    template <typename DataType, size_t Lane>
+    [[nodiscard]] constexpr _REG_256_SSE<DataType, Lane> fma(_REG_256_SSE<DataType, Lane> a,
+                                                             _REG_256_SSE<DataType, Lane> b,
+                                                             _REG_256_SSE<DataType, Lane> c) noexcept;
+
+
+    /**
+     * @brief Perform a fused multiply and subtract (this * b - c).
+     *
+     * @note Register arithmetic is limited to same data types and lanes.
+     * @param a The register containing the multiplicand.
+     * @param b The register containing the multiplier.
+     * @param c The register containing the the subtrahend.
+     *
+     * @return A new register with the fused-multiply subtraction result.
+     */
+    template <typename DataType, size_t Lane>
+    [[nodiscard]] constexpr _REG_256_SSE<DataType, Lane> fmSub(_REG_256_SSE<DataType, Lane> a,
+                                                               _REG_256_SSE<DataType, Lane> b,
+                                                               _REG_256_SSE<DataType, Lane> c) noexcept;
+
+
 
     /// +=============================================================================================================+
     /// |                                                 AVX                                                         |

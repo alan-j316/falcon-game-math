@@ -626,7 +626,6 @@ TEST(Simd256ArithmeticTests, CompoundDivideOperator_WorksWithMixedNumbers)
 }
 
 
-
 /// @test Verify that fma operation returns a valid result (a * b + c).
 TYPED_TEST(Simd256ArithmeticTests, FMA_ReturnsAValidResult)
 {
@@ -657,6 +656,35 @@ TYPED_TEST(Simd256ArithmeticTests, FMA_ReturnsAValidResult)
 }
 
 
+/// @test Verify that fma operation returns a valid result (a * b + c)(static wrapper).
+TYPED_TEST(Simd256ArithmeticTests, FMA_StaticWrapper_ReturnsAValidResult)
+{
+    using Type            = TypeParam::Type;
+    constexpr size_t Lane = TypeParam::VALUE;
+
+    // We are swapping for the largest and smallest for the first two indices
+    // since we have at least 2 lanes(256 / 64(max data type size)) we can safely inject those values
+    alignas(32) std::array<Type, Lane> a{}, b{}, c{}, expected{}, result{};
+    for (size_t i = 0; i < Lane; ++i)
+    {
+        a[i]        = this->a[i];
+        b[i]        = this->b[i];
+        c[i]        = this->c[i];
+        expected[i] = static_cast<Type>(a[i] * b[i] + c[i]);
+    }
+
+
+    flcn::Simd256_t<Type, Lane> regA{ a }, regB{ b }, regC{ c };
+
+    const auto resReg = flcn::fma(regA, regB, regC);
+    resReg.storeAligned(result.data());
+
+    for (size_t i = 0; i < Lane; ++i)
+    {
+        EXPECT_ANY_EQ(expected[i], result[i]);
+    }
+}
+
 
 /// @test Verify that fmSub operation returns a valid result (a * b - c).
 TYPED_TEST(Simd256ArithmeticTests, FMSub_ReturnsAValidResult)
@@ -686,6 +714,34 @@ TYPED_TEST(Simd256ArithmeticTests, FMSub_ReturnsAValidResult)
     }
 }
 
+
+/// @test Verify that fmSub operation returns a valid result (a * b - c)(static wrapper).
+TYPED_TEST(Simd256ArithmeticTests, FMSub_StaticWrapper_ReturnsAValidResult)
+{
+    using Type            = TypeParam::Type;
+    constexpr size_t Lane = TypeParam::VALUE;
+
+    // We are swapping for the largest and smallest for the first two indices
+    // since we have at least 2 lanes(256 / 64(max data type size)) we can safely inject those values
+    alignas(32) std::array<Type, Lane> a{}, b{}, c{}, expected{}, result{};
+    for (size_t i = 0; i < Lane; ++i)
+    {
+        a[i]        = this->a[i];
+        b[i]        = this->b[i];
+        c[i]        = this->c[i];
+        expected[i] = static_cast<Type>(a[i] * b[i] - c[i]);
+    }
+
+    flcn::Simd256_t<Type, Lane> regA{ a }, regB{ b }, regC{ c };
+
+    const auto resReg = flcn::fmSub(regA, regB, regC);
+    resReg.storeAligned(result.data());
+
+    for (size_t i = 0; i < Lane; ++i)
+    {
+        EXPECT_ANY_EQ(expected[i], result[i]);
+    }
+}
 
 
 TYPED_TEST(Simd256ArithmeticTests, HorizontalAdd_ReturnsAValidResult)

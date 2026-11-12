@@ -35,6 +35,20 @@ namespace flcn
     { return reg.sqrt(); }
 
 
+    template <typename DataType, size_t Lane>
+    FALCON_INLINE constexpr _REG_256_SSE<DataType, Lane> fma(_REG_256_SSE<DataType, Lane> a,
+                                                             _REG_256_SSE<DataType, Lane> b,
+                                                             _REG_256_SSE<DataType, Lane> c) noexcept
+    { return a.fma(b, c); }
+
+
+    template <typename DataType, size_t Lane>
+    FALCON_INLINE constexpr _REG_256_SSE<DataType, Lane> fmSub(_REG_256_SSE<DataType, Lane> a,
+                                                               _REG_256_SSE<DataType, Lane> b,
+                                                               _REG_256_SSE<DataType, Lane> c) noexcept
+    { return a.fmSub(b, c); }
+
+
 #define _FALCON_SIMD256_SUPPORT_NATIVE_INTRINSIC(DataType)                                                             \
     (std::floating_point<DataType> && CURRENT_SIMD_BACKEND >= SimdBackend::ARCH_AVX) ||                                \
         CURRENT_SIMD_BACKEND >= SimdBackend::ARCH_AVX2
@@ -201,5 +215,5 @@ namespace flcn
 
 
 #undef _FALCON_SIMD256_SUPPORT_NATIVE_INTRINSIC
-    
+
 } // namespace flcn

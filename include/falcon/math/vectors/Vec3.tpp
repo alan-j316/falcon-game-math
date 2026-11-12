@@ -668,19 +668,36 @@ namespace flcn
     /// +---------------------------------------------------------------------------------------+
 
 
-    // template <Arithmetic T>
-    // FALCON_INLINE constexpr Vec3<T> Vec3<T>::cross(const Vec3& rhs) const noexcept
-    //     requires SignedStrictArithmetic<T>
-    // {
-    //     // TODO:
-    //     // _data.fma
-    //     return rhs;
-    // }
-    //
-    // template <Arithmetic T>
-    // FALCON_INLINE constexpr Vec3<T> Vec3<T>::cross(const Vec3& lhs, const Vec3& rhs) noexcept
-    //     requires SignedStrictArithmetic<T>
-    // { return lhs.cross(rhs); }
+    template <Arithmetic T>
+    FALCON_INLINE constexpr Vec3<T> Vec3<T>::cross(const Vec3& rhs) const noexcept
+        requires SignedStrictArithmetic<T>
+    {
+        // Cross product (0 is unused lane)
+        // | a_y * b_z | a_z * b_x | a_x * b_y | 0 | - (minuend)
+        // | b_y * a_z | b_z * a_x | b_x * a_y | 0 |   (subtrahend)
+        // But that will require 4 shuffles, 2 multiply and 1 subtraction
+        // But we can shuffle only 2 register first for the multiplication and shuffle the result once more
+
+        // | a_x | a_y | a_z | 0 |  *  | b_y | b_z | b_x | 0 | (Second Part is shuffled)
+        const auto bYZX = rhs._data.template permute<1, 2, 0, 3>();
+
+        // | b_x | b_y | b_z | 0 |  *  | a_y | a_z | a_x | 0 |
+        const auto aYZX = _data.template permute<1, 2, 0, 3>();
+
+        // Multiply the subtrahend
+        const auto subtrahend = rhs._data * aYZX;
+
+        // Perform a fused multiply and sub for the minuend
+        const auto unshuffledResult = flcn::fmSub(_data, bYZX, subtrahend);
+
+        // Results are in the wrong lane so we need to shuffle them back in
+        return Vec3(unshuffledResult.template permute<1, 2, 0, 3>());
+    }
+
+    template <Arithmetic T>
+    FALCON_INLINE constexpr Vec3<T> Vec3<T>::cross(const Vec3& lhs, const Vec3& rhs) noexcept
+        requires SignedStrictArithmetic<T>
+    { return lhs.cross(rhs); }
 
 
 

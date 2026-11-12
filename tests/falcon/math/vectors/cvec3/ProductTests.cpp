@@ -299,7 +299,7 @@ TEST(CVec3DotProduct, Dot_MixedType_PromotesType)
  * @test Verify that the cross product of vector aligned with x-axis and a vector aligned with y-axis
  *        returns a vector aligned with the z-axis.
  */
-TEST(CVec3CrossProduct, BetweenAxisAlignedXAndYVectorsReturnsZ)
+TEST(CVec3CrossProductTests, BetweenAxisAlignedXAndYVectorsReturnsZ)
 {
     const flcn::CVec3 xAxis(1.0f, 0.0f, 0.0f);
     const flcn::CVec3 yAxis(0.0f, 1.0f, 0.0f);
@@ -315,7 +315,7 @@ TEST(CVec3CrossProduct, BetweenAxisAlignedXAndYVectorsReturnsZ)
  * @test Verify that the cross product of vector aligned with y-axis and a vector aligned with x-axis
  *        returns a vector aligned with the negative z-axis.
  */
-TEST(CVec3CrossProduct, BetweenAxisAlignedYAndZVectorsReturnsNegativeZ)
+TEST(CVec3CrossProductTests, BetweenAxisAlignedYAndZVectorsReturnsNegativeZ)
 {
     const flcn::CVec3 yAxis(0.0f, 1.0f, 0.0f);
     const flcn::CVec3 xAxis(1.0f, 0.0f, 0.0f);
@@ -331,7 +331,7 @@ TEST(CVec3CrossProduct, BetweenAxisAlignedYAndZVectorsReturnsNegativeZ)
  * @test Verify that the cross product of vector aligned with z-axis and a vector aligned with y-axis
  *        returns a vector aligned with the negative x-axis.
  */
-TEST(CVec3CrossProduct, BetweenAxisAlignedZAndYVectorsReturnsNegativeX)
+TEST(CVec3CrossProductTests, BetweenAxisAlignedZAndYVectorsReturnsNegativeX)
 {
     // Arrange
     const flcn::CVec3 zAxis(0.0f, 0.0f, 1.0f);
@@ -347,7 +347,7 @@ TEST(CVec3CrossProduct, BetweenAxisAlignedZAndYVectorsReturnsNegativeX)
 
 
 /** @test Verify that the cross product of vector with self is a zero-vector. */
-TEST(CVec3CrossProduct, Cross_WithItself_ReturnsZeroVector)
+TEST(CVec3CrossProductTests, Cross_WithItself_ReturnsZeroVector)
 {
     const flcn::CVec3 vec(0.0f, 0.0f, 1.0f);
 
@@ -461,7 +461,7 @@ TYPED_TEST(CVec3CrossProductTests, BetweenParallelVectorIsCommutatives)
 
 
 /** @test Verify that the cross product between two differently typed vectors promote type. */
-TEST(CVec3CrossProduct, TensorProduct_MixedTypes_PromotesType)
+TEST(CVec3CrossProductTests, TensorProduct_MixedTypes_PromotesType)
 {
     const flcn::CVec3 vecA(2.0f, 3.0f, 4.0f);
     const flcn::CVec3 vecB(5.0, 6.0, 7.0);

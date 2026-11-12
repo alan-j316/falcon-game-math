@@ -220,174 +220,174 @@ TEST(Vec3DotProduct, Dot_AntiParallelVectorsReturnsNegativeScalar)
     EXPECT_DOUBLE_EQ(-1.0, dotProduct);
 }
 
-//
-// /**************************************
-//  *        CROSS PRODUCT TESTS         *
-//  **************************************/
-//
-// /**
-//  * @test Verify that the cross product of vector aligned with x-axis and a vector aligned with y-axis
-//  *        returns a vector aligned with the z-axis.
-//  */
-// TEST(Vec3CrossProduct, BetweenAxisAlignedXAndYVectorsReturnsZ)
-// {
-//     const flcn::Vec3 xAxis(1.0f, 0.0f, 0.0f);
-//     const flcn::Vec3 yAxis(0.0f, 1.0f, 0.0f);
-//     const flcn::Vec3 expectedCrossProduct(0.0f, 0.0f, 1.0f);
-//
-//     const flcn::Vec3 crossProduct = xAxis.cross(yAxis);
-//
-//     EXPECT_VEC_EQ(expectedCrossProduct, crossProduct);
-// }
-//
-//
-// /**
-//  * @test Verify that the cross product of vector aligned with y-axis and a vector aligned with x-axis
-//  *        returns a vector aligned with the negative z-axis.
-//  */
-// TEST(Vec3CrossProduct, BetweenAxisAlignedYAndZVectorsReturnsNegativeZ)
-// {
-//     const flcn::Vec3 yAxis(0.0f, 1.0f, 0.0f);
-//     const flcn::Vec3 xAxis(1.0f, 0.0f, 0.0f);
-//     const flcn::Vec3 expectedCrossProduct(0.0f, 0.0f, -1.0f);
-//
-//     const flcn::Vec3 crossProduct = yAxis.cross(xAxis);
-//
-//     EXPECT_VEC_EQ(expectedCrossProduct, crossProduct);
-// }
-//
-//
-// /**
-//  * @test Verify that the cross product of vector aligned with z-axis and a vector aligned with y-axis
-//  *        returns a vector aligned with the negative x-axis.
-//  */
-// TEST(Vec3CrossProduct, BetweenAxisAlignedZAndYVectorsReturnsNegativeX)
-// {
-//     // Arrange
-//     const flcn::Vec3 zAxis(0.0f, 0.0f, 1.0f);
-//     const flcn::Vec3 yAxis(0.0f, 1.0f, 0.0f);
-//     const flcn::Vec3 expectedCrossProduct(-1.0f, 0.0f, 0.0f);
-//
-//     // Act
-//     const flcn::Vec3 crossProduct = zAxis.cross(yAxis);
-//
-//     // Assert
-//     EXPECT_VEC_EQ(expectedCrossProduct, crossProduct);
-// }
-//
-//
-// /** @test Verify that the cross product of vector with self is a zero-vector. */
-// TEST(Vec3CrossProduct, Cross_WithItself_ReturnsZeroVector)
-// {
-//     const flcn::Vec3 vec(0.0f, 0.0f, 1.0f);
-//
-//     const flcn::Vec3 crossProduct = vec.cross(vec);
-//
-//     EXPECT_VEC_ZERO(crossProduct);
-// }
-//
-//
-// /** @test Verify that the cross product of vector with a non-parallel vector returns a new vector. */
-// TYPED_TEST(Vec3CrossProductTests, Cross_TwoNonParallelVectorsReturnsNewProduct)
-// {
-//     const flcn::Vec3 crossProduct = this->_vecA.cross(this->_vecB);
-//
-//     EXPECT_VEC_EQ(this->_expectedCrossProduct, crossProduct);
-// }
-//
-//
-// /**
-//  * @test Verify that the cross product of vector with a non-parallel vector
-//  *        returns a new vector perpendicular to both.
-//  */
-// TYPED_TEST(Vec3CrossProductTests, BetweenTwoNonParallelVectorsReturnAVectorPerpendicularToBoth)
-// {
-//     const flcn::Vec3 crossProduct = this->_vecA.cross(this->_vecB);
-//
-//     // Orientation Check: Dot must be zero
-//     if constexpr (std::is_same_v<TypeParam, double>)
-//     {
-//         EXPECT_DOUBLE_EQ(0.0, this->_vecA.dot(crossProduct));
-//         EXPECT_DOUBLE_EQ(0.0, this->_vecB.dot(crossProduct));
-//     }
-//     else if constexpr (std::is_floating_point_v<TypeParam>)
-//     {
-//         EXPECT_FLOAT_EQ(0.0f, this->_vecA.dot(crossProduct));
-//         EXPECT_FLOAT_EQ(0.0f, this->_vecB.dot(crossProduct));
-//     }
-//     else
-//     {
-//         EXPECT_EQ(0, this->_vecA.dot(crossProduct));
-//         EXPECT_EQ(0, this->_vecB.dot(crossProduct));
-//     }
-// }
-//
-//
-// /**
-//  * @test Verify that the cross product of vector with a non-parallel vector using static variant of
-//  *        @ref flcn::Vec3::cross returns a new vector.
-//  */
-// TYPED_TEST(Vec3CrossProductTests, StaticWrapper_Cross_TwoNonParallelVectorsReturnsNewProduct)
-// {
-//     const flcn::Vec3 crossProduct = flcn::Vec3<TypeParam>::cross(this->_vecA, this->_vecB);
-//
-//     EXPECT_VEC_EQ(this->_expectedCrossProduct, crossProduct);
-// }
-//
-//
-// /**
-//  * @test Verify that the cross product of vector with a non-parallel vector using static variant of
-//  *        @ref flcn::Vec3::cross returns a new vector perpendicular to both.
-//  */
-// TYPED_TEST(Vec3CrossProductTests, StaticWrapper_BetweenTwoNonParallelVectorsReturnAVectorPerpendicularToBoth)
-// {
-//     const flcn::Vec3 crossProduct = flcn::Vec3<TypeParam>::cross(this->_vecA, this->_vecB);
-//
-//     // Orientation Check: Dot must be zero
-//     if constexpr (std::is_same_v<TypeParam, double>)
-//     {
-//         EXPECT_DOUBLE_EQ(0.0, this->_vecA.dot(crossProduct));
-//         EXPECT_DOUBLE_EQ(0.0, this->_vecB.dot(crossProduct));
-//     }
-//     else if constexpr (std::is_floating_point_v<TypeParam>)
-//     {
-//         EXPECT_FLOAT_EQ(0.0f, this->_vecA.dot(crossProduct));
-//         EXPECT_FLOAT_EQ(0.0f, this->_vecB.dot(crossProduct));
-//     }
-//     else
-//     {
-//         EXPECT_EQ(0, this->_vecA.dot(crossProduct));
-//         EXPECT_EQ(0, this->_vecB.dot(crossProduct));
-//     }
-// }
-//
-//
-// /**
-//  * @test Verify that the cross product between non-parallel vectors is anti-commutative.
-//  *        Anti-Commutativity: \f$ \mathbf{a}\times\mathbf{b} = -(\mathbf{b}\times\mathbf{a}) \f$
-//  */
-// TYPED_TEST(Vec3CrossProductTests, IsAntiCommutative)
-// {
-//     flcn::Vec3 crossProduct1 = flcn::Vec3<TypeParam>::cross(this->_vecA, this->_vecB);
-//     flcn::Vec3 crossProduct2 = flcn::Vec3<TypeParam>::cross(this->_vecB, this->_vecA);
-//
-//     EXPECT_VEC_EQ(crossProduct1, -1.0f * crossProduct2);
-// }
-//
-//
-// /**
-//  * @test Verify that the cross product between parallel vectors is commutative.
-//  *        Commutativity: \f$ \mathbf{a}\times\mathbf{b} = \mathbf{b}\times\mathbf{a} \f$,
-//  *        **given a and b are scalar multiples of each other**.
-//  */
-// TYPED_TEST(Vec3CrossProductTests, BetweenParallelVectorIsCommutatives)
-// {
-//     const flcn::Vec3 vecB    = TypeParam(2) * this->_vecA;
-//     flcn::Vec3 crossProduct1 = flcn::Vec3<TypeParam>::cross(this->_vecA, vecB);
-//     flcn::Vec3 crossProduct2 = flcn::Vec3<TypeParam>::cross(vecB, this->_vecA);
-//
-//     EXPECT_VEC_EQ(crossProduct1, crossProduct2);
-// }
+
+/**************************************
+ *        CROSS PRODUCT TESTS         *
+ **************************************/
+
+/**
+ * @test Verify that the cross product of vector aligned with x-axis and a vector aligned with y-axis
+ *        returns a vector aligned with the z-axis.
+ */
+TEST(Vec3CrossProductTests, BetweenAxisAlignedXAndYVectorsReturnsZ)
+{
+    const flcn::Vec3 xAxis(1.0f, 0.0f, 0.0f);
+    const flcn::Vec3 yAxis(0.0f, 1.0f, 0.0f);
+    const flcn::Vec3 expectedCrossProduct(0.0f, 0.0f, 1.0f);
+
+    const flcn::Vec3 crossProduct = xAxis.cross(yAxis);
+
+    EXPECT_VEC_EQ(expectedCrossProduct, crossProduct);
+}
+
+
+/**
+ * @test Verify that the cross product of vector aligned with y-axis and a vector aligned with x-axis
+ *        returns a vector aligned with the negative z-axis.
+ */
+TEST(Vec3CrossProductTests, BetweenAxisAlignedYAndZVectorsReturnsNegativeZ)
+{
+    const flcn::Vec3 yAxis(0.0f, 1.0f, 0.0f);
+    const flcn::Vec3 xAxis(1.0f, 0.0f, 0.0f);
+    const flcn::Vec3 expectedCrossProduct(0.0f, 0.0f, -1.0f);
+
+    const flcn::Vec3 crossProduct = yAxis.cross(xAxis);
+
+    EXPECT_VEC_EQ(expectedCrossProduct, crossProduct);
+}
+
+
+/**
+ * @test Verify that the cross product of vector aligned with z-axis and a vector aligned with y-axis
+ *        returns a vector aligned with the negative x-axis.
+ */
+TEST(Vec3CrossProductTests, BetweenAxisAlignedZAndYVectorsReturnsNegativeX)
+{
+    // Arrange
+    const flcn::Vec3 zAxis(0.0f, 0.0f, 1.0f);
+    const flcn::Vec3 yAxis(0.0f, 1.0f, 0.0f);
+    const flcn::Vec3 expectedCrossProduct(-1.0f, 0.0f, 0.0f);
+
+    // Act
+    const flcn::Vec3 crossProduct = zAxis.cross(yAxis);
+
+    // Assert
+    EXPECT_VEC_EQ(expectedCrossProduct, crossProduct);
+}
+
+
+/** @test Verify that the cross product of vector with self is a zero-vector. */
+TEST(Vec3CrossProductTests, Cross_WithItself_ReturnsZeroVector)
+{
+    const flcn::Vec3 vec(0.0f, 0.0f, 1.0f);
+
+    const flcn::Vec3 crossProduct = vec.cross(vec);
+
+    EXPECT_VEC_ZERO(crossProduct);
+}
+
+
+/** @test Verify that the cross product of vector with a non-parallel vector returns a new vector. */
+TYPED_TEST(Vec3CrossProductTests, Cross_TwoNonParallelVectorsReturnsNewProduct)
+{
+    const flcn::Vec3 crossProduct = this->_vecA.cross(this->_vecB);
+
+    EXPECT_VEC_EQ(this->_expectedCrossProduct, crossProduct);
+}
+
+
+/**
+ * @test Verify that the cross product of vector with a non-parallel vector
+ *        returns a new vector perpendicular to both.
+ */
+TYPED_TEST(Vec3CrossProductTests, BetweenTwoNonParallelVectorsReturnAVectorPerpendicularToBoth)
+{
+    const flcn::Vec3 crossProduct = this->_vecA.cross(this->_vecB);
+
+    // Orientation Check: Dot must be zero
+    if constexpr (std::is_same_v<TypeParam, double>)
+    {
+        EXPECT_DOUBLE_EQ(0.0, this->_vecA.dot(crossProduct));
+        EXPECT_DOUBLE_EQ(0.0, this->_vecB.dot(crossProduct));
+    }
+    else if constexpr (std::is_floating_point_v<TypeParam>)
+    {
+        EXPECT_FLOAT_EQ(0.0f, this->_vecA.dot(crossProduct));
+        EXPECT_FLOAT_EQ(0.0f, this->_vecB.dot(crossProduct));
+    }
+    else
+    {
+        EXPECT_EQ(0, this->_vecA.dot(crossProduct));
+        EXPECT_EQ(0, this->_vecB.dot(crossProduct));
+    }
+}
+
+
+/**
+ * @test Verify that the cross product of vector with a non-parallel vector using static variant of
+ *        @ref flcn::Vec3::cross returns a new vector.
+ */
+TYPED_TEST(Vec3CrossProductTests, StaticWrapper_Cross_TwoNonParallelVectorsReturnsNewProduct)
+{
+    const flcn::Vec3 crossProduct = flcn::Vec3<TypeParam>::cross(this->_vecA, this->_vecB);
+
+    EXPECT_VEC_EQ(this->_expectedCrossProduct, crossProduct);
+}
+
+
+/**
+ * @test Verify that the cross product of vector with a non-parallel vector using static variant of
+ *        @ref flcn::Vec3::cross returns a new vector perpendicular to both.
+ */
+TYPED_TEST(Vec3CrossProductTests, StaticWrapper_BetweenTwoNonParallelVectorsReturnAVectorPerpendicularToBoth)
+{
+    const flcn::Vec3 crossProduct = flcn::Vec3<TypeParam>::cross(this->_vecA, this->_vecB);
+
+    // Orientation Check: Dot must be zero
+    if constexpr (std::is_same_v<TypeParam, double>)
+    {
+        EXPECT_DOUBLE_EQ(0.0, this->_vecA.dot(crossProduct));
+        EXPECT_DOUBLE_EQ(0.0, this->_vecB.dot(crossProduct));
+    }
+    else if constexpr (std::is_floating_point_v<TypeParam>)
+    {
+        EXPECT_FLOAT_EQ(0.0f, this->_vecA.dot(crossProduct));
+        EXPECT_FLOAT_EQ(0.0f, this->_vecB.dot(crossProduct));
+    }
+    else
+    {
+        EXPECT_EQ(0, this->_vecA.dot(crossProduct));
+        EXPECT_EQ(0, this->_vecB.dot(crossProduct));
+    }
+}
+
+
+/**
+ * @test Verify that the cross product between non-parallel vectors is anti-commutative.
+ *        Anti-Commutativity: \f$ \mathbf{a}\times\mathbf{b} = -(\mathbf{b}\times\mathbf{a}) \f$
+ */
+TYPED_TEST(Vec3CrossProductTests, IsAntiCommutative)
+{
+    flcn::Vec3 crossProduct1 = flcn::Vec3<TypeParam>::cross(this->_vecA, this->_vecB);
+    flcn::Vec3 crossProduct2 = flcn::Vec3<TypeParam>::cross(this->_vecB, this->_vecA);
+
+    EXPECT_VEC_EQ(crossProduct1, -1.0f * crossProduct2);
+}
+
+
+/**
+ * @test Verify that the cross product between parallel vectors is commutative.
+ *        Commutativity: \f$ \mathbf{a}\times\mathbf{b} = \mathbf{b}\times\mathbf{a} \f$,
+ *        **given a and b are scalar multiples of each other**.
+ */
+TYPED_TEST(Vec3CrossProductTests, BetweenParallelVectorIsCommutatives)
+{
+    const flcn::Vec3 vecB    = TypeParam(2) * this->_vecA;
+    flcn::Vec3 crossProduct1 = flcn::Vec3<TypeParam>::cross(this->_vecA, vecB);
+    flcn::Vec3 crossProduct2 = flcn::Vec3<TypeParam>::cross(vecB, this->_vecA);
+
+    EXPECT_VEC_EQ(crossProduct1, crossProduct2);
+}
 
 //
 // /**************************************

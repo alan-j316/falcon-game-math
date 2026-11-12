@@ -1243,40 +1243,40 @@ namespace flcn
         //             requires StrictArithmetic<T>;
 
 
-        // /**
-        //  * @brief Compute the cross product with another vector.
-        //  *       \f$
-        //  *           \mathbf{a}\times\mathbf{b} =
-        //  *           \begin{bmatrix} a_y b_z - a_z b_y \\ a_z b_x - a_x b_z \\ a_x b_y - a_y b_x \end {bmatrix}
-        //  *       \f$
-        //  *
-        //  * @note Operation is restricted to numeric types via @ref SignedStrictArithmetic.
-        //  *
-        //  * @param[in] rhs The vector to compute the cross product with.
-        //  *
-        //  * @return The vector cross product of the two vectors.
-        //  */
-        // constexpr Vec3 cross(const Vec3& rhs) const noexcept
-        //     requires SignedStrictArithmetic<T>;
-        //
-        //
-        // /**
-        //  * @brief Compute the cross product of two vectors.
-        //  *       \f$
-        //  *           \mathbf{a}\times\mathbf{b} =
-        //  *           \begin{bmatrix} a_y b_z - a_z b_y \\ a_z b_x - a_x b_z \\ a_x b_y - a_y b_x \end
-        //  {bmatrix}
-        //  *       \f$
-        //  *
-        //  * @note Operation is restricted to numeric types via @ref SignedStrictArithmetic.
-        //  *
-        //  * @param[in] lhs The vector to compute the cross product with.
-        //  * @param[in] rhs The vector to compute the cross product with.
-        //  *
-        //  * @return The vector cross product of the two vectors.
-        //  */
-        // static constexpr Vec3 cross(const Vec3& lhs, const Vec3& rhs) noexcept
-        //     requires SignedStrictArithmetic<T>;
+        /**
+         * @brief Compute the cross product with another vector.
+         *       \f$
+         *           \mathbf{a}\times\mathbf{b} =
+         *           \begin{bmatrix} a_y b_z - a_z b_y \\ a_z b_x - a_x b_z \\ a_x b_y - a_y b_x \end {bmatrix}
+         *       \f$
+         *
+         * @note Operation is restricted to numeric types via @ref SignedStrictArithmetic.
+         *
+         * @param[in] rhs The vector to compute the cross product with.
+         *
+         * @return The vector cross product of the two vectors.
+         */
+        constexpr Vec3 cross(const Vec3& rhs) const noexcept
+            requires SignedStrictArithmetic<T>;
+
+
+        /**
+         * @brief Compute the cross product of two vectors.
+         *       \f$
+         *           \mathbf{a}\times\mathbf{b} =
+         *           \begin{bmatrix} a_y b_z - a_z b_y \\ a_z b_x - a_x b_z \\ a_x b_y - a_y b_x \end
+         {bmatrix}
+         *       \f$
+         *
+         * @note Operation is restricted to numeric types via @ref SignedStrictArithmetic.
+         *
+         * @param[in] lhs The vector to compute the cross product with.
+         * @param[in] rhs The vector to compute the cross product with.
+         *
+         * @return The vector cross product of the two vectors.
+         */
+        static constexpr Vec3 cross(const Vec3& lhs, const Vec3& rhs) noexcept
+            requires SignedStrictArithmetic<T>;
 
         /** @} */
 

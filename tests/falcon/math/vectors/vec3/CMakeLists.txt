@@ -11,7 +11,7 @@ target_sources(
         #        DistanceTests.cpp
         EqualityTests.cpp
         InitializationTests.cpp
-        #        MagnitudeTests.cpp
+        MagnitudeTests.cpp
         #        NormalizationTests.cpp
         #        PNormTests.cpp
         ProductTests.cpp

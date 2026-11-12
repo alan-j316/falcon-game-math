@@ -1281,61 +1281,61 @@ namespace flcn
         /** @} */
 
 
-        //         /**
-        //          * @addtogroup Falcon_Vec3_Mag
-        //          * @{
-        //          */
-        //
-        //         /**
-        //          * @brief Compute the magnitude (Euclidean Norm) of this vector.
-        //          *        \f$ \|\mathbf{v}\| = \sqrt{\mathbf{v} \cdot \mathbf{v}} \f$
-        //          *
-        //          * @note To avoid precision loss, integral types are promoted to their
-        //          *       corresponding floating-point representation via @ref Magnitude.
-        //          *
-        //          * @return The scalar magnitude of the vector.
-        //          */
-        //         [[nodiscard]] constexpr Magnitude<T> mag() const noexcept
-        //             requires StrictArithmetic<T>;
-        //
-        //
-        //         /**
-        //          * @brief Compute the magnitude (Euclidean Norm) of @p Vec.
-        //          *        \f$ \|\mathbf{v}\| = \sqrt{\mathbf{v} \cdot \mathbf{v}} \f$
-        //          *
-        //          * @note To avoid precision loss, integral types are promoted to their
-        //          *       corresponding floating-point representation via @ref Magnitude.
-        //          *
-        //          * @param[in] vec The vector to compute the magnitude of.
-        //          *
-        //          * @return The scalar magnitude of @p Vec.
-        //          */
-        //         [[nodiscard]] static constexpr Magnitude<T> mag(const Vec3& vec) noexcept
-        //             requires StrictArithmetic<T>;
-        //
-        //
-        //         /**
-        //          * @brief Compute the magnitude square (Euclidean Norm) of this vector.
-        //          *        \f$ \|\mathbf{v}\| = \mathbf{v} \cdot \mathbf{v} \f$
-        //          *
-        //          * @return The scalar magnitude of the vector.
-        //          */
-        //         [[nodiscard]] constexpr T magSq() const noexcept
-        //             requires StrictArithmetic<T>;
-        //
-        //
-        //         /**
-        //          * @brief Compute the magnitude square (Euclidean Norm) of this vector.
-        //          *        \f$ \|\mathbf{v}\| = \mathbf{v} \cdot \mathbf{v} \f$
-        //          *
-        //          * @param[in] vector The vector to compute the magnitude of.
-        //          *
-        //          * @return The scalar magnitude of @p Vec.
-        //          */
-        //         [[nodiscard]] static constexpr T magSq(const Vec3& vector) noexcept
-        //             requires StrictArithmetic<T>;
-        //
-        //
+        /**
+         * @addtogroup Falcon_Vec3_Mag
+         * @{
+         */
+
+        /**
+         * @brief Compute the magnitude (Euclidean Norm) of this vector.
+         *        \f$ \|\mathbf{v}\| = \sqrt{\mathbf{v} \cdot \mathbf{v}} \f$
+         *
+         * @note To avoid precision loss, integral types are promoted to their
+         *       corresponding floating-point representation via @ref Magnitude.
+         *
+         * @return The scalar magnitude of the vector.
+         */
+        [[nodiscard]] constexpr Magnitude<T> mag() const noexcept
+            requires StrictArithmetic<T>;
+
+
+        /**
+         * @brief Compute the magnitude (Euclidean Norm) of @p Vec.
+         *        \f$ \|\mathbf{v}\| = \sqrt{\mathbf{v} \cdot \mathbf{v}} \f$
+         *
+         * @note To avoid precision loss, integral types are promoted to their
+         *       corresponding floating-point representation via @ref Magnitude.
+         *
+         * @param[in] vec The vector to compute the magnitude of.
+         *
+         * @return The scalar magnitude of @p Vec.
+         */
+        [[nodiscard]] static constexpr Magnitude<T> mag(const Vec3& vec) noexcept
+            requires StrictArithmetic<T>;
+
+
+        /**
+         * @brief Compute the magnitude square (Euclidean Norm) of this vector.
+         *        \f$ \|\mathbf{v}\| = \mathbf{v} \cdot \mathbf{v} \f$
+         *
+         * @return The scalar magnitude of the vector.
+         */
+        [[nodiscard]] constexpr T magSq() const noexcept
+            requires StrictArithmetic<T>;
+
+
+        /**
+         * @brief Compute the magnitude square (Euclidean Norm) of this vector.
+         *        \f$ \|\mathbf{v}\| = \mathbf{v} \cdot \mathbf{v} \f$
+         *
+         * @param[in] vec The vector to compute the magnitude of.
+         *
+         * @return The scalar magnitude of @p Vec.
+         */
+        [[nodiscard]] static constexpr T magSq(const Vec3& vec) noexcept
+            requires StrictArithmetic<T>;
+
+
         //         /**
         //          * @brief Compute the Manhattan length (L1 Norm) of this vector.
         //          *        \f$ \|\mathbf{v}\|_1 = |x| + |y| + |z| \f$

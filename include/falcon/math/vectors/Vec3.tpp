@@ -700,12 +700,42 @@ namespace flcn
     { return lhs.cross(rhs); }
 
 
-
     /// +---------------------------------------------------------------------------------------+
     /// |                                TENSOR PRODUCT                                         |
     /// +---------------------------------------------------------------------------------------+
     /// TODO: To be implemented
 
+
+
+    /// +---------------------------------------------------------------------------------------+
+    /// |                                 EUCLIDEAN NORM                                        |
+    /// +---------------------------------------------------------------------------------------+
+
+    template <Arithmetic T>
+    FALCON_INLINE constexpr Magnitude<T> Vec3<T>::mag() const noexcept
+        requires StrictArithmetic<T>
+    {
+        // TODO: Replace with fgm::sqrt
+        return std::sqrt(magSq());
+    }
+
+
+    template <Arithmetic T>
+    FALCON_INLINE constexpr Magnitude<T> Vec3<T>::mag(const Vec3& vec) noexcept
+        requires StrictArithmetic<T>
+    { return vec.mag(); }
+
+
+    template <Arithmetic T>
+    FALCON_INLINE constexpr T Vec3<T>::magSq() const noexcept
+        requires StrictArithmetic<T>
+    { return this->dot(*this); }
+
+
+    template <Arithmetic T>
+    FALCON_INLINE constexpr T Vec3<T>::magSq(const Vec3& vec) noexcept
+        requires StrictArithmetic<T>
+    { return vec.magSq(); }
 
 
 

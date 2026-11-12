@@ -909,9 +909,9 @@ namespace flcn
 
 
     template <Arithmetic T>
-    FALCON_INLINE constexpr T CVec3<T>::magSq(const CVec3& vector) noexcept
+    FALCON_INLINE constexpr T CVec3<T>::magSq(const CVec3& vec) noexcept
         requires StrictArithmetic<T>
-    { return vector.magSq(); }
+    { return vec.magSq(); }
 
 
     template <Arithmetic T>

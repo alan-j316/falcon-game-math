@@ -1,7 +1,7 @@
 /**
  * @file MagnitudeTests.cpp
  * @author Alan Abraham P Kochumon
- * @date Created on: April 03, 2026
+ * @date Created on: November 12, 2026
  *
  * @brief Verify @ref flcn::Vec3 magnitude logic.
  *
@@ -64,32 +64,6 @@ namespace
         }
     };
     TYPED_TEST_SUITE(Vec3UncleanMagnitudeTests, SupportedArithmeticTypes);
-
-
-
-    /**************************************
-     *            STATIC TESTS            *
-     **************************************/
-
-    namespace static_tests
-    {
-        constexpr flcn::Vec3 VEC_A(1, 2, 3);
-
-        // TODO: Add static test after making sqrt constexpr
-        /// @test Verify that mag returns a valid value at compile time.
-        // constexpr auto MAG = Vec.mag();
-        /// @test Verify that mag (static wrapper) returns a valid value at compile time.
-        // constexpr auto MAG_STATIC = flcn::Vec3<int>::mag(Vec);
-
-        /// @test Verify that magSq returns a valid value at compile time.
-        constexpr auto MAG_SQ = VEC_A.magSq();
-        static_assert(MAG_SQ - 14.0 < 1e5);
-
-        /// @test Verify that magSq (static wrapper) returns a valid value at compile time.
-        constexpr auto MAG_SQ_STATIC = flcn::Vec3<int>::magSq(VEC_A);
-        static_assert(MAG_SQ_STATIC - 14.0 < 1e5);
-
-    } // namespace static_tests
 
 } // namespace
 

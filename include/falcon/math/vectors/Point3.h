@@ -25,7 +25,7 @@ namespace flcn
          * @{
          */
 
-        /// @brief @ref flcn::CVec3 CTORs
+        /// @brief @ref flcn::CVec3 Ctors
         using CVec3<T>::CVec3;
 
         /** @} */

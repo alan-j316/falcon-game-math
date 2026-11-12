@@ -1258,11 +1258,11 @@ namespace flcn
          * @brief Compute the magnitude square (Euclidean Norm) of this vector.
          *        \f$ \|\mathbf{v}\| = \mathbf{v} \cdot \mathbf{v} \f$
          *
-         * @param[in] vector The vector to compute the magnitude of.
+         * @param[in] vec The vector to compute the magnitude of.
          *
          * @return The scalar magnitude of @p Vec.
          */
-        [[nodiscard]] static constexpr T magSq(const CVec3& vector) noexcept
+        [[nodiscard]] static constexpr T magSq(const CVec3& vec) noexcept
             requires StrictArithmetic<T>;
 
 

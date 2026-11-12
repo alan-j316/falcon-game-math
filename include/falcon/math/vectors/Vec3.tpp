@@ -668,12 +668,26 @@ namespace flcn
     /// +---------------------------------------------------------------------------------------+
 
 
+    // template <Arithmetic T>
+    // FALCON_INLINE constexpr Vec3<T> Vec3<T>::cross(const Vec3& rhs) const noexcept
+    //     requires SignedStrictArithmetic<T>
+    // {
+    //     // TODO:
+    //     // _data.fma
+    //     return rhs;
+    // }
+    //
+    // template <Arithmetic T>
+    // FALCON_INLINE constexpr Vec3<T> Vec3<T>::cross(const Vec3& lhs, const Vec3& rhs) noexcept
+    //     requires SignedStrictArithmetic<T>
+    // { return lhs.cross(rhs); }
+
 
 
     /// +---------------------------------------------------------------------------------------+
     /// |                                TENSOR PRODUCT                                         |
     /// +---------------------------------------------------------------------------------------+
-/// TODO: To be implemented
+    /// TODO: To be implemented
 
 
 

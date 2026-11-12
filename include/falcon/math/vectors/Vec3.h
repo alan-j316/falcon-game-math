@@ -1179,8 +1179,6 @@ namespace flcn
          *
          * @note Operation is restricted to numeric types via @ref StrictArithmetic.
          *
-         * @tparam U Numeric type of the RHS vector. Must satisfy @ref StrictArithmetic.
-         *
          * @param[in] rhs The vector to compute the dot product with.
          *
          * @return The scalar dot product of the two vectors.
@@ -1194,8 +1192,6 @@ namespace flcn
          *        \f$ \mathbf{a} \cdot \mathbf{b} = \sum_{i=1}^{3} a_i b_i \f$
          *
          * @note Operation is restricted to numeric types via @ref StrictArithmetic.
-         *
-         * @tparam U Numeric type of the RHS vector. Must satisfy @ref StrictArithmetic.
          *
          * @param[in] lhs The first vector to compute the dot product with.
          * @param[in] rhs The second vector to compute the dot product with.
@@ -1245,55 +1241,46 @@ namespace flcn
         //         [[nodiscard]] static constexpr PromotedMat3<T, U> tensorProduct(const Vec3& lhs, const Vec3<U>& rhs)
         //         noexcept
         //             requires StrictArithmetic<T>;
+
+
+        // /**
+        //  * @brief Compute the cross product with another vector.
+        //  *       \f$
+        //  *           \mathbf{a}\times\mathbf{b} =
+        //  *           \begin{bmatrix} a_y b_z - a_z b_y \\ a_z b_x - a_x b_z \\ a_x b_y - a_y b_x \end {bmatrix}
+        //  *       \f$
+        //  *
+        //  * @note Operation is restricted to numeric types via @ref SignedStrictArithmetic.
+        //  *
+        //  * @param[in] rhs The vector to compute the cross product with.
+        //  *
+        //  * @return The vector cross product of the two vectors.
+        //  */
+        // constexpr Vec3 cross(const Vec3& rhs) const noexcept
+        //     requires SignedStrictArithmetic<T>;
         //
         //
-        //         /**
-        //          * @brief Compute the cross product with another vector.
-        //          *       \f$
-        //          *           \mathbf{a}\times\mathbf{b} =
-        //          *           \begin{bmatrix} a_y b_z - a_z b_y \\ a_z b_x - a_x b_z \\ a_x b_y - a_y b_x \end
-        //          {bmatrix}
-        //          *       \f$
-        //          *
-        //          * @note Promotes the result to the wider type using @ref PromotedVec3<T, U>.
-        //          * @note Operation is restricted to numeric types via @ref SignedStrictArithmetic.
-        //          *
-        //          * @tparam U Numeric type of the RHS vector. Must satisfy @ref SignedStrictArithmetic.
-        //          *
-        //          * @param[in] rhs The vector to compute the cross product with.
-        //          *
-        //          * @return The vector cross product of the two vectors.
-        //          */
-        //         template <SignedStrictArithmetic U>
-        //         constexpr PromotedVec3<T, U> cross(const Vec3<U>& rhs) const noexcept
-        //             requires SignedStrictArithmetic<T>;
-        //
-        //
-        //         /**
-        //          * @brief Compute the cross product of two vectors.
-        //          *       \f$
-        //          *           \mathbf{a}\times\mathbf{b} =
-        //          *           \begin{bmatrix} a_y b_z - a_z b_y \\ a_z b_x - a_x b_z \\ a_x b_y - a_y b_x \end
-        //          {bmatrix}
-        //          *       \f$
-        //          *
-        //          * @note Promotes the result to the wider type using @ref PromotedVec3<T, U>.
-        //          * @note Operation is restricted to numeric types via @ref SignedStrictArithmetic.
-        //          *
-        //          * @tparam U Numeric type of the RHS vector. Must satisfy @ref SignedStrictArithmetic.
-        //          *
-        //          * @param[in] lhs The vector to compute the cross product with.
-        //          * @param[in] rhs The vector to compute the cross product with.
-        //          *
-        //          * @return The vector cross product of the two vectors.
-        //          */
-        //         template <SignedStrictArithmetic U>
-        //         static constexpr PromotedVec3<T, U> cross(const Vec3& lhs, const Vec3<U>& rhs) noexcept
-        //             requires SignedStrictArithmetic<T>;
-        //
-        //         /** @} */
-        //
-        //
+        // /**
+        //  * @brief Compute the cross product of two vectors.
+        //  *       \f$
+        //  *           \mathbf{a}\times\mathbf{b} =
+        //  *           \begin{bmatrix} a_y b_z - a_z b_y \\ a_z b_x - a_x b_z \\ a_x b_y - a_y b_x \end
+        //  {bmatrix}
+        //  *       \f$
+        //  *
+        //  * @note Operation is restricted to numeric types via @ref SignedStrictArithmetic.
+        //  *
+        //  * @param[in] lhs The vector to compute the cross product with.
+        //  * @param[in] rhs The vector to compute the cross product with.
+        //  *
+        //  * @return The vector cross product of the two vectors.
+        //  */
+        // static constexpr Vec3 cross(const Vec3& lhs, const Vec3& rhs) noexcept
+        //     requires SignedStrictArithmetic<T>;
+
+        /** @} */
+
+
         //         /**
         //          * @addtogroup Falcon_Vec3_Mag
         //          * @{

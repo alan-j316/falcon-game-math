@@ -511,9 +511,21 @@ namespace flcn
          * @param b The register to multiply with this register.
          * @param c The register to add to the product.
          *
-         * @return A new register with the fma result.
+         * @return A new register with the fused-multiply add result.
          */
         [[nodiscard]] constexpr Simd128 fma(Simd128 b, Simd128 c) const noexcept;
+
+
+        /**
+         * @brief Perform a fused multiply and add (this * b - c).
+         *
+         * @note Register arithmetic is limited to same data types and lanes.
+         * @param b The register to multiply with this register.
+         * @param c The register to subtract from the product.
+         *
+         * @return A new register with the fused-multiply subtraction result.
+         */
+        [[nodiscard]] constexpr Simd128 fmsub(Simd128 b, Simd128 c) const noexcept;
 
 
         /**

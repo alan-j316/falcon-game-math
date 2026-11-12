@@ -1817,6 +1817,25 @@ namespace flcn
 
 
     template <typename DataType, size_t Lane>
+    FALCON_INLINE constexpr Simd128<SimdBackend::ARCH_SSE2, DataType, Lane> Simd128<SimdBackend::ARCH_SSE2, DataType, Lane>::fmsub(
+        Simd128 b, Simd128 c) const noexcept
+    {
+        if constexpr (FALCON_FMA_ENABLED && types::IsFP64<DataType>)
+        {
+            return Simd128(_mm_fmsub_pd(_register, b.naive(), c.naive()));
+        }
+        else if constexpr (FALCON_FMA_ENABLED && types::IsFP32<DataType>)
+        {
+            return Simd128(_mm_fmsub_ps(_register, b.naive(), c.naive()));
+        }
+        else
+        {
+            return (*this * b) - c;
+        }
+    }
+
+
+    template <typename DataType, size_t Lane>
     FALCON_INLINE constexpr DataType Simd128<SimdBackend::ARCH_SSE2, DataType, Lane>::horizontalAdd() const noexcept
     {
         if constexpr (types::IsFP64<DataType>)

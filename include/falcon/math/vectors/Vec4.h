@@ -1345,7 +1345,7 @@ namespace flcn
          */
         template <StrictArithmetic U>
             requires StrictSignedness<T, U>
-        [[nodiscard]] static constexpr Magnitude<PromotedValue_t<T, U>> dist(const Vec4<U>& lhs,
+        [[nodiscard]] static constexpr Magnitude<PromotedValue_t<T, U>> dist(const Vec4& lhs,
                                                                              const Vec4<U>& rhs) noexcept
             requires StrictArithmetic<T>;
 
@@ -1385,7 +1385,7 @@ namespace flcn
          */
         template <StrictArithmetic U>
             requires StrictSignedness<T, U>
-        [[nodiscard]] static constexpr PromotedValue_t<T, U> distSq(const Vec4<U>& lhs, const Vec4<U>& rhs) noexcept
+        [[nodiscard]] static constexpr PromotedValue_t<T, U> distSq(const Vec4& lhs, const Vec4<U>& rhs) noexcept
             requires StrictArithmetic<T>;
 
 
@@ -1424,7 +1424,7 @@ namespace flcn
          */
         template <StrictArithmetic U>
             requires StrictSignedness<T, U>
-        [[nodiscard]] static constexpr PromotedValue_t<T, U> manhattanDist(const Vec4<U>& lhs,
+        [[nodiscard]] static constexpr PromotedValue_t<T, U> manhattanDist(const Vec4& lhs,
                                                                            const Vec4<U>& rhs) noexcept
             requires StrictArithmetic<T>;
 
@@ -1464,7 +1464,7 @@ namespace flcn
          */
         template <StrictArithmetic U>
             requires StrictSignedness<T, U>
-        [[nodiscard]] static constexpr PromotedValue_t<T, U> chebyshevDist(const Vec4<U>& lhs,
+        [[nodiscard]] static constexpr PromotedValue_t<T, U> chebyshevDist(const Vec4& lhs,
                                                                            const Vec4<U>& rhs) noexcept
             requires StrictArithmetic<T>;
 

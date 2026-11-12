@@ -758,6 +758,11 @@ namespace flcn
     { return vec.manhattanNorm(); }
 
 
+
+    /// +---------------------------------------------------------------------------------------+
+    /// |                                 CHEBYSHEV NORM                                        |
+    /// +---------------------------------------------------------------------------------------+
+
     template <Arithmetic T>
     constexpr T Vec3<T>::chebyshevNorm() const noexcept
         requires StrictArithmetic<T>
@@ -775,9 +780,43 @@ namespace flcn
 
 
     /// +---------------------------------------------------------------------------------------+
-    /// |                                 CHEBYSHEV NORM                                        |
+    /// |                                 VECTOR DISTANCE                                       |
     /// +---------------------------------------------------------------------------------------+
 
+    /**************************************
+     *             EUCLIDEAN              *
+     **************************************/
+
+    template <Arithmetic T>
+    FALCON_INLINE constexpr T Vec3<T>::dist(const Vec3& rhs) const noexcept
+        requires StrictArithmetic<T>
+    {
+        // TODO: Replace with flcn::sqrt
+        return static_cast<T>(std::sqrt(distSq(rhs)));
+    }
+
+
+    template <Arithmetic T>
+    FALCON_INLINE constexpr T Vec3<T>::dist(const Vec3& lhs, const Vec3& rhs) noexcept
+        requires StrictArithmetic<T>
+    { return lhs.dist(rhs); }
+
+
+    template <Arithmetic T>
+    FALCON_INLINE constexpr T Vec3<T>::distSq(const Vec3& rhs) const noexcept
+        requires StrictArithmetic<T>
+    {
+        // (x2 - x1) | (y2 - y1) | (z2 - z1)
+        const auto diff = *this - rhs;
+        // (x2 - x1)^2 + (y2 - y1)^2 + (z2 - z1) ^ 2
+        return diff.dot(diff);
+    }
+
+
+    template <Arithmetic T>
+    FALCON_INLINE constexpr T Vec3<T>::distSq(const Vec3& lhs, const Vec3& rhs) noexcept
+        requires StrictArithmetic<T>
+    { return lhs.distSq(rhs); }
 
 
 

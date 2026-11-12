@@ -1294,7 +1294,7 @@ namespace flcn
          */
         template <StrictArithmetic U>
             requires StrictSignedness<T, U>
-        [[nodiscard]] static constexpr Magnitude<PromotedValue_t<T, U>> dist(const CVec2<U>& lhs,
+        [[nodiscard]] static constexpr Magnitude<PromotedValue_t<T, U>> dist(const CVec2& lhs,
                                                                              const CVec2<U>& rhs) noexcept
             requires StrictArithmetic<T>;
 

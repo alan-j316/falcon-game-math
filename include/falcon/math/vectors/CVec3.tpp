@@ -968,7 +968,7 @@ namespace flcn
     template <Arithmetic T>
     template <StrictArithmetic U>
         requires StrictSignedness<T, U>
-    FALCON_INLINE constexpr Magnitude<PromotedValue_t<T, U>> CVec3<T>::dist(const CVec3<U>& lhs,
+    FALCON_INLINE constexpr Magnitude<PromotedValue_t<T, U>> CVec3<T>::dist(const CVec3& lhs,
                                                                             const CVec3<U>& rhs) noexcept
         requires StrictArithmetic<T>
     { return lhs.dist(rhs); }
@@ -991,7 +991,7 @@ namespace flcn
     template <Arithmetic T>
     template <StrictArithmetic U>
         requires StrictSignedness<T, U>
-    FALCON_INLINE constexpr PromotedValue_t<T, U> CVec3<T>::distSq(const CVec3<U>& lhs, const CVec3<U>& rhs) noexcept
+    FALCON_INLINE constexpr PromotedValue_t<T, U> CVec3<T>::distSq(const CVec3& lhs, const CVec3<U>& rhs) noexcept
         requires StrictArithmetic<T>
     { return lhs.distSq(rhs); }
 
@@ -1014,7 +1014,7 @@ namespace flcn
     template <Arithmetic T>
     template <StrictArithmetic U>
         requires StrictSignedness<T, U>
-    FALCON_INLINE constexpr PromotedValue_t<T, U> CVec3<T>::manhattanDist(const CVec3<U>& lhs,
+    FALCON_INLINE constexpr PromotedValue_t<T, U> CVec3<T>::manhattanDist(const CVec3& lhs,
                                                                           const CVec3<U>& rhs) noexcept
         requires StrictArithmetic<T>
     { return lhs.manhattanDist(rhs); }
@@ -1041,7 +1041,7 @@ namespace flcn
     template <Arithmetic T>
     template <StrictArithmetic U>
         requires StrictSignedness<T, U>
-    FALCON_INLINE constexpr PromotedValue_t<T, U> CVec3<T>::chebyshevDist(const CVec3<U>& lhs,
+    FALCON_INLINE constexpr PromotedValue_t<T, U> CVec3<T>::chebyshevDist(const CVec3& lhs,
                                                                           const CVec3<U>& rhs) noexcept
         requires StrictArithmetic<T>
     { return lhs.chebyshevDist(rhs); }

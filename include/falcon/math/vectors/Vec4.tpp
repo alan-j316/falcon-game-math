@@ -999,7 +999,7 @@ namespace flcn
     template <Arithmetic T>
     template <StrictArithmetic U>
         requires StrictSignedness<T, U>
-    FALCON_INLINE constexpr Magnitude<PromotedValue_t<T, U>> Vec4<T>::dist(const Vec4<U>& lhs, const Vec4<U>& rhs) noexcept
+    FALCON_INLINE constexpr Magnitude<PromotedValue_t<T, U>> Vec4<T>::dist(const Vec4& lhs, const Vec4<U>& rhs) noexcept
         requires StrictArithmetic<T>
     { return lhs.dist(rhs); }
 
@@ -1022,7 +1022,7 @@ namespace flcn
     template <Arithmetic T>
     template <StrictArithmetic U>
         requires StrictSignedness<T, U>
-    FALCON_INLINE constexpr PromotedValue_t<T, U> Vec4<T>::distSq(const Vec4<U>& lhs, const Vec4<U>& rhs) noexcept
+    FALCON_INLINE constexpr PromotedValue_t<T, U> Vec4<T>::distSq(const Vec4& lhs, const Vec4<U>& rhs) noexcept
         requires StrictArithmetic<T>
     { return lhs.distSq(rhs); }
 
@@ -1048,7 +1048,7 @@ namespace flcn
     template <Arithmetic T>
     template <StrictArithmetic U>
         requires StrictSignedness<T, U>
-    FALCON_INLINE constexpr PromotedValue_t<T, U> Vec4<T>::manhattanDist(const Vec4<U>& lhs, const Vec4<U>& rhs) noexcept
+    FALCON_INLINE constexpr PromotedValue_t<T, U> Vec4<T>::manhattanDist(const Vec4& lhs, const Vec4<U>& rhs) noexcept
         requires StrictArithmetic<T>
     { return lhs.manhattanDist(rhs); }
 
@@ -1074,7 +1074,7 @@ namespace flcn
     template <Arithmetic T>
     template <StrictArithmetic U>
         requires StrictSignedness<T, U>
-    FALCON_INLINE constexpr PromotedValue_t<T, U> Vec4<T>::chebyshevDist(const Vec4<U>& lhs, const Vec4<U>& rhs) noexcept
+    FALCON_INLINE constexpr PromotedValue_t<T, U> Vec4<T>::chebyshevDist(const Vec4& lhs, const Vec4<U>& rhs) noexcept
         requires StrictArithmetic<T>
     { return lhs.chebyshevDist(rhs); }
 

@@ -321,30 +321,30 @@ namespace flcn
 
 
         // TODO: Add these methods
- //        /**
- // * @addtogroup Falcon_CVec2_Ptr
- // * @{
- // */
- //
- //        /// @brief Get the internal storage of the vector as a pointer.
- //        [[nodiscard]] constexpr const T* ptr() const noexcept;
- //
- //        /// @brief Get the internal storage of the vector as a pointer (non-const).
- //        [[nodiscard]] constexpr T* ptr() noexcept;
- //
- //        /// @brief Get the internal storage of @p vec as a pointer.
- //        [[nodiscard]] static constexpr const T* ptr(const CVec2& vec) noexcept;
- //
- //        /// @brief Get the internal storage of @p vec as a pointer.
- //        [[nodiscard]] static constexpr T* ptr(CVec2& vec) noexcept;
- //
- //        /// @brief Get the internal storage of @p vec as a pointer (non-const).
- //        [[nodiscard]] constexpr T* operator*() noexcept;
- //
- //        /// @brief Get the internal storage of @p vec as a pointer (non-const).
- //        [[nodiscard]] constexpr const T* operator*() const noexcept;
- //
- //        /** @} */
+        //        /**
+        // * @addtogroup Falcon_CVec2_Ptr
+        // * @{
+        // */
+        //
+        //        /// @brief Get the internal storage of the vector as a pointer.
+        //        [[nodiscard]] constexpr const T* ptr() const noexcept;
+        //
+        //        /// @brief Get the internal storage of the vector as a pointer (non-const).
+        //        [[nodiscard]] constexpr T* ptr() noexcept;
+        //
+        //        /// @brief Get the internal storage of @p vec as a pointer.
+        //        [[nodiscard]] static constexpr const T* ptr(const CVec2& vec) noexcept;
+        //
+        //        /// @brief Get the internal storage of @p vec as a pointer.
+        //        [[nodiscard]] static constexpr T* ptr(CVec2& vec) noexcept;
+        //
+        //        /// @brief Get the internal storage of @p vec as a pointer (non-const).
+        //        [[nodiscard]] constexpr T* operator*() noexcept;
+        //
+        //        /// @brief Get the internal storage of @p vec as a pointer (non-const).
+        //        [[nodiscard]] constexpr const T* operator*() const noexcept;
+        //
+        //        /** @} */
 
 
         /**
@@ -496,9 +496,9 @@ namespace flcn
         template <Arithmetic U>
             requires StrictSignedness<T, U>
         [[nodiscard]] constexpr CVec3<bool> eq(const CVec3<U>& rhs,
-                                              double epsilon = std::is_same_v<T, double> || std::is_same_v<U, double>
-                                                  ? Config::DOUBLE_EPSILON
-                                                  : Config::FLOAT_EPSILON) const noexcept;
+                                               double epsilon = std::is_same_v<T, double> || std::is_same_v<U, double>
+                                                   ? Config::DOUBLE_EPSILON
+                                                   : Config::FLOAT_EPSILON) const noexcept;
 
 
         /**
@@ -517,10 +517,10 @@ namespace flcn
         template <Arithmetic U>
             requires StrictSignedness<T, U>
         [[nodiscard]] static constexpr CVec3<bool> eq(const CVec3& lhs, const CVec3<U>& rhs,
-                                                     double epsilon = std::is_same_v<T, double> ||
-                                                             std::is_same_v<U, double>
-                                                         ? Config::DOUBLE_EPSILON
-                                                         : Config::FLOAT_EPSILON) noexcept;
+                                                      double epsilon = std::is_same_v<T, double> ||
+                                                              std::is_same_v<U, double>
+                                                          ? Config::DOUBLE_EPSILON
+                                                          : Config::FLOAT_EPSILON) noexcept;
 
 
         /**
@@ -540,9 +540,9 @@ namespace flcn
         template <Arithmetic U>
             requires StrictSignedness<T, U>
         [[nodiscard]] constexpr CVec3<bool> neq(const CVec3<U>& rhs,
-                                               double epsilon = std::is_same_v<T, double> || std::is_same_v<U, double>
-                                                   ? Config::DOUBLE_EPSILON
-                                                   : Config::FLOAT_EPSILON) const noexcept;
+                                                double epsilon = std::is_same_v<T, double> || std::is_same_v<U, double>
+                                                    ? Config::DOUBLE_EPSILON
+                                                    : Config::FLOAT_EPSILON) const noexcept;
 
 
         /**
@@ -561,10 +561,10 @@ namespace flcn
         template <Arithmetic U>
             requires StrictSignedness<T, U>
         [[nodiscard]] static constexpr CVec3<bool> neq(const CVec3& lhs, const CVec3<U>& rhs,
-                                                      double epsilon = std::is_same_v<T, double> ||
-                                                              std::is_same_v<U, double>
-                                                          ? Config::DOUBLE_EPSILON
-                                                          : Config::FLOAT_EPSILON) noexcept;
+                                                       double epsilon = std::is_same_v<T, double> ||
+                                                               std::is_same_v<U, double>
+                                                           ? Config::DOUBLE_EPSILON
+                                                           : Config::FLOAT_EPSILON) noexcept;
 
         /** @} */
 
@@ -1077,7 +1077,7 @@ namespace flcn
          */
         template <StrictArithmetic S>
         [[nodiscard]] static constexpr PromotedCVec3<T, S> tryDiv(const CVec3& vec, S scalar,
-                                                                 OperationStatus& status) noexcept
+                                                                  OperationStatus& status) noexcept
             requires StrictArithmetic<T>;
 
         /** @} */
@@ -1353,7 +1353,7 @@ namespace flcn
          */
         template <StrictArithmetic U>
             requires StrictSignedness<T, U>
-        [[nodiscard]] static constexpr Magnitude<PromotedValue_t<T, U>> dist(const CVec3<U>& lhs,
+        [[nodiscard]] static constexpr Magnitude<PromotedValue_t<T, U>> dist(const CVec3& lhs,
                                                                              const CVec3<U>& rhs) noexcept
             requires StrictArithmetic<T>;
 
@@ -1393,7 +1393,7 @@ namespace flcn
          */
         template <StrictArithmetic U>
             requires StrictSignedness<T, U>
-        [[nodiscard]] static constexpr PromotedValue_t<T, U> distSq(const CVec3<U>& lhs, const CVec3<U>& rhs) noexcept
+        [[nodiscard]] static constexpr PromotedValue_t<T, U> distSq(const CVec3& lhs, const CVec3<U>& rhs) noexcept
             requires StrictArithmetic<T>;
 
 
@@ -1432,7 +1432,7 @@ namespace flcn
          */
         template <StrictArithmetic U>
             requires StrictSignedness<T, U>
-        [[nodiscard]] static constexpr PromotedValue_t<T, U> manhattanDist(const CVec3<U>& lhs,
+        [[nodiscard]] static constexpr PromotedValue_t<T, U> manhattanDist(const CVec3& lhs,
                                                                            const CVec3<U>& rhs) noexcept
             requires StrictArithmetic<T>;
 
@@ -1472,7 +1472,7 @@ namespace flcn
          */
         template <StrictArithmetic U>
             requires StrictSignedness<T, U>
-        [[nodiscard]] static constexpr PromotedValue_t<T, U> chebyshevDist(const CVec3<U>& lhs,
+        [[nodiscard]] static constexpr PromotedValue_t<T, U> chebyshevDist(const CVec3& lhs,
                                                                            const CVec3<U>& rhs) noexcept
             requires StrictArithmetic<T>;
 
@@ -1587,7 +1587,7 @@ namespace flcn
          *         epsilon threshold or if the vector has NaN(Not-a-Number) component(s).
          */
         [[nodiscard]] static constexpr CVec3<Magnitude<T>> tryNormalize(const CVec3& vec,
-                                                                       OperationStatus& status) noexcept
+                                                                        OperationStatus& status) noexcept
             requires StrictArithmetic<T>;
 
         /** @} */
@@ -1766,7 +1766,7 @@ namespace flcn
         template <StrictArithmetic U>
             requires StrictSignedness<T, U>
         [[nodiscard]] static constexpr PromotedFloatCVec3<T, U> safeProject(const CVec3& vec,
-                                                                           const CVec3<U>& onto) noexcept
+                                                                            const CVec3<U>& onto) noexcept
             requires StrictArithmetic<T>;
 
 
@@ -1791,7 +1791,8 @@ namespace flcn
          */
         template <StrictArithmetic U>
             requires StrictSignedness<T, U>
-        [[nodiscard]] static constexpr PromotedCVec3<T, U> safeProjectNorm(const CVec3& vec, const CVec3<U>& onto) noexcept
+        [[nodiscard]] static constexpr PromotedCVec3<T, U> safeProjectNorm(const CVec3& vec,
+                                                                           const CVec3<U>& onto) noexcept
             requires StrictArithmetic<T>;
 
 
@@ -1821,7 +1822,7 @@ namespace flcn
         template <StrictArithmetic U>
             requires StrictSignedness<T, U>
         [[nodiscard]] constexpr PromotedFloatCVec3<T, U> tryProject(const CVec3<U>& onto,
-                                                                   OperationStatus& status) const noexcept
+                                                                    OperationStatus& status) const noexcept
             requires StrictArithmetic<T>;
 
 
@@ -1849,7 +1850,7 @@ namespace flcn
         template <StrictArithmetic U>
             requires StrictSignedness<T, U>
         [[nodiscard]] constexpr PromotedCVec3<T, U> tryProjectNorm(const CVec3<U>& onto,
-                                                                  OperationStatus& status) const noexcept
+                                                                   OperationStatus& status) const noexcept
             requires StrictArithmetic<T>;
 
 
@@ -1880,7 +1881,7 @@ namespace flcn
         template <StrictArithmetic U>
             requires StrictSignedness<T, U>
         [[nodiscard]] static constexpr PromotedFloatCVec3<T, U> tryProject(const CVec3& vec, const CVec3<U>& onto,
-                                                                          OperationStatus& status) noexcept
+                                                                           OperationStatus& status) noexcept
             requires StrictArithmetic<T>;
 
 
@@ -1909,7 +1910,7 @@ namespace flcn
         template <StrictArithmetic U>
             requires StrictSignedness<T, U>
         [[nodiscard]] static constexpr PromotedCVec3<T, U> tryProjectNorm(const CVec3& vec, const CVec3<U>& onto,
-                                                                         OperationStatus& status) noexcept
+                                                                          OperationStatus& status) noexcept
             requires StrictArithmetic<T>;
 
 
@@ -1973,7 +1974,8 @@ namespace flcn
          */
         template <StrictArithmetic U>
             requires StrictSignedness<T, U>
-        [[nodiscard]] static constexpr PromotedFloatCVec3<T, U> reject(const CVec3& vector, const CVec3<U>& from) noexcept
+        [[nodiscard]] static constexpr PromotedFloatCVec3<T, U> reject(const CVec3& vector,
+                                                                       const CVec3<U>& from) noexcept
             requires StrictArithmetic<T>;
 
 
@@ -1994,7 +1996,8 @@ namespace flcn
          */
         template <StrictArithmetic U>
             requires StrictSignedness<T, U>
-        [[nodiscard]] static constexpr PromotedCVec3<T, U> rejectNorm(const CVec3& vector, const CVec3<U>& from) noexcept
+        [[nodiscard]] static constexpr PromotedCVec3<T, U> rejectNorm(const CVec3& vector,
+                                                                      const CVec3<U>& from) noexcept
             requires StrictArithmetic<T>;
 
 
@@ -2063,7 +2066,8 @@ namespace flcn
          */
         template <StrictArithmetic U>
             requires StrictSignedness<T, U>
-        [[nodiscard]] static constexpr PromotedFloatCVec3<T, U> safeReject(const CVec3& vec, const CVec3<U>& from) noexcept
+        [[nodiscard]] static constexpr PromotedFloatCVec3<T, U> safeReject(const CVec3& vec,
+                                                                           const CVec3<U>& from) noexcept
             requires StrictArithmetic<T>;
 
 
@@ -2086,7 +2090,8 @@ namespace flcn
          */
         template <StrictArithmetic U>
             requires StrictSignedness<T, U>
-        [[nodiscard]] static constexpr PromotedCVec3<T, U> safeRejectNorm(const CVec3& vec, const CVec3<U>& from) noexcept
+        [[nodiscard]] static constexpr PromotedCVec3<T, U> safeRejectNorm(const CVec3& vec,
+                                                                          const CVec3<U>& from) noexcept
             requires StrictArithmetic<T>;
 
 
@@ -2112,7 +2117,7 @@ namespace flcn
         template <StrictArithmetic U>
             requires StrictSignedness<T, U>
         [[nodiscard]] constexpr PromotedFloatCVec3<T, U> tryReject(const CVec3<U>& from,
-                                                                  OperationStatus& status) const noexcept
+                                                                   OperationStatus& status) const noexcept
             requires StrictArithmetic<T>;
 
 
@@ -2138,7 +2143,7 @@ namespace flcn
         template <StrictArithmetic U>
             requires StrictSignedness<T, U>
         [[nodiscard]] constexpr PromotedCVec3<T, U> tryRejectNorm(const CVec3<U>& from,
-                                                                 OperationStatus& status) const noexcept
+                                                                  OperationStatus& status) const noexcept
             requires StrictArithmetic<T>;
 
 
@@ -2166,7 +2171,7 @@ namespace flcn
         template <StrictArithmetic U>
             requires StrictSignedness<T, U>
         [[nodiscard]] static constexpr PromotedFloatCVec3<T, U> tryReject(const CVec3& vec, const CVec3<U>& from,
-                                                                         OperationStatus& status) noexcept
+                                                                          OperationStatus& status) noexcept
             requires StrictArithmetic<T>;
 
 
@@ -2192,7 +2197,7 @@ namespace flcn
         template <StrictArithmetic U>
             requires StrictSignedness<T, U>
         [[nodiscard]] static constexpr PromotedCVec3<T, U> tryRejectNorm(const CVec3& vec, const CVec3<U>& from,
-                                                                        OperationStatus& status) noexcept
+                                                                         OperationStatus& status) noexcept
             requires StrictArithmetic<T>;
 
         /** @} */

@@ -54,16 +54,12 @@ namespace flcn
 
     template <Arithmetic T>
     FALCON_INLINE constexpr Vec2<T> CVec2<T>::toVec2() const noexcept
-    {
-        return Vec2<T>(_data[0], _data[1]);
-    }
+    { return Vec2<T>(_data[0], _data[1]); }
 
 
     template <Arithmetic T>
     FALCON_INLINE constexpr Vec2<T> CVec2<T>::toVec2(const CVec2& vec) noexcept
-    {
-        return vec.toVec2();
-    }
+    { return vec.toVec2(); }
 
 
 
@@ -199,7 +195,7 @@ namespace flcn
 
     template <Arithmetic T>
     FALCON_INLINE constexpr const T* CVec2<T>::ptr() const noexcept
-    { return _data.data();}
+    { return _data.data(); }
 
 
     template <Arithmetic T>
@@ -652,7 +648,8 @@ namespace flcn
         using R = PromotedValue_t<T, S>;
         if constexpr (std::is_floating_point_v<R>)
         {
-            FALCON_ASSERT_MSG(flcn::abs(scalar) >= flcn::Config::EPSILON<R>, flcn::messages::assertion::VEC_DIV_BY_ZERO);
+            FALCON_ASSERT_MSG(flcn::abs(scalar) >= flcn::Config::EPSILON<R>,
+                              flcn::messages::assertion::VEC_DIV_BY_ZERO);
 
             R factor = R(1) / static_cast<R>(scalar);
             return CVec2<R>(_data[0] * factor, _data[1] * factor);
@@ -951,7 +948,7 @@ namespace flcn
     template <Arithmetic T>
     template <StrictArithmetic U>
         requires StrictSignedness<T, U>
-    FALCON_INLINE constexpr Magnitude<PromotedValue_t<T, U>> CVec2<T>::dist(const CVec2<U>& lhs,
+    FALCON_INLINE constexpr Magnitude<PromotedValue_t<T, U>> CVec2<T>::dist(const CVec2& lhs,
                                                                             const CVec2<U>& rhs) noexcept
         requires StrictArithmetic<T>
     { return lhs.dist(rhs); }

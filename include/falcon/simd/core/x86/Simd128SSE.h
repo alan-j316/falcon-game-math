@@ -508,8 +508,8 @@ namespace flcn
          * @brief Perform a fused multiply and add (this * b + c).
          *
          * @note Register arithmetic is limited to same data types and lanes.
-         * @param b The register to multiply with this register.
-         * @param c The register to add to the product.
+         * @param b The register containing the multiplier.
+         * @param c The register containing the addend.
          *
          * @return A new register with the fused-multiply add result.
          */
@@ -517,15 +517,15 @@ namespace flcn
 
 
         /**
-         * @brief Perform a fused multiply and add (this * b - c).
+         * @brief Perform a fused multiply and subtract (this * b - c).
          *
          * @note Register arithmetic is limited to same data types and lanes.
-         * @param b The register to multiply with this register.
-         * @param c The register to subtract from the product.
+         * @param b The register containing the multiplier.
+         * @param c The register containing the the subtrahend.
          *
          * @return A new register with the fused-multiply subtraction result.
          */
-        [[nodiscard]] constexpr Simd128 fmsub(Simd128 b, Simd128 c) const noexcept;
+        [[nodiscard]] constexpr Simd128 fmSub(Simd128 b, Simd128 c) const noexcept;
 
 
         /**

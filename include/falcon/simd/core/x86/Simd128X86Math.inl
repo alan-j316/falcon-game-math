@@ -139,4 +139,18 @@ namespace flcn
     template <typename DataType, size_t Lane>
     FALCON_INLINE constexpr _REG_128_SSE<DataType, Lane> sqrt(_REG_128_SSE<DataType, Lane> reg) noexcept
     { return reg.sqrt(); }
+
+
+    template <typename DataType, size_t Lane>
+    FALCON_INLINE constexpr _REG_128_SSE<DataType, Lane> fma(_REG_128_SSE<DataType, Lane> a,
+                                                             _REG_128_SSE<DataType, Lane> b,
+                                                             _REG_128_SSE<DataType, Lane> c) noexcept
+    { return a.fma(b, c); }
+
+
+    template <typename DataType, size_t Lane>
+    FALCON_INLINE constexpr _REG_128_SSE<DataType, Lane> fmSub(_REG_128_SSE<DataType, Lane> a,
+                                                               _REG_128_SSE<DataType, Lane> b,
+                                                               _REG_128_SSE<DataType, Lane> c) noexcept
+    { return a.fmSub(b, c); }
 } // namespace flcn

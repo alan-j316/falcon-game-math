@@ -216,57 +216,57 @@ TYPED_TEST(Vec3DistanceSignedTests, StaticWrapper_DistSq_HandlesNegativeNumbers)
 }
 
 
-// /**************************************
-//  *        MANHATTAN DISTANCE          *
-//  **************************************/
-//
-// /** @test Verify that the @ref flcn::Vec3::manhattanDist function returns the Manhattan. */
-// TYPED_TEST(Vec3DistanceTests, ManhattanDist_ReturnsManhattanDistance)
-// { EXPECT_MAG_EQ(this->_distManhattan, this->_vecA.manhattanDist(this->_vecB)); }
-//
-//
-// /** @test Verify that the @ref flcn::Vec3::manhattanDist function returns zero for the same vector. */
-// TYPED_TEST(Vec3DistanceTests, ManhattanDist_BetweenSameVectorReturnsZero)
-// {
-//     constexpr auto zero = TypeParam(0);
-//     const auto distance = this->_vecA.manhattanDist(this->_vecA);
-//     EXPECT_MAG_EQ(zero, distance);
-// }
-//
-//
-// /** @test Verify that the @ref flcn::Vec3::manhattanDist function handles negative coordinates. */
-// TYPED_TEST(Vec3DistanceSignedTests, ManhattanDist_HandlesNegativeNumbers)
-// {
-//     const auto distance = this->_vecA.manhattanDist(this->_vecB);
-//     EXPECT_MAG_EQ(this->_distManhattan, distance);
-// }
-//
-//
-// /**
-//  * @test Verify that the static variant of  @ref flcn::Vec3::manhattanDist function
-//  *        returns the Manhattan distance.
-//  */
-// TYPED_TEST(Vec3DistanceTests, StaticWrapper_ManhattanDist_ReturnsManhattanDistance)
-// { EXPECT_MAG_EQ(this->_distManhattan, flcn::Vec3<TypeParam>::manhattanDist(this->_vecA, this->_vecB)); }
-//
-//
-// /** @test Verify that the @ref flcn::Vec3::manhattanDist function returns zero for the same vector. */
-// TYPED_TEST(Vec3DistanceTests, StaticWrapper_ManhattanDist_BetweenSameVectorReturnsZero)
-// {
-//     constexpr auto zero = TypeParam(0);
-//     const auto distance = flcn::Vec3<TypeParam>::manhattanDist(this->_vecA, this->_vecA);
-//     EXPECT_MAG_EQ(zero, distance);
-// }
-//
-//
-// /** @test Verify that the static variant of @ref flcn::Vec3::manhattanDist function handles negative coordinates. */
-// TYPED_TEST(Vec3DistanceSignedTests, StaticWrapper_ManhattanDist_HandlesNegativeNumbers)
-// {
-//     const auto distance = flcn::Vec3<TypeParam>::manhattanDist(this->_vecA, this->_vecB);
-//     EXPECT_MAG_EQ(this->_distManhattan, distance);
-// }
-//
-//
+/**************************************
+ *        MANHATTAN DISTANCE          *
+ **************************************/
+
+/** @test Verify that the @ref flcn::Vec3::manhattanDist function returns the Manhattan. */
+TYPED_TEST(Vec3DistanceTests, ManhattanDist_ReturnsManhattanDistance)
+{ EXPECT_MAG_EQ(this->_distManhattan, this->_vecA.manhattanDist(this->_vecB)); }
+
+
+/** @test Verify that the @ref flcn::Vec3::manhattanDist function returns zero for the same vector. */
+TYPED_TEST(Vec3DistanceTests, ManhattanDist_BetweenSameVectorReturnsZero)
+{
+    constexpr auto zero = TypeParam(0);
+    const auto distance = this->_vecA.manhattanDist(this->_vecA);
+    EXPECT_MAG_EQ(zero, distance);
+}
+
+
+/** @test Verify that the @ref flcn::Vec3::manhattanDist function handles negative coordinates. */
+TYPED_TEST(Vec3DistanceSignedTests, ManhattanDist_HandlesNegativeNumbers)
+{
+    const auto distance = this->_vecA.manhattanDist(this->_vecB);
+    EXPECT_MAG_EQ(this->_distManhattan, distance);
+}
+
+
+/**
+ * @test Verify that the static variant of  @ref flcn::Vec3::manhattanDist function
+ *        returns the Manhattan distance.
+ */
+TYPED_TEST(Vec3DistanceTests, StaticWrapper_ManhattanDist_ReturnsManhattanDistance)
+{ EXPECT_MAG_EQ(this->_distManhattan, flcn::Vec3<TypeParam>::manhattanDist(this->_vecA, this->_vecB)); }
+
+
+/** @test Verify that the @ref flcn::Vec3::manhattanDist function returns zero for the same vector. */
+TYPED_TEST(Vec3DistanceTests, StaticWrapper_ManhattanDist_BetweenSameVectorReturnsZero)
+{
+    constexpr auto zero = TypeParam(0);
+    const auto distance = flcn::Vec3<TypeParam>::manhattanDist(this->_vecA, this->_vecA);
+    EXPECT_MAG_EQ(zero, distance);
+}
+
+
+/** @test Verify that the static variant of @ref flcn::Vec3::manhattanDist function handles negative coordinates. */
+TYPED_TEST(Vec3DistanceSignedTests, StaticWrapper_ManhattanDist_HandlesNegativeNumbers)
+{
+    const auto distance = flcn::Vec3<TypeParam>::manhattanDist(this->_vecA, this->_vecB);
+    EXPECT_MAG_EQ(this->_distManhattan, distance);
+}
+
+
 // /**************************************
 //  *        CHEBYSHEV DISTANCE          *
 //  **************************************/

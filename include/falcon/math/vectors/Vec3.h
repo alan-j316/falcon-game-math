@@ -1336,27 +1336,27 @@ namespace flcn
             requires StrictArithmetic<T>;
 
 
-        //         /**
-        //          * @brief Compute the Manhattan length (L1 Norm) of this vector.
-        //          *        \f$ \|\mathbf{v}\|_1 = |x| + |y| + |z| \f$
-        //          *
-        //          * @return The Manhattan length.
-        //          */
-        //         [[nodiscard]] constexpr T manhattanNorm() const noexcept
-        //             requires StrictArithmetic<T>;
-        //
-        //
-        //         /**
-        //          * @brief Compute the Manhattan length (L1 Norm) of @p Vec.
-        //          *        \f$ \|\mathbf{v}\|_1 = |x| + |y| + |z| \f$
-        //          *
-        //          * @param[in] vec The vector to compute the taxicab norm of.
-        //          *
-        //          * @return The Manhattan length.
-        //          */
-        //         [[nodiscard]] static constexpr T manhattanNorm(const Vec3& vec) noexcept
-        //             requires StrictArithmetic<T>;
-        //
+        /**
+         * @brief Compute the Manhattan length (L1 Norm) of this vector.
+         *        \f$ \|\mathbf{v}\|_1 = |x| + |y| + |z| \f$
+         *
+         * @return The Manhattan length.
+         */
+        [[nodiscard]] constexpr T manhattanNorm() const noexcept
+            requires StrictArithmetic<T>;
+
+
+        /**
+         * @brief Compute the Manhattan length (L1 Norm) of @p Vec.
+         *        \f$ \|\mathbf{v}\|_1 = |x| + |y| + |z| \f$
+         *
+         * @param[in] vec The vector to compute the taxicab norm of.
+         *
+         * @return The Manhattan length.
+         */
+        [[nodiscard]] static constexpr T manhattanNorm(const Vec3& vec) noexcept
+            requires StrictArithmetic<T>;
+
         //
         //         /**
         //          * @brief Compute the Chebyshev length (L∞ Norm) of this vector.

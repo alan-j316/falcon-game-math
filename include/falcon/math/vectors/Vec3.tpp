@@ -738,6 +738,21 @@ namespace flcn
     { return vec.magSq(); }
 
 
+    template <Arithmetic T>
+    FALCON_INLINE constexpr T Vec3<T>::manhattanNorm() const noexcept
+        requires StrictArithmetic<T>
+    {
+        const auto absData = _data.abs();
+        return absData.horizontalAdd();
+    }
+
+
+    template <Arithmetic T>
+    FALCON_INLINE constexpr T Vec3<T>::manhattanNorm(const Vec3& vec) noexcept
+        requires StrictArithmetic<T>
+    { return vec.manhattanNorm(); }
+
+
 
     /// +---------------------------------------------------------------------------------------+
     /// |                               UTILITIES                                               |

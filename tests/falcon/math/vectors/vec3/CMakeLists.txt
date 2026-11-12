@@ -13,7 +13,7 @@ target_sources(
         InitializationTests.cpp
         MagnitudeTests.cpp
         #        NormalizationTests.cpp
-        #        PNormTests.cpp
+        PNormTests.cpp
         ProductTests.cpp
         #        ProjectionTests.cpp
         RawPointerTests.cpp

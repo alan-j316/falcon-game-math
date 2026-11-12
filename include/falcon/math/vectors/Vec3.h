@@ -1640,113 +1640,97 @@ namespace flcn
         //             requires StrictArithmetic<T>;
         //
         //         /** @} */
-        //
-        //
-        //         /**
-        //          * @addtogroup Falcon_Vec3_Proj
-        //          * @{
-        //          */
-        //
-        //         /**
-        //          * @brief Project this vector onto the @p onto vector.
-        //          *        \f$
-        //          *          \text{proj}_{\mathbf{b}} \mathbf{a} =
-        //          *          \frac{\mathbf{a} \cdot \mathbf{b}}{\|\mathbf{b}\|^2} \mathbf{b}
-        //          *        \f$
-        //          *
-        //          * @note To maintain precision, result components are promoted to their
-        //          *       corresponding floating-point representation via @ref Magnitude.
-        //          * @note If @p onto is normalized, use @ref projectNorm as it is a faster implementation for unit
-        //          vectors.
-        //          * @note Performs assertion for division by zero, resulting from zero-length vector, in **Debug
-        //          mode**.
-        //          *
-        //          * @tparam U Numeric type of the RHS vector. Must satisfy @ref StrictArithmetic.
-        //          *
-        //          * @param[in] onto           The vector to project onto.
-        //          *
-        //          * @return The projected @ref Vec3.
-        //          */
-        //         template <StrictArithmetic U>
-        //             requires StrictSignedness<T, U>
-        //         [[nodiscard]] constexpr PromotedFloatVec3<T, U> project(const Vec3<U>& onto) const noexcept
-        //             requires StrictArithmetic<T>;
-        //
-        //
-        //         /**
-        //          * @brief Project this vector onto the **unit** @p onto vector.
-        //          *        \f$
-        //          *            \text{proj}_{\mathbf{b}} \mathbf{a} = (\mathbf{a} \cdot \mathbf{b}) \mathbf{\hat{b}}
-        //          *        \f$
-        //          *
-        //          * @note To maintain precision, result components are promoted to their
-        //          *       corresponding floating-point representation via @ref Magnitude.
-        //          * @note Only use this method if @p onto is normalized. If not, use @ref project.
-        //          *
-        //          * @tparam U Numeric type of the RHS vector. Must satisfy @ref StrictArithmetic.
-        //          *
-        //          * @param[in] onto The vector to project onto.
-        //          *
-        //          * @return The projected @ref Vec3.
-        //          */
-        //         template <StrictArithmetic U>
-        //             requires StrictSignedness<T, U>
-        //         [[nodiscard]] constexpr PromotedVec3<T, U> projectNorm(const Vec3<U>& onto) const noexcept
-        //             requires StrictArithmetic<T>;
-        //
-        //
-        //         /**
-        //          * @brief Project the @p Vec vector onto the @p onto vector.
-        //          *        \f$
-        //          *          \text{proj}_{\mathbf{b}} \mathbf{a} =
-        //          *          \frac{\mathbf{a} \cdot \mathbf{b}}{\|\mathbf{b}\|^2} \mathbf{b}
-        //          *        \f$
-        //          *
-        //          * @note To maintain precision, result components are promoted to their
-        //          *       corresponding floating-point representation via @ref Magnitude.
-        //          * @note If @p onto is normalized, use @ref projectNorm as it is a faster implementation for unit
-        //          vectors.
-        //          * @note Performs assertion for division by zero, resulting from zero-length vector, in **Debug
-        //          mode**.
-        //          *
-        //          * @tparam U Numeric type of the RHS vector. Must satisfy @ref StrictArithmetic.
-        //          *
-        //          * @param[in] vec  The vector to project.
-        //          * @param[in] onto The vector to project onto.
-        //          *
-        //          * @return The projected @ref Vec3.
-        //          */
-        //         template <StrictArithmetic U>
-        //             requires StrictSignedness<T, U>
-        //         [[nodiscard]] static constexpr PromotedFloatVec3<T, U> project(const Vec3& vec, const Vec3<U>& onto)
-        //         noexcept
-        //             requires StrictArithmetic<T>;
-        //
-        //
-        //         /**
-        //          * @brief Project the @p Vec vector onto the **unit** @p onto vector.
-        //          *        \f$
-        //          *            \text{proj}_{\mathbf{b}} \mathbf{a} = (\mathbf{a} \cdot \mathbf{b}) \mathbf{\hat{b}}
-        //          *        \f$
-        //          *
-        //          * @note To maintain precision, result components are promoted to their
-        //          *       corresponding floating-point representation via @ref Magnitude.
-        //          * @note Only use this method if @p onto is normalized. If not, use @ref project.
-        //          *
-        //          * @tparam U Numeric type of the RHS vector. Must satisfy @ref StrictArithmetic.
-        //          *
-        //          * @param[in] vec  The vector to project.
-        //          * @param[in] onto The vector to project onto.
-        //          *
-        //          * @return The projected @ref Vec3.
-        //          */
-        //         template <StrictArithmetic U>
-        //             requires StrictSignedness<T, U>
-        //         [[nodiscard]] static constexpr PromotedVec3<T, U> projectNorm(const Vec3& vec, const Vec3<U>& onto)
-        //         noexcept
-        //             requires StrictArithmetic<T>;
-        //
-        //
+
+
+        /**
+         * @addtogroup Falcon_Vec3_Proj
+         * @{
+         */
+
+        /// API NOTE: While projections are can be allowed on all numeric types, it will cause imprecision
+        ///           with non-floating point types due to rounding in division, so they are restricted to only
+        ///           floating point types.
+
+        /**
+         * @brief Project this vector onto the @p onto vector.
+         *        \f$
+         *          \text{proj}_{\mathbf{b}} \mathbf{a} =
+         *          \frac{\mathbf{a} \cdot \mathbf{b}}{\|\mathbf{b}\|^2} \mathbf{b}
+         *        \f$
+         *
+         * @note If @p onto is normalized, use @ref projectNorm as it is a faster implementation for unit vectors.
+         * @note Performs assertion for division by zero, resulting from zero-length vector, in **Debug mode**.
+         *
+         * @param[in] onto The vector to project onto.
+         *
+         * @return The projected @ref Vec3.
+         */
+        [[nodiscard]] constexpr Vec3 project(const Vec3& onto) const noexcept
+            requires FPArithmetic<T>;
+
+
+        /**
+         * @brief Project this vector onto the **unit** @p onto vector.
+         *        \f$
+         *            \text{proj}_{\mathbf{b}} \mathbf{a} = (\mathbf{a} \cdot \mathbf{b}) \mathbf{\hat{b}}
+         *        \f$
+         *
+         * @note To maintain precision, result components are promoted to their
+         *       corresponding floating-point representation via @ref Magnitude.
+         * @note Only use this method if @p onto is normalized. If not, use @ref project.
+         *
+         * @note Only use this method if @p onto is normalized. If not, use @ref project.
+         *
+         * @param[in] onto The vector to project onto.
+         *
+         * @return The projected @ref Vec3.
+         */
+        [[nodiscard]] constexpr Vec3 projectNorm(const Vec3& onto) const noexcept
+            requires FPArithmetic<T>;
+
+
+        /**
+         * @brief Project the @p Vec vector onto the @p onto vector.
+         *        \f$
+         *          \text{proj}_{\mathbf{b}} \mathbf{a} =
+         *          \frac{\mathbf{a} \cdot \mathbf{b}}{\|\mathbf{b}\|^2} \mathbf{b}
+         *        \f$
+         *
+         * @note To maintain precision, result components are promoted to their
+         *       corresponding floating-point representation via @ref Magnitude.
+         * @note If @p onto is normalized, use @ref projectNorm as it is a faster implementation for unit
+         vectors.
+         * @note Performs assertion for division by zero, resulting from zero-length vector, in **Debug
+         mode**.
+         *
+         * @tparam U Numeric type of the RHS vector. Must satisfy @ref StrictArithmetic.
+         *
+         * @param[in] vec  The vector to project.
+         * @param[in] onto The vector to project onto.
+         *
+         * @return The projected @ref Vec3.
+         */
+        [[nodiscard]] static constexpr Vec3 project(const Vec3& vec, const Vec3& onto) noexcept
+            requires FPArithmetic<T>;
+
+
+        /**
+         * @brief Project the @p Vec vector onto the **unit** @p onto vector.
+         *        \f$
+         *            \text{proj}_{\mathbf{b}} \mathbf{a} = (\mathbf{a} \cdot \mathbf{b}) \mathbf{\hat{b}}
+         *        \f$
+         *
+         * @note Only use this method if @p onto is normalized. If not, use @ref project.
+         *
+         * @param[in] vec  The vector to project.
+         * @param[in] onto The vector to project onto.
+         *
+         * @return The projected @ref Vec3.
+         */
+        [[nodiscard]] static constexpr Vec3 projectNorm(const Vec3& vec, const Vec3& onto) noexcept
+            requires FPArithmetic<T>;
+
+
         //         /**
         //          * @brief Project this vector onto the @p onto vector.
         //          *        \f$
@@ -2295,7 +2279,7 @@ namespace flcn
         //                                                                         OperationStatus& status) noexcept
         //             requires StrictArithmetic<T>;
         //
-        //         /** @} */
+        /** @} */
 
 
 

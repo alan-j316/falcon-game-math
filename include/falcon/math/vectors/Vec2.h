@@ -1562,8 +1562,8 @@ namespace flcn
          * @{
          */
 
-        /// API NOTE: While projections are allowed on all numeric types, it can cause imprecise results with
-        ///           non-floating point types due to rounding in the division, so they are restricted to only
+        /// API NOTE: While projections are can be allowed on all numeric types, it will cause imprecision
+        ///           with non-floating point types due to rounding in division, so they are restricted to only
         ///           floating point types.
 
         /**

@@ -929,6 +929,7 @@ namespace flcn
     FALCON_INLINE constexpr Vec2<Magnitude<T>> Vec2<T>::normalize() const noexcept
         requires FPArithmetic<T>
     {
+        // TODO: Update to fast inv sqrt
         const auto magnitude = mag();
         FALCON_ASSERT_MSG(magnitude >= flcn::Config::EPSILON<decltype(magnitude)>,
                           flcn::messages::assertion::VEC_NORMALIZE_DIV_BY_ZERO);
@@ -994,9 +995,9 @@ namespace flcn
 
 
 
-    /*************************************
-     *        VECTOR PROJECTION          *
-     *************************************/
+    /// +---------------------------------------------------------------------------------------+
+    /// |                              VECTOR PROJECTION                                        |
+    /// +---------------------------------------------------------------------------------------+
 
     template <Arithmetic T>
     FALCON_INLINE constexpr Vec2<T> Vec2<T>::project(const Vec2& onto) const noexcept

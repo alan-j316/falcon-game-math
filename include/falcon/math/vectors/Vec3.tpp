@@ -894,6 +894,42 @@ namespace flcn
 
 
     /// +---------------------------------------------------------------------------------------+
+    /// |                              VECTOR PROJECTION                                        |
+    /// +---------------------------------------------------------------------------------------+
+
+    template <Arithmetic T>
+    FALCON_INLINE constexpr Vec3<T> Vec3<T>::project(const Vec3& onto) const noexcept
+        requires FPArithmetic<T>
+    {
+        const auto b2 = onto.dot(onto);
+        FALCON_ASSERT_MSG(b2 > flcn::Config::EPSILON_SQUARE<T>, flcn::messages::assertion::VEC_PROJECT_DIV_BY_ZERO);
+
+        return this->dot(onto) / b2 * onto; // a.dot(b) / b.dot(b) * b
+    }
+
+
+    template <Arithmetic T>
+    FALCON_INLINE constexpr Vec3<T> Vec3<T>::projectNorm(const Vec3& onto) const noexcept
+        requires FPArithmetic<T>
+    {
+        return dot(onto) * onto; // A.B * A
+    }
+
+
+    template <Arithmetic T>
+    FALCON_INLINE constexpr Vec3<T> Vec3<T>::project(const Vec3& vec, const Vec3& onto) noexcept
+        requires FPArithmetic<T>
+    { return vec.project(onto); }
+
+
+    template <Arithmetic T>
+    FALCON_INLINE constexpr Vec3<T> Vec3<T>::projectNorm(const Vec3& vec, const Vec3& onto) noexcept
+        requires FPArithmetic<T>
+    { return vec.projectNorm(onto); }
+
+
+
+    /// +---------------------------------------------------------------------------------------+
     /// |                               UTILITIES                                               |
     /// +---------------------------------------------------------------------------------------+
 

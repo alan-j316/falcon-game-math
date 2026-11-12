@@ -15,7 +15,7 @@ target_sources(
         #        NormalizationTests.cpp
         PNormTests.cpp
         ProductTests.cpp
-        #        ProjectionTests.cpp
+        ProjectionTests.cpp
         RawPointerTests.cpp
         #        RejectionTests.cpp
         #        StringRepresentationTests.cpp

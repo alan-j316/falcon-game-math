@@ -1,7 +1,7 @@
 /**
  * @file DistanceTests.cpp
  * @author Alan Abraham P Kochumon
- * @date Created on: May 28, 2026
+ * @date Created on: November 12, 2026
  *
  * @brief Verify @ref flcn::Vec3 distance (L1, L2, L3) calculation logic.
  *
@@ -45,7 +45,7 @@ namespace
             _vecA = { T(2), T(7), T(2) };
             _vecB = { T(5), T(3), T(5) };
 
-            _dist          = flcn::Magnitude<T>(5.830951894845301);
+            _dist          = T(5.830951894845301);
             _distSq        = T(34);
             _distManhattan = T(10);
             _distChebyshev = T(4);

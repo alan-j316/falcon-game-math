@@ -1135,7 +1135,7 @@ namespace flcn
         [[nodiscard]] static constexpr T dot(const Vec2& lhs, const Vec2& rhs) noexcept
             requires StrictArithmetic<T>;
 
-
+// TODO: Add tensor product after migrating Mat to Simd
         //         /**
         //          * @brief Compute the tensor product with another vector.
         //          *        \f$ \mathbf{u} \otimes \mathbf{v} = u v^\top \f$

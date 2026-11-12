@@ -657,9 +657,9 @@ namespace flcn
 
 
 
-    /*************************************
-     *        VECTOR DOT PRODUCT         *
-     *************************************/
+    /// +---------------------------------------------------------------------------------------+
+    /// |                           VECTOR DOT PRODUCT                                          |
+    /// +---------------------------------------------------------------------------------------+
 
     template <Arithmetic T>
     FALCON_INLINE constexpr T Vec2<T>::dot([[maybe_unused]] const Vec2& rhs) const noexcept
@@ -676,6 +676,11 @@ namespace flcn
     { return lhs.dot(rhs); }
 
 
+
+    /// +---------------------------------------------------------------------------------------+
+    /// |                             VECTOR CROSS PRODUCT                                      |
+    /// +---------------------------------------------------------------------------------------+
+
     template <Arithmetic T>
     FALCON_INLINE constexpr T Vec2<T>::cross(const Vec2& rhs) const noexcept
         requires SignedStrictArithmetic<T>
@@ -691,6 +696,12 @@ namespace flcn
     FALCON_INLINE constexpr T Vec2<T>::cross(const Vec2& lhs, const Vec2& rhs) noexcept
         requires SignedStrictArithmetic<T>
     { return lhs.cross(rhs); }
+
+
+    /// +---------------------------------------------------------------------------------------+
+    /// |                                TENSOR PRODUCT                                         |
+    /// +---------------------------------------------------------------------------------------+
+    /// TODO: To be implemented
 
 
 

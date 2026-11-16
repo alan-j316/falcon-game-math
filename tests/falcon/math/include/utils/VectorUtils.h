@@ -15,12 +15,14 @@
 
 #include <cmath>
 #include <falcon/math/common/MathTraits.h>
-#include <falcon/math/vectors/CVec2.h>
 #include <falcon/math/vectors/CVec3.h>
-#include <falcon/math/vectors/Vec3.h>
 #include <falcon/math/vectors/Vec4.h>
+#include <falcon/math/vectors/simd/Vec2.h>
+#include <falcon/math/vectors/simd/Vec3.h>
 #include <gtest/gtest.h>
 #include <type_traits>
+
+// TODO: Fix NOLINT Warnings.
 
 namespace testutils
 {
@@ -44,9 +46,9 @@ namespace testutils
      * @note Triggers an assertion failure if vector dimensions are mismatched.
      */
     template <flcn::Vector T, flcn::Vector U>
-    void EXPECT_VEC_EQ(const T& expected, const U& actual)
+    void EXPECT_VEC_EQ(const T& expected, const U& actual) // NOLINT
     {
-        using ValueType = T::value_type;
+        using ValueType = T::value_type; // NOLINT
 
         static_assert(T::DIMENSION == U::DIMENSION, "Vectors must have the same dimension (e.g. both 3D)");
 
@@ -83,7 +85,7 @@ namespace testutils
      *       internal state does not match the provided scalars.
      */
     template <flcn::Arithmetic T>
-    void EXPECT_VEC_CONTAINS(const flcn::CVec2<T>& vector, T x, T y)
+    void EXPECT_VEC_CONTAINS(const flcn::CVec2<T>& vector, T x, T y) // NOLINT
     {
         if constexpr (std::is_same_v<T, float>)
         {
@@ -116,7 +118,7 @@ namespace testutils
      *       internal state does not match the provided scalars.
      */
     template <flcn::Arithmetic T>
-    void EXPECT_VEC_CONTAINS(const flcn::Vec2<T>& vector, T x, T y)
+    void EXPECT_VEC_CONTAINS(const flcn::simd::Vec2<T>& vector, T x, T y) // NOLINT
     {
         if constexpr (std::is_same_v<T, float>)
         {
@@ -150,7 +152,7 @@ namespace testutils
      *       internal state does not match the provided scalars.
      */
     template <flcn::Arithmetic T>
-    void EXPECT_VEC_CONTAINS(const flcn::CVec3<T>& vector, T x, T y, T z)
+    void EXPECT_VEC_CONTAINS(const flcn::CVec3<T>& vector, T x, T y, T z) // NOLINT
     {
         if constexpr (std::is_same_v<T, float>)
         {
@@ -173,20 +175,20 @@ namespace testutils
     }
 
     /**
-         * @brief Performs a strict component-wise validation of a @ref flcn::Vec3 against discrete scalar values.
-         *
-         * @tparam T Numeric type of the vector and scalar components.
-         *
-         * @param vector The 3D vector instance being evaluated.
-         * @param x      The expected value for the x-component.
-         * @param y      The expected value for the y-component.
-         * @param z      The expected value for the z-component.
-         *
-         * @note Uses GoogleTest macros. Triggers a non-fatal test failure if the vector's
-         *       internal state does not match the provided scalars.
-         */
+     * @brief Performs a strict component-wise validation of a @ref flcn::Vec3 against discrete scalar values.
+     *
+     * @tparam T Numeric type of the vector and scalar components.
+     *
+     * @param vector The 3D vector instance being evaluated.
+     * @param x      The expected value for the x-component.
+     * @param y      The expected value for the y-component.
+     * @param z      The expected value for the z-component.
+     *
+     * @note Uses GoogleTest macros. Triggers a non-fatal test failure if the vector's
+     *       internal state does not match the provided scalars.
+     */
     template <flcn::Arithmetic T>
-    void EXPECT_VEC_CONTAINS(const flcn::Vec3<T>& vector, T x, T y, T z)
+    void EXPECT_VEC_CONTAINS(const flcn::simd::Vec3<T>& vector, T x, T y, T z) // NOLINT
     {
         if constexpr (std::is_same_v<T, float>)
         {
@@ -224,7 +226,7 @@ namespace testutils
      *       internal state does not match the provided scalars.
      */
     template <flcn::Arithmetic T>
-    void EXPECT_VEC_CONTAINS(const flcn::Vec4<T>& vector, T x, T y, T z, T w)
+    void EXPECT_VEC_CONTAINS(const flcn::Vec4<T>& vector, T x, T y, T z, T w) // NOLINT
     {
         if constexpr (std::is_same_v<T, float>)
         {
@@ -261,9 +263,9 @@ namespace testutils
      *       if any of the vectors components are not unit.
      */
     template <flcn::Vector T>
-    void EXPECT_VEC_ONE(const T& vector)
+    void EXPECT_VEC_ONE(const T& vector) // NOLINT
     {
-        using ValueType    = T::value_type;
+        using ValueType    = T::value_type; // NOLINT
         ValueType expected = ValueType(1);
 
         constexpr std::size_t elementCount = T::DIMENSION;
@@ -297,9 +299,9 @@ namespace testutils
      *       if any of the vectors components are not zero.
      */
     template <flcn::Vector T>
-    void EXPECT_VEC_ZERO(const T& vector)
+    void EXPECT_VEC_ZERO(const T& vector) // NOLINT
     {
-        using ValueType = T::value_type;
+        using ValueType                    = T::value_type; // NOLINT
         constexpr std::size_t elementCount = T::DIMENSION;
 
         for (std::size_t i = 0; i < elementCount; ++i)
@@ -331,7 +333,7 @@ namespace testutils
      *       if any of the vectors components are not @ref `INFINITY` or `-INFINITY`.
      */
     template <flcn::Vector T>
-    void EXPECT_VEC_INF(const T& vector)
+    void EXPECT_VEC_INF(const T& vector) // NOLINT
     {
         constexpr std::size_t elementCount = T::DIMENSION;
         if (std::is_floating_point_v<T>)
@@ -356,7 +358,7 @@ namespace testutils
      *       between expected and actual exceeds the library's standard epsilon.
      */
     template <flcn::StrictArithmetic T>
-    void EXPECT_MAG_EQ(T expected, T actual)
+    void EXPECT_MAG_EQ(T expected, T actual) // NOLINT
     {
         if constexpr (std::is_same_v<T, float>)
         {

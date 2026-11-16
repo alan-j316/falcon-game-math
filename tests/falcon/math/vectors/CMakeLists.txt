@@ -52,12 +52,11 @@ if (FALCON_ENABLE_NEON OR CMAKE_SYSTEM_PROCESSOR MATCHES "(arm|aarch64|ARM64)")
             cvec2/DeathTests.cpp # TODO: Add death tests here
             cvec3/DeathTests.cpp
             vec4/DeathTests.cpp
-            vec2/DeathTests.cpp
     )
 else ()
     # SIMD
-    add_subdirectory(vec2)
-    add_subdirectory(vec3)
+    add_subdirectory(simd/vec2)
+    add_subdirectory(simd/vec3)
     target_link_libraries(
             FalconMathVectorTests
             PRIVATE
@@ -91,9 +90,9 @@ else ()
     add_executable(FalconMathVectorDeathTests
             cvec2/DeathTests.cpp # TODO: Add death tests here
             cvec3/DeathTests.cpp
-            vec2/DeathTests.cpp
-            vec3/DeathTests.cpp
             vec4/DeathTests.cpp
+            simd/vec2/DeathTests.cpp
+            simd/vec3/DeathTests.cpp
     )
 endif ()
 

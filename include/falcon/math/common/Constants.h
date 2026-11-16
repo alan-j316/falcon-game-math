@@ -54,11 +54,11 @@ namespace flcn::constants
     /// @note Not recommended for direct comparison with floating point numbers,
     ///       as the mask is a NaN for floating-point types.
     template <typename T>
-    inline constexpr T TrueMask = static_cast<T>(~0ULL);
+    inline constexpr T TrueMask = static_cast<T>(~0ULL); // NOLINT
 
     /// Bitwise comparison mask representing falsiness.
     template <typename T>
-    inline constexpr T FalseMask = static_cast<T>(0);
+    inline constexpr T FalseMask = static_cast<T>(0); // NOLINT
 
 } // namespace flcn::constants
 

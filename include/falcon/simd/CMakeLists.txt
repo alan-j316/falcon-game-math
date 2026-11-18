@@ -15,6 +15,9 @@ add_library(${FALCON_SIMD_TARGET_NAME} INTERFACE
         core/x86/CustomX86Intrin.inl
         core/x86/internal/MaskHelpers.h
 
+        core/scalar/Simd128Scalar.h
+        core/scalar/Simd128Scalar.inl
+
         utils/SIMDUtils.h
         utils/TypeTraits.h
         utils/SimdTraits.h

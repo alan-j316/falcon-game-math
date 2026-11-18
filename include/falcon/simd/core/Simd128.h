@@ -50,6 +50,9 @@ namespace flcn
     #include "x86/Simd128SSE.h"
     #include "x86/Simd256AVX.h"
     #include "x86/Simd256SSE.h"
+// TODO: Separate Neon out
+#else
+    #include "scalar/Simd128Scalar.h"
 #endif
 
 
@@ -59,15 +62,22 @@ namespace flcn
 #if defined(FALCON_PLATFORM_X86)
     template <typename DataType, size_t Lane>
     using Simd128_t = Simd128<SimdBackend::ARCH_SSE2, DataType, Lane>;
+// TODO: Separate Neon OUT
+#else
+    template <typename DataType, size_t Lane>
+    using Simd128_t = Simd128<SimdBackend::ARCH_UNKNOWN, DataType, Lane>;
 #endif
+
 // Simd256
 #if defined(FALCON_ENABLE_AVX) || defined(FALCON_ENABLE_AVX2) || defined(FALCON_ENABLE_AVX512F) ||                     \
     defined(FALCON_ENABLE_AVX10) || defined(FALCON_ENABLE_AVX512EX)
     template <typename DataType, size_t Lane>
     using Simd256_t = Simd256<SimdBackend::ARCH_AVX, DataType, Lane>;
-#else
+#elif defined(FALCON_PLATFORM_X86)
     template <typename DataType, size_t Lane>
     using Simd256_t = Simd256<SimdBackend::ARCH_SSE2, DataType, Lane>;
+#else
+    // TODO: Neon and scalar
 #endif
 } // namespace flcn
 

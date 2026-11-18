@@ -222,6 +222,22 @@
       }
     },
     {
+      "name": "GCC-Debug-Simd-Disabled",
+      "displayName": "GCC Debug (No SIMD)",
+      "inherits": "base-strict",
+      "vendor": {
+        "jetbrains.com/clion": {
+          "toolchain": "MinGW"
+        }
+      },
+      "cacheVariables": {
+        "CMAKE_BUILD_TYPE": "Debug",
+        "CMAKE_CXX_COMPILER": "g++",
+        "CMAKE_C_COMPILER": "gcc",
+        "FALCON_SIMD_MODE": "FALCON_DISABLE_SIMD"
+      }
+    },
+    {
       "name": "macos-debug",
       "displayName": "macOS AppleClang Debug",
       "inherits": "base-strict",

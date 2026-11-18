@@ -561,152 +561,152 @@ namespace flcn
         //
         // [[nodiscard]] constexpr Simd128 operator<=(Simd128 other) const noexcept;
         //
-        // /**
-        //  * @brief Perform a logical left shift on this register by @p count.
-        //  *
-        //  * @warning If @p count is known at compile time then it is recommended to use
-        //  *          @ref shiftLeft<uint32_t> as it is faster.
-        //  *
-        //  * @return A new 128-bit register with shifted values.
-        //  *
-        //  * @relatedalso operator<<=(uint32_t)
-        //  * @relatedalso operator>>(uint32_t)
-        //  * @relatedalso operator>>=(uint32_t)
-        //  * @relatedalso shiftRightLogical(uint32_t)
-        //  * @relatedalso shiftLeft<uint32_t>()
-        //  * @relatedalso shiftRightArithmetic<uint32_t>()
-        //  * @relatedalso shiftRightLogical<uint32_t>()
-        //  */
-        // [[nodiscard]] constexpr Simd128 operator<<(uint32_t count) const noexcept;
-        //
-        //
-        // /**
-        //  * @brief Perform a logical left shift on this register by @p count in-place.
-        //  *
-        //  * @warning If @p count is known at compile time then it is recommended to use
-        //  *          @ref shiftLeft<uint32_t> as it is faster.
-        //  *
-        //  * @return A reference to this register.
-        //  *
-        //  * @relatedalso operator<<(uint32_t)
-        //  * @relatedalso operator>>(uint32_t)
-        //  * @relatedalso operator>>=(uint32_t)
-        //  * @relatedalso shiftRightLogical(uint32_t)
-        //  * @relatedalso shiftLeft<uint32_t>()
-        //  * @relatedalso shiftRightArithmetic<uint32_t>()
-        //  * @relatedalso shiftRightLogical<uint32_t>()
-        //  */
-        // constexpr Simd128& operator<<=(uint32_t count) noexcept;
-        //
-        //
-        // /**
-        //  * @brief Perform a arithmetic/logical(type dependent) right shift by @p count and return a new register.
-        //  *
-        //  * @warning If @p count is known at compile time then it is recommended to use @ref shiftRight<Count> as
-        //  *          it is faster.
-        //  *
-        //  * @return A new 128-bit register with shifted values.
-        //  *
-        //  * @relatedalso operator<<(uint32_t)
-        //  * @relatedalso operator<<=(uint32_t)
-        //  * @relatedalso operator>>=(uint32_t)
-        //  * @relatedalso shiftRightLogical(uint32_t)
-        //  * @relatedalso shiftLeft<uint32_t>()
-        //  * @relatedalso shiftRightArithmetic<uint32_t>()
-        //  * @relatedalso shiftRightLogical<uint32_t>()
-        //  */
-        // [[nodiscard]] constexpr Simd128 operator>>(uint32_t count) const noexcept;
-        //
-        //
-        // /**
-        //  * @brief Perform a arithmetic/logical(type dependent) right shift on this register by @p count.
-        //  *
-        //  * @warning If @p count is known at compile time then it is recommended to use
-        //  *          @ref shiftRightArithmetic<uint32_t> as it is faster.
-        //  *
-        //  * @return A reference to this register.
-        //  *
-        //  * @relatedalso operator<<(uint32_t)
-        //  * @relatedalso operator<<=(uint32_t)
-        //  * @relatedalso operator>>(uint32_t)
-        //  * @relatedalso shiftRightLogical(uint32_t)
-        //  * @relatedalso shiftLeft<uint32_t>()
-        //  * @relatedalso shiftRightArithmetic<uint32_t>()
-        //  * @relatedalso shiftRightLogical<uint32_t>()
-        //  */
-        // constexpr Simd128& operator>>=(uint32_t count) noexcept;
-        //
-        //
-        // /**
-        //  * @brief Perform a logical right shift (zero extension) on this register and return a new register.
-        //  *
-        //  * @warning If @p count is known at compile time then it is recommended to use
-        //  *          @ref shiftRightLogical<uint32_t> as it is faster.
-        //  *
-        //  * @return A new 128-bit register with shifted values.
-        //  *
-        //  * @relatedalso operator<<(uint32_t)
-        //  * @relatedalso operator<<=(uint32_t)
-        //  * @relatedalso operator>>(uint32_t)
-        //  * @relatedalso operator>>=(uint32_t)
-        //  * @relatedalso shiftLeft<uint32_t>()
-        //  * @relatedalso shiftRightArithmetic<uint32_t>()
-        //  * @relatedalso shiftRightLogical<uint32_t>()
-        //  */
-        // [[nodiscard]] constexpr Simd128 shiftRightLogical(uint32_t count) const noexcept;
-        //
-        //
-        // /**
-        //  * @brief Perform a logical left shift on this register by a compile time constant, @p Count.
-        //  *
-        //  * @tparam Count The shift amount.
-        //  *
-        //  * @relatedalso operator<<(uint32_t)
-        //  * @relatedalso operator<<=(uint32_t)
-        //  * @relatedalso operator>>(uint32_t)
-        //  * @relatedalso operator>>=(uint32_t)
-        //  * @relatedalso shiftRightLogical(uint32_t)
-        //  * @relatedalso shiftRightArithmetic<uint32_t>()
-        //  * @relatedalso shiftRightLogical<uint32_t>()
-        //  */
-        // template <uint32_t Count>
-        // [[nodiscard]] constexpr Simd128 shiftLeft() const noexcept;
-        //
-        //
-        // /**
-        //  * @brief Perform a arithmetic right shift on this register by a compile time constant, @p Count.
-        //  *
-        //  * @tparam Count The shift amount.
-        //  *
-        //  * @relatedalso operator<<(uint32_t)
-        //  * @relatedalso operator<<=(uint32_t)
-        //  * @relatedalso operator>>(uint32_t)
-        //  * @relatedalso operator>>=(uint32_t)
-        //  * @relatedalso shiftRightLogical(uint32_t)
-        //  * @relatedalso shiftLeft<uint32_t>()
-        //  * @relatedalso shiftRightLogical<uint32_t>()
-        //  */
-        // template <uint32_t Count>
-        // [[nodiscard]] constexpr Simd128 shiftRightArithmetic() const noexcept;
-        //
-        //
-        // /**
-        //  * @brief Perform a logical right shift on this register by a compile time constant, @p Count.
-        //  *
-        //  * @tparam Count The shift amount.
-        //  *
-        //  * @relatedalso operator<<(uint32_t)
-        //  * @relatedalso operator<<=(uint32_t)
-        //  * @relatedalso operator>>(uint32_t)
-        //  * @relatedalso operator>>=(uint32_t)
-        //  * @relatedalso shiftRightLogical(uint32_t)
-        //  * @relatedalso shiftLeft<uint32_t>()
-        //  * @relatedalso shiftRightLogical<uint32_t>()
-        //  */
-        // template <uint32_t Count>
-        // [[nodiscard]] constexpr Simd128 shiftRightLogical() const noexcept;
-        //
-        //
+        /**
+         * @brief Perform a logical left shift on this register by @p count.
+         *
+         * @warning If @p count is known at compile time then it is recommended to use
+         *          @ref shiftLeft<uint32_t> as it is faster.
+         *
+         * @return A new 128-bit register with shifted values.
+         *
+         * @relatedalso operator<<=(uint32_t)
+         * @relatedalso operator>>(uint32_t)
+         * @relatedalso operator>>=(uint32_t)
+         * @relatedalso shiftRightLogical(uint32_t)
+         * @relatedalso shiftLeft<uint32_t>()
+         * @relatedalso shiftRightArithmetic<uint32_t>()
+         * @relatedalso shiftRightLogical<uint32_t>()
+         */
+        [[nodiscard]] constexpr Simd128 operator<<(uint32_t count) const noexcept;
+
+
+        /**
+         * @brief Perform a logical left shift on this register by @p count in-place.
+         *
+         * @warning If @p count is known at compile time then it is recommended to use
+         *          @ref shiftLeft<uint32_t> as it is faster.
+         *
+         * @return A reference to this register.
+         *
+         * @relatedalso operator<<(uint32_t)
+         * @relatedalso operator>>(uint32_t)
+         * @relatedalso operator>>=(uint32_t)
+         * @relatedalso shiftRightLogical(uint32_t)
+         * @relatedalso shiftLeft<uint32_t>()
+         * @relatedalso shiftRightArithmetic<uint32_t>()
+         * @relatedalso shiftRightLogical<uint32_t>()
+         */
+        constexpr Simd128& operator<<=(uint32_t count) noexcept;
+
+
+        /**
+         * @brief Perform a arithmetic/logical(type dependent) right shift by @p count and return a new register.
+         *
+         * @warning If @p count is known at compile time then it is recommended to use @ref shiftRight<Count> as
+         *          it is faster.
+         *
+         * @return A new 128-bit register with shifted values.
+         *
+         * @relatedalso operator<<(uint32_t)
+         * @relatedalso operator<<=(uint32_t)
+         * @relatedalso operator>>=(uint32_t)
+         * @relatedalso shiftRightLogical(uint32_t)
+         * @relatedalso shiftLeft<uint32_t>()
+         * @relatedalso shiftRightArithmetic<uint32_t>()
+         * @relatedalso shiftRightLogical<uint32_t>()
+         */
+        [[nodiscard]] constexpr Simd128 operator>>(uint32_t count) const noexcept;
+
+
+        /**
+         * @brief Perform a arithmetic/logical(type dependent) right shift on this register by @p count.
+         *
+         * @warning If @p count is known at compile time then it is recommended to use
+         *          @ref shiftRightArithmetic<uint32_t> as it is faster.
+         *
+         * @return A reference to this register.
+         *
+         * @relatedalso operator<<(uint32_t)
+         * @relatedalso operator<<=(uint32_t)
+         * @relatedalso operator>>(uint32_t)
+         * @relatedalso shiftRightLogical(uint32_t)
+         * @relatedalso shiftLeft<uint32_t>()
+         * @relatedalso shiftRightArithmetic<uint32_t>()
+         * @relatedalso shiftRightLogical<uint32_t>()
+         */
+        constexpr Simd128& operator>>=(uint32_t count) noexcept;
+
+
+        /**
+         * @brief Perform a logical right shift (zero extension) on this register and return a new register.
+         *
+         * @warning If @p count is known at compile time then it is recommended to use
+         *          @ref shiftRightLogical<uint32_t> as it is faster.
+         *
+         * @return A new 128-bit register with shifted values.
+         *
+         * @relatedalso operator<<(uint32_t)
+         * @relatedalso operator<<=(uint32_t)
+         * @relatedalso operator>>(uint32_t)
+         * @relatedalso operator>>=(uint32_t)
+         * @relatedalso shiftLeft<uint32_t>()
+         * @relatedalso shiftRightArithmetic<uint32_t>()
+         * @relatedalso shiftRightLogical<uint32_t>()
+         */
+        [[nodiscard]] constexpr Simd128 shiftRightLogical(uint32_t count) const noexcept;
+
+
+        /**
+         * @brief Perform a logical left shift on this register by a compile time constant, @p Count.
+         *
+         * @tparam Count The shift amount.
+         *
+         * @relatedalso operator<<(uint32_t)
+         * @relatedalso operator<<=(uint32_t)
+         * @relatedalso operator>>(uint32_t)
+         * @relatedalso operator>>=(uint32_t)
+         * @relatedalso shiftRightLogical(uint32_t)
+         * @relatedalso shiftRightArithmetic<uint32_t>()
+         * @relatedalso shiftRightLogical<uint32_t>()
+         */
+        template <uint32_t Count>
+        [[nodiscard]] constexpr Simd128 shiftLeft() const noexcept;
+
+
+        /**
+         * @brief Perform a arithmetic right shift on this register by a compile time constant, @p Count.
+         *
+         * @tparam Count The shift amount.
+         *
+         * @relatedalso operator<<(uint32_t)
+         * @relatedalso operator<<=(uint32_t)
+         * @relatedalso operator>>(uint32_t)
+         * @relatedalso operator>>=(uint32_t)
+         * @relatedalso shiftRightLogical(uint32_t)
+         * @relatedalso shiftLeft<uint32_t>()
+         * @relatedalso shiftRightLogical<uint32_t>()
+         */
+        template <uint32_t Count>
+        [[nodiscard]] constexpr Simd128 shiftRightArithmetic() const noexcept;
+
+
+        /**
+         * @brief Perform a logical right shift on this register by a compile time constant, @p Count.
+         *
+         * @tparam Count The shift amount.
+         *
+         * @relatedalso operator<<(uint32_t)
+         * @relatedalso operator<<=(uint32_t)
+         * @relatedalso operator>>(uint32_t)
+         * @relatedalso operator>>=(uint32_t)
+         * @relatedalso shiftRightLogical(uint32_t)
+         * @relatedalso shiftLeft<uint32_t>()
+         * @relatedalso shiftRightLogical<uint32_t>()
+         */
+        template <uint32_t Count>
+        [[nodiscard]] constexpr Simd128 shiftRightLogical() const noexcept;
+
+
         // ///+=+=+=+=+=+=+=+=+=+=+=+=+=
         // ///   MASKING/BLENDING
         // ///+=+=+=+=+=+=+=+=+=+=+=+=+=

@@ -16,7 +16,7 @@
 
 // TODO: Remove Preprocessor after implementing individual simd paths
 #if defined(FALCON_ENABLE_AVX512) || defined(FALCON_ENABLE_AVX2) || defined(FALCON_ENABLE_AVX) ||                      \
-    defined(FALCON_ENABLE_SSE4) || defined(FALCON_ENABLE_SSE2)
+    defined(FALCON_ENABLE_SSE4) || defined(FALCON_ENABLE_SSE2) || defined(FALCON_DISABLE_SIMD)
 
 
 /**
@@ -556,6 +556,7 @@ TEST_SIMD128_SHIFT_LEFT_EQUALS_WITH_DIFFERENT_SHIFT_SIZES(24)
 TEST_SIMD128_SHIFT_LEFT_EQUALS_WITH_DIFFERENT_SHIFT_SIZES(31)
 
 
+
 /// @test Verify that bitwise operator>> returns a valid vector(register).
     #define TEST_SIMD128_SHIFT_RIGHT_ARITHMETIC_WITH_DIFFERENT_SHIFT_SIZES(ShiftAmount)                                \
         TYPED_TEST(Simd128BitwiseOperationTests, ArithmeticShiftRight_ReturnsAValidResult_WhenShiftedBy##ShiftAmount)  \
@@ -593,8 +594,6 @@ TEST_SIMD128_SHIFT_LEFT_EQUALS_WITH_DIFFERENT_SHIFT_SIZES(31)
                 EXPECT_ANY_EQ(expected[i], result[i]);                                                                 \
             }                                                                                                          \
         }
-
-
 
 TEST_SIMD128_SHIFT_RIGHT_ARITHMETIC_WITH_DIFFERENT_SHIFT_SIZES(0)
 TEST_SIMD128_SHIFT_RIGHT_ARITHMETIC_WITH_DIFFERENT_SHIFT_SIZES(1)
@@ -648,8 +647,6 @@ TEST_SIMD128_SHIFT_RIGHT_ARITHMETIC_WITH_DIFFERENT_SHIFT_SIZES(31)
             }                                                                                                          \
         }
 
-
-
 TEST_SIMD128_SHIFT_RIGHT_EQUALS_ARITHMETIC_WITH_DIFFERENT_SHIFT_SIZES(0)
 TEST_SIMD128_SHIFT_RIGHT_EQUALS_ARITHMETIC_WITH_DIFFERENT_SHIFT_SIZES(1)
 TEST_SIMD128_SHIFT_RIGHT_EQUALS_ARITHMETIC_WITH_DIFFERENT_SHIFT_SIZES(2)
@@ -659,7 +656,6 @@ TEST_SIMD128_SHIFT_RIGHT_EQUALS_ARITHMETIC_WITH_DIFFERENT_SHIFT_SIZES(8)
 TEST_SIMD128_SHIFT_RIGHT_EQUALS_ARITHMETIC_WITH_DIFFERENT_SHIFT_SIZES(12)
 TEST_SIMD128_SHIFT_RIGHT_EQUALS_ARITHMETIC_WITH_DIFFERENT_SHIFT_SIZES(24)
 TEST_SIMD128_SHIFT_RIGHT_EQUALS_ARITHMETIC_WITH_DIFFERENT_SHIFT_SIZES(31)
-
 
 
 
@@ -703,7 +699,6 @@ TEST_SIMD128_SHIFT_RIGHT_EQUALS_ARITHMETIC_WITH_DIFFERENT_SHIFT_SIZES(31)
                 EXPECT_ANY_EQ(expected[i], result[i]);                                                                 \
             }                                                                                                          \
         }
-
 
 TEST_SIMD128_SHIFT_RIGHT_LOGICAL_WITH_DIFFERENT_SHIFT_SIZES(0)
 TEST_SIMD128_SHIFT_RIGHT_LOGICAL_WITH_DIFFERENT_SHIFT_SIZES(1)
@@ -766,6 +761,8 @@ TEST_SIMD128_CONST_SHIFT_LEFT_WITH_DIFFERENT_SHIFT_SIZES(24)
 TEST_SIMD128_CONST_SHIFT_LEFT_WITH_DIFFERENT_SHIFT_SIZES(31)
 
 
+
+
 /// @test Verify that arithmetic shift right operation with a compile time count returns a valid vector(register).
     #define TEST_SIMD128_CONST_SHIFT_RIGHT_ARITHMETIC_WITH_DIFFERENT_SHIFT_SIZES(ShiftAmount)                          \
         TYPED_TEST(Simd128BitwiseOperationTests,                                                                       \
@@ -805,8 +802,6 @@ TEST_SIMD128_CONST_SHIFT_LEFT_WITH_DIFFERENT_SHIFT_SIZES(31)
             }                                                                                                          \
         }
 
-
-
 TEST_SIMD128_CONST_SHIFT_RIGHT_ARITHMETIC_WITH_DIFFERENT_SHIFT_SIZES(0)
 TEST_SIMD128_CONST_SHIFT_RIGHT_ARITHMETIC_WITH_DIFFERENT_SHIFT_SIZES(1)
 TEST_SIMD128_CONST_SHIFT_RIGHT_ARITHMETIC_WITH_DIFFERENT_SHIFT_SIZES(2)
@@ -816,6 +811,7 @@ TEST_SIMD128_CONST_SHIFT_RIGHT_ARITHMETIC_WITH_DIFFERENT_SHIFT_SIZES(8)
 TEST_SIMD128_CONST_SHIFT_RIGHT_ARITHMETIC_WITH_DIFFERENT_SHIFT_SIZES(12)
 TEST_SIMD128_CONST_SHIFT_RIGHT_ARITHMETIC_WITH_DIFFERENT_SHIFT_SIZES(24)
 TEST_SIMD128_CONST_SHIFT_RIGHT_ARITHMETIC_WITH_DIFFERENT_SHIFT_SIZES(31)
+
 
 
 /// @test Verify that bitwise operator>> returns a valid vector(register).
@@ -860,7 +856,6 @@ TEST_SIMD128_CONST_SHIFT_RIGHT_ARITHMETIC_WITH_DIFFERENT_SHIFT_SIZES(31)
             }                                                                                                          \
         }
 
-
 TEST_SIMD128_CONST_SHIFT_RIGHT_LOGICAL_WITH_DIFFERENT_SHIFT_SIZES(0)
 TEST_SIMD128_CONST_SHIFT_RIGHT_LOGICAL_WITH_DIFFERENT_SHIFT_SIZES(1)
 TEST_SIMD128_CONST_SHIFT_RIGHT_LOGICAL_WITH_DIFFERENT_SHIFT_SIZES(2)
@@ -870,6 +865,8 @@ TEST_SIMD128_CONST_SHIFT_RIGHT_LOGICAL_WITH_DIFFERENT_SHIFT_SIZES(8)
 TEST_SIMD128_CONST_SHIFT_RIGHT_LOGICAL_WITH_DIFFERENT_SHIFT_SIZES(12)
 TEST_SIMD128_CONST_SHIFT_RIGHT_LOGICAL_WITH_DIFFERENT_SHIFT_SIZES(24)
 TEST_SIMD128_CONST_SHIFT_RIGHT_LOGICAL_WITH_DIFFERENT_SHIFT_SIZES(31)
+
+
 
     #ifdef __clang__
         #pragma clang diagnostic pop

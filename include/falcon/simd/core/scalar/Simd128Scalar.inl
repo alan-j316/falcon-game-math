@@ -221,7 +221,9 @@ namespace flcn
         using Uint = types::UInt_t<DataType>;
         for (size_t i = 0; i < Lane; ++i)
         {
-            retReg[i] = ~std::bit_cast<Uint>(_reg[i]);
+            // NOTE: Static cast is require as C++ will upcast bytes and words into ints.
+            const auto res = static_cast<Uint>(~std::bit_cast<Uint>(_reg[i]));
+            retReg._reg[i] = std::bit_cast<DataType>(res);
         }
         return retReg;
     }
@@ -235,7 +237,9 @@ namespace flcn
         using Uint = types::UInt_t<DataType>;
         for (size_t i = 0; i < Lane; ++i)
         {
-            retReg[i] = std::bit_cast<Uint>(_reg[i]) & std::bit_cast<Uint>(other._reg[i]);
+            // NOTE: Static cast is require as C++ will upcast bytes and words into ints.
+            const auto res = static_cast<Uint>(std::bit_cast<Uint>(_reg[i]) & std::bit_cast<Uint>(other._reg[i]));
+            retReg._reg[i] = std::bit_cast<DataType>(res);
         }
         return retReg;
     }
@@ -258,7 +262,9 @@ namespace flcn
         using Uint = types::UInt_t<DataType>;
         for (size_t i = 0; i < Lane; ++i)
         {
-            retReg[i] = std::bit_cast<Uint>(_reg[i]) | std::bit_cast<Uint>(other._reg[i]);
+            // NOTE: Static cast is require as C++ will upcast bytes and words into ints.
+            const auto res = static_cast<Uint>(std::bit_cast<Uint>(_reg[i]) | std::bit_cast<Uint>(other._reg[i]));
+            retReg._reg[i] = std::bit_cast<DataType>(res);
         }
         return retReg;
     }
@@ -277,12 +283,13 @@ namespace flcn
     constexpr Simd128<SimdBackend::ARCH_UNKNOWN, DataType, Lane> Simd128<SimdBackend::ARCH_UNKNOWN, DataType,
                                                                          Lane>::operator^(Simd128 other) const noexcept
     {
-
         Simd128 retReg{};
         using Uint = types::UInt_t<DataType>;
         for (size_t i = 0; i < Lane; ++i)
         {
-            retReg[i] = std::bit_cast<Uint>(_reg[i]) ^ std::bit_cast<Uint>(other._reg[i]);
+            // NOTE: Static cast is require as C++ will upcast bytes and words into ints.
+            const auto res = static_cast<Uint>(std::bit_cast<Uint>(_reg[i]) ^ std::bit_cast<Uint>(other._reg[i]));
+            retReg._reg[i] = std::bit_cast<DataType>(res);
         }
         return retReg;
     }
@@ -312,7 +319,7 @@ namespace flcn
         {
             retVal |= std::bit_cast<Uint>(_reg[i]);
         }
-        return std::bit_cast<std::make_signed<DataType>>(retVal);
+        return std::bit_cast<DataType>(retVal);
     }
 
 
@@ -325,8 +332,117 @@ namespace flcn
         {
             retVal &= std::bit_cast<Uint>(_reg[i]);
         }
-        return std::bit_cast<std::make_signed<DataType>>(retVal);
+        return std::bit_cast<DataType>(retVal);
     }
+
+
+
+    /// +---------------------------------------------------------------------------------------+
+    /// |                            SHIFTING OPERATIONS                                        |
+    /// +---------------------------------------------------------------------------------------+
+
+
+    template <typename DataType, size_t Lane>
+    FALCON_INLINE constexpr Simd128<SimdBackend::ARCH_UNKNOWN, DataType, Lane> Simd128<
+        SimdBackend::ARCH_UNKNOWN, DataType, Lane>::operator<<(uint32_t count) const noexcept
+    {
+        Simd128 retReg{};
+        using Uint = types::UInt_t<DataType>;
+        for (size_t i = 0; i < Lane; ++i)
+        {
+            auto res       = static_cast<Uint>(std::bit_cast<Uint>(_reg[i]) << count);
+            retReg._reg[i] = std::bit_cast<DataType>(res);
+        }
+        return retReg;
+    }
+
+
+    template <typename DataType, size_t Lane>
+    FALCON_INLINE constexpr Simd128<SimdBackend::ARCH_UNKNOWN, DataType, Lane>& Simd128<
+        SimdBackend::ARCH_UNKNOWN, DataType, Lane>::operator<<=(uint32_t count) noexcept
+    {
+        *this = *this << count;
+        return *this;
+    }
+
+
+    template <typename DataType, size_t Lane>
+    FALCON_INLINE constexpr Simd128<SimdBackend::ARCH_UNKNOWN, DataType, Lane> Simd128<
+        SimdBackend::ARCH_UNKNOWN, DataType, Lane>::operator>>(uint32_t count) const noexcept
+    {
+        if constexpr (types::IsFP64<DataType>)
+        {
+            Simd128 retReg{};
+            for (size_t i = 0; i < Lane; ++i)
+            {
+                retReg._reg[i] = std::bit_cast<double>(std::bit_cast<uint64_t>(_reg[i]) >> count);
+            }
+            return retReg;
+        }
+        else if constexpr (types::IsFP32<DataType>)
+        {
+            Simd128 retReg{};
+            for (size_t i = 0; i < Lane; ++i)
+            {
+                retReg._reg[i] = std::bit_cast<float>(std::bit_cast<uint32_t>(_reg[i]) >> count);
+            }
+            return retReg;
+        }
+        else
+        {
+            Simd128 retReg{};
+            for (size_t i = 0; i < Lane; ++i)
+            {
+                retReg._reg[i] = _reg[i] >> count;
+            }
+            return retReg;
+        }
+    }
+
+
+    template <typename DataType, size_t Lane>
+    FALCON_INLINE constexpr Simd128<SimdBackend::ARCH_UNKNOWN, DataType, Lane>& Simd128<
+        SimdBackend::ARCH_UNKNOWN, DataType, Lane>::operator>>=(uint32_t count) noexcept
+    {
+        *this = *this >> count;
+        return *this;
+    }
+
+
+    template <typename DataType, size_t Lane>
+    FALCON_INLINE constexpr Simd128<SimdBackend::ARCH_UNKNOWN, DataType, Lane> Simd128<
+        SimdBackend::ARCH_UNKNOWN, DataType, Lane>::shiftRightLogical(uint32_t count) const noexcept
+    {
+        Simd128 retReg{};
+        using Uint = types::UInt_t<DataType>;
+        for (size_t i = 0; i < Lane; ++i)
+        {
+            const auto res = static_cast<Uint>(std::bit_cast<Uint>(_reg[i]) >> count);
+            retReg._reg[i] = std::bit_cast<DataType>(res);
+        }
+        return retReg;
+    }
+
+
+    template <typename DataType, size_t Lane>
+    template <uint32_t Count>
+    FALCON_INLINE constexpr Simd128<SimdBackend::ARCH_UNKNOWN, DataType, Lane> Simd128<
+        SimdBackend::ARCH_UNKNOWN, DataType, Lane>::shiftLeft() const noexcept
+    { return *this << Count; }
+
+
+    template <typename DataType, size_t Lane>
+    template <uint32_t Count>
+    FALCON_INLINE constexpr Simd128<SimdBackend::ARCH_UNKNOWN, DataType, Lane> Simd128<
+        SimdBackend::ARCH_UNKNOWN, DataType, Lane>::shiftRightArithmetic() const noexcept
+    { return *this >> Count; }
+
+
+    template <typename DataType, size_t Lane>
+    template <uint32_t Count>
+    FALCON_INLINE constexpr Simd128<SimdBackend::ARCH_UNKNOWN, DataType, Lane> Simd128<
+        SimdBackend::ARCH_UNKNOWN, DataType, Lane>::shiftRightLogical() const noexcept
+    { return shiftRightLogical(Count); }
 
 
 

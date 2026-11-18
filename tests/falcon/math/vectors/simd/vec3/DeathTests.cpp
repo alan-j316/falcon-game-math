@@ -23,7 +23,7 @@
 //     /**
 //      * @brief Test fixture for @ref Vec3 accessor.
 //      */
-//     class Vec3IndexingTests: public testing::TestWithParam<std::size_t>
+//     class SimdVec3IndexingTests: public testing::TestWithParam<std::size_t>
 //     {};
 //     INSTANTIATE_TEST_SUITE_P(Vec3InvalidIndices, Vec3IndexingTests, testing::Values(4, 5, 100));
 //
@@ -34,7 +34,7 @@
 //      * @tparam T The scalar type (int, float, double...) of the vector components.
 //      */
 //     template <typename T>
-//     class Vec3ScalarDivisionTests: public testing::Test
+//     class SimdVec3ScalarDivisionTests: public testing::Test
 //     {
 //     protected:
 //         flcn::simd::Vec3<T> _vec;
@@ -46,7 +46,7 @@
 //             _vec               = { T(17), T(31), T(5) };
 //         }
 //     };
-//     TYPED_TEST_SUITE(Vec3ScalarDivisionTests, SupportedArithmeticTypes);
+//     TYPED_TEST_SUITE(SimdVec3ScalarDivisionTests, SupportedArithmeticTypes);
 //
 //
 //     /**
@@ -54,7 +54,7 @@
 //      * @tparam T The scalar type (int, float, double...) of the vector components.
 //      */
 //     template <typename T>
-//     class Vec3NormalizationTests: public testing::Test
+//     class SimdVec3NormalizationTests: public testing::Test
 //     {
 //         using R = flcn::Magnitude<T>;
 //
@@ -66,7 +66,7 @@
 //             _vec             = { T(14), T(27), T(0) };
 //         }
 //     };
-//     TYPED_TEST_SUITE(Vec3NormalizationTests, SupportedArithmeticTypes);
+//     TYPED_TEST_SUITE(SimdVec3NormalizationTests, SupportedArithmeticTypes);
 //
 //
 //
@@ -76,7 +76,7 @@
 //      * @tparam T The scalar type (e.g., float, double) used for the vectors.
 //      */
 //     template <typename T>
-//     class Vec3ProjectionTests: public testing::Test
+//     class SimdVec3ProjectionTests: public testing::Test
 //     {
 //     protected:
 //         flcn::simd::Vec3<T> _vec;
@@ -92,7 +92,7 @@
 //             _expectedProjection = { T(4), T(0) , T(1)};
 //         }
 //     };
-//     TYPED_TEST_SUITE(Vec3ProjectionTests, SupportedArithmeticTypes);
+//     TYPED_TEST_SUITE(SimdVec3ProjectionTests, SupportedArithmeticTypes);
 //
 //
 //
@@ -102,7 +102,7 @@
 //      * @tparam T The scalar type (e.g., float, double) used for the vectors.
 //      */
 //     template <typename T>
-//     class Vec3RejectionTests: public testing::Test
+//     class SimdVec3RejectionTests: public testing::Test
 //     {
 //     protected:
 //         flcn::simd::Vec3<T> _vec;
@@ -118,13 +118,13 @@
 //             _expectedRejection = { T(4), T(0), T(5) };
 //         }
 //     };
-//     TYPED_TEST_SUITE(Vec3RejectionTests, SupportedArithmeticTypes);
+//     TYPED_TEST_SUITE(SimdVec3RejectionTests, SupportedArithmeticTypes);
 //
 // } // namespace
 //
 //
 //
-// TEST_P(Vec3IndexingTests, OutOfBoundAccess_TriggersAssertInDebugMode)
+// TEST_P(SimdVec3IndexingTests, OutOfBoundAccess_TriggersAssertInDebugMode)
 // {
 //     const flcn::simd::Vec3 vec(1, 2, 3);
 //     const auto index = GetParam();
@@ -132,7 +132,7 @@
 // }
 //
 //
-// TEST_P(Vec3IndexingTests, OutOfBoundMutationTriggers_AssertInDebugMode)
+// TEST_P(SimdVec3IndexingTests, OutOfBoundMutationTriggers_AssertInDebugMode)
 // {
 //     flcn::simd::Vec3 vec(1, 2, 3);
 //     const auto index = GetParam();
@@ -140,52 +140,52 @@
 // }
 //
 //
-// TYPED_TEST(Vec3ScalarDivisionTests, DivideOperator_ByZeroTriggersAssertInDebugMode)
+// TYPED_TEST(SimdVec3ScalarDivisionTests, DivideOperator_ByZeroTriggersAssertInDebugMode)
 // { EXPECT_DEBUG_DEATH(static_cast<void>(this->_vec / 0), ""); }
 //
 //
-// TYPED_TEST(Vec3ScalarDivisionTests, DivideEqualsOperator_ByZeroTriggersAssertInDebugMode)
+// TYPED_TEST(SimdVec3ScalarDivisionTests, DivideEqualsOperator_ByZeroTriggersAssertInDebugMode)
 // {
 //     [[maybe_unused]] flcn::simd::Vec3 newVec = this->_vec;
 //     EXPECT_DEBUG_DEATH(static_cast<void>(newVec /= 0), "");
 // }
 //
 //
-// TYPED_TEST(Vec3NormalizationTests, ZeroMagnitudeTriggersAssertInDebugMode)
+// TYPED_TEST(SimdVec3NormalizationTests, ZeroMagnitudeTriggersAssertInDebugMode)
 // {
 //     const flcn::simd::Vec3<TypeParam> zVec(0, 0, 0);
 //     EXPECT_DEBUG_DEATH(static_cast<void>(zVec.normalize()), "");
 // }
 //
 //
-// TYPED_TEST(Vec3NormalizationTests, StaticWrapper_ZeroMagnitudeTriggersAssertInDebugMode)
+// TYPED_TEST(SimdVec3NormalizationTests, StaticWrapper_ZeroMagnitudeTriggersAssertInDebugMode)
 // {
 //     const flcn::simd::Vec3<TypeParam> zVec(0, 0, 0);
 //     EXPECT_DEBUG_DEATH(static_cast<void>(flcn::simd::Vec3<TypeParam>::normalize(zVec)), "");
 // }
 //
 //
-// TYPED_TEST(Vec3ProjectionTests, ProjectionOntoZeroVectorTriggersAssertionInCallback)
+// TYPED_TEST(SimdVec3ProjectionTests, ProjectionOntoZeroVectorTriggersAssertionInCallback)
 // {
 //     const flcn::simd::Vec3<TypeParam> zeroVec(0, 0, 0);
 //     EXPECT_DEBUG_DEATH(static_cast<void>(this->_vec.project(zeroVec)), "");
 // }
 //
 //
-// TYPED_TEST(Vec3ProjectionTests, StaticWrapper_ProjectionOntoZeroVectorTriggersAssertionInCallback)
+// TYPED_TEST(SimdVec3ProjectionTests, StaticWrapper_ProjectionOntoZeroVectorTriggersAssertionInCallback)
 // {
 //     const flcn::simd::Vec3<TypeParam> zeroVec(0, 0, 0);
 //     EXPECT_DEBUG_DEATH(static_cast<void>(flcn::simd::Vec3<TypeParam>::project(this->_vec, zeroVec)), "");
 // }
 //
-// TYPED_TEST(Vec3RejectionTests, FromZeroVectorTriggersAssertionInCallback)
+// TYPED_TEST(SimdVec3RejectionTests, FromZeroVectorTriggersAssertionInCallback)
 // {
 //     const flcn::simd::Vec3<TypeParam> zeroVec(0, 0, 0);
 //     EXPECT_DEBUG_DEATH(static_cast<void>(this->_vec.reject(zeroVec)), "");
 // }
 //
 //
-// TYPED_TEST(Vec3RejectionTests, StaticWrapper_FromZeroVectorTriggersAssertionInCallback)
+// TYPED_TEST(SimdVec3RejectionTests, StaticWrapper_FromZeroVectorTriggersAssertionInCallback)
 // {
 //     const flcn::simd::Vec3<TypeParam> zeroVec(0, 0, 0);
 //     EXPECT_DEBUG_DEATH(static_cast<void>(flcn::simd::Vec3<TypeParam>::reject(this->_vec, zeroVec)), "");

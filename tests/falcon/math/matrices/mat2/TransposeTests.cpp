@@ -39,8 +39,8 @@ namespace
 
         void SetUp() override
         {
-            _matrix            = { flcn::CVec2{ T(1), T(2) }, flcn::CVec2{ T(3), T(4) } };
-            _expectedTranspose = { flcn::CVec2{ T(1), T(3) }, flcn::CVec2{ T(2), T(4) } };
+            _matrix            = { flcn::Vec2{ T(1), T(2) }, flcn::Vec2{ T(3), T(4) } };
+            _expectedTranspose = { flcn::Vec2{ T(1), T(3) }, flcn::Vec2{ T(2), T(4) } };
         }
     };
     TYPED_TEST_SUITE(Mat2TransposeTests, SupportedTypes);

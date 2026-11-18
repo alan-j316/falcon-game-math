@@ -22,7 +22,7 @@
  *           RUNTIME TESTS            *
  **************************************/
 
-TEST(Vec2TypeConversionTests, ConversionCtor_PromotesType)
+TEST(SimdVec2TypeConversionTests, ConversionCtor_PromotesType)
 {
     const flcn::simd::Vec2 vec1(3.0f, 1.0f);
 
@@ -32,7 +32,7 @@ TEST(Vec2TypeConversionTests, ConversionCtor_PromotesType)
 }
 
 
-TEST(Vec2TypeConversionTests, ConversionCtor_ReturnsNewInstance)
+TEST(SimdVec2TypeConversionTests, ConversionCtor_ReturnsNewInstance)
 {
     // Given a float vector
     const flcn::simd::Vec2 vec1(3.0f, 1.0f);
@@ -47,7 +47,7 @@ TEST(Vec2TypeConversionTests, ConversionCtor_ReturnsNewInstance)
 }
 
 
-TEST(Vec2TypeConversionTests, ConversionCtor_DemotesType)
+TEST(SimdVec2TypeConversionTests, ConversionCtor_DemotesType)
 {
     const flcn::simd::Vec2 vec1(3.0, 1.0);
     [[maybe_unused]] const flcn::simd::Vec2<float> vec2(vec1);

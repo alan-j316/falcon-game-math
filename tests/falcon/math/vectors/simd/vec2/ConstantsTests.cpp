@@ -29,13 +29,13 @@ namespace
      * @tparam T The scalar type (int, float, double...) of the vector components.
      */
     template <typename T>
-    class Vec2ConstantsTests: public testing::Test
+    class SimdVec2ConstantsTests: public testing::Test
     {
     protected:
         T _one  = T(1);
         T _zero = T(0);
     };
-    TYPED_TEST_SUITE(Vec2ConstantsTests, SupportedSignedArithmeticTypes);
+    TYPED_TEST_SUITE(SimdVec2ConstantsTests, SupportedSignedArithmeticTypes);
 } // namespace
 
 
@@ -44,17 +44,17 @@ namespace
  *           RUNTIME TESTS            *
  **************************************/
 
-TYPED_TEST(Vec2ConstantsTests, ONE_ReturnsVectorWithUnitComponents)
+TYPED_TEST(SimdVec2ConstantsTests, ONE_ReturnsVectorWithUnitComponents)
 {
     const auto one = TypeParam(1);
     EXPECT_VEC_CONTAINS(flcn::simd::Vec2<TypeParam>::one(), one, one);
 }
 
 
-TYPED_TEST(Vec2ConstantsTests, ZERO_ReturnsVectorWithZeroComponents) { EXPECT_VEC_ZERO(flcn::simd::Vec2<TypeParam>::zero()); }
+TYPED_TEST(SimdVec2ConstantsTests, ZERO_ReturnsVectorWithZeroComponents) { EXPECT_VEC_ZERO(flcn::simd::Vec2<TypeParam>::zero()); }
 
 
-TEST(Vec2ConstantsTests, INF_Float_ReturnsFloatVectorWithInfiniteComponents)
+TEST(SimdVec2ConstantsTests, INF_Float_ReturnsFloatVectorWithInfiniteComponents)
 {
     const auto inf = flcn::simd::Vec2<float>::inf();
     static_assert(std::is_same_v<typename decltype(inf)::value_type, float>);
@@ -62,7 +62,7 @@ TEST(Vec2ConstantsTests, INF_Float_ReturnsFloatVectorWithInfiniteComponents)
 }
 
 
-TEST(Vec2ConstantsTests, INF_Double_ReturnsDoubleVectorWithInfinityComponents)
+TEST(SimdVec2ConstantsTests, INF_Double_ReturnsDoubleVectorWithInfinityComponents)
 {
     const auto inf = flcn::simd::Vec2<double>::inf();
     static_assert(std::is_same_v<typename decltype(inf)::value_type, double>);
@@ -70,7 +70,7 @@ TEST(Vec2ConstantsTests, INF_Double_ReturnsDoubleVectorWithInfinityComponents)
 }
 
 
-TEST(Vec2ConstantsTests, INFNEG_Float_ReturnsFloatVectorWithNegativeInfinityComponents)
+TEST(SimdVec2ConstantsTests, INFNEG_Float_ReturnsFloatVectorWithNegativeInfinityComponents)
 {
     const auto inf = flcn::simd::Vec2<float>::infNeg();
     static_assert(std::is_same_v<typename decltype(inf)::value_type, float>);
@@ -78,7 +78,7 @@ TEST(Vec2ConstantsTests, INFNEG_Float_ReturnsFloatVectorWithNegativeInfinityComp
 }
 
 
-TEST(Vec2ConstantsTests, INFNEG_Double_ReturnsDoubleVectorWithNegativeInfinityComponents)
+TEST(SimdVec2ConstantsTests, INFNEG_Double_ReturnsDoubleVectorWithNegativeInfinityComponents)
 {
     const auto inf = flcn::simd::Vec2<double>::infNeg();
     static_assert(std::is_same_v<typename decltype(inf)::value_type, double>);
@@ -86,7 +86,7 @@ TEST(Vec2ConstantsTests, INFNEG_Double_ReturnsDoubleVectorWithNegativeInfinityCo
 }
 
 
-TEST(Vec2ConstantsTests, Float_QNAN_ReturnsFloatVectorWithNaNComponents)
+TEST(SimdVec2ConstantsTests, Float_QNAN_ReturnsFloatVectorWithNaNComponents)
 {
     const auto nan = flcn::simd::Vec2<float>::qnan();
     EXPECT_TRUE(std::isnan(nan.x()));
@@ -94,7 +94,7 @@ TEST(Vec2ConstantsTests, Float_QNAN_ReturnsFloatVectorWithNaNComponents)
 }
 
 
-TEST(Vec2ConstantsTests, Double_QNAN_ReturnsDoubleVectorWithNaNComponents)
+TEST(SimdVec2ConstantsTests, Double_QNAN_ReturnsDoubleVectorWithNaNComponents)
 {
     const auto nan = flcn::simd::Vec2<double>::qnan();
     EXPECT_TRUE(std::isnan(nan.x()));
@@ -102,28 +102,28 @@ TEST(Vec2ConstantsTests, Double_QNAN_ReturnsDoubleVectorWithNaNComponents)
 }
 
 
-TYPED_TEST(Vec2ConstantsTests, RIGHT_ReturnsUnitVectorWithOnlyPositiveXComponent)
+TYPED_TEST(SimdVec2ConstantsTests, RIGHT_ReturnsUnitVectorWithOnlyPositiveXComponent)
 {
     const auto x = flcn::simd::Vec2<TypeParam>::right();
     EXPECT_VEC_CONTAINS(x, this->_one, this->_zero);
 }
 
 
-TYPED_TEST(Vec2ConstantsTests, LEFT_ReturnsUnitVectorWithOnlyNegativeXComponent)
+TYPED_TEST(SimdVec2ConstantsTests, LEFT_ReturnsUnitVectorWithOnlyNegativeXComponent)
 {
     const auto x = flcn::simd::Vec2<TypeParam>::left();
     EXPECT_VEC_CONTAINS(x, TypeParam(-this->_one), this->_zero);
 }
 
 
-TYPED_TEST(Vec2ConstantsTests, UP_ReturnsUnitVectorWithOnlyPositiveYComponent)
+TYPED_TEST(SimdVec2ConstantsTests, UP_ReturnsUnitVectorWithOnlyPositiveYComponent)
 {
     const auto x = flcn::simd::Vec2<TypeParam>::up();
     EXPECT_VEC_CONTAINS(x, this->_zero, this->_one);
 }
 
 
-TYPED_TEST(Vec2ConstantsTests, DOWN_ReturnsUnitVectorWithOnlyNegativeYComponent)
+TYPED_TEST(SimdVec2ConstantsTests, DOWN_ReturnsUnitVectorWithOnlyNegativeYComponent)
 {
     const auto x = flcn::simd::Vec2<TypeParam>::down();
     EXPECT_VEC_CONTAINS(x, this->_zero, TypeParam(-this->_one));

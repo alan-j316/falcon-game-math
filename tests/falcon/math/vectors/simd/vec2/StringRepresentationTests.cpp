@@ -28,7 +28,7 @@ namespace
     /**
      * @brief Test fixture for @ref flcn::simd::Vec2 string representation.
      */
-    class Vec2StringRepresentationTests: public testing::Test
+    class SimdVec2StringRepresentationTests: public testing::Test
     {
     protected:
         /** @brief Switch to use full precision for testing. */
@@ -45,7 +45,7 @@ namespace
  *           RUNTIME TESTS            *
  **************************************/
 
-TEST_F(Vec2StringRepresentationTests, IntegralVector_ReturnsFormattedString)
+TEST_F(SimdVec2StringRepresentationTests, IntegralVector_ReturnsFormattedString)
 {
     const flcn::simd::Vec2 vec(1, 2);
     std::stringstream ss;
@@ -56,7 +56,7 @@ TEST_F(Vec2StringRepresentationTests, IntegralVector_ReturnsFormattedString)
 }
 
 
-TEST_F(Vec2StringRepresentationTests, FloatingPointVector_ReturnsFormattedString)
+TEST_F(SimdVec2StringRepresentationTests, FloatingPointVector_ReturnsFormattedString)
 {
     const flcn::simd::Vec2 vec(1.2345f, 2.0f);
     std::stringstream ss;
@@ -67,7 +67,7 @@ TEST_F(Vec2StringRepresentationTests, FloatingPointVector_ReturnsFormattedString
 }
 
 
-TEST_F(Vec2StringRepresentationTests, DoublePrecisionFloatingPointVector_ReturnsFormattedString)
+TEST_F(SimdVec2StringRepresentationTests, DoublePrecisionFloatingPointVector_ReturnsFormattedString)
 {
     const flcn::simd::Vec2 vec(1.2345789777, 2.65831);
     std::stringstream ss;

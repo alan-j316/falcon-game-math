@@ -32,7 +32,7 @@ namespace
      * @tparam T The scalar type (int, float, double...) of the vector components.
      */
     template <typename T>
-    class Vec3DistanceTests: public testing::Test
+    class SimdVec3DistanceTests: public testing::Test
     {
     protected:
         flcn::simd::Vec3<T> _vecA, _vecB;
@@ -51,7 +51,7 @@ namespace
             _distChebyshev = T(4);
         }
     };
-    TYPED_TEST_SUITE(Vec3DistanceTests, SupportedArithmeticTypes);
+    TYPED_TEST_SUITE(SimdVec3DistanceTests, SupportedArithmeticTypes);
 
 
 
@@ -60,7 +60,7 @@ namespace
      * @tparam T The scalar type (int, float, double...) of the vector components.
      */
     template <typename T>
-    class Vec3DistanceSignedTests: public testing::Test
+    class SimdVec3DistanceSignedTests: public testing::Test
     {
     protected:
         flcn::simd::Vec3<T> _vecA, _vecB;
@@ -79,7 +79,7 @@ namespace
             _distChebyshev = T(3);
         }
     };
-    TYPED_TEST_SUITE(Vec3DistanceSignedTests, SupportedSignedArithmeticTypes);
+    TYPED_TEST_SUITE(SimdVec3DistanceSignedTests, SupportedSignedArithmeticTypes);
 
 } // namespace
 
@@ -90,12 +90,12 @@ namespace
  **************************************/
 
 /** @test Verify that the @ref flcn::simd::Vec3::dist function returns the Euclidean distance. */
-TYPED_TEST(Vec3DistanceTests, Dist_ReturnsEuclideanDistance)
+TYPED_TEST(SimdVec3DistanceTests, Dist_ReturnsEuclideanDistance)
 { EXPECT_MAG_EQ(this->_dist, this->_vecA.dist(this->_vecB)); }
 
 
 /** @test Verify that the @ref flcn::simd::Vec3::dist function maintains precision for irrational numbers. */
-TYPED_TEST(Vec3DistanceTests, Dist_IrrationalDistanceMaintainsPrecision)
+TYPED_TEST(SimdVec3DistanceTests, Dist_IrrationalDistanceMaintainsPrecision)
 {
     using T = TypeParam;
     const flcn::simd::Vec3 v1{ T(0), T(0), T(0) };
@@ -109,7 +109,7 @@ TYPED_TEST(Vec3DistanceTests, Dist_IrrationalDistanceMaintainsPrecision)
 
 
 /** @test Verify that the @ref flcn::simd::Vec3::dist function returns zero for the same vector. */
-TYPED_TEST(Vec3DistanceTests, Dist_BetweenSameVectorReturnsZero)
+TYPED_TEST(SimdVec3DistanceTests, Dist_BetweenSameVectorReturnsZero)
 {
     constexpr auto zero = TypeParam(0);
     const auto distance = this->_vecA.dist(this->_vecA);
@@ -118,7 +118,7 @@ TYPED_TEST(Vec3DistanceTests, Dist_BetweenSameVectorReturnsZero)
 
 
 /** @test Verify that the @ref flcn::simd::Vec3::dist function handles negative coordinates. */
-TYPED_TEST(Vec3DistanceSignedTests, Dist_HandlesNegativeNumbers)
+TYPED_TEST(SimdVec3DistanceSignedTests, Dist_HandlesNegativeNumbers)
 {
     const auto distance = this->_vecA.dist(this->_vecB);
     EXPECT_MAG_EQ(this->_dist, distance);
@@ -126,7 +126,7 @@ TYPED_TEST(Vec3DistanceSignedTests, Dist_HandlesNegativeNumbers)
 
 
 /** @test Verify that the static variant of  @ref flcn::simd::Vec3::dist function returns the Euclidean distance. */
-TYPED_TEST(Vec3DistanceTests, StaticWrapper_Dist_ReturnsEuclideanDistance)
+TYPED_TEST(SimdVec3DistanceTests, StaticWrapper_Dist_ReturnsEuclideanDistance)
 { EXPECT_MAG_EQ(this->_dist, flcn::simd::Vec3<TypeParam>::dist(this->_vecA, this->_vecB)); }
 
 
@@ -134,7 +134,7 @@ TYPED_TEST(Vec3DistanceTests, StaticWrapper_Dist_ReturnsEuclideanDistance)
  * @test Verify that the static variant of @ref flcn::simd::Vec3::dist function maintains precision
  *        for irrational numbers.
  */
-TYPED_TEST(Vec3DistanceTests, StaticWrapper_Dist_IrrationalDistanceMaintainsPrecision)
+TYPED_TEST(SimdVec3DistanceTests, StaticWrapper_Dist_IrrationalDistanceMaintainsPrecision)
 {
     using T = TypeParam;
     const flcn::simd::Vec3 v1{ T(0), T(0), T(0) };
@@ -149,7 +149,7 @@ TYPED_TEST(Vec3DistanceTests, StaticWrapper_Dist_IrrationalDistanceMaintainsPrec
 
 
 /** @test Verify that the @ref flcn::simd::Vec3::dist function returns zero for the same vector. */
-TYPED_TEST(Vec3DistanceTests, StaticWrapper_Dist_BetweenSameVectorReturnsZero)
+TYPED_TEST(SimdVec3DistanceTests, StaticWrapper_Dist_BetweenSameVectorReturnsZero)
 {
     constexpr auto zero = TypeParam(0);
     const auto distance = flcn::simd::Vec3<TypeParam>::dist(this->_vecA, this->_vecA);
@@ -158,7 +158,7 @@ TYPED_TEST(Vec3DistanceTests, StaticWrapper_Dist_BetweenSameVectorReturnsZero)
 
 
 /** @test Verify that the static variant of @ref flcn::simd::Vec3::dist function handles negative coordinates. */
-TYPED_TEST(Vec3DistanceSignedTests, StaticWrapper_Dist_HandlesNegativeNumbers)
+TYPED_TEST(SimdVec3DistanceSignedTests, StaticWrapper_Dist_HandlesNegativeNumbers)
 {
     const auto distance = flcn::simd::Vec3<TypeParam>::dist(this->_vecA, this->_vecB);
     EXPECT_MAG_EQ(this->_dist, distance);
@@ -170,12 +170,12 @@ TYPED_TEST(Vec3DistanceSignedTests, StaticWrapper_Dist_HandlesNegativeNumbers)
  **************************************/
 
 /** @test Verify that the @ref flcn::simd::Vec3::distSq function returns the Euclidean distance (squared). */
-TYPED_TEST(Vec3DistanceTests, DistSq_ReturnsSquaredEuclideanDistance)
+TYPED_TEST(SimdVec3DistanceTests, DistSq_ReturnsSquaredEuclideanDistance)
 { EXPECT_MAG_EQ(this->_distSq, this->_vecA.distSq(this->_vecB)); }
 
 
 /** @test Verify that the @ref flcn::simd::Vec3::distSq function returns zero for the same vector. */
-TYPED_TEST(Vec3DistanceTests, DistSq_BetweenSameVectorReturnsZero)
+TYPED_TEST(SimdVec3DistanceTests, DistSq_BetweenSameVectorReturnsZero)
 {
     constexpr auto zero = TypeParam(0);
     const auto distance = this->_vecA.distSq(this->_vecA);
@@ -184,7 +184,7 @@ TYPED_TEST(Vec3DistanceTests, DistSq_BetweenSameVectorReturnsZero)
 
 
 /** @test Verify that the @ref flcn::simd::Vec3::distSq function handles negative coordinates. */
-TYPED_TEST(Vec3DistanceSignedTests, DistSq_HandlesNegativeNumbers)
+TYPED_TEST(SimdVec3DistanceSignedTests, DistSq_HandlesNegativeNumbers)
 {
     const auto distance = this->_vecA.distSq(this->_vecB);
     EXPECT_MAG_EQ(this->_distSq, distance);
@@ -195,12 +195,12 @@ TYPED_TEST(Vec3DistanceSignedTests, DistSq_HandlesNegativeNumbers)
  * @test Verify that the static variant of  @ref flcn::simd::Vec3::distSq function
  *        returns the Euclidean distance (squared).
  */
-TYPED_TEST(Vec3DistanceTests, StaticWrapper_DistSq_ReturnsSquaredEuclideanDistance)
+TYPED_TEST(SimdVec3DistanceTests, StaticWrapper_DistSq_ReturnsSquaredEuclideanDistance)
 { EXPECT_MAG_EQ(this->_distSq, flcn::simd::Vec3<TypeParam>::distSq(this->_vecA, this->_vecB)); }
 
 
 /** @test Verify that the @ref flcn::simd::Vec3::distSq function returns zero for the same vector. */
-TYPED_TEST(Vec3DistanceTests, StaticWrapper_DistSq_BetweenSameVectorReturnsZero)
+TYPED_TEST(SimdVec3DistanceTests, StaticWrapper_DistSq_BetweenSameVectorReturnsZero)
 {
     constexpr auto zero = TypeParam(0);
     const auto distance = flcn::simd::Vec3<TypeParam>::distSq(this->_vecA, this->_vecA);
@@ -209,7 +209,7 @@ TYPED_TEST(Vec3DistanceTests, StaticWrapper_DistSq_BetweenSameVectorReturnsZero)
 
 
 /** @test Verify that the static variant of @ref flcn::simd::Vec3::distSq function handles negative coordinates. */
-TYPED_TEST(Vec3DistanceSignedTests, StaticWrapper_DistSq_HandlesNegativeNumbers)
+TYPED_TEST(SimdVec3DistanceSignedTests, StaticWrapper_DistSq_HandlesNegativeNumbers)
 {
     const auto distance = flcn::simd::Vec3<TypeParam>::distSq(this->_vecA, this->_vecB);
     EXPECT_MAG_EQ(this->_distSq, distance);
@@ -221,12 +221,12 @@ TYPED_TEST(Vec3DistanceSignedTests, StaticWrapper_DistSq_HandlesNegativeNumbers)
  **************************************/
 
 /** @test Verify that the @ref flcn::simd::Vec3::manhattanDist function returns the Manhattan. */
-TYPED_TEST(Vec3DistanceTests, ManhattanDist_ReturnsManhattanDistance)
+TYPED_TEST(SimdVec3DistanceTests, ManhattanDist_ReturnsManhattanDistance)
 { EXPECT_MAG_EQ(this->_distManhattan, this->_vecA.manhattanDist(this->_vecB)); }
 
 
 /** @test Verify that the @ref flcn::simd::Vec3::manhattanDist function returns zero for the same vector. */
-TYPED_TEST(Vec3DistanceTests, ManhattanDist_BetweenSameVectorReturnsZero)
+TYPED_TEST(SimdVec3DistanceTests, ManhattanDist_BetweenSameVectorReturnsZero)
 {
     constexpr auto zero = TypeParam(0);
     const auto distance = this->_vecA.manhattanDist(this->_vecA);
@@ -235,7 +235,7 @@ TYPED_TEST(Vec3DistanceTests, ManhattanDist_BetweenSameVectorReturnsZero)
 
 
 /** @test Verify that the @ref flcn::simd::Vec3::manhattanDist function handles negative coordinates. */
-TYPED_TEST(Vec3DistanceSignedTests, ManhattanDist_HandlesNegativeNumbers)
+TYPED_TEST(SimdVec3DistanceSignedTests, ManhattanDist_HandlesNegativeNumbers)
 {
     const auto distance = this->_vecA.manhattanDist(this->_vecB);
     EXPECT_MAG_EQ(this->_distManhattan, distance);
@@ -246,12 +246,12 @@ TYPED_TEST(Vec3DistanceSignedTests, ManhattanDist_HandlesNegativeNumbers)
  * @test Verify that the static variant of  @ref flcn::simd::Vec3::manhattanDist function
  *        returns the Manhattan distance.
  */
-TYPED_TEST(Vec3DistanceTests, StaticWrapper_ManhattanDist_ReturnsManhattanDistance)
+TYPED_TEST(SimdVec3DistanceTests, StaticWrapper_ManhattanDist_ReturnsManhattanDistance)
 { EXPECT_MAG_EQ(this->_distManhattan, flcn::simd::Vec3<TypeParam>::manhattanDist(this->_vecA, this->_vecB)); }
 
 
 /** @test Verify that the @ref flcn::simd::Vec3::manhattanDist function returns zero for the same vector. */
-TYPED_TEST(Vec3DistanceTests, StaticWrapper_ManhattanDist_BetweenSameVectorReturnsZero)
+TYPED_TEST(SimdVec3DistanceTests, StaticWrapper_ManhattanDist_BetweenSameVectorReturnsZero)
 {
     constexpr auto zero = TypeParam(0);
     const auto distance = flcn::simd::Vec3<TypeParam>::manhattanDist(this->_vecA, this->_vecA);
@@ -260,7 +260,7 @@ TYPED_TEST(Vec3DistanceTests, StaticWrapper_ManhattanDist_BetweenSameVectorRetur
 
 
 /** @test Verify that the static variant of @ref flcn::simd::Vec3::manhattanDist function handles negative coordinates. */
-TYPED_TEST(Vec3DistanceSignedTests, StaticWrapper_ManhattanDist_HandlesNegativeNumbers)
+TYPED_TEST(SimdVec3DistanceSignedTests, StaticWrapper_ManhattanDist_HandlesNegativeNumbers)
 {
     const auto distance = flcn::simd::Vec3<TypeParam>::manhattanDist(this->_vecA, this->_vecB);
     EXPECT_MAG_EQ(this->_distManhattan, distance);
@@ -273,12 +273,12 @@ TYPED_TEST(Vec3DistanceSignedTests, StaticWrapper_ManhattanDist_HandlesNegativeN
 
 
 /** @test Verify that the @ref flcn::simd::Vec3::chebyshevDist function returns the Chebyshev distance. */
-TYPED_TEST(Vec3DistanceTests, ChebyshevDist_ReturnsChebyshevDistance)
+TYPED_TEST(SimdVec3DistanceTests, ChebyshevDist_ReturnsChebyshevDistance)
 { EXPECT_MAG_EQ(this->_distChebyshev, this->_vecA.chebyshevDist(this->_vecB)); }
 
 
 /** @test Verify that the @ref flcn::simd::Vec3::chebyshevDist function returns zero for the same vector. */
-TYPED_TEST(Vec3DistanceTests, ChebyshevDist_BetweenSameVectorReturnsZero)
+TYPED_TEST(SimdVec3DistanceTests, ChebyshevDist_BetweenSameVectorReturnsZero)
 {
     constexpr auto zero = TypeParam(0);
     const auto distance = this->_vecA.chebyshevDist(this->_vecA);
@@ -287,7 +287,7 @@ TYPED_TEST(Vec3DistanceTests, ChebyshevDist_BetweenSameVectorReturnsZero)
 
 
 /** @test Verify that the @ref flcn::simd::Vec3::chebyshevDist function handles negative coordinates. */
-TYPED_TEST(Vec3DistanceSignedTests, ChebyshevDist_HandlesNegativeNumbers)
+TYPED_TEST(SimdVec3DistanceSignedTests, ChebyshevDist_HandlesNegativeNumbers)
 {
     const auto distance = this->_vecA.chebyshevDist(this->_vecB);
     EXPECT_MAG_EQ(this->_distChebyshev, distance);
@@ -298,12 +298,12 @@ TYPED_TEST(Vec3DistanceSignedTests, ChebyshevDist_HandlesNegativeNumbers)
  * @test Verify that the static variant of  @ref flcn::simd::Vec3::chebyshevDist function
  *        returns the Chebyshev distance.
  */
-TYPED_TEST(Vec3DistanceTests, StaticWrapper_ChebyshevDist_ReturnsChebyshevDistance)
+TYPED_TEST(SimdVec3DistanceTests, StaticWrapper_ChebyshevDist_ReturnsChebyshevDistance)
 { EXPECT_MAG_EQ(this->_distChebyshev, flcn::simd::Vec3<TypeParam>::chebyshevDist(this->_vecA, this->_vecB)); }
 
 
 /** @test Verify that the @ref flcn::simd::Vec3::chebyshevDist function returns zero for the same vector. */
-TYPED_TEST(Vec3DistanceTests, StaticWrapper_ChebyshevDist_BetweenSameVectorReturnsZero)
+TYPED_TEST(SimdVec3DistanceTests, StaticWrapper_ChebyshevDist_BetweenSameVectorReturnsZero)
 {
     constexpr auto zero = TypeParam(0);
     const auto distance = flcn::simd::Vec3<TypeParam>::chebyshevDist(this->_vecA, this->_vecA);
@@ -312,7 +312,7 @@ TYPED_TEST(Vec3DistanceTests, StaticWrapper_ChebyshevDist_BetweenSameVectorRetur
 
 
 /** @test Verify that the static variant of @ref flcn::simd::Vec3::chebyshevDist function handles negative coordinates. */
-TYPED_TEST(Vec3DistanceSignedTests, StaticWrapper_ChebyshevDist_HandlesNegativeNumbers)
+TYPED_TEST(SimdVec3DistanceSignedTests, StaticWrapper_ChebyshevDist_HandlesNegativeNumbers)
 {
     const auto distance = flcn::simd::Vec3<TypeParam>::chebyshevDist(this->_vecA, this->_vecB);
     EXPECT_MAG_EQ(this->_distChebyshev, distance);

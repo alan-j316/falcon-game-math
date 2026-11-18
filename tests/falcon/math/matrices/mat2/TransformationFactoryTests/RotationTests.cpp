@@ -44,9 +44,9 @@ namespace
         {
             _angle = flcn::constants::PI<FP_T> / FP_T(2.0);
 #ifdef FALCON_LEFT_HANDED
-            _expectedMat = { flcn::CVec2{ COM_T(0), COM_T(-1) }, flcn::CVec2 { COM_T(1), COM_T(0) } };
+            _expectedMat = { flcn::Vec2{ COM_T(0), COM_T(-1) }, flcn::Vec2 { COM_T(1), COM_T(0) } };
 #else
-            _expectedMat = { flcn::CVec2{ COM_T(0), COM_T(1) }, flcn::CVec2{ COM_T(-1), COM_T(0) } };
+            _expectedMat = { flcn::Vec2{ COM_T(0), COM_T(1) }, flcn::Vec2{ COM_T(-1), COM_T(0) } };
 #endif
         }
     };
@@ -73,13 +73,13 @@ namespace
 
 #ifdef FALCON_LEFT_HANDED
             _expectedMat = {
-                flcn::CVec2{ T(0.70710678118654757), T(-0.70710678118654757) },
-                flcn::CVec2{ T(0.70710678118654757), T(0.70710678118654757) },
+                flcn::Vec2{ T(0.70710678118654757), T(-0.70710678118654757) },
+                flcn::Vec2{ T(0.70710678118654757), T(0.70710678118654757) },
             };
 
 #else
-            _expectedMat = { flcn::CVec2{ T(0.70710678118654757), T(0.70710678118654757) },
-                             flcn::CVec2{ T(-0.70710678118654757), T(0.70710678118654757) } };
+            _expectedMat = { flcn::Vec2{ T(0.70710678118654757), T(0.70710678118654757) },
+                             flcn::Vec2{ T(-0.70710678118654757), T(0.70710678118654757) } };
 
 #endif
         }

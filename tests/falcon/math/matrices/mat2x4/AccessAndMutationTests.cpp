@@ -27,10 +27,10 @@ namespace
     namespace static_tests
     {
         constexpr flcn::Mat2x4 MAT(1, 2, 3, 4, 5, 6, 7, 8);
-        constexpr flcn::CVec2 VEC0(1, 5);
-        constexpr flcn::CVec2 VEC1(2, 6);
-        constexpr flcn::CVec2 VEC2(3, 7);
-        constexpr flcn::CVec2 VEC3(4, 8);
+        constexpr flcn::Vec2 VEC0(1, 5);
+        constexpr flcn::Vec2 VEC1(2, 6);
+        constexpr flcn::Vec2 VEC2(3, 7);
+        constexpr flcn::Vec2 VEC3(4, 8);
 
         /// @test Verify that matrix elements are accessible as (row, column) at compile time.
         static_assert(MAT(0, 0) == 1);
@@ -82,10 +82,10 @@ TEST(Mat2x4AccessTests, AccessibleAsColumnVectors)
 {
     constexpr flcn::Mat2x4 mat(1.0f, 2.0f, 3.0f, 4.0f, 5.0f, 6.0f, 7.0f, 8.0f);
 
-    EXPECT_VEC_EQ(flcn::CVec2(1.0f, 5.0f), mat[0]);
-    EXPECT_VEC_EQ(flcn::CVec2(2.0f, 6.0f), mat[1]);
-    EXPECT_VEC_EQ(flcn::CVec2(3.0f, 7.0f), mat[2]);
-    EXPECT_VEC_EQ(flcn::CVec2(4.0f, 8.0f), mat[3]);
+    EXPECT_VEC_EQ(flcn::Vec2(1.0f, 5.0f), mat[0]);
+    EXPECT_VEC_EQ(flcn::Vec2(2.0f, 6.0f), mat[1]);
+    EXPECT_VEC_EQ(flcn::Vec2(3.0f, 7.0f), mat[2]);
+    EXPECT_VEC_EQ(flcn::Vec2(4.0f, 8.0f), mat[3]);
 }
 
 
@@ -122,10 +122,10 @@ TEST(Mat2x4MutationTests, ElementsCanBeMutatedUsingIndex)
 /** @test Verify that the matrix columns are accessible as vectors for writes. */
 TEST(Mat2x4MutationTests, ColumnsCanBeMutatedUsingIndex)
 {
-    const flcn::CVec2 col0 = { 1.0f, 5.0f };
-    const flcn::CVec2 col1 = { 2.0f, 6.0f };
-    const flcn::CVec2 col2 = { 3.0f, 7.0f };
-    const flcn::CVec2 col3 = { 4.0f, 8.0f };
+    const flcn::Vec2 col0 = { 1.0f, 5.0f };
+    const flcn::Vec2 col1 = { 2.0f, 6.0f };
+    const flcn::Vec2 col2 = { 3.0f, 7.0f };
+    const flcn::Vec2 col3 = { 4.0f, 8.0f };
     flcn::Mat2x4<float> mat;
 
     mat[0] = col0;

@@ -40,9 +40,9 @@ namespace
 
         void SetUp() override
         {
-            _matrix          = { flcn::CVec2{ T(5), T(4) }, flcn::CVec2{ T(2), T(3) } };
-            _expectedInverse = { flcn::CVec2{ Mag(0.42857142857142855), Mag(-0.5714285714285714) },
-                                 flcn::CVec2{ Mag(-0.2857142857142857), Mag(0.7142857142857143) } };
+            _matrix          = { flcn::Vec2{ T(5), T(4) }, flcn::Vec2{ T(2), T(3) } };
+            _expectedInverse = { flcn::Vec2{ Mag(0.42857142857142855), Mag(-0.5714285714285714) },
+                                 flcn::Vec2{ Mag(-0.2857142857142857), Mag(0.7142857142857143) } };
         }
     };
     TYPED_TEST_SUITE(Mat2InverseTests, SupportedSignedArithmeticTypes);
@@ -53,11 +53,11 @@ namespace
     class Mat2InverseSingularTests: public testing::TestWithParam<flcn::Mat2<float>>
     {};
     INSTANTIATE_TEST_SUITE_P(Mat2SingularMatrixInverse, Mat2InverseSingularTests,
-                             ::testing::Values(flcn::Mat2{ flcn::CVec2{ 1.0f, 2.0f }, flcn::CVec2{ 1.0f, 2.0f } },
-                                               flcn::Mat2{ flcn::CVec2{ 2.0f, 2.0f }, flcn::CVec2{ 2.0f, 2.0f } },
-                                               flcn::Mat2{ flcn::CVec2{ 3.0f, 2.0f }, flcn::CVec2{ 6.0f, 4.0f } },
-                                               flcn::Mat2{ flcn::CVec2{ 0.0f, 0.0f }, flcn::CVec2{ 4.0f, 5.0f } },
-                                               flcn::Mat2{ flcn::CVec2{ 0.0f, 3.0f }, flcn::CVec2{ 0.0f, 5.0f } }));
+                             ::testing::Values(flcn::Mat2{ flcn::Vec2{ 1.0f, 2.0f }, flcn::Vec2{ 1.0f, 2.0f } },
+                                               flcn::Mat2{ flcn::Vec2{ 2.0f, 2.0f }, flcn::Vec2{ 2.0f, 2.0f } },
+                                               flcn::Mat2{ flcn::Vec2{ 3.0f, 2.0f }, flcn::Vec2{ 6.0f, 4.0f } },
+                                               flcn::Mat2{ flcn::Vec2{ 0.0f, 0.0f }, flcn::Vec2{ 4.0f, 5.0f } },
+                                               flcn::Mat2{ flcn::Vec2{ 0.0f, 3.0f }, flcn::Vec2{ 0.0f, 5.0f } }));
 
 
 

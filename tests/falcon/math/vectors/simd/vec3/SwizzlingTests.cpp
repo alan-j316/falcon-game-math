@@ -32,9 +32,9 @@ namespace
      * @brief Test fixture for @ref flcn::simd::Vec3 swizzling.
      */
     template <typename>
-    class Vec3SwizzlingTests: public testing::Test
+    class SimdVec3SwizzlingTests: public testing::Test
     {};
-    TYPED_TEST_SUITE(Vec3SwizzlingTests, SupportedArithmeticTypes);
+    TYPED_TEST_SUITE(SimdVec3SwizzlingTests, SupportedArithmeticTypes);
 } // namespace
 
 
@@ -44,7 +44,7 @@ namespace
  **************************************/
 
 /** @test Verify that swizzling returns shuffled vector across different numeric. */
-TYPED_TEST(Vec3SwizzlingTests, SwizzlingWorksAcrossDifferentTypes)
+TYPED_TEST(SimdVec3SwizzlingTests, SwizzlingWorksAcrossDifferentTypes)
 {
     const flcn::simd::Vec3 vector(TypeParam(1), TypeParam(2), TypeParam(3));
     const flcn::simd::Vec3 expectedSwizzling(TypeParam(3), TypeParam(2), TypeParam(1));
@@ -55,7 +55,7 @@ TYPED_TEST(Vec3SwizzlingTests, SwizzlingWorksAcrossDifferentTypes)
 
 
 /** @test Verify that swizzling returns shuffled vector for boolean vector. */
-TEST(Vec3SwizzlingTests, SwizzlingWorksForBooleanVector)
+TEST(SimdVec3SwizzlingTests, SwizzlingWorksForBooleanVector)
 {
     const flcn::simd::Vec3 vector(true, false, false);
     const flcn::simd::Vec3 expectedSwizzling(false, false, true);
@@ -66,7 +66,7 @@ TEST(Vec3SwizzlingTests, SwizzlingWorksForBooleanVector)
 
 
 /** @test Verify that static variant of swizzling returns shuffled vector across different numeric. */
-TYPED_TEST(Vec3SwizzlingTests, StaticVariant_SwizzlingWorksAcrossDifferentTypes)
+TYPED_TEST(SimdVec3SwizzlingTests, StaticVariant_SwizzlingWorksAcrossDifferentTypes)
 {
     const flcn::simd::Vec3 vector(TypeParam(1), TypeParam(2), TypeParam(3));
     const flcn::simd::Vec3 expectedSwizzling(TypeParam(3), TypeParam(2), TypeParam(1));
@@ -77,7 +77,7 @@ TYPED_TEST(Vec3SwizzlingTests, StaticVariant_SwizzlingWorksAcrossDifferentTypes)
 
 
 /** @test Verify that static variant of swizzling returns shuffled vector for boolean vector. */
-TEST(Vec3SwizzlingTests, StaticVariant_SwizzlingWorksForBooleanVector)
+TEST(SimdVec3SwizzlingTests, StaticVariant_SwizzlingWorksForBooleanVector)
 {
     const flcn::simd::Vec3 vector(true, false, false);
     const flcn::simd::Vec3 expectedSwizzling(false, false, true);

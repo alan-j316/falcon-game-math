@@ -1,7 +1,7 @@
-add_library(Vec2Tests OBJECT)
+add_library(Vec2SimdTests OBJECT)
 
 target_sources(
-        Vec2Tests PRIVATE
+        Vec2SimdTests PRIVATE
         AccessAndMutationTests.cpp
         AliasTests.cpp
         ArithmeticOperationTests.cpp
@@ -28,12 +28,12 @@ target_sources(
 )
 
 target_include_directories(
-        Vec2Tests PRIVATE
+        Vec2SimdTests PRIVATE
         ${FALCON_TEST_ROOT_DIR}/include
 )
 
 
 target_link_libraries(
-        Vec2Tests PRIVATE
+        Vec2SimdTests PRIVATE
         FalconMathTestSetup
 )

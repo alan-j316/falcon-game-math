@@ -23,9 +23,9 @@ namespace
     /**
      * @brief Test fixture for @ref Vec2 accessor.
      */
-    class Vec2IndexingTests: public testing::TestWithParam<size_t>
+    class SimdVec2IndexingTests: public testing::TestWithParam<size_t>
     {};
-    INSTANTIATE_TEST_SUITE_P(Vec2InvalidIndices, Vec2IndexingTests, testing::Values(3, 4, 100));
+    INSTANTIATE_TEST_SUITE_P(Vec2InvalidIndices, SimdVec2IndexingTests, testing::Values(3, 4, 100));
 
 
 
@@ -34,7 +34,7 @@ namespace
      * @tparam T The scalar type (int, float, double...) of the vector components.
      */
     template <typename T>
-    class Vec2ScalarDivisionTests: public testing::Test
+    class SimdVec2ScalarDivisionTests: public testing::Test
     {
     protected:
         flcn::simd::Vec2<T> _vec;
@@ -48,7 +48,7 @@ namespace
             _expectedScaledVec = { T(1.30769230769230769231), T(2.38461538461538461538) };
         }
     };
-    TYPED_TEST_SUITE(Vec2ScalarDivisionTests, SupportedArithmeticTypes);
+    TYPED_TEST_SUITE(SimdVec2ScalarDivisionTests, SupportedArithmeticTypes);
 
 
     /**
@@ -56,7 +56,7 @@ namespace
      * @tparam T The scalar type (int, float, double...) of the vector components.
      */
     template <typename T>
-    class Vec2NormalizationTests: public testing::Test
+    class SimdVec2NormalizationTests: public testing::Test
     {
         //NOLINTNEXTLINE
         using R = flcn::Magnitude<T>;
@@ -71,7 +71,7 @@ namespace
             _expectedUnitVec = { static_cast<R>(0.46031716445500037), static_cast<R>(0.8877545314489294) };
         }
     };
-    TYPED_TEST_SUITE(Vec2NormalizationTests, SupportedFloatingPointTypes);
+    TYPED_TEST_SUITE(SimdVec2NormalizationTests, SupportedFloatingPointTypes);
 
 
 
@@ -81,7 +81,7 @@ namespace
      * @tparam T The scalar type (e.g., float, double) used for the vectors.
      */
     template <typename T>
-    class Vec2ProjectionTests: public testing::Test
+    class SimdVec2ProjectionTests: public testing::Test
     {
     protected:
         flcn::simd::Vec2<T> _vec;
@@ -97,7 +97,7 @@ namespace
             _expectedProjection = { T(4), T(0) };
         }
     };
-    TYPED_TEST_SUITE(Vec2ProjectionTests, SupportedFloatingPointTypes);
+    TYPED_TEST_SUITE(SimdVec2ProjectionTests, SupportedFloatingPointTypes);
 
 
 
@@ -107,7 +107,7 @@ namespace
      * @tparam T The scalar type (e.g., float, double) used for the vectors.
      */
     template <typename T>
-    class Vec2RejectionTests: public testing::Test
+    class SimdVec2RejectionTests: public testing::Test
     {
     protected:
         flcn::simd::Vec2<T> _vec;
@@ -123,13 +123,13 @@ namespace
             _expectedRejection = { T(4), T(0) };
         }
     };
-    TYPED_TEST_SUITE(Vec2RejectionTests, SupportedFloatingPointTypes);
+    TYPED_TEST_SUITE(SimdVec2RejectionTests, SupportedFloatingPointTypes);
 
 } // namespace
 
 
 
-TEST_P(Vec2IndexingTests, OutOfBoundAccess_TriggersAssertInDebugMode)
+TEST_P(SimdVec2IndexingTests, OutOfBoundAccess_TriggersAssertInDebugMode)
 {
     const flcn::simd::Vec2 vec(1, 2);
     const auto index = GetParam();
@@ -137,7 +137,7 @@ TEST_P(Vec2IndexingTests, OutOfBoundAccess_TriggersAssertInDebugMode)
 }
 
 
-TEST_P(Vec2IndexingTests, OutOfBoundMutationTriggers_AssertInDebugMode)
+TEST_P(SimdVec2IndexingTests, OutOfBoundMutationTriggers_AssertInDebugMode)
 {
     flcn::simd::Vec2 vec(1, 2);
     const auto index = GetParam();
@@ -145,52 +145,52 @@ TEST_P(Vec2IndexingTests, OutOfBoundMutationTriggers_AssertInDebugMode)
 }
 
 
-TYPED_TEST(Vec2ScalarDivisionTests, DivideOperator_ByZeroTriggersAssertInDebugMode)
+TYPED_TEST(SimdVec2ScalarDivisionTests, DivideOperator_ByZeroTriggersAssertInDebugMode)
 { EXPECT_DEBUG_DEATH(static_cast<void>(this->_vec / 0), ""); }
 
 
-TYPED_TEST(Vec2ScalarDivisionTests, DivideEqualsOperator_ByZeroTriggersAssertInDebugMode)
+TYPED_TEST(SimdVec2ScalarDivisionTests, DivideEqualsOperator_ByZeroTriggersAssertInDebugMode)
 {
     [[maybe_unused]] flcn::simd::Vec2 newVec = this->_vec;
     EXPECT_DEBUG_DEATH(static_cast<void>(newVec /= 0), "");
 }
 
 
-TYPED_TEST(Vec2NormalizationTests, ZeroMagnitudeTriggersAssertInDebugMode)
+TYPED_TEST(SimdVec2NormalizationTests, ZeroMagnitudeTriggersAssertInDebugMode)
 {
     const flcn::simd::Vec2<TypeParam> zVec(0, 0);
     EXPECT_DEBUG_DEATH(static_cast<void>(zVec.normalize()), "");
 }
 
 
-TYPED_TEST(Vec2NormalizationTests, StaticWrapper_ZeroMagnitudeTriggersAssertInDebugMode)
+TYPED_TEST(SimdVec2NormalizationTests, StaticWrapper_ZeroMagnitudeTriggersAssertInDebugMode)
 {
     const flcn::simd::Vec2<TypeParam> zVec(0, 0);
     EXPECT_DEBUG_DEATH(static_cast<void>(flcn::simd::Vec2<TypeParam>::normalize(zVec)), "");
 }
 
 
-TYPED_TEST(Vec2ProjectionTests, ProjectionOntoZeroVectorTriggersAssertionInCallback)
+TYPED_TEST(SimdVec2ProjectionTests, ProjectionOntoZeroVectorTriggersAssertionInCallback)
 {
     const flcn::simd::Vec2<TypeParam> zeroVec(0, 0);
     EXPECT_DEBUG_DEATH(static_cast<void>(this->_vec.project(zeroVec)), "");
 }
 
 
-TYPED_TEST(Vec2ProjectionTests, StaticWrapper_ProjectionOntoZeroVectorTriggersAssertionInCallback)
+TYPED_TEST(SimdVec2ProjectionTests, StaticWrapper_ProjectionOntoZeroVectorTriggersAssertionInCallback)
 {
     const flcn::simd::Vec2<TypeParam> zeroVec(0, 0);
     EXPECT_DEBUG_DEATH(static_cast<void>(flcn::simd::Vec2<TypeParam>::project(this->_vec, zeroVec)), "");
 }
 
-TYPED_TEST(Vec2RejectionTests, FromZeroVectorTriggersAssertionInCallback)
+TYPED_TEST(SimdVec2RejectionTests, FromZeroVectorTriggersAssertionInCallback)
 {
     const flcn::simd::Vec2<TypeParam> zeroVec(0, 0);
     EXPECT_DEBUG_DEATH(static_cast<void>(this->_vec.reject(zeroVec)), "");
 }
 
 
-TYPED_TEST(Vec2RejectionTests, StaticWrapper_FromZeroVectorTriggersAssertionInCallback)
+TYPED_TEST(SimdVec2RejectionTests, StaticWrapper_FromZeroVectorTriggersAssertionInCallback)
 {
     const flcn::simd::Vec2<TypeParam> zeroVec(0, 0);
     EXPECT_DEBUG_DEATH(static_cast<void>(flcn::simd::Vec2<TypeParam>::reject(this->_vec, zeroVec)), "");

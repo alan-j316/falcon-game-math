@@ -31,6 +31,19 @@ namespace flcn
 {
 
     /// Forward declarations
+    namespace simd
+    {
+        template <Arithmetic T>
+        struct Vec2;
+
+        template <Arithmetic T>
+        struct Vec3;
+
+        template <Arithmetic T>
+        struct Vec4;
+    } // namespace simd
+
+
     template <StrictArithmetic T>
     struct Point2;
 
@@ -38,13 +51,13 @@ namespace flcn
     struct Point3;
 
     template <Arithmetic T>
-    struct CVec2;
+    struct Vec2;
 
     template <Arithmetic T>
     struct Vec2;
 
     template <Arithmetic T>
-    struct CVec3;
+    struct Vec3;
 
     template <Arithmetic T>
     struct Vec4;
@@ -96,28 +109,28 @@ namespace flcn
     using PromotedPoint3 = Point3<PromotedValue_t<T, U>>;
 
 
-    /** @brief Alias for @ref CVec2 with promoted value type. */
+    /** @brief Alias for @ref Vec2 with promoted value type. */
     template <Arithmetic T, Arithmetic U>
         requires Arithmetic<PromotedValue_t<T, U>>
-    using PromotedCVec2 = CVec2<PromotedValue_t<T, U>>;
+    using PromotedVec2 = Vec2<PromotedValue_t<T, U>>;
 
 
-    /** @brief Alias for @ref CVec2 with a `value_type` of @ref Magnitude of the wider type. */
+    /** @brief Alias for @ref Vec2 with a `value_type` of @ref Magnitude of the wider type. */
     template <Arithmetic T, Arithmetic U>
         requires Arithmetic<PromotedValue_t<T, U>>
-    using PromotedFloatCVec2 = CVec2<Magnitude<PromotedValue_t<T, U>>>;
+    using PromotedFloatVec2 = Vec2<Magnitude<PromotedValue_t<T, U>>>;
 
 
-    /** @brief Alias for @ref CVec3 with promoted value type. */
+    /** @brief Alias for @ref Vec3 with promoted value type. */
     template <Arithmetic T, Arithmetic U>
         requires Arithmetic<PromotedValue_t<T, U>>
-    using PromotedCVec3 = CVec3<PromotedValue_t<T, U>>;
+    using PromotedVec3 = Vec3<PromotedValue_t<T, U>>;
 
 
-    /** @brief Alias for @ref CVec3 with a `value_type` of @ref Magnitude of the wider type. */
+    /** @brief Alias for @ref Vec3 with a `value_type` of @ref Magnitude of the wider type. */
     template <Arithmetic T, Arithmetic U>
         requires Arithmetic<PromotedValue_t<T, U>>
-    using PromotedFloatCVec3 = CVec3<Magnitude<PromotedValue_t<T, U>>>;
+    using PromotedFloatVec3 = Vec3<Magnitude<PromotedValue_t<T, U>>>;
 
 
     /** @brief Alias for @ref Vec4 with promoted value type. */

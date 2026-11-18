@@ -2,7 +2,6 @@ add_executable(FalconMathVectorTests)
 set_target_properties(FalconMathVectorTests PROPERTIES CXX_STANDARD 20)
 set_target_properties(FalconMathVectorTests PROPERTIES CXX_STANDARD_REQUIRED ON)
 set_target_properties(FalconMathVectorTests PROPERTIES CXX_EXTENSIONS OFF)
-
 target_sources(
         FalconMathVectorTests
 
@@ -19,8 +18,8 @@ target_compile_options(FalconMathVectorTests INTERFACE $<$<CXX_COMPILER_ID:MSVC>
 # CONSTEXPR NON_SIMD
 add_subdirectory(point2)
 add_subdirectory(point3)
-add_subdirectory(cvec2)
-add_subdirectory(cvec3)
+add_subdirectory(vec2)
+add_subdirectory(vec3)
 add_subdirectory(vec4)
 
 if (FALCON_ENABLE_NEON OR CMAKE_SYSTEM_PROCESSOR MATCHES "(arm|aarch64|ARM64)")
@@ -34,23 +33,24 @@ if (FALCON_ENABLE_NEON OR CMAKE_SYSTEM_PROCESSOR MATCHES "(arm|aarch64|ARM64)")
             # CONSTEXPR
             Point2Tests
             Point3Tests
-            CVec2Tests
-            CVec3Tests
+            Vec2Tests
+            Vec3Tests
             Vec4Tests
     )
     set_target_properties(
             Point2Tests
             Point3Tests
-            CVec2Tests
-            CVec3Tests
+            Vec2Tests
+            Vec3Tests
             Vec4Tests
             PROPERTIES FOLDER "Test Intermediates/Falcon"
     )
+
     ###########################
     ### DEATH TESTS
     add_executable(FalconMathVectorDeathTests
-            cvec2/DeathTests.cpp # TODO: Add death tests here
-            cvec3/DeathTests.cpp
+            vec2/DeathTests.cpp # TODO: Add death tests here
+            vec3/DeathTests.cpp
             vec4/DeathTests.cpp
     )
 else ()
@@ -66,30 +66,30 @@ else ()
             # CONSTEXPR
             Point2Tests
             Point3Tests
-            CVec2Tests
-            CVec3Tests
-            Vec4Tests
-            # SIMD
             Vec2Tests
             Vec3Tests
+            Vec4Tests
+            # SIMD
+            Vec2SimdTests
+            Vec3SimdTests
     )
     set_target_properties(
             Point2Tests
             Point3Tests
-            CVec2Tests
-            CVec3Tests
-            Vec4Tests
-
             Vec2Tests
             Vec3Tests
+            Vec4Tests
+
+            Vec2SimdTests
+            Vec3SimdTests
             PROPERTIES FOLDER "Test Intermediates/Falcon"
     )
     # TODO: Move outside once neon is ready
     ###########################
     ### DEATH TESTS
     add_executable(FalconMathVectorDeathTests
-            cvec2/DeathTests.cpp # TODO: Add death tests here
-            cvec3/DeathTests.cpp
+            vec2/DeathTests.cpp # TODO: Add death tests here
+            vec3/DeathTests.cpp
             vec4/DeathTests.cpp
             simd/vec2/DeathTests.cpp
             simd/vec3/DeathTests.cpp

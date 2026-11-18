@@ -37,14 +37,14 @@ add_library(${FALCON_MATH_TARGET_NAME} INTERFACE
         matrices/Transform4.tpp
 
         # NON-SIMD CONSTEXPR WRAPPERS
-        vectors/CVec2.h
-        vectors/CVec2.tpp
+        vectors/Vec2.h
+        vectors/Vec2.tpp
         vectors/Point2.h
         vectors/Point2.tpp
         vectors/Point3.h
         vectors/Point3.tpp
-        vectors/CVec3.h
-        vectors/CVec3.tpp
+        vectors/Vec3.h
+        vectors/Vec3.tpp
         vectors/Vec4.h
         vectors/Vec4.tpp
 

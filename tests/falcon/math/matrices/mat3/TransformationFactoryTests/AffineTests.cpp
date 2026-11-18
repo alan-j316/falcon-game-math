@@ -36,18 +36,18 @@ namespace
     {
     protected:
         flcn::Mat2<T> _linearTransform;
-        flcn::CVec2<T> _translation;
+        flcn::Vec2<T> _translation;
         flcn::Mat3<T> _expectedMat;
 
         void SetUp() override
         {
-            _linearTransform = { flcn::CVec2{ T(1.2341234), T(2.31419123) },
-                                 flcn::CVec2{ T(15.123949182), T(0.93819231) } };
+            _linearTransform = { flcn::Vec2{ T(1.2341234), T(2.31419123) },
+                                 flcn::Vec2{ T(15.123949182), T(0.93819231) } };
             _translation     = { T(1.2398412349), T(12.1234892134) };
 
-            _expectedMat = { flcn::CVec3{ T(1.2341234), T(2.31419123), T(0) },
-                             flcn::CVec3{ T(15.123949182), T(0.93819231), T(0) },
-                             flcn::CVec3{ T(1.2398412349), T(12.1234892134), T(1) } };
+            _expectedMat = { flcn::Vec3{ T(1.2341234), T(2.31419123), T(0) },
+                             flcn::Vec3{ T(15.123949182), T(0.93819231), T(0) },
+                             flcn::Vec3{ T(1.2398412349), T(12.1234892134), T(1) } };
         }
     };
     TYPED_TEST_SUITE(Mat3AffineTests, SupportedArithmeticTypes);
@@ -61,7 +61,7 @@ namespace
     namespace static_tests
     {
         constexpr flcn::Mat2 LIN_TRANSFORM{ 1, 2, 3, 4 };
-        constexpr flcn::CVec2 TRANSLATION3D{ 11, 12 };
+        constexpr flcn::Vec2 TRANSLATION3D{ 11, 12 };
 
         /// @test Verify that flcn::Mat3::makeAffine returns a valid matrix at compile time.
         constexpr auto AFFINE3D = flcn::Mat3<int>::makeAffine(LIN_TRANSFORM, TRANSLATION3D);

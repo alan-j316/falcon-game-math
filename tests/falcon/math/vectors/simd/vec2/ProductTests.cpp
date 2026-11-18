@@ -32,7 +32,7 @@ namespace
      * @tparam T The scalar type (e.g., float, double) used for the vectors.
      */
     template <typename T>
-    class Vec2DotProductTests: public testing::Test
+    class SimdVec2DotProductTests: public testing::Test
     {
     protected:
         flcn::simd::Vec2<T> _vecA;
@@ -56,7 +56,7 @@ namespace
             _expectedADotA = static_cast<T>(173);
         }
     };
-    TYPED_TEST_SUITE(Vec2DotProductTests, SupportedArithmeticTypes);
+    TYPED_TEST_SUITE(SimdVec2DotProductTests, SupportedArithmeticTypes);
 
 
     /**
@@ -65,7 +65,7 @@ namespace
      * @tparam T The scalar type (e.g., float, double) used for the vectors.
      */
     template <typename T>
-    class Vec2CrossProductTests: public testing::Test
+    class SimdVec2CrossProductTests: public testing::Test
     {
     protected:
         flcn::simd::Vec2<T> _vecA;
@@ -79,7 +79,7 @@ namespace
             _expectedCrossProduct = T(12);
         }
     };
-    TYPED_TEST_SUITE(Vec2CrossProductTests, SupportedSignedArithmeticTypes);
+    TYPED_TEST_SUITE(SimdVec2CrossProductTests, SupportedSignedArithmeticTypes);
 
 
     // /**
@@ -88,7 +88,7 @@ namespace
     //  * @tparam T The scalar type (e.g., float, double) used for the vectors.
     //  */
     // template <typename T>
-    // class Vec2TensorProductTests: public testing::Test
+    // class SimdVec2TensorProductTests: public testing::Test
     // {
     // protected:
     //     flcn::simd::Vec2<T> _vecA;
@@ -104,7 +104,7 @@ namespace
     //         _expectedTensorProductInt = { flcn::simd::Vec2{ T(1), T(2) }, flcn::simd::Vec2{ T(2), T(4) } };
     //     }
     // };
-    // TYPED_TEST_SUITE(Vec2TensorProductTests, SupportedSignedArithmeticTypes);
+    // TYPED_TEST_SUITE(SimdVec2TensorProductTests, SupportedSignedArithmeticTypes);
 
 } // namespace
 
@@ -114,7 +114,7 @@ namespace
  *         DOT PRODUCT TESTS          *
  **************************************/
 
-TYPED_TEST(Vec2DotProductTests, Dot_WithItselfReturnSquaredMagnitude)
+TYPED_TEST(SimdVec2DotProductTests, Dot_WithItselfReturnSquaredMagnitude)
 {
 
     const TypeParam dotProduct = this->_vecA.dot(this->_vecA);
@@ -134,7 +134,7 @@ TYPED_TEST(Vec2DotProductTests, Dot_WithItselfReturnSquaredMagnitude)
 }
 
 
-TYPED_TEST(Vec2DotProductTests, Dot_OrthogonalVectorsReturnZero)
+TYPED_TEST(SimdVec2DotProductTests, Dot_OrthogonalVectorsReturnZero)
 {
     const TypeParam dotProduct = this->_vecAOrthogonal.dot(this->_vecBOrthogonal);
 
@@ -153,7 +153,7 @@ TYPED_TEST(Vec2DotProductTests, Dot_OrthogonalVectorsReturnZero)
 }
 
 
-TYPED_TEST(Vec2DotProductTests, Dot_NonOrthogonalVectorsReturnNonZeroScalar)
+TYPED_TEST(SimdVec2DotProductTests, Dot_NonOrthogonalVectorsReturnNonZeroScalar)
 {
     const TypeParam dotProduct = this->_vecA.dot(this->_vecB);
 
@@ -172,7 +172,7 @@ TYPED_TEST(Vec2DotProductTests, Dot_NonOrthogonalVectorsReturnNonZeroScalar)
 }
 
 
-TYPED_TEST(Vec2DotProductTests, StaticWrapper_Dot_NonOrthogonalVectorsReturnNonZeroScalar)
+TYPED_TEST(SimdVec2DotProductTests, StaticWrapper_Dot_NonOrthogonalVectorsReturnNonZeroScalar)
 {
     const TypeParam dotProduct = flcn::simd::Vec2<TypeParam>::dot(this->_vecA, this->_vecB);
 
@@ -191,7 +191,7 @@ TYPED_TEST(Vec2DotProductTests, StaticWrapper_Dot_NonOrthogonalVectorsReturnNonZ
 }
 
 
-TEST(Vec2DotProduct, Dot_AntiParallelVectorsReturnsNegativeScalar)
+TEST(SimdVec2DotProduct, Dot_AntiParallelVectorsReturnsNegativeScalar)
 {
     // Given two opposite vectors
     const flcn::simd::Vec2 vecA(-1.0, 0.0);
@@ -209,7 +209,7 @@ TEST(Vec2DotProduct, Dot_AntiParallelVectorsReturnsNegativeScalar)
  *        CROSS PRODUCT TESTS         *
  **************************************/
 
-TEST(Vec2CrossProduct, Cross_WithItself_ReturnsZeroVector)
+TEST(SimdVec2CrossProduct, Cross_WithItself_ReturnsZeroVector)
 {
     const flcn::simd::Vec2 vec(2.0f, 1.0f);
 
@@ -219,7 +219,7 @@ TEST(Vec2CrossProduct, Cross_WithItself_ReturnsZeroVector)
 }
 
 
-TYPED_TEST(Vec2CrossProductTests, Cross_TwoNonParallelVectorsReturnsNewProduct)
+TYPED_TEST(SimdVec2CrossProductTests, Cross_TwoNonParallelVectorsReturnsNewProduct)
 {
     const TypeParam crossProduct = this->_vecA.cross(this->_vecB);
 
@@ -238,7 +238,7 @@ TYPED_TEST(Vec2CrossProductTests, Cross_TwoNonParallelVectorsReturnsNewProduct)
 }
 
 
-TYPED_TEST(Vec2CrossProductTests, StaticWrapper_Cross_TwoNonParallelVectorsReturnsNewProduct)
+TYPED_TEST(SimdVec2CrossProductTests, StaticWrapper_Cross_TwoNonParallelVectorsReturnsNewProduct)
 {
     const TypeParam crossProduct = flcn::simd::Vec2<TypeParam>::cross(this->_vecA, this->_vecB);
     if constexpr (std::is_same_v<TypeParam, double>)
@@ -261,7 +261,7 @@ TYPED_TEST(Vec2CrossProductTests, StaticWrapper_Cross_TwoNonParallelVectorsRetur
 //  *        TENSOR PRODUCT TESTS        *
 //  **************************************/
 //
-// TYPED_TEST(Vec2TensorProductTests, TensorProduct_BetweenTwoVectorsReturnsAValid2DMatrix)
+// TYPED_TEST(SimdVec2TensorProductTests, TensorProduct_BetweenTwoVectorsReturnsAValid2DMatrix)
 // {
 //     const auto tensorProduct = this->_vecA.tensorProduct(this->_vecB);
 //     if constexpr (std::is_floating_point_v<TypeParam>)
@@ -275,7 +275,7 @@ TYPED_TEST(Vec2CrossProductTests, StaticWrapper_Cross_TwoNonParallelVectorsRetur
 // }
 //
 //
-// TEST(Vec2TensorProduct, TensorProduct_MixedTypes_PromotesType)
+// TEST(SimdVec2TensorProduct, TensorProduct_MixedTypes_PromotesType)
 // {
 //     const flcn::simd::Vec2 vecA(2.0f, 3.0f);
 //     const flcn::simd::Vec2 vecB(5.0, 6.0);
@@ -285,7 +285,7 @@ TYPED_TEST(Vec2CrossProductTests, StaticWrapper_Cross_TwoNonParallelVectorsRetur
 // }
 //
 //
-// TYPED_TEST(Vec2TensorProductTests, StaticWrapper_TensorProduct_BetweenTwoVectorsReturnsAValid2DMatrix)
+// TYPED_TEST(SimdVec2TensorProductTests, StaticWrapper_TensorProduct_BetweenTwoVectorsReturnsAValid2DMatrix)
 // {
 //     const auto tensorProduct = flcn::simd::Vec2<TypeParam>::tensorProduct(this->_vecA, this->_vecB);
 //     if constexpr (std::is_floating_point_v<TypeParam>)
@@ -299,7 +299,7 @@ TYPED_TEST(Vec2CrossProductTests, StaticWrapper_Cross_TwoNonParallelVectorsRetur
 // }
 //
 //
-// TEST(Vec2TensorProduct, StaticWrapper_TensorProduct_MixedTypes_PromotesType)
+// TEST(SimdVec2TensorProduct, StaticWrapper_TensorProduct_MixedTypes_PromotesType)
 // {
 //     const flcn::simd::Vec2 vecA(2.0f, 3.0f);
 //     const flcn::simd::Vec2 vecB(5.0, 6.0);

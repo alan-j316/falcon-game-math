@@ -27,9 +27,9 @@ namespace
      * @brief Test fixture for @ref Vec3 initialization.
      */
     template <typename>
-    class Vec3InitializationTests: public testing::Test
+    class SimdVec3InitializationTests: public testing::Test
     {};
-    TYPED_TEST_SUITE(Vec3InitializationTests, SupportedTypes);
+    TYPED_TEST_SUITE(SimdVec3InitializationTests, SupportedTypes);
 } // namespace
 
 
@@ -39,14 +39,14 @@ namespace
  **************************************/
 
 /** @test Verify that the default constructor initializes all components to zero. */
-TYPED_TEST(Vec3InitializationTests, EmptyConstructorInitializesZeroVector)
+TYPED_TEST(SimdVec3InitializationTests, EmptyConstructorInitializesZeroVector)
 {
     const flcn::simd::Vec3<TypeParam> vec{};
     EXPECT_VEC_ZERO(vec);
 }
 
 
-TYPED_TEST(Vec3InitializationTests, Ctor_SingleParameterInitializesVector)
+TYPED_TEST(SimdVec3InitializationTests, Ctor_SingleParameterInitializesVector)
 {
     const auto a = static_cast<TypeParam>(3);
     const flcn::simd::Vec3<TypeParam> vec(a);
@@ -55,7 +55,7 @@ TYPED_TEST(Vec3InitializationTests, Ctor_SingleParameterInitializesVector)
 
 
 /** @test Verify that the parameterized constructor correctly assigns components from the provided arguments. */
-TYPED_TEST(Vec3InitializationTests, ConstructorParametersInitializesVector)
+TYPED_TEST(SimdVec3InitializationTests, ConstructorParametersInitializesVector)
 {
     const auto a = static_cast<TypeParam>(3);
     const auto b = static_cast<TypeParam>(1);
@@ -70,7 +70,7 @@ TYPED_TEST(Vec3InitializationTests, ConstructorParametersInitializesVector)
  * @test Verify that the parameterized constructor correctly composes a 3D vector from a
  *       @ref flcn::simd::Vec3 instance and a scalar.
  */
-TYPED_TEST(Vec3InitializationTests, 2DVectorAndScalarCanInitializeA3DVector)
+TYPED_TEST(SimdVec3InitializationTests, 2DVectorAndScalarCanInitializeA3DVector)
 {
     const auto a = static_cast<TypeParam>(3);
     const auto b = static_cast<TypeParam>(1);
@@ -86,7 +86,7 @@ TYPED_TEST(Vec3InitializationTests, 2DVectorAndScalarCanInitializeA3DVector)
  * @test Verify that the parameterized constructor correctly composes a 3D vector from a
  *       @ref flcn::simd::Vec3 instance and a scalar.
  */
-TYPED_TEST(Vec3InitializationTests, ScalarAnd2DVectorCanInitializeA3DVector)
+TYPED_TEST(SimdVec3InitializationTests, ScalarAnd2DVectorCanInitializeA3DVector)
 {
     const auto scalar = static_cast<TypeParam>(3);
     const auto a      = static_cast<TypeParam>(1);

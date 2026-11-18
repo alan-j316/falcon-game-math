@@ -29,7 +29,7 @@ namespace
      * @tparam T The scalar type (int, float, double...) of the vector components.
      */
     template <typename T>
-    class Vec3MagnitudeTests: public testing::Test
+    class SimdVec3MagnitudeTests: public testing::Test
     {
     protected:
         flcn::simd::Vec3<T> _vec;
@@ -43,7 +43,7 @@ namespace
             _expectedMagnitudeSquare = T(121);
         }
     };
-    TYPED_TEST_SUITE(Vec3MagnitudeTests, SupportedArithmeticTypes);
+    TYPED_TEST_SUITE(SimdVec3MagnitudeTests, SupportedArithmeticTypes);
 
 
     /**
@@ -51,7 +51,7 @@ namespace
      * @tparam T The scalar type (int, float, double...) of the vector components.
      */
     template <typename T>
-    class Vec3UncleanMagnitudeTests: public testing::Test
+    class SimdVec3UncleanMagnitudeTests: public testing::Test
     {
     protected:
         flcn::simd::Vec3<T> _vec;
@@ -63,7 +63,7 @@ namespace
             _expectedMagnitude = flcn::Magnitude<T>(3.7416573867739413);
         }
     };
-    TYPED_TEST_SUITE(Vec3UncleanMagnitudeTests, SupportedArithmeticTypes);
+    TYPED_TEST_SUITE(SimdVec3UncleanMagnitudeTests, SupportedArithmeticTypes);
 
 } // namespace
 
@@ -74,7 +74,7 @@ namespace
  **************************************/
 
 /** @test Verify that taking the magnitude of a zero vector returns exactly zero. */
-TEST(Vec3Magnitude, ZeroVectorReturnsZero)
+TEST(SimdVec3Magnitude, ZeroVectorReturnsZero)
 {
     const flcn::simd::Vec3 vec(0.0f, 0.0f, 0.0f);
     EXPECT_FLOAT_EQ(0.0f, vec.mag());
@@ -82,7 +82,7 @@ TEST(Vec3Magnitude, ZeroVectorReturnsZero)
 
 
 /** @test Verify that taking the magnitude of a one vector returns non-unit scalar. */
-TEST(Vec3Magnitude, OneComponentVectorReturnsNonUnitScalar)
+TEST(SimdVec3Magnitude, OneComponentVectorReturnsNonUnitScalar)
 {
     const flcn::simd::Vec3 vec(1.0f, 1.0f, 1.0f);
     EXPECT_NE(1.0f, vec.mag());
@@ -90,7 +90,7 @@ TEST(Vec3Magnitude, OneComponentVectorReturnsNonUnitScalar)
 
 
 /** @test Verify that taking the magnitude of a non-unit vector returns non-unit scalar. */
-TYPED_TEST(Vec3MagnitudeTests, NonUnitVectorReturnsCorrectMagnitude)
+TYPED_TEST(SimdVec3MagnitudeTests, NonUnitVectorReturnsCorrectMagnitude)
 {
     const auto magnitude = this->_vec.mag();
     EXPECT_MAG_EQ(this->_expectedMagnitude, magnitude);
@@ -98,7 +98,7 @@ TYPED_TEST(Vec3MagnitudeTests, NonUnitVectorReturnsCorrectMagnitude)
 
 
 /** @test Verify that taking the magnitude always returns a floating-point scalar. */
-TYPED_TEST(Vec3MagnitudeTests, MagnitudeIsAlwaysTypedPromotedToFloatingPointType)
+TYPED_TEST(SimdVec3MagnitudeTests, MagnitudeIsAlwaysTypedPromotedToFloatingPointType)
 {
     [[maybe_unused]] const auto magnitude = this->_vec.mag();
     static_assert(std::is_floating_point_v<decltype(magnitude)>);
@@ -109,7 +109,7 @@ TYPED_TEST(Vec3MagnitudeTests, MagnitudeIsAlwaysTypedPromotedToFloatingPointType
  * @test Verify that taking the magnitude of a non-unit vector using static variant of @ref flcn::simd::Vec3::mag
  *       returns non-unit scalar.
  */
-TYPED_TEST(Vec3MagnitudeTests, StaticWrapper_NonUnitVectorReturnsCorrectMagnitude)
+TYPED_TEST(SimdVec3MagnitudeTests, StaticWrapper_NonUnitVectorReturnsCorrectMagnitude)
 {
     const auto magnitude = flcn::simd::Vec3<TypeParam>::mag(this->_vec);
     EXPECT_MAG_EQ(this->_expectedMagnitude, magnitude);
@@ -117,7 +117,7 @@ TYPED_TEST(Vec3MagnitudeTests, StaticWrapper_NonUnitVectorReturnsCorrectMagnitud
 
 
 /** @test Verify that the magnitude calculations for non-unit vectors ensure minimal precision loss. */
-TYPED_TEST(Vec3UncleanMagnitudeTests, NonUnitVectorReturnsCorrectMagnitudeWithMinimalPrecisionLoss)
+TYPED_TEST(SimdVec3UncleanMagnitudeTests, NonUnitVectorReturnsCorrectMagnitudeWithMinimalPrecisionLoss)
 {
     const auto magnitude = this->_vec.mag();
     EXPECT_MAG_EQ(this->_expectedMagnitude, magnitude);
@@ -128,7 +128,7 @@ TYPED_TEST(Vec3UncleanMagnitudeTests, NonUnitVectorReturnsCorrectMagnitudeWithMi
  * @test Verify that the magnitude calculations for non-unit vectors using static variant of @ref flcn::simd::Vec3::mag
  *       ensure minimal precision loss.
  */
-TYPED_TEST(Vec3UncleanMagnitudeTests, StaticWrapper_NonUnitVectorReturnsCorrectMagnitudeWithMinimalPrecisionLoss)
+TYPED_TEST(SimdVec3UncleanMagnitudeTests, StaticWrapper_NonUnitVectorReturnsCorrectMagnitudeWithMinimalPrecisionLoss)
 {
     const auto magnitude = flcn::simd::Vec3<TypeParam>::mag(this->_vec);
     EXPECT_MAG_EQ(this->_expectedMagnitude, magnitude);
@@ -140,7 +140,7 @@ TYPED_TEST(Vec3UncleanMagnitudeTests, StaticWrapper_NonUnitVectorReturnsCorrectM
  **************************************/
 
 /** @test Verify that taking the magnitude of a non-unit vector returns non-unit scalar. */
-TYPED_TEST(Vec3MagnitudeTests, MagSq_ReturnsSquaredMagnitude)
+TYPED_TEST(SimdVec3MagnitudeTests, MagSq_ReturnsSquaredMagnitude)
 {
     const auto magnitude = this->_vec.magSq();
     EXPECT_MAG_EQ(this->_expectedMagnitudeSquare, magnitude);
@@ -151,7 +151,7 @@ TYPED_TEST(Vec3MagnitudeTests, MagSq_ReturnsSquaredMagnitude)
  * @test Verify that taking the magnitude square of a non-unit vector using static variant of
  *        @ref flcn::simd::Vec3::mag returns non-unit scalar.
  */
-TYPED_TEST(Vec3MagnitudeTests, StaticWrapper_MagSq_ReturnsSquaredMagnitude)
+TYPED_TEST(SimdVec3MagnitudeTests, StaticWrapper_MagSq_ReturnsSquaredMagnitude)
 {
     const auto magnitude = flcn::simd::Vec3<TypeParam>::magSq(this->_vec);
     EXPECT_MAG_EQ(this->_expectedMagnitudeSquare, magnitude);

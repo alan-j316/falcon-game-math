@@ -28,18 +28,18 @@ namespace
      * @tparam T The scalar type (e.g., float, double) used for the vectors.
      */
     template <typename T>
-    class Vec2StorageTests: public testing::Test
+    class SimdVec2StorageTests: public testing::Test
     {
     protected:
         flcn::simd::Vec2<T> _vec;
 
         void SetUp() override { _vec = { T(7), T(12) }; }
     };
-    TYPED_TEST_SUITE(Vec2StorageTests, SupportedArithmeticTypes);
+    TYPED_TEST_SUITE(SimdVec2StorageTests, SupportedArithmeticTypes);
 } // namespace
 
 
-TYPED_TEST(Vec2StorageTests, Store_WritesDataToAlignedBuffer)
+TYPED_TEST(SimdVec2StorageTests, Store_WritesDataToAlignedBuffer)
 {
     alignas(16) std::array<TypeParam, 2> data;;
     this->_vec.store(data.data());
@@ -49,7 +49,7 @@ TYPED_TEST(Vec2StorageTests, Store_WritesDataToAlignedBuffer)
 }
 
 
-TYPED_TEST(Vec2StorageTests, StaticWrapper_Store_WritesDataToAlignedBuffer)
+TYPED_TEST(SimdVec2StorageTests, StaticWrapper_Store_WritesDataToAlignedBuffer)
 {
     alignas(16) std::array<TypeParam, 2> data;;
     this->_vec.store(data.data());
@@ -58,7 +58,7 @@ TYPED_TEST(Vec2StorageTests, StaticWrapper_Store_WritesDataToAlignedBuffer)
     EXPECT_EQ(this->_vec[1], data[1]);
 }
 
-TYPED_TEST(Vec2StorageTests, StoreUnaligned_WritesDataToNonAlignedBuffer)
+TYPED_TEST(SimdVec2StorageTests, StoreUnaligned_WritesDataToNonAlignedBuffer)
 {
 
     alignas(8) std::array<TypeParam, 2> data;;
@@ -69,7 +69,7 @@ TYPED_TEST(Vec2StorageTests, StoreUnaligned_WritesDataToNonAlignedBuffer)
 }
 
 
-TYPED_TEST(Vec2StorageTests, StaticWrapper_StoreUnaligned_WritesDataToNonAlignedBuffer)
+TYPED_TEST(SimdVec2StorageTests, StaticWrapper_StoreUnaligned_WritesDataToNonAlignedBuffer)
 {
     alignas(8) std::array<TypeParam, 2> data;;
     this->_vec.storeUnaligned(data.data());

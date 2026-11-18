@@ -34,12 +34,12 @@ namespace flcn
 
 
     template <Arithmetic T>
-    FALCON_INLINE constexpr Vec3<T>::Vec3(CVec2<T> vec, T v) noexcept: _data{ vec[0], vec[1], v }
+    FALCON_INLINE constexpr Vec3<T>::Vec3(Vec2<T> vec, T v) noexcept: _data{ vec[0], vec[1], v }
     {}
 
 
     template <Arithmetic T>
-    FALCON_INLINE constexpr Vec3<T>::Vec3(T v, CVec2<T> vec) noexcept: _data{ v, vec[0], vec[1] }
+    FALCON_INLINE constexpr Vec3<T>::Vec3(T v, Vec2<T> vec) noexcept: _data{ v, vec[0], vec[1] }
     {}
 
 
@@ -211,7 +211,7 @@ namespace flcn
         //}
         //else if constexpr (swizzleDimension == 2)
         //{
-            //return CVec2<T>(_data[Indices]...);
+            //return Vec2<T>(_data[Indices]...);
         //}
         //else
         //{

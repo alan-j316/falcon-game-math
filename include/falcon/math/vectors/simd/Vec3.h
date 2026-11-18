@@ -122,7 +122,7 @@ namespace flcn::simd
 
 
         /**
-         * @brief Initialize @ref Vec3 with 1 @ref CVec2 and 1 @ref T value.
+         * @brief Initialize @ref Vec3 with 1 @ref Vec2 and 1 @ref T value.
          *
          * @param[in] vec The first two entries of @ref Vec3.
          * @param[in] v   The last entry of @ref Vec3.
@@ -131,7 +131,7 @@ namespace flcn::simd
 
 
         /**
-         * @brief Initialize @ref Vec3 with 1 @ref T value and 1 @ref CVec2.
+         * @brief Initialize @ref Vec3 with 1 @ref T value and 1 @ref Vec2.
          *
          * @param[in] v   The first entry of @ref Vec3.
          * @param[in] vec The last two entries of @ref Vec3.
@@ -374,7 +374,7 @@ namespace flcn::simd
 
 
         /**
-         * @addtogroup Falcon_CVec3_Ptr
+         * @addtogroup Falcon_Vec3_Ptr
          * @{
          */
 
@@ -383,8 +383,8 @@ namespace flcn::simd
          * @note  Since we cannot return a pointer to a buffer, due to lifetime limitation
          *        of pointer allocated on the callstack of @ref store,
          *        use either @ref store or storeUnaligned.
-         *        Alternatively, convert to a CVec3 using @ref toCVec3 and then use *cvec or cvec.ptr().
-         *        *But you shouldn't make the CVec3 instance a temporary.*
+         *        Alternatively, convert to a Vec3 using @ref toVec3 and then use *cvec or cvec.ptr().
+         *        *But you shouldn't make the Vec3 instance a temporary.*
          * @note The buffer must be of an adequate size to store the contents.
          *
          * @warning @p pBuffer must be aligned to 16-byte boundary.
@@ -393,7 +393,7 @@ namespace flcn::simd
          *
          * @code
          * // DO
-         * auto cvec3 = vec3.toCVec3();
+         * auto cvec3 = vec3.toVec3();
          * auto ptr = *cvec3();
          *
          * // OR
@@ -401,7 +401,7 @@ namespace flcn::simd
          * vec3.store(data);
          *
          * // DON'T
-         * auto ptr = *(vec3.toCVec3());
+         * auto ptr = *(vec3.toVec3());
          * @endcode
          *
          * @relatedalso store(Vec3<T>, T*)
@@ -416,8 +416,8 @@ namespace flcn::simd
          * @note  Since we cannot return a pointer to a buffer, due to lifetime limitation
          *        of pointer allocated on the callstack of @ref store,
          *        use either @ref store or storeUnaligned.
-         *        Alternatively, convert to a CVec3 using @ref toCVec3 and then use *cvec or cvec.ptr().
-         *        *But you shouldn't make the CVec3 instance a temporary.*
+         *        Alternatively, convert to a Vec3 using @ref toVec3 and then use *cvec or cvec.ptr().
+         *        *But you shouldn't make the Vec3 instance a temporary.*
          * @note The buffer must be of an adequate size to store the contents.
          *
          * @warning @p pBuffer must be aligned to 16-byte boundary.
@@ -426,7 +426,7 @@ namespace flcn::simd
          *
          * @code
          * // DO
-         * auto cvec3 = vec3.toCVec3();
+         * auto cvec3 = vec3.toVec3();
          * auto ptr = *cvec3();
          *
          * // OR
@@ -434,7 +434,7 @@ namespace flcn::simd
          * vec3.store(data);
          *
          * // DON'T
-         * auto ptr = *(vec3.toCVec3());
+         * auto ptr = *(vec3.toVec3());
          * @endcode
          *
          * @relatedalso store(T*)
@@ -449,8 +449,8 @@ namespace flcn::simd
          * @note  Since we cannot return a pointer to a buffer, due to lifetime limitation
          *        of pointer allocated on the callstack of @ref storeUnaligned,
          *        use either @ref store or storeUnaligned.
-         *        Alternatively, convert to a CVec3 using @ref toCVec3 and then use *cvec or cvec.ptr().
-         *        *But you shouldn't make the CVec3 instance a temporary.*
+         *        Alternatively, convert to a Vec3 using @ref toVec3 and then use *cvec or cvec.ptr().
+         *        *But you shouldn't make the Vec3 instance a temporary.*
          * @note The buffer must be of an adequate size to store the contents.
          *
          * @note No memory alignment necessary.
@@ -458,7 +458,7 @@ namespace flcn::simd
          *
          * @code
          * // DO
-         * auto cvec3 = vec3.toCVec3();
+         * auto cvec3 = vec3.toVec3();
          * auto ptr = *cvec3();
          *
          * // OR
@@ -466,7 +466,7 @@ namespace flcn::simd
          * vec3.store(data);
          *
          * // DON'T
-         * auto ptr = *(vec3.toCVec3());
+         * auto ptr = *(vec3.toVec3());
          * @endcode
          *
          * @relatedalso store(T*)
@@ -481,8 +481,8 @@ namespace flcn::simd
          * @note  Since we cannot return a pointer to a buffer, due to lifetime limitation
          *        of pointer allocated on the callstack of @ref storeUnaligned,
          *        use either @ref store or storeUnaligned.
-         *        Alternatively, convert to a CVec3 using @ref toCVec3 and then use *cvec or cvec.ptr().
-         *        *But you shouldn't make the CVec3 instance a temporary.*
+         *        Alternatively, convert to a Vec3 using @ref toVec3 and then use *cvec or cvec.ptr().
+         *        *But you shouldn't make the Vec3 instance a temporary.*
          * @note The buffer must be of an adequate size to store the contents.
          *
          * @note No memory alignment necessary.
@@ -490,7 +490,7 @@ namespace flcn::simd
          *
          * @code
          * // DO
-         * auto cvec3 = vec3.toCVec3();
+         * auto cvec3 = vec3.toVec3();
          * auto ptr = *cvec3();
          *
          * // OR
@@ -498,7 +498,7 @@ namespace flcn::simd
          * vec3.storeUnaligned(data);
          *
          * // DON'T
-         * auto ptr = *(vec3.toCVec3());
+         * auto ptr = *(vec3.toVec3());
          * @endcode
          *
          * @relatedalso store(T*)
@@ -1160,7 +1160,7 @@ namespace flcn::simd
         [[nodiscard]] static constexpr Vec3 tryDiv(const Vec3& vec, S scalar, OperationStatus& status) noexcept
             requires StrictArithmetic<T>;
 
-        // TODO: Add pairwise product(Hadamard) to CVec2, Vec2, CVec3, Vec3, Vec4
+        // TODO: Add pairwise product(Hadamard) to Vec2, Vec2, Vec3, Vec3, Vec4
         /** @} */
 
 
@@ -2642,11 +2642,11 @@ namespace flcn::simd
 
     template <typename T>
         requires Arithmetic<T>
-    Vec3(CVec2<T>, T) -> Vec3<T>;
+    Vec3(Vec2<T>, T) -> Vec3<T>;
 
     template <typename T>
         requires Arithmetic<T>
-    Vec3(T, CVec2<T>) -> Vec3<T>;
+    Vec3(T, Vec2<T>) -> Vec3<T>;
 
 } // namespace flcn::simd
 

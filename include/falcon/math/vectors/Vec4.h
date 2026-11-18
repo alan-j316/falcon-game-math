@@ -83,30 +83,30 @@ namespace flcn
 
 
         /**
-         * @brief Initialize @ref Vec4 with 2 @ref CVec2.
+         * @brief Initialize @ref Vec4 with 2 @ref Vec2.
          *
          * @param[in] vec1 The first two entries of @ref Vec4.
          * @param[in] vec2 The last two entries of @ref Vec4.
          */
-        [[nodiscard]] constexpr Vec4(const CVec2<T>& vec1, const CVec2<T>& vec2) noexcept;
+        [[nodiscard]] constexpr Vec4(const Vec2<T>& vec1, const Vec2<T>& vec2) noexcept;
 
 
         /**
-         * @brief Initialize @ref Vec4 with 1 @ref CVec3 and 1 @ref T value.
+         * @brief Initialize @ref Vec4 with 1 @ref Vec3 and 1 @ref T value.
          *
          * @param[in] vec The first three entries of @ref Vec4.
          * @param[in] v   The last entry of @ref Vec4.
          */
-        [[nodiscard]] constexpr Vec4(const CVec3<T>& vec, T v) noexcept;
+        [[nodiscard]] constexpr Vec4(const Vec3<T>& vec, T v) noexcept;
 
 
         /**
-         * @brief Initialize @ref Vec4 with 1 T value and 1 @ref CVec3.
+         * @brief Initialize @ref Vec4 with 1 T value and 1 @ref Vec3.
          *
          * @param[in] vec The first three entries of @ref Vec4.
          * @param[in] v   The last entry of @ref Vec4.
          */
-        [[nodiscard]] constexpr Vec4(T v, const CVec3<T>& vec) noexcept;
+        [[nodiscard]] constexpr Vec4(T v, const Vec3<T>& vec) noexcept;
 
 
         /**
@@ -850,7 +850,7 @@ namespace flcn
 
         /**
          * @brief Apply a component-wise logical NOT on this vector.
-         *        Invert each boolean component and returns a new @ref CVec3<bool>.
+         *        Invert each boolean component and returns a new @ref Vec3<bool>.
          *
          * @note Only available for @ref bVec4 and vectors with `bool` value_type.
          *
@@ -2481,15 +2481,15 @@ namespace flcn
 
     template <typename T>
         requires Arithmetic<T>
-    Vec4(CVec2<T>, CVec2<T>) -> Vec4<T>;
+    Vec4(Vec2<T>, Vec2<T>) -> Vec4<T>;
 
     template <typename T>
         requires Arithmetic<T>
-    Vec4(CVec3<T>, T) -> Vec4<T>;
+    Vec4(Vec3<T>, T) -> Vec4<T>;
 
     template <typename T>
         requires Arithmetic<T>
-    Vec4(T, CVec3<T>) -> Vec4<T>;
+    Vec4(T, Vec3<T>) -> Vec4<T>;
 
 } // namespace flcn
 

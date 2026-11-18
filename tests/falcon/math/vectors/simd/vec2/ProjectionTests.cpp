@@ -30,7 +30,7 @@ namespace
      * @tparam T The scalar type (e.g., float, double) used for the vectors.
      */
     template <typename T>
-    class Vec2ProjectionTests: public testing::Test
+    class SimdVec2ProjectionTests: public testing::Test
     {
     protected:
         flcn::simd::Vec2<T> _vec;
@@ -46,16 +46,16 @@ namespace
             _expectedProjection = { T(4), T(0) };
         }
     };
-    TYPED_TEST_SUITE(Vec2ProjectionTests, SupportedFloatingPointTypes);
+    TYPED_TEST_SUITE(SimdVec2ProjectionTests, SupportedFloatingPointTypes);
 
 
 
     /**
      * @brief Test fixture for @ref flcn::simd::Vec2 projection with NaN vectors.
      */
-    class Vec2ProjectionNaNTests: public testing::TestWithParam<flcn::simd::Vec2<float>>
+    class SimdVec2ProjectionNaNTests: public testing::TestWithParam<flcn::simd::Vec2<float>>
     {};
-    INSTANTIATE_TEST_SUITE_P(Vec2ProjectionNanVectors, Vec2ProjectionNaNTests,
+    INSTANTIATE_TEST_SUITE_P(SimdVec2ProjectionNanVectors, SimdVec2ProjectionNaNTests,
                              ::testing::Values(flcn::simd::Vec2<float>(flcn::constants::NaN, 1.0f),
                                                flcn::simd::Vec2<float>(1.0f, flcn::constants::NaN),
                                                flcn::simd::Vec2<float>(flcn::constants::NaN, flcn::constants::NaN)));
@@ -67,14 +67,14 @@ namespace
  *          PROJECTION TESTS          *
  **************************************/
 
-TYPED_TEST(Vec2ProjectionTests, Project_OrthogonalVectorsReturnsZeroVector)
+TYPED_TEST(SimdVec2ProjectionTests, Project_OrthogonalVectorsReturnsZeroVector)
 {
     const flcn::simd::Vec2 actualProjection = this->_perpendicularVec.project(this->_ontoVec);
     EXPECT_VEC_ZERO(actualProjection);
 }
 
 
-TEST(Vec2ProjectionTests, Project_XAxis_ReturnVectorWithNonZeroXComponent)
+TEST(SimdVec2ProjectionTests, Project_XAxis_ReturnVectorWithNonZeroXComponent)
 {
     // Given an arbitrary vector
     const flcn::simd::Vec2 a(10.0f, 20.0f);
@@ -89,7 +89,7 @@ TEST(Vec2ProjectionTests, Project_XAxis_ReturnVectorWithNonZeroXComponent)
 }
 
 
-TEST(Vec2ProjectionTests, Project_YAxis_ReturnVectorWithNonZeroYComponent)
+TEST(SimdVec2ProjectionTests, Project_YAxis_ReturnVectorWithNonZeroYComponent)
 {
     // Given an arbitrary vector
     const flcn::simd::Vec2 a(10.0f, 20.0f);
@@ -104,7 +104,7 @@ TEST(Vec2ProjectionTests, Project_YAxis_ReturnVectorWithNonZeroYComponent)
 }
 
 
-TYPED_TEST(Vec2ProjectionTests, Project_NonOrthogonalVectors_ReturnsNonZeroVector)
+TYPED_TEST(SimdVec2ProjectionTests, Project_NonOrthogonalVectors_ReturnsNonZeroVector)
 {
     const flcn::simd::Vec2 actualProjection = this->_vec.project(this->_ontoVec);
 
@@ -112,7 +112,7 @@ TYPED_TEST(Vec2ProjectionTests, Project_NonOrthogonalVectors_ReturnsNonZeroVecto
 }
 
 
-TYPED_TEST(Vec2ProjectionTests, StaticWrapper_Project_NonOrthogonalVectors_ReturnsNonZeroVector)
+TYPED_TEST(SimdVec2ProjectionTests, StaticWrapper_Project_NonOrthogonalVectors_ReturnsNonZeroVector)
 {
     const auto actualProjection = flcn::simd::Vec2<TypeParam>::project(this->_vec, this->_ontoVec);
 
@@ -120,7 +120,7 @@ TYPED_TEST(Vec2ProjectionTests, StaticWrapper_Project_NonOrthogonalVectors_Retur
 }
 
 
-TEST(Vec2ProjectionTests, ProjectNorm_NormalizedVectorReturnsNonZeroVector)
+TEST(SimdVec2ProjectionTests, ProjectNorm_NormalizedVectorReturnsNonZeroVector)
 {
     // Given an arbitrary vector and a normalized vector
     const flcn::simd::Vec2 a(1.0f, 2.0f);
@@ -139,7 +139,7 @@ TEST(Vec2ProjectionTests, ProjectNorm_NormalizedVectorReturnsNonZeroVector)
  * @test Verify that projecting onto a non-orthogonal vector pointing in the opposite direction
  *       using @ref flcn::simd::Vec2::project returns a non-zero vector.
  */
-TEST(Vec2ProjectionTests, ProjectionOntoVectorInOppositeDirectionReturnsNonZeroVectorInSameDirection)
+TEST(SimdVec2ProjectionTests, ProjectionOntoVectorInOppositeDirectionReturnsNonZeroVectorInSameDirection)
 {
     // Given an arbitrary vector and a vector in the opposite Direction
     const flcn::simd::Vec2 a(4.0f, 4.0f);
@@ -160,7 +160,7 @@ TEST(Vec2ProjectionTests, ProjectionOntoVectorInOppositeDirectionReturnsNonZeroV
  * @test Verify that projecting onto a non-orthogonal unit vector using static variant of
  *       @ref flcn::simd::Vec2::projectNorm returns a non-zero vector.
  */
-TEST(Vec2ProjectionTests, StaticWrapper_ProjectNorm_NormalizedVectorReturnsNonZeroVector)
+TEST(SimdVec2ProjectionTests, StaticWrapper_ProjectNorm_NormalizedVectorReturnsNonZeroVector)
 {
     // Given an arbitrary vector and a normalized vector
     const flcn::simd::Vec2 a(1.0f, 2.0f);
@@ -182,7 +182,7 @@ TEST(Vec2ProjectionTests, StaticWrapper_ProjectNorm_NormalizedVectorReturnsNonZe
  *        SAFE PROJECTION TESTS       *
  **************************************/
 
-TYPED_TEST(Vec2ProjectionTests, SafeProject_Project_NonOrthogonalVectors_ReturnsNonZeroVector)
+TYPED_TEST(SimdVec2ProjectionTests, SafeProject_Project_NonOrthogonalVectors_ReturnsNonZeroVector)
 {
     const flcn::simd::Vec2 actualProjection = this->_vec.safeProject(this->_ontoVec);
 
@@ -191,7 +191,7 @@ TYPED_TEST(Vec2ProjectionTests, SafeProject_Project_NonOrthogonalVectors_Returns
 
 
 
-TEST(Vec2ProjectionTests, SafeProjectNorm_NormalizedVectorReturnsNonZeroVector)
+TEST(SimdVec2ProjectionTests, SafeProjectNorm_NormalizedVectorReturnsNonZeroVector)
 {
     // Given an arbitrary vector and a normalized vector
     const flcn::simd::Vec2 a(1.0f, 2.0f);
@@ -206,7 +206,7 @@ TEST(Vec2ProjectionTests, SafeProjectNorm_NormalizedVectorReturnsNonZeroVector)
 }
 
 
-TEST(Vec2ProjectionTests, SafeProjectNorm_NaNVectorReturnsNonZeroVector)
+TEST(SimdVec2ProjectionTests, SafeProjectNorm_NaNVectorReturnsNonZeroVector)
 {
     // Given a NaN vector and a normalized vector
     const flcn::simd::Vec2 a(1.0f, flcn::constants::NaN);
@@ -220,7 +220,7 @@ TEST(Vec2ProjectionTests, SafeProjectNorm_NaNVectorReturnsNonZeroVector)
 }
 
 
-TEST(Vec2ProjectionTests, SafeProjectNorm_OntoNaNVectorReturnsNonZeroVector)
+TEST(SimdVec2ProjectionTests, SafeProjectNorm_OntoNaNVectorReturnsNonZeroVector)
 {
     // Given an arbitrary vector and a normalized vector
     const flcn::simd::Vec2 a(1.0f, 2.0f);
@@ -234,7 +234,7 @@ TEST(Vec2ProjectionTests, SafeProjectNorm_OntoNaNVectorReturnsNonZeroVector)
 }
 
 
-TEST(Vec2ProjectionTests, SafeProject_OntoVectorInOppositeDirectionReturnsVectorInSameDirection)
+TEST(SimdVec2ProjectionTests, SafeProject_OntoVectorInOppositeDirectionReturnsVectorInSameDirection)
 {
     // Given an arbitrary vector and a vector in the opposite Direction
     const flcn::simd::Vec2 a(4.0f, 4.0f);
@@ -249,7 +249,7 @@ TEST(Vec2ProjectionTests, SafeProject_OntoVectorInOppositeDirectionReturnsVector
 }
 
 
-TYPED_TEST(Vec2ProjectionTests, SafeProject_OntoZeroReturnsZeroVector)
+TYPED_TEST(SimdVec2ProjectionTests, SafeProject_OntoZeroReturnsZeroVector)
 {
     const flcn::simd::Vec2 zeroVec = flcn::simd::Vec2<TypeParam>::zero();
 
@@ -259,7 +259,7 @@ TYPED_TEST(Vec2ProjectionTests, SafeProject_OntoZeroReturnsZeroVector)
 }
 
 
-TYPED_TEST(Vec2ProjectionTests, StaticWrapper_SafeProject_Project_NonOrthogonalVectors_ReturnsNonZeroVector)
+TYPED_TEST(SimdVec2ProjectionTests, StaticWrapper_SafeProject_Project_NonOrthogonalVectors_ReturnsNonZeroVector)
 {
     const flcn::simd::Vec2 actualProjection = flcn::simd::Vec2<TypeParam>::safeProject(this->_vec, this->_ontoVec);
 
@@ -267,7 +267,7 @@ TYPED_TEST(Vec2ProjectionTests, StaticWrapper_SafeProject_Project_NonOrthogonalV
 }
 
 
-TEST(Vec2ProjectionTests, StaticWrapper_SafeProjectNorm_NormalizedVectorReturnsNonZeroVector)
+TEST(SimdVec2ProjectionTests, StaticWrapper_SafeProjectNorm_NormalizedVectorReturnsNonZeroVector)
 {
     // Given an arbitrary vector and a normalized vector
     const flcn::simd::Vec2 a(1.0f, 2.0f);
@@ -282,7 +282,7 @@ TEST(Vec2ProjectionTests, StaticWrapper_SafeProjectNorm_NormalizedVectorReturnsN
 }
 
 
-TEST(Vec2ProjectionTests, StaticWrapper_SafeProjectNorm_NaNVectorReturnsNonZeroVector)
+TEST(SimdVec2ProjectionTests, StaticWrapper_SafeProjectNorm_NaNVectorReturnsNonZeroVector)
 {
     // Given a NaN vector
     const flcn::simd::Vec2 a(1.0f, flcn::constants::NaN);
@@ -296,7 +296,7 @@ TEST(Vec2ProjectionTests, StaticWrapper_SafeProjectNorm_NaNVectorReturnsNonZeroV
 }
 
 
-TEST(Vec2ProjectionTests, StaticWrapper_SafeProjectNorm_OntoNaNVectorReturnsNonZeroVector)
+TEST(SimdVec2ProjectionTests, StaticWrapper_SafeProjectNorm_OntoNaNVectorReturnsNonZeroVector)
 {
     // Given an arbitrary vector
     const flcn::simd::Vec2 a(1.0f, 2.0f);
@@ -310,7 +310,7 @@ TEST(Vec2ProjectionTests, StaticWrapper_SafeProjectNorm_OntoNaNVectorReturnsNonZ
 }
 
 
-TEST(Vec2ProjectionTests, StaticWrapper_SafeProject_OntoVectorInOppositeDirectionReturnsVectorInSameDirection)
+TEST(SimdVec2ProjectionTests, StaticWrapper_SafeProject_OntoVectorInOppositeDirectionReturnsVectorInSameDirection)
 {
     // Given an arbitrary vector and a vector in the opposite Direction
     const flcn::simd::Vec2 a(4.0f, 4.0f);
@@ -325,7 +325,7 @@ TEST(Vec2ProjectionTests, StaticWrapper_SafeProject_OntoVectorInOppositeDirectio
 }
 
 
-TYPED_TEST(Vec2ProjectionTests, StaticWrapper_SafeProject_OntoZeroVectorReturnsZeroVector)
+TYPED_TEST(SimdVec2ProjectionTests, StaticWrapper_SafeProject_OntoZeroVectorReturnsZeroVector)
 {
     const flcn::simd::Vec2 zeroVec = flcn::simd::Vec2<TypeParam>::zero();
     const flcn::simd::Vec2 actualProjection = flcn::simd::Vec2<TypeParam>::safeProject(this->_vec, zeroVec);
@@ -333,7 +333,7 @@ TYPED_TEST(Vec2ProjectionTests, StaticWrapper_SafeProject_OntoZeroVectorReturnsZ
 }
 
 
-TEST_P(Vec2ProjectionNaNTests, SafeProject_NaNVectorReturnsZeroVector)
+TEST_P(SimdVec2ProjectionNaNTests, SafeProject_NaNVectorReturnsZeroVector)
 {
     const auto& nanVec  = GetParam();
     const auto& ontoVec = flcn::simd::Vec2<float>::one();
@@ -342,7 +342,7 @@ TEST_P(Vec2ProjectionNaNTests, SafeProject_NaNVectorReturnsZeroVector)
 }
 
 
-TEST_P(Vec2ProjectionNaNTests, SafeProject_OntoNaNVectorReturnsZeroVector)
+TEST_P(SimdVec2ProjectionNaNTests, SafeProject_OntoNaNVectorReturnsZeroVector)
 {
     const auto& oneVec     = flcn::simd::Vec2<float>::one();
     const auto& ontoNaNVec = GetParam();
@@ -351,7 +351,7 @@ TEST_P(Vec2ProjectionNaNTests, SafeProject_OntoNaNVectorReturnsZeroVector)
 }
 
 
-TEST_P(Vec2ProjectionNaNTests, StaticWrapper_SafeProject_NaNVectorReturnsZeroVector)
+TEST_P(SimdVec2ProjectionNaNTests, StaticWrapper_SafeProject_NaNVectorReturnsZeroVector)
 {
     const auto& nanVec  = GetParam();
     const auto& ontoVec = flcn::simd::Vec2<float>::one();
@@ -360,7 +360,7 @@ TEST_P(Vec2ProjectionNaNTests, StaticWrapper_SafeProject_NaNVectorReturnsZeroVec
 }
 
 
-TEST_P(Vec2ProjectionNaNTests, StaticWrapper_SafeProject_OntoNaNVectorReturnsZeroVector)
+TEST_P(SimdVec2ProjectionNaNTests, StaticWrapper_SafeProject_OntoNaNVectorReturnsZeroVector)
 {
     const auto& oneVec     = flcn::simd::Vec2<float>::one();
     const auto& ontoNaNVec = GetParam();
@@ -378,7 +378,7 @@ TEST_P(Vec2ProjectionNaNTests, StaticWrapper_SafeProject_OntoNaNVectorReturnsZer
  * @test Verify that projecting onto an orthogonal vector using @ref flcn::simd::Vec2::tryProject
  *       returns a zero vector and sets the flag to @ref flcn::OperationStatus::SUCCESS.
  */
-TYPED_TEST(Vec2ProjectionTests, TryProject_Project_NonOrthogonalVectors_ReturnsNonZeroVectorAndSetsCorrectFlag)
+TYPED_TEST(SimdVec2ProjectionTests, TryProject_Project_NonOrthogonalVectors_ReturnsNonZeroVectorAndSetsCorrectFlag)
 {
     flcn::OperationStatus flag;
     const flcn::simd::Vec2 actualProjection = this->_vec.tryProject(this->_ontoVec, flag);
@@ -392,7 +392,7 @@ TYPED_TEST(Vec2ProjectionTests, TryProject_Project_NonOrthogonalVectors_ReturnsN
  * @test Verify that projecting onto a non-orthogonal unit vector using @ref flcn::simd::Vec2::tryProjectNorm
  *       returns a non-zero vector and sets the flag to @ref flcn::OperationStatus::SUCCESS.
  */
-TEST(Vec2ProjectionTests, TryProject_NormalizedVectorReturnsNonZeroVectorAndSetsCorrectFlag)
+TEST(SimdVec2ProjectionTests, TryProject_NormalizedVectorReturnsNonZeroVectorAndSetsCorrectFlag)
 {
     // Given an arbitrary vector and a normalized vector
     const flcn::simd::Vec2 a(1.0f, 2.0f);
@@ -414,7 +414,7 @@ TEST(Vec2ProjectionTests, TryProject_NormalizedVectorReturnsNonZeroVectorAndSets
  * @test Verify that projecting a NaN vector onto a non-orthogonal unit vector using @ref flcn::simd::Vec2::tryProjectNorm
  *       returns a zero vector and sets the flag to @ref flcn::OperationStatus::NANOPERAND.
  */
-TEST(Vec2ProjectionTests, TryProjectNorm_NaNVectorReturnsZeroVectorAndSetsCorrectFlag)
+TEST(SimdVec2ProjectionTests, TryProjectNorm_NaNVectorReturnsZeroVectorAndSetsCorrectFlag)
 {
     // Given an arbitrary vector and a normalized vector
     const flcn::simd::Vec2 a(flcn::constants::NaN, 2.0f);
@@ -435,7 +435,7 @@ TEST(Vec2ProjectionTests, TryProjectNorm_NaNVectorReturnsZeroVectorAndSetsCorrec
  * @test Verify that projecting a vector onto a NaN vector using @ref flcn::simd::Vec2::tryProjectNorm
  *       returns a zero vector and sets the flag to @ref flcn::OperationStatus::NANOPERAND.
  */
-TEST(Vec2ProjectionTests, TryProjectNorm_OntoNaNVectorReturnsZeroVectorAndSetsCorrectFlag)
+TEST(SimdVec2ProjectionTests, TryProjectNorm_OntoNaNVectorReturnsZeroVectorAndSetsCorrectFlag)
 {
     // Given an arbitrary vector and a normalized vector
     const flcn::simd::Vec2 a(1.0f, 2.0f);
@@ -456,7 +456,7 @@ TEST(Vec2ProjectionTests, TryProjectNorm_OntoNaNVectorReturnsZeroVectorAndSetsCo
  *       using @ref flcn::simd::Vec2::tryProject returns a non-zero vector
  *       and sets the flag to @ref flcn::OperationStatus::SUCCESS.
  */
-TEST(Vec2ProjectionTests, TryProject_OntoVectorInOppositeDirectionReturnsVectorInSameDirectionAndSetsCorrectFlag)
+TEST(SimdVec2ProjectionTests, TryProject_OntoVectorInOppositeDirectionReturnsVectorInSameDirectionAndSetsCorrectFlag)
 {
     // Given an arbitrary vector and a vector in the opposite Direction
     const flcn::simd::Vec2 a(4.0f, 4.0f);
@@ -478,7 +478,7 @@ TEST(Vec2ProjectionTests, TryProject_OntoVectorInOppositeDirectionReturnsVectorI
  * @test Verify that projecting onto a zero length vector using @ref flcn::simd::Vec2::tryProject
  *       returns a zero vector and sets the flag to @ref flcn::OperationStatus::DIVISIONBYZERO.
  */
-TYPED_TEST(Vec2ProjectionTests, TryProject_OntoZeroReturnsZeroVectorAndSetsCorrectFlag)
+TYPED_TEST(SimdVec2ProjectionTests, TryProject_OntoZeroReturnsZeroVectorAndSetsCorrectFlag)
 {
     const flcn::simd::Vec2 zeroVec = flcn::simd::Vec2<TypeParam>::zero();
     flcn::OperationStatus flag;
@@ -495,7 +495,7 @@ TYPED_TEST(Vec2ProjectionTests, TryProject_OntoZeroReturnsZeroVectorAndSetsCorre
  * @test Verify that projecting onto a non-orthogonal vector using static variant of @ref flcn::simd::Vec2::tryProject
  *       returns a non-zero vector and sets the flag to @ref flcn::OperationStatus::SUCCESS.
  */
-TYPED_TEST(Vec2ProjectionTests, StaticWrapper_TryProject_Project_NonOrthogonalVectors_ReturnsNonZeroVectorAndSetsCorrectFlag)
+TYPED_TEST(SimdVec2ProjectionTests, StaticWrapper_TryProject_Project_NonOrthogonalVectors_ReturnsNonZeroVectorAndSetsCorrectFlag)
 {
     flcn::OperationStatus flag;
     const flcn::simd::Vec2 actualProjection = flcn::simd::Vec2<TypeParam>::tryProject(this->_vec, this->_ontoVec, flag);
@@ -510,7 +510,7 @@ TYPED_TEST(Vec2ProjectionTests, StaticWrapper_TryProject_Project_NonOrthogonalVe
  *       @ref flcn::simd::Vec2::tryProjectNorm returns a non-zero vector and sets the flag to
  *       @ref flcn::OperationStatus::SUCCESS.
  */
-TEST(Vec2ProjectionTests, StaticWrapper_TryProjectNorm_NormalizedVectorReturnsNonZeroVectorAndSetsCorrectFlag)
+TEST(SimdVec2ProjectionTests, StaticWrapper_TryProjectNorm_NormalizedVectorReturnsNonZeroVectorAndSetsCorrectFlag)
 {
     // Given an arbitrary vector and a normalized vector
     const flcn::simd::Vec2 a(1.0f, 2.0f);
@@ -532,7 +532,7 @@ TEST(Vec2ProjectionTests, StaticWrapper_TryProjectNorm_NormalizedVectorReturnsNo
  * @test Verify that projecting a NaN vector onto a non-orthogonal unit vector using static variant of @ref
  * flcn::simd::Vec2::tryProjectNorm returns a zero vector and sets the flag to @ref flcn::OperationStatus::NANOPERAND.
  */
-TEST(Vec2ProjectionTests, StaticWrapper_TryProjectNorm_NaNVectorReturnsZeroVectorAndSetsCorrectFlag)
+TEST(SimdVec2ProjectionTests, StaticWrapper_TryProjectNorm_NaNVectorReturnsZeroVectorAndSetsCorrectFlag)
 {
     // Given an arbitrary vector and a NaN vector
     const flcn::simd::Vec2 a(flcn::constants::NaN, 2.0f);
@@ -552,7 +552,7 @@ TEST(Vec2ProjectionTests, StaticWrapper_TryProjectNorm_NaNVectorReturnsZeroVecto
  * @test Verify that projecting a vector onto a NaN vector using static variant of @ref flcn::simd::Vec2::tryProjectNorm
  *       returns a zero vector and sets the flag to @ref flcn::OperationStatus::NANOPERAND.
  */
-TEST(Vec2ProjectionTests, StaticWrapper_TryProjectNorm_OntoNaNVectorReturnsZeroVectorAndSetsCorrectFlag)
+TEST(SimdVec2ProjectionTests, StaticWrapper_TryProjectNorm_OntoNaNVectorReturnsZeroVectorAndSetsCorrectFlag)
 {
     // Given an arbitrary vector and a NaN vector
     const flcn::simd::Vec2 a(1.0f, 2.0f);
@@ -574,7 +574,7 @@ TEST(Vec2ProjectionTests, StaticWrapper_TryProjectNorm_OntoNaNVectorReturnsZeroV
  *       using static variant of @ref flcn::simd::Vec2::tryProject returns a non-zero vector
  *       and sets the flag to @ref flcn::OperationStatus::SUCCESS.
  */
-TEST(Vec2ProjectionTests,
+TEST(SimdVec2ProjectionTests,
      StaticWrapper_TryProject_OntoVectorInOppositeDirectionReturnsVectorInSameDirectionAndSetsCorrectFlag)
 {
     // Given an arbitrary vector and a vector in the opposite Direction
@@ -597,7 +597,7 @@ TEST(Vec2ProjectionTests,
  * @test Verify that projecting onto a zero length vector using static variant of @ref flcn::simd::Vec2::tryProject
  *        returns a type-promoted vector and sets the flag to @ref flcn::OperationStatus::DIVISIONBYZERO.
  */
-TYPED_TEST(Vec2ProjectionTests, StaticWrapper_TryProject_OntoZeroVectorReturnsZeroVectorAndSetsCorrectFlag)
+TYPED_TEST(SimdVec2ProjectionTests, StaticWrapper_TryProject_OntoZeroVectorReturnsZeroVectorAndSetsCorrectFlag)
 {
     const flcn::simd::Vec2 zeroVec = flcn::simd::Vec2<TypeParam>::zero();
     flcn::OperationStatus flag;
@@ -614,7 +614,7 @@ TYPED_TEST(Vec2ProjectionTests, StaticWrapper_TryProject_OntoZeroVectorReturnsZe
  * @test Verify that projection of NaN vector using @ref flcn::simd::Vec2::tryProject
  *       returns zero vector and sets the flag to @ref flcn::OperationStatus::NANOPERAND.
  */
-TEST_P(Vec2ProjectionNaNTests, TryProject_NaNVectorReturnsZeroVectorAndSetsCorrectFlag)
+TEST_P(SimdVec2ProjectionNaNTests, TryProject_NaNVectorReturnsZeroVectorAndSetsCorrectFlag)
 {
     const auto& nanVec  = GetParam();
     const auto& ontoVec = flcn::simd::Vec2<float>::one();
@@ -629,7 +629,7 @@ TEST_P(Vec2ProjectionNaNTests, TryProject_NaNVectorReturnsZeroVectorAndSetsCorre
  * @test Verify that projection onto NaN vector using @ref flcn::simd::Vec2::tryProject
  *       returns zero vector and sets the flag to @ref flcn::OperationStatus::NANOPERAND.
  */
-TEST_P(Vec2ProjectionNaNTests, TryProject_OntoNaNVectorReturnsZeroVectorAndSetsCorrectFlag)
+TEST_P(SimdVec2ProjectionNaNTests, TryProject_OntoNaNVectorReturnsZeroVectorAndSetsCorrectFlag)
 {
     const auto& oneVec     = flcn::simd::Vec2<float>::one();
     const auto& ontoNaNVec = GetParam();
@@ -644,7 +644,7 @@ TEST_P(Vec2ProjectionNaNTests, TryProject_OntoNaNVectorReturnsZeroVectorAndSetsC
  * @test Verify that projection of NaN vector using static variant of @ref flcn::simd::Vec2::tryProject
  *       returns zero vector and sets the flag to @ref flcn::OperationStatus::NANOPERAND.
  */
-TEST_P(Vec2ProjectionNaNTests, StaticWrapper_TryProject_NaNVectorReturnsZeroVectorAndSetsCorrectFlag)
+TEST_P(SimdVec2ProjectionNaNTests, StaticWrapper_TryProject_NaNVectorReturnsZeroVectorAndSetsCorrectFlag)
 {
     const auto& nanVec  = GetParam();
     const auto& ontoVec = flcn::simd::Vec2<float>::one();
@@ -659,7 +659,7 @@ TEST_P(Vec2ProjectionNaNTests, StaticWrapper_TryProject_NaNVectorReturnsZeroVect
  * @test Verify that projection onto NaN vector using static variant of @ref flcn::simd::Vec2::tryProject
  *       returns zero vector and sets the flag to @ref flcn::OperationStatus::NANOPERAND.
  */
-TEST_P(Vec2ProjectionNaNTests, StaticWrapper_TryProject_OntoNaNVectorReturnsZeroVectorAndSetsCorrectFlag)
+TEST_P(SimdVec2ProjectionNaNTests, StaticWrapper_TryProject_OntoNaNVectorReturnsZeroVectorAndSetsCorrectFlag)
 {
     const auto& oneVec     = flcn::simd::Vec2<float>::one();
     const auto& ontoNaNVec = GetParam();

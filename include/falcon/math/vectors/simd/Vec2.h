@@ -10,7 +10,7 @@
  * @warning Due to the inherent nature of SIMD, indexing using operator[] is strongly discouraged.
  *          For non-frequent indices use functional variants like x(), y(), s(), t(), etc.
  *          or compile-time indexing using get<Index> or set<Index>.
- *          If your program require frequent mutation of types, it is recommended to use @ref flcn::CVec2
+ *          If your program require frequent mutation of types, it is recommended to use @ref flcn::Vec2
  *          and convert it to Vec2 after mutation logic, prior to operations.
  *
  * @par Configuration
@@ -45,7 +45,7 @@ namespace flcn::simd
         /// ForwardDeclarations
         template <size_t Index>
         class ConstIndexableProxy; // NOLINT
-        class IndexableProxy; // NOLINT
+        class IndexableProxy;      // NOLINT
 
 
     public:
@@ -123,15 +123,20 @@ namespace flcn::simd
          */
         [[nodiscard]] explicit constexpr Vec2(const Simd128_t<T, DIMENSION>& reg) noexcept;
 
+        /**
+         * @brief Convert this SIMD-accelerated Vec2 to scalar Vec2.
+         * @note Can add unnecessary overhead when used in hot paths.
+         **/
+        [[nodiscard]] constexpr flcn::Vec2<T> toVec2() const noexcept;
 
-        /// @brief Convert this Vec2 to CVec2.
-        /// @note Use this minimally, as these can add unnecessary overheads.
-        [[nodiscard]] constexpr CVec2<T> toCVec2() const noexcept;
 
-
-        /// @brief Convert @p vec to a CVec2.
-        /// @note Use this minimally, as these can add unnecessary overheads.
-        [[nodiscard]] static constexpr CVec2<T> toCVec2(const Vec2& vec) noexcept;
+        /**
+         * @brief Convert @p vec to a scalar Vec2.
+         * @note Can add unnecessary overhead when used in hot paths.
+         *
+         * @param vec The SIMD-accelerated vector.
+         **/
+        [[nodiscard]] static constexpr flcn::Vec2<T> toVec2(const Vec2& vec) noexcept;
 
         /** @} */
 
@@ -244,7 +249,7 @@ namespace flcn::simd
          * @note Performs bounds checking in **DEBUG MODE**.
          *
          * @warning Runtime indexing is an expensive SIMD operation. If you have a lot of indexing calls
-         *          use @ref CVec2 and convert it to @ref Vec2 when it is time to perform operations.
+         *          use @ref Vec2 and convert it to @ref Vec2 when it is time to perform operations.
          *
          *
          * @param[in] idx The index of the vector component.
@@ -317,7 +322,7 @@ namespace flcn::simd
         /** @} */
 
         /**
-         * @addtogroup Falcon_CVec2_Ptr
+         * @addtogroup Falcon_Vec2_Ptr
          * @{
          */
 
@@ -326,8 +331,8 @@ namespace flcn::simd
          * @note  Since we cannot return a pointer to a buffer, due to lifetime limitation
          *        of pointer allocated on the callstack of @ref store,
          *        use either @ref store or storeUnaligned.
-         *        Alternatively, convert to a CVec2 using @ref toCVec2 and then use *cvec or cvec.ptr().
-         *        *But you shouldn't make the CVec2 instance a temporary.*
+         *        Alternatively, convert to a Vec2 using @ref toVec2 and then use *cvec or cvec.ptr().
+         *        *But you shouldn't make the Vec2 instance a temporary.*
          * @note The buffer must be of an adequate size to store the contents.
          *
          * @warning @p pBuffer must be aligned to 16-byte boundary.
@@ -335,7 +340,7 @@ namespace flcn::simd
          *
          * @code
          * // DO
-         * auto cvec2 = vec2.toCVec2();
+         * auto cvec2 = vec2.toVec2();
          * auto ptr = *cvec2();
          *
          * // OR
@@ -343,7 +348,7 @@ namespace flcn::simd
          * vec2.store(data);
          *
          * // DON'T
-         * auto ptr = *(vec2.toCVec2());
+         * auto ptr = *(vec2.toVec2());
          * @endcode
          *
          * @relatedalso store(Vec2<T>, T*)
@@ -358,8 +363,8 @@ namespace flcn::simd
          * @note  Since we cannot return a pointer to a buffer, due to lifetime limitation
          *        of pointer allocated on the callstack of @ref store,
          *        use either @ref store or storeUnaligned.
-         *        Alternatively, convert to a CVec2 using @ref toCVec2 and then use *cvec or cvec.ptr().
-         *        *But you shouldn't make the CVec2 instance a temporary.*
+         *        Alternatively, convert to a Vec2 using @ref toVec2 and then use *cvec or cvec.ptr().
+         *        *But you shouldn't make the Vec2 instance a temporary.*
          * @note The buffer must be of an adequate size to store the contents.
          *
          * @warning @p pBuffer must be aligned to 16-byte boundary.
@@ -367,7 +372,7 @@ namespace flcn::simd
          *
          * @code
          * // DO
-         * auto cvec2 = vec2.toCVec2();
+         * auto cvec2 = vec2.toVec2();
          * auto ptr = *cvec2();
          *
          * // OR
@@ -375,7 +380,7 @@ namespace flcn::simd
          * vec2.store(data);
          *
          * // DON'T
-         * auto ptr = *(vec2.toCVec2());
+         * auto ptr = *(vec2.toVec2());
          * @endcode
          *
          * @relatedalso store(T*)
@@ -390,15 +395,15 @@ namespace flcn::simd
          * @note  Since we cannot return a pointer to a buffer, due to lifetime limitation
          *        of pointer allocated on the callstack of @ref storeUnaligned,
          *        use either @ref store or storeUnaligned.
-         *        Alternatively, convert to a CVec2 using @ref toCVec2 and then use *cvec or cvec.ptr().
-         *        *But you shouldn't make the CVec2 instance a temporary.*
+         *        Alternatively, convert to a Vec2 using @ref toVec2 and then use *cvec or cvec.ptr().
+         *        *But you shouldn't make the Vec2 instance a temporary.*
          * @note The buffer must be of an adequate size to store the contents.
          *
          * @note No memory alignment necessary.
          *
          * @code
          * // DO
-         * auto cvec2 = vec2.toCVec2();
+         * auto cvec2 = vec2.toVec2();
          * auto ptr = *cvec2();
          *
          * // OR
@@ -406,7 +411,7 @@ namespace flcn::simd
          * vec2.store(data);
          *
          * // DON'T
-         * auto ptr = *(vec2.toCVec2());
+         * auto ptr = *(vec2.toVec2());
          * @endcode
          *
          * @relatedalso store(T*)
@@ -421,15 +426,15 @@ namespace flcn::simd
          * @note  Since we cannot return a pointer to a buffer, due to lifetime limitation
          *        of pointer allocated on the callstack of @ref storeUnaligned,
          *        use either @ref store or storeUnaligned.
-         *        Alternatively, convert to a CVec2 using @ref toCVec2 and then use *cvec or cvec.ptr().
-         *        *But you shouldn't make the CVec2 instance a temporary.*
+         *        Alternatively, convert to a Vec2 using @ref toVec2 and then use *cvec or cvec.ptr().
+         *        *But you shouldn't make the Vec2 instance a temporary.*
          * @note The buffer must be of an adequate size to store the contents.
          *
          * @note No memory alignment necessary.
          *
          * @code
          * // DO
-         * auto cvec2 = vec2.toCVec2();
+         * auto cvec2 = vec2.toVec2();
          * auto ptr = *cvec2();
          *
          * // OR
@@ -437,7 +442,7 @@ namespace flcn::simd
          * vec2.storeUnaligned(data);
          *
          * // DON'T
-         * auto ptr = *(vec2.toCVec2());
+         * auto ptr = *(vec2.toVec2());
          * @endcode
          *
          * @relatedalso store(T*)

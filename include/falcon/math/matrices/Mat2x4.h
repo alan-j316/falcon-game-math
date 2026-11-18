@@ -22,7 +22,7 @@
  */
 
 
-#include "falcon/math/vectors/CVec2.h"
+#include "falcon/math/vectors/Vec2.h"
 
 #include <array>
 #include <type_traits>
@@ -89,8 +89,8 @@ namespace flcn
          * @param[in] col2 The 2D vector to use as the third column entry.
          * @param[in] col3 The 2D vector to use as the fourth column entry.
          */
-        [[nodiscard]] constexpr Mat2x4(const CVec2<T>& col0, const CVec2<T>& col1, const CVec2<T>& col2,
-                                       const CVec2<T>& col3) noexcept;
+        [[nodiscard]] constexpr Mat2x4(const Vec2<T>& col0, const Vec2<T>& col1, const Vec2<T>& col2,
+                                       const Vec2<T>& col3) noexcept;
 
 
 
@@ -123,7 +123,7 @@ namespace flcn
          *
          * @return A reference to the column vector.
          */
-        [[nodiscard]] constexpr CVec2<T>& operator[](std::size_t col) noexcept;
+        [[nodiscard]] constexpr Vec2<T>& operator[](std::size_t col) noexcept;
 
 
         /**
@@ -135,7 +135,7 @@ namespace flcn
          *
          * @return A const reference to the column vector.
          */
-        [[nodiscard]] constexpr const CVec2<T>& operator[](std::size_t col) const noexcept;
+        [[nodiscard]] constexpr const Vec2<T>& operator[](std::size_t col) const noexcept;
 
 
         /**
@@ -761,7 +761,7 @@ namespace flcn
 
 
     private:
-        std::array<CVec2<T>, COLUMNS> _data;
+        std::array<Vec2<T>, COLUMNS> _data;
     };
 
 

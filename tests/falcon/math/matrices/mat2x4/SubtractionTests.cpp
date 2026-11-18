@@ -39,9 +39,9 @@ namespace
 
         void SetUp() override
         {
-            _matA               = { flcn::CVec2<T>(5, 6), flcn::CVec2<T>(7, 8), flcn::CVec2<T>(5, 12), flcn::CVec2<T>(1, 5) };
-            _matB               = { flcn::CVec2<T>(1, 2), flcn::CVec2<T>(3, 4), flcn::CVec2<T>(5, 11), flcn::CVec2<T>(1, 0) };
-            _expectedDifference = { flcn::CVec2<T>(4, 4), flcn::CVec2<T>(4, 4), flcn::CVec2<T>(0, 1), flcn::CVec2<T>(0, 5) };
+            _matA               = { flcn::Vec2<T>(5, 6), flcn::Vec2<T>(7, 8), flcn::Vec2<T>(5, 12), flcn::Vec2<T>(1, 5) };
+            _matB               = { flcn::Vec2<T>(1, 2), flcn::Vec2<T>(3, 4), flcn::Vec2<T>(5, 11), flcn::Vec2<T>(1, 0) };
+            _expectedDifference = { flcn::Vec2<T>(4, 4), flcn::Vec2<T>(4, 4), flcn::Vec2<T>(0, 1), flcn::Vec2<T>(0, 5) };
         }
     };
     TYPED_TEST_SUITE(Mat2x4SubtractionTests, SupportedArithmeticTypes);

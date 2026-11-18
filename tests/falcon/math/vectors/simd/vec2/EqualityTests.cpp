@@ -29,9 +29,9 @@ namespace
     constexpr auto INF   = flcn::constants::INFINITY_F;
 
     template <typename T>
-    constexpr auto False = flcn::FalseMask<flcn::Mask_t<T>>;
+    constexpr auto False = flcn::constants::FalseMask<flcn::types::Mask_t<T>>;
     template <typename T>
-    constexpr auto True = flcn::TrueMask<flcn::Mask_t<T>>;
+    constexpr auto True = flcn::constants::TrueMask<flcn::types::Mask_t<T>>;
 
     /**************************************
      *           TEST SETUP               *
@@ -42,14 +42,14 @@ namespace
      * @tparam T The scalar type (int, float, double...) of the vector components.
      */
     template <typename T>
-    class Vec2EqualityTests: public testing::Test
+    class SimdVec2EqualityTests: public testing::Test
     {
     protected:
         flcn::simd::Vec2<T> _eqVecA;
         flcn::simd::Vec2<T> _eqVecB;
         flcn::simd::Vec2<T> _dissimilarVec;
-        flcn::simd::Vec2<flcn::Mask_t<T>> _equalityMask;
-        flcn::simd::Vec2<flcn::Mask_t<T>> _inequalityMask;
+        flcn::simd::Vec2<flcn::types::Mask_t<T>> _equalityMask;
+        flcn::simd::Vec2<flcn::types::Mask_t<T>> _inequalityMask;
 
 
         void SetUp() override
@@ -61,7 +61,7 @@ namespace
             _inequalityMask = { True<T>, False<T> };
         }
     };
-    TYPED_TEST_SUITE(Vec2EqualityTests, SupportedArithmeticTypes);
+    TYPED_TEST_SUITE(SimdVec2EqualityTests, SupportedArithmeticTypes);
 
 } // namespace
 
@@ -71,21 +71,21 @@ namespace
  *           EQUALITY TESTS           *
  **************************************/
 
-TYPED_TEST(Vec2EqualityTests, AllEq_IdenticalVectorsReturnsTrue)
+TYPED_TEST(SimdVec2EqualityTests, AllEq_IdenticalVectorsReturnsTrue)
 {
     const bool equality = this->_eqVecA.allEq(this->_eqVecB);
     EXPECT_TRUE(equality);
 }
 
 
-TYPED_TEST(Vec2EqualityTests, AllEq_DifferentVectorsReturnsFalse)
+TYPED_TEST(SimdVec2EqualityTests, AllEq_DifferentVectorsReturnsFalse)
 {
     const bool equality = this->_eqVecA.allEq(this->_dissimilarVec);
     EXPECT_FALSE(equality);
 }
 
 
-TYPED_TEST(Vec2EqualityTests, StaticWrapper_AllEq_IdenticalVectorsReturnsTrue)
+TYPED_TEST(SimdVec2EqualityTests, StaticWrapper_AllEq_IdenticalVectorsReturnsTrue)
 {
     const bool equality = flcn::simd::Vec2<TypeParam>::allEq(this->_eqVecA, this->_eqVecB);
 
@@ -93,7 +93,7 @@ TYPED_TEST(Vec2EqualityTests, StaticWrapper_AllEq_IdenticalVectorsReturnsTrue)
 }
 
 
-TYPED_TEST(Vec2EqualityTests, StaticWrapper_AllEq_DifferentVectorsReturnsFalse)
+TYPED_TEST(SimdVec2EqualityTests, StaticWrapper_AllEq_DifferentVectorsReturnsFalse)
 {
     const bool equality = flcn::simd::Vec2<TypeParam>::allEq(this->_eqVecA, this->_dissimilarVec);
 
@@ -101,7 +101,7 @@ TYPED_TEST(Vec2EqualityTests, StaticWrapper_AllEq_DifferentVectorsReturnsFalse)
 }
 
 
-TEST(Vec2EqualityTests, AllEq_NanVectorsReturnsFalse)
+TEST(SimdVec2EqualityTests, AllEq_NanVectorsReturnsFalse)
 {
     const flcn::simd::Vec2 vecA = { NAN_F, NAN_F };
     const flcn::simd::Vec2 vecB = { 1.0f, -5.88874789f };
@@ -111,7 +111,7 @@ TEST(Vec2EqualityTests, AllEq_NanVectorsReturnsFalse)
 }
 
 
-TEST(Vec2EqualityTests, AllEq_IdenticalInfinitVectors_VectorsReturnsTrue)
+TEST(SimdVec2EqualityTests, AllEq_IdenticalInfinitVectors_VectorsReturnsTrue)
 {
     const flcn::simd::Vec2 vecA = { INF, -INF };
     const flcn::simd::Vec2 vecB = { INF, -INF };
@@ -121,7 +121,7 @@ TEST(Vec2EqualityTests, AllEq_IdenticalInfinitVectors_VectorsReturnsTrue)
 }
 
 
-TEST(Vec2EqualityTests, AllEq_DifferentInfinitVectors_VectorsReturnsFalse)
+TEST(SimdVec2EqualityTests, AllEq_DifferentInfinitVectors_VectorsReturnsFalse)
 {
     const flcn::simd::Vec2 vecA = { INF, INF };
     const flcn::simd::Vec2 vecB = { INF, -INF };
@@ -131,7 +131,7 @@ TEST(Vec2EqualityTests, AllEq_DifferentInfinitVectors_VectorsReturnsFalse)
 }
 
 
-TYPED_TEST(Vec2EqualityTests, DoubleEqualsOperator_IdenticalVectorsReturnsTrue)
+TYPED_TEST(SimdVec2EqualityTests, DoubleEqualsOperator_IdenticalVectorsReturnsTrue)
 {
     const bool equality = this->_eqVecA == this->_eqVecB;
 
@@ -139,14 +139,14 @@ TYPED_TEST(Vec2EqualityTests, DoubleEqualsOperator_IdenticalVectorsReturnsTrue)
 }
 
 
-TYPED_TEST(Vec2EqualityTests, DoubleEqualsOperator_DifferentVectorsReturnsFalse)
+TYPED_TEST(SimdVec2EqualityTests, DoubleEqualsOperator_DifferentVectorsReturnsFalse)
 {
     const bool equality = this->_eqVecA == this->_dissimilarVec;
     EXPECT_FALSE(equality);
 }
 
 
-TEST(Vec2EqualityTests, DoubleEqualsOperator_IdenticalBooleanVectorsReturnsTrue)
+TEST(SimdVec2EqualityTests, DoubleEqualsOperator_IdenticalBooleanVectorsReturnsTrue)
 {
     const flcn::simd::Vec2 vecA(True<float>, False<float>);
     const flcn::simd::Vec2 vecB(True<float>, False<float>);
@@ -156,7 +156,7 @@ TEST(Vec2EqualityTests, DoubleEqualsOperator_IdenticalBooleanVectorsReturnsTrue)
 }
 
 
-TEST(Vec2EqualityTests, DoubleEqualsOperator_DifferentBooleanVectorsReturnsFalse)
+TEST(SimdVec2EqualityTests, DoubleEqualsOperator_DifferentBooleanVectorsReturnsFalse)
 {
     const flcn::simd::Vec2 vecA(True<float>, False<float>);
     const flcn::simd::Vec2 vecB(True<float>, True<float>);
@@ -166,14 +166,14 @@ TEST(Vec2EqualityTests, DoubleEqualsOperator_DifferentBooleanVectorsReturnsFalse
 }
 
 
-TYPED_TEST(Vec2EqualityTests, Eq_ReturnsCorrectBooleanMask)
+TYPED_TEST(SimdVec2EqualityTests, Eq_ReturnsCorrectBooleanMask)
 {
     const auto mask = this->_eqVecA.eq(this->_dissimilarVec);
     EXPECT_VEC_EQ(this->_equalityMask, mask);
 }
 
 
-TEST(Vec2EqualityTests, Eq_NanVectorsReturnsFalseBooleanMask)
+TEST(SimdVec2EqualityTests, Eq_NanVectorsReturnsFalseBooleanMask)
 {
     const flcn::simd::Vec2 vecA         = { NAN_F, NAN_F };
     const flcn::simd::Vec2 vecB         = { 1.0f, -5.88874789f };
@@ -184,10 +184,10 @@ TEST(Vec2EqualityTests, Eq_NanVectorsReturnsFalseBooleanMask)
 }
 
 
-TEST(Vec2EqualityTests, Eq_InfiniteVectorsReturnsCorrectBooleanMask)
+TEST(SimdVec2EqualityTests, Eq_InfiniteVectorsReturnsCorrectBooleanMask)
 {
     const flcn::simd::Vec2 vecA         = { INF, -INF };
-    const flcn::simd::Vec2 vecB = { INF, INF };
+    const flcn::simd::Vec2 vecB         = { INF, INF };
     const flcn::simd::Vec2 expectedMask = { True<float>, False<float> };
 
     const flcn::simd::Vec2 mask = vecA.eq(vecB);
@@ -195,7 +195,7 @@ TEST(Vec2EqualityTests, Eq_InfiniteVectorsReturnsCorrectBooleanMask)
 }
 
 
-TYPED_TEST(Vec2EqualityTests, StaticWrapper_Eq_ReturnsCorrectBooleanMask)
+TYPED_TEST(SimdVec2EqualityTests, StaticWrapper_Eq_ReturnsCorrectBooleanMask)
 {
     const auto mask = flcn::simd::Vec2<TypeParam>::eq(this->_eqVecA, this->_dissimilarVec);
     EXPECT_VEC_EQ(this->_equalityMask, mask);
@@ -207,35 +207,35 @@ TYPED_TEST(Vec2EqualityTests, StaticWrapper_Eq_ReturnsCorrectBooleanMask)
  *          INEQUALITY TESTS          *
  **************************************/
 
-TYPED_TEST(Vec2EqualityTests, AnyNeq_IdenticalVectorsReturnsFalse)
+TYPED_TEST(SimdVec2EqualityTests, AnyNeq_IdenticalVectorsReturnsFalse)
 {
     const bool inequality = this->_eqVecA.anyNeq(this->_eqVecB);
     EXPECT_FALSE(inequality);
 }
 
 
-TYPED_TEST(Vec2EqualityTests, AnyNeq_DifferentVectorsReturnsTrue)
+TYPED_TEST(SimdVec2EqualityTests, AnyNeq_DifferentVectorsReturnsTrue)
 {
     const bool inequality = this->_eqVecA.anyNeq(this->_dissimilarVec);
     EXPECT_TRUE(inequality);
 }
 
 
-TYPED_TEST(Vec2EqualityTests, StaticWrapper_AnyNeq_IdenticalVectorsReturnsFalse)
+TYPED_TEST(SimdVec2EqualityTests, StaticWrapper_AnyNeq_IdenticalVectorsReturnsFalse)
 {
     const bool inequality = flcn::simd::Vec2<TypeParam>::anyNeq(this->_eqVecA, this->_eqVecB);
     EXPECT_FALSE(inequality);
 }
 
 
-TYPED_TEST(Vec2EqualityTests, StaticWrapper_AnyNeq_DifferentVectorsReturnsTrue)
+TYPED_TEST(SimdVec2EqualityTests, StaticWrapper_AnyNeq_DifferentVectorsReturnsTrue)
 {
     const bool inequality = flcn::simd::Vec2<TypeParam>::anyNeq(this->_eqVecA, this->_dissimilarVec);
     EXPECT_TRUE(inequality);
 }
 
 
-TEST(Vec2EqualityTests, AnyNeq_NaNVectorsReturnsTrue)
+TEST(SimdVec2EqualityTests, AnyNeq_NaNVectorsReturnsTrue)
 {
     const flcn::simd::Vec2 vecA = { NAN_F, NAN_F };
     const flcn::simd::Vec2 vecB = { 1.0f, -5.88874789f };
@@ -245,7 +245,7 @@ TEST(Vec2EqualityTests, AnyNeq_NaNVectorsReturnsTrue)
 }
 
 
-TEST(Vec2EqualityTests, AnyNeq_IdenticalInfinitVectors_ReturnsFalse)
+TEST(SimdVec2EqualityTests, AnyNeq_IdenticalInfinitVectors_ReturnsFalse)
 {
     const flcn::simd::Vec2 vecA = { INF, -INF };
     const flcn::simd::Vec2 vecB = { INF, -INF };
@@ -255,7 +255,7 @@ TEST(Vec2EqualityTests, AnyNeq_IdenticalInfinitVectors_ReturnsFalse)
 }
 
 
-TEST(Vec2EqualityTests, AnyNeq_DifferentInfinitVectors_ReturnsTrue)
+TEST(SimdVec2EqualityTests, AnyNeq_DifferentInfinitVectors_ReturnsTrue)
 {
     const flcn::simd::Vec2 vecA = { INF, INF };
     const flcn::simd::Vec2 vecB = { INF, -INF };
@@ -265,21 +265,21 @@ TEST(Vec2EqualityTests, AnyNeq_DifferentInfinitVectors_ReturnsTrue)
 }
 
 
-TYPED_TEST(Vec2EqualityTests, NotEqualsOperator_IdenticalVectorsReturnsFalse)
+TYPED_TEST(SimdVec2EqualityTests, NotEqualsOperator_IdenticalVectorsReturnsFalse)
 {
     const bool inequality = this->_eqVecA != this->_eqVecB;
     EXPECT_FALSE(inequality);
 }
 
 
-TYPED_TEST(Vec2EqualityTests, NotEqualsOperator_DifferentVectorsReturnsTrue)
+TYPED_TEST(SimdVec2EqualityTests, NotEqualsOperator_DifferentVectorsReturnsTrue)
 {
     const bool inequality = this->_eqVecA != this->_dissimilarVec;
     EXPECT_TRUE(inequality);
 }
 
 
-TEST(Vec2EqualityTests, InequalityOperator_IdenticalBooleanVectorsReturnsFalse)
+TEST(SimdVec2EqualityTests, InequalityOperator_IdenticalBooleanVectorsReturnsFalse)
 {
     const flcn::simd::Vec2 vecA(True<float>, False<float>);
     const flcn::simd::Vec2 vecB(True<float>, False<float>);
@@ -289,7 +289,7 @@ TEST(Vec2EqualityTests, InequalityOperator_IdenticalBooleanVectorsReturnsFalse)
 }
 
 
-TEST(Vec2EqualityTests, InequalityOperator_DifferentBooleanVectorsReturnsTrue)
+TEST(SimdVec2EqualityTests, InequalityOperator_DifferentBooleanVectorsReturnsTrue)
 {
     const flcn::simd::Vec2 vecA(True<float>, False<float>);
     const flcn::simd::Vec2 vecB(True<float>, True<float>);
@@ -299,14 +299,14 @@ TEST(Vec2EqualityTests, InequalityOperator_DifferentBooleanVectorsReturnsTrue)
 }
 
 
-TYPED_TEST(Vec2EqualityTests, Neq_ReturnsCorrectBooleanMask)
+TYPED_TEST(SimdVec2EqualityTests, Neq_ReturnsCorrectBooleanMask)
 {
     const auto mask = this->_eqVecA.neq(this->_dissimilarVec);
     EXPECT_VEC_EQ(this->_inequalityMask, mask);
 }
 
 
-TEST(Vec2EqualityTests, Neq_NaNVectorsReturnsTrueBooleanMask)
+TEST(SimdVec2EqualityTests, Neq_NaNVectorsReturnsTrueBooleanMask)
 {
     const flcn::simd::Vec2 vecA         = { NAN_F, NAN_F };
     const flcn::simd::Vec2 vecB         = { 1.0f, -5.88874789f };
@@ -317,7 +317,7 @@ TEST(Vec2EqualityTests, Neq_NaNVectorsReturnsTrueBooleanMask)
 }
 
 
-TEST(Vec2EqualityTests, Neq_InfinityVectorsReturnsCorrectBooleanMask)
+TEST(SimdVec2EqualityTests, Neq_InfinityVectorsReturnsCorrectBooleanMask)
 {
     const flcn::simd::Vec2 vecA         = { INF, -INF };
     const flcn::simd::Vec2 vecB         = { INF, INF };
@@ -329,7 +329,7 @@ TEST(Vec2EqualityTests, Neq_InfinityVectorsReturnsCorrectBooleanMask)
 
 
 
-TYPED_TEST(Vec2EqualityTests, StaticWrapper_Neq_ReturnsCorrectBooleanMask)
+TYPED_TEST(SimdVec2EqualityTests, StaticWrapper_Neq_ReturnsCorrectBooleanMask)
 {
     const auto mask = flcn::simd::Vec2<TypeParam>::neq(this->_eqVecA, this->_dissimilarVec);
     EXPECT_VEC_EQ(this->_inequalityMask, mask);

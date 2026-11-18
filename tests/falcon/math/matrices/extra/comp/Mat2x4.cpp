@@ -54,36 +54,36 @@ namespace
 
         void SetUp() override
         {
-            _expectedFPMat2  = { flcn::CVec2{ T(51.53148302175357287), T(31.05492997565247038) },
-                                 flcn::CVec2{ T(14.61642063652532286), T(10.45638242976778720) } };
-            _expectedIntMat2 = { flcn::CVec2{ T(50), T(30) }, flcn::CVec2{ T(14), T(10) } };
+            _expectedFPMat2  = { flcn::Vec2{ T(51.53148302175357287), T(31.05492997565247038) },
+                                 flcn::Vec2{ T(14.61642063652532286), T(10.45638242976778720) } };
+            _expectedIntMat2 = { flcn::Vec2{ T(50), T(30) }, flcn::Vec2{ T(14), T(10) } };
 
-            _expectedFPMat2x3  = { flcn::CVec2{ T(59.71294882333997123), T(40.93849965675766356) },
-                                   flcn::CVec2{ T(17.06563996375492565), T(11.97595332411097502) },
-                                   flcn::CVec2{ T(70.16686590855846362), T(46.29281811210886133) } };
-            _expectedIntMat2x3 = { flcn::CVec2{ T(58), T(40) }, flcn::CVec2{ T(16), T(11) }, flcn::CVec2{ T(69), T(45) } };
+            _expectedFPMat2x3  = { flcn::Vec2{ T(59.71294882333997123), T(40.93849965675766356) },
+                                   flcn::Vec2{ T(17.06563996375492565), T(11.97595332411097502) },
+                                   flcn::Vec2{ T(70.16686590855846362), T(46.29281811210886133) } };
+            _expectedIntMat2x3 = { flcn::Vec2{ T(58), T(40) }, flcn::Vec2{ T(16), T(11) }, flcn::Vec2{ T(69), T(45) } };
 
 
-            _mat2 = { flcn::CVec2{ T(1.32194213899999991), T(3.02134123399999988) },
-                      flcn::CVec2{ T(2.12304122299999998), T(4.01283041000000029) } };
+            _mat2 = { flcn::Vec2{ T(1.32194213899999991), T(3.02134123399999988) },
+                      flcn::Vec2{ T(2.12304122299999998), T(4.01283041000000029) } };
 
-            _mat2x4               = { flcn::CVec2{ T(5.12390421300000032), T(2.01234000000000002) },
-                                      flcn::CVec2{ T(1.01820339999999998), T(1.02384019999999998) },
-                                      flcn::CVec2{ T(5.01238399999999995), T(5.01238401234000008) },
-                                      flcn::CVec2{ T(2.01238399999999995), T(1.10234800000000011) } };
-            _expectedFPMat2x4x4D  = { flcn::CVec2{ T(67.53826583649818360), T(45.22504796609911892) },
-                                      flcn::CVec2{ T(28.27462878677400582), T(22.23648098676159535) },
-                                      flcn::CVec2{ T(51.74586730346002383), T(31.51383195965590645) },
-                                      flcn::CVec2{ T(66.95907009498898788), T(56.22624476530457116) } };
-            _expectedIntMat2x4x4D = { flcn::CVec2{ T(66), T(44) }, flcn::CVec2{ T(27), T(21) }, flcn::CVec2{ T(50), T(30) },
-                                      flcn::CVec2{ T(64), T(54) } };
+            _mat2x4               = { flcn::Vec2{ T(5.12390421300000032), T(2.01234000000000002) },
+                                      flcn::Vec2{ T(1.01820339999999998), T(1.02384019999999998) },
+                                      flcn::Vec2{ T(5.01238399999999995), T(5.01238401234000008) },
+                                      flcn::Vec2{ T(2.01238399999999995), T(1.10234800000000011) } };
+            _expectedFPMat2x4x4D  = { flcn::Vec2{ T(67.53826583649818360), T(45.22504796609911892) },
+                                      flcn::Vec2{ T(28.27462878677400582), T(22.23648098676159535) },
+                                      flcn::Vec2{ T(51.74586730346002383), T(31.51383195965590645) },
+                                      flcn::Vec2{ T(66.95907009498898788), T(56.22624476530457116) } };
+            _expectedIntMat2x4x4D = { flcn::Vec2{ T(66), T(44) }, flcn::Vec2{ T(27), T(21) }, flcn::Vec2{ T(50), T(30) },
+                                      flcn::Vec2{ T(64), T(54) } };
 
-            _expectedFPMat2Dx2x4  = { flcn::CVec2{ T(11.04578567005615142), T(23.55624222506261845) },
-                                      flcn::CVec2{ T(3.51966093089763676), T(7.18483700655947821) },
-                                      flcn::CVec2{ T(17.26757951015333603), T(35.25796945115762071) },
-                                      flcn::CVec2{ T(5.00058545554098011), T(10.50363433464453600) } };
-            _expectedIntMat2Dx2x4 = { flcn::CVec2{ T(9), T(23) }, flcn::CVec2{ T(3), T(7) }, flcn::CVec2{ T(15), T(35) },
-                                      flcn::CVec2{ T(4), T(10) } };
+            _expectedFPMat2Dx2x4  = { flcn::Vec2{ T(11.04578567005615142), T(23.55624222506261845) },
+                                      flcn::Vec2{ T(3.51966093089763676), T(7.18483700655947821) },
+                                      flcn::Vec2{ T(17.26757951015333603), T(35.25796945115762071) },
+                                      flcn::Vec2{ T(5.00058545554098011), T(10.50363433464453600) } };
+            _expectedIntMat2Dx2x4 = { flcn::Vec2{ T(9), T(23) }, flcn::Vec2{ T(3), T(7) }, flcn::Vec2{ T(15), T(35) },
+                                      flcn::Vec2{ T(4), T(10) } };
 
             _mat4 = { flcn::Vec4{ T(5.12390421300000032), T(2.01234000000000002), T(5.01238399999999995),
                                  T(7.01203481000000028) },
@@ -127,29 +127,29 @@ namespace
 
         /// @test Verify that 2x4 matrix times a 4x2 matrix yields a 2x2 matrix at compile time.
         constexpr auto EXP_MAT2 = MAT2X4 * MAT4X2;
-        static_assert(EXP_MAT2[0] == flcn::CVec2{ 218, 346 });
-        static_assert(EXP_MAT2[1] == flcn::CVec2{ 244, 388 });
+        static_assert(EXP_MAT2[0] == flcn::Vec2{ 218, 346 });
+        static_assert(EXP_MAT2[1] == flcn::Vec2{ 244, 388 });
 
         /// @test Verify that 2x4 matrix times a 4x3 matrix yields a 2x3 matrix at compile time.
         constexpr auto EXP_MAT2X3 = MAT2X4 * MAT4X3;
-        static_assert(EXP_MAT2X3[0] == flcn::CVec2{ 262, 414 });
-        static_assert(EXP_MAT2X3[1] == flcn::CVec2{ 288, 456 });
-        static_assert(EXP_MAT2X3[2] == flcn::CVec2{ 314, 498 });
+        static_assert(EXP_MAT2X3[0] == flcn::Vec2{ 262, 414 });
+        static_assert(EXP_MAT2X3[1] == flcn::Vec2{ 288, 456 });
+        static_assert(EXP_MAT2X3[2] == flcn::Vec2{ 314, 498 });
 
 
         /// @test Verify that 2x4 matrix times a 4x4 matrix yields a 2x4 matrix at compile time.
         constexpr auto EXP_MAT2X4 = MAT2X4 * MAT4;
-        static_assert(EXP_MAT2X4[0] == flcn::CVec2{ 306, 482 });
-        static_assert(EXP_MAT2X4[1] == flcn::CVec2{ 332, 524 });
-        static_assert(EXP_MAT2X4[2] == flcn::CVec2{ 358, 566 });
-        static_assert(EXP_MAT2X4[3] == flcn::CVec2{ 384, 608 });
+        static_assert(EXP_MAT2X4[0] == flcn::Vec2{ 306, 482 });
+        static_assert(EXP_MAT2X4[1] == flcn::Vec2{ 332, 524 });
+        static_assert(EXP_MAT2X4[2] == flcn::Vec2{ 358, 566 });
+        static_assert(EXP_MAT2X4[3] == flcn::Vec2{ 384, 608 });
 
         /// @test Verify that 2x2 matrix times a 2x4 matrix yields a 2x4 matrix at compile time.
         constexpr auto EXP_MAT2X4SQ = MAT2 * MAT2X4;
-        static_assert(EXP_MAT2X4SQ[0] == flcn::CVec2{ 23, 51 });
-        static_assert(EXP_MAT2X4SQ[1] == flcn::CVec2{ 26, 58 });
-        static_assert(EXP_MAT2X4SQ[2] == flcn::CVec2{ 29, 65 });
-        static_assert(EXP_MAT2X4SQ[3] == flcn::CVec2{ 32, 72 });
+        static_assert(EXP_MAT2X4SQ[0] == flcn::Vec2{ 23, 51 });
+        static_assert(EXP_MAT2X4SQ[1] == flcn::Vec2{ 26, 58 });
+        static_assert(EXP_MAT2X4SQ[2] == flcn::Vec2{ 29, 65 });
+        static_assert(EXP_MAT2X4SQ[3] == flcn::Vec2{ 32, 72 });
 
     } // namespace static_tests
 

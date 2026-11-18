@@ -14,7 +14,7 @@
 
 #include "falcon/math/common/Utils.h"
 #include "falcon/math/common/Wrappers.h"
-#include "CVec3.h"
+#include "Vec3.h"
 
 #include <algorithm>
 #include <cassert>
@@ -42,19 +42,19 @@ namespace flcn
 
 
     template <Arithmetic T>
-    FALCON_INLINE constexpr Vec4<T>::Vec4(const CVec2<T>& vec1, const CVec2<T>& vec2) noexcept
+    FALCON_INLINE constexpr Vec4<T>::Vec4(const Vec2<T>& vec1, const Vec2<T>& vec2) noexcept
         : _data{ T(vec1[0]), T(vec1[1]), T(vec2[0]), T(vec2[1]) }
     {}
 
 
     template <Arithmetic T>
-    FALCON_INLINE constexpr Vec4<T>::Vec4(const CVec3<T>& vec, const T v) noexcept
+    FALCON_INLINE constexpr Vec4<T>::Vec4(const Vec3<T>& vec, const T v) noexcept
         : _data{ T(vec[0]), T(vec[1]), T(vec[2]), T(v) }
     {}
 
 
     template <Arithmetic T>
-    FALCON_INLINE constexpr Vec4<T>::Vec4(const T v, const CVec3<T>& vec) noexcept
+    FALCON_INLINE constexpr Vec4<T>::Vec4(const T v, const Vec3<T>& vec) noexcept
         : _data{
               T(v),
               T(vec[0]),
@@ -262,11 +262,11 @@ namespace flcn
         }
         else if constexpr (swizzleDimension == 3)
         {
-            return CVec3<T>(_data[Indices]...);
+            return Vec3<T>(_data[Indices]...);
         }
         else if constexpr (swizzleDimension == 2)
         {
-            return CVec2<T>(_data[Indices]...);
+            return Vec2<T>(_data[Indices]...);
         }
         else
         {

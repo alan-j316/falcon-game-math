@@ -26,8 +26,8 @@ namespace
     namespace static_tests
     {
         constexpr flcn::Mat2 MAT(1, 2, 3, 4);
-        constexpr flcn::CVec2 VEC0(1, 3);
-        constexpr flcn::CVec2 VEC1(2, 4);
+        constexpr flcn::Vec2 VEC0(1, 3);
+        constexpr flcn::Vec2 VEC1(2, 4);
 
         /// @test Verify that matrix elements are accessible as (row, column) at compile time.
         static_assert(MAT(0, 0) == 1);
@@ -68,8 +68,8 @@ TEST(Mat2AccessTests, AccessibleAsColumnVectors)
 {
     constexpr flcn::Mat2 mat(1.0f, 2.0f, 3.0f, 4.0f);
 
-    EXPECT_VEC_EQ(flcn::CVec2(1.0f, 3.0f), mat[0]);
-    EXPECT_VEC_EQ(flcn::CVec2(2.0f, 4.0f), mat[1]);
+    EXPECT_VEC_EQ(flcn::Vec2(1.0f, 3.0f), mat[0]);
+    EXPECT_VEC_EQ(flcn::Vec2(2.0f, 4.0f), mat[1]);
 }
 
 
@@ -97,8 +97,8 @@ TEST(Mat2MutationTests, ElementsCanBeMutatedUsingIndex)
 /** @test Verify that the matrix columns are accessible as vectors for writes. */
 TEST(Mat2MutationTests, ColumnsCanBeMutatedUsingIndex)
 {
-    const flcn::CVec2 col0 = { 1.0f, 3.0f };
-    const flcn::CVec2 col1 = { 2.0f, 4.0f };
+    const flcn::Vec2 col0 = { 1.0f, 3.0f };
+    const flcn::Vec2 col1 = { 2.0f, 4.0f };
     flcn::Mat2<float> mat;
 
     mat[0] = col0;

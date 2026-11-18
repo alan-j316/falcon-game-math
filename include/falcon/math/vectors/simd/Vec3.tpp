@@ -48,16 +48,16 @@ namespace flcn::simd
     // {}
     //
     //     template <Arithmetic T>
-    // FALCON_INLINE constexpr CVec2<T> Vec2<T>::toCVec2() const noexcept
+    // FALCON_INLINE constexpr Vec2<T> Vec2<T>::toVec2() const noexcept
     // {
-    //     CVec2<T> cVec{};
+    //     Vec2<T> cVec{};
     //     _data.store(cVec._data.data());
     //     return cVec;
     // }
     //
     // template <Arithmetic T>
-    // FALCON_INLINE constexpr CVec2<T> Vec2<T>::toCVec2(const Vec2& vec) noexcept
-    // { return vec.toCVec2(); }
+    // FALCON_INLINE constexpr Vec2<T> Vec2<T>::toVec2(const Vec2& vec) noexcept
+    // { return vec.toVec2(); }
     //
 
 

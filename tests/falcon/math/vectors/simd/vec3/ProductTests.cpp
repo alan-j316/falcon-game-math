@@ -30,7 +30,7 @@ namespace
      * @tparam T The scalar type (e.g., float, double) used for the vectors.
      */
     template <typename T>
-    class Vec3DotProductTests: public testing::Test
+    class SimdVec3DotProductTests: public testing::Test
     {
     protected:
         flcn::simd::Vec3<T> _vecA;
@@ -54,7 +54,7 @@ namespace
             _expectedADotA = static_cast<T>(29);
         }
     };
-    TYPED_TEST_SUITE(Vec3DotProductTests, SupportedArithmeticTypes);
+    TYPED_TEST_SUITE(SimdVec3DotProductTests, SupportedArithmeticTypes);
 
 
 
@@ -64,7 +64,7 @@ namespace
      * @tparam T The scalar type (e.g., float, double) used for the vectors.
      */
     template <typename T>
-    class Vec3CrossProductTests: public testing::Test
+    class SimdVec3CrossProductTests: public testing::Test
     {
     protected:
         flcn::simd::Vec3<T> _vecA;
@@ -78,7 +78,7 @@ namespace
             _expectedCrossProduct = { T(-3), T(6), T(-3) };
         }
     };
-    TYPED_TEST_SUITE(Vec3CrossProductTests, SupportedSignedArithmeticTypes);
+    TYPED_TEST_SUITE(SimdVec3CrossProductTests, SupportedSignedArithmeticTypes);
 
 
 
@@ -88,7 +88,7 @@ namespace
      * @tparam T The scalar type (e.g., float, double) used for the vectors.
      */
     // template <typename T>
-    // class Vec3TensorProductTests: public testing::Test
+    // class SimdVec3TensorProductTests: public testing::Test
     // {
     // protected:
     //     flcn::simd::Vec3<T> _vecA;
@@ -108,7 +108,7 @@ namespace
     //                                       flcn::simd::Vec3{ T(3), T(6), T(9) } };
     //     }
     // };
-    // TYPED_TEST_SUITE(Vec3TensorProductTests, SupportedSignedArithmeticTypes);
+    // TYPED_TEST_SUITE(SimdVec3TensorProductTests, SupportedSignedArithmeticTypes);
 
 
 } // namespace
@@ -120,7 +120,7 @@ namespace
  **************************************/
 
 /** @test Verify that the dot product of a vector with itself returns its squared magnitude. */
-TYPED_TEST(Vec3DotProductTests, Dot_WithItselfReturnSquaredMagnitude)
+TYPED_TEST(SimdVec3DotProductTests, Dot_WithItselfReturnSquaredMagnitude)
 {
 
     const TypeParam dotProduct = this->_vecA.dot(this->_vecA);
@@ -141,7 +141,7 @@ TYPED_TEST(Vec3DotProductTests, Dot_WithItselfReturnSquaredMagnitude)
 
 
 /** @test Verify that the dot product of a vector with an orthogonal vector returns zero. */
-TYPED_TEST(Vec3DotProductTests, Dot_OrthogonalVectorsReturnZero)
+TYPED_TEST(SimdVec3DotProductTests, Dot_OrthogonalVectorsReturnZero)
 {
     const TypeParam dotProduct = this->_vecAOrthogonal.dot(this->_vecBOrthogonal);
 
@@ -161,7 +161,7 @@ TYPED_TEST(Vec3DotProductTests, Dot_OrthogonalVectorsReturnZero)
 
 
 /** @test Verify that the dot product of a vector with a non-orthogonal vector returns a non-zero scalar. */
-TYPED_TEST(Vec3DotProductTests, Dot_NonOrthogonalVectorsReturnNonZeroScalar)
+TYPED_TEST(SimdVec3DotProductTests, Dot_NonOrthogonalVectorsReturnNonZeroScalar)
 {
     const TypeParam dotProduct = this->_vecA.dot(this->_vecB);
 
@@ -181,7 +181,7 @@ TYPED_TEST(Vec3DotProductTests, Dot_NonOrthogonalVectorsReturnNonZeroScalar)
 
 
 /** @test Verify that the static variant of @ref flcn::simd::Vec3::dot returns a non-zero scalar. */
-TYPED_TEST(Vec3DotProductTests, StaticWrapper_Dot_NonOrthogonalVectorsReturnNonZeroScalar)
+TYPED_TEST(SimdVec3DotProductTests, StaticWrapper_Dot_NonOrthogonalVectorsReturnNonZeroScalar)
 {
     const TypeParam dotProduct = flcn::simd::Vec3<TypeParam>::dot(this->_vecA, this->_vecB);
 
@@ -204,7 +204,7 @@ TYPED_TEST(Vec3DotProductTests, StaticWrapper_Dot_NonOrthogonalVectorsReturnNonZ
  * @test Verify that the dot product of a vector with another vector in opposite direction
  *        returns a negative scalar.
  */
-TEST(Vec3DotProduct, Dot_AntiParallelVectorsReturnsNegativeScalar)
+TEST(SimdVec3DotProduct, Dot_AntiParallelVectorsReturnsNegativeScalar)
 {
     // Given two opposite vectors
     const flcn::simd::Vec3 vecA(-1.0, 0.0, 0.0);
@@ -226,7 +226,7 @@ TEST(Vec3DotProduct, Dot_AntiParallelVectorsReturnsNegativeScalar)
  * @test Verify that the cross product of vector aligned with x-axis and a vector aligned with y-axis
  *        returns a vector aligned with the z-axis.
  */
-TEST(Vec3CrossProductTests, BetweenAxisAlignedXAndYVectorsReturnsZ)
+TEST(SimdVec3CrossProductTests, BetweenAxisAlignedXAndYVectorsReturnsZ)
 {
     const flcn::simd::Vec3 xAxis(1.0f, 0.0f, 0.0f);
     const flcn::simd::Vec3 yAxis(0.0f, 1.0f, 0.0f);
@@ -242,7 +242,7 @@ TEST(Vec3CrossProductTests, BetweenAxisAlignedXAndYVectorsReturnsZ)
  * @test Verify that the cross product of vector aligned with y-axis and a vector aligned with x-axis
  *        returns a vector aligned with the negative z-axis.
  */
-TEST(Vec3CrossProductTests, BetweenAxisAlignedYAndZVectorsReturnsNegativeZ)
+TEST(SimdVec3CrossProductTests, BetweenAxisAlignedYAndZVectorsReturnsNegativeZ)
 {
     const flcn::simd::Vec3 yAxis(0.0f, 1.0f, 0.0f);
     const flcn::simd::Vec3 xAxis(1.0f, 0.0f, 0.0f);
@@ -258,7 +258,7 @@ TEST(Vec3CrossProductTests, BetweenAxisAlignedYAndZVectorsReturnsNegativeZ)
  * @test Verify that the cross product of vector aligned with z-axis and a vector aligned with y-axis
  *        returns a vector aligned with the negative x-axis.
  */
-TEST(Vec3CrossProductTests, BetweenAxisAlignedZAndYVectorsReturnsNegativeX)
+TEST(SimdVec3CrossProductTests, BetweenAxisAlignedZAndYVectorsReturnsNegativeX)
 {
     // Arrange
     const flcn::simd::Vec3 zAxis(0.0f, 0.0f, 1.0f);
@@ -274,7 +274,7 @@ TEST(Vec3CrossProductTests, BetweenAxisAlignedZAndYVectorsReturnsNegativeX)
 
 
 /** @test Verify that the cross product of vector with self is a zero-vector. */
-TEST(Vec3CrossProductTests, Cross_WithItself_ReturnsZeroVector)
+TEST(SimdVec3CrossProductTests, Cross_WithItself_ReturnsZeroVector)
 {
     const flcn::simd::Vec3 vec(0.0f, 0.0f, 1.0f);
 
@@ -285,7 +285,7 @@ TEST(Vec3CrossProductTests, Cross_WithItself_ReturnsZeroVector)
 
 
 /** @test Verify that the cross product of vector with a non-parallel vector returns a new vector. */
-TYPED_TEST(Vec3CrossProductTests, Cross_TwoNonParallelVectorsReturnsNewProduct)
+TYPED_TEST(SimdVec3CrossProductTests, Cross_TwoNonParallelVectorsReturnsNewProduct)
 {
     const flcn::simd::Vec3 crossProduct = this->_vecA.cross(this->_vecB);
 
@@ -297,7 +297,7 @@ TYPED_TEST(Vec3CrossProductTests, Cross_TwoNonParallelVectorsReturnsNewProduct)
  * @test Verify that the cross product of vector with a non-parallel vector
  *        returns a new vector perpendicular to both.
  */
-TYPED_TEST(Vec3CrossProductTests, BetweenTwoNonParallelVectorsReturnAVectorPerpendicularToBoth)
+TYPED_TEST(SimdVec3CrossProductTests, BetweenTwoNonParallelVectorsReturnAVectorPerpendicularToBoth)
 {
     const flcn::simd::Vec3 crossProduct = this->_vecA.cross(this->_vecB);
 
@@ -324,7 +324,7 @@ TYPED_TEST(Vec3CrossProductTests, BetweenTwoNonParallelVectorsReturnAVectorPerpe
  * @test Verify that the cross product of vector with a non-parallel vector using static variant of
  *        @ref flcn::simd::Vec3::cross returns a new vector.
  */
-TYPED_TEST(Vec3CrossProductTests, StaticWrapper_Cross_TwoNonParallelVectorsReturnsNewProduct)
+TYPED_TEST(SimdVec3CrossProductTests, StaticWrapper_Cross_TwoNonParallelVectorsReturnsNewProduct)
 {
     const flcn::simd::Vec3 crossProduct = flcn::simd::Vec3<TypeParam>::cross(this->_vecA, this->_vecB);
 
@@ -336,7 +336,7 @@ TYPED_TEST(Vec3CrossProductTests, StaticWrapper_Cross_TwoNonParallelVectorsRetur
  * @test Verify that the cross product of vector with a non-parallel vector using static variant of
  *        @ref flcn::simd::Vec3::cross returns a new vector perpendicular to both.
  */
-TYPED_TEST(Vec3CrossProductTests, StaticWrapper_BetweenTwoNonParallelVectorsReturnAVectorPerpendicularToBoth)
+TYPED_TEST(SimdVec3CrossProductTests, StaticWrapper_BetweenTwoNonParallelVectorsReturnAVectorPerpendicularToBoth)
 {
     const flcn::simd::Vec3 crossProduct = flcn::simd::Vec3<TypeParam>::cross(this->_vecA, this->_vecB);
 
@@ -363,7 +363,7 @@ TYPED_TEST(Vec3CrossProductTests, StaticWrapper_BetweenTwoNonParallelVectorsRetu
  * @test Verify that the cross product between non-parallel vectors is anti-commutative.
  *        Anti-Commutativity: \f$ \mathbf{a}\times\mathbf{b} = -(\mathbf{b}\times\mathbf{a}) \f$
  */
-TYPED_TEST(Vec3CrossProductTests, IsAntiCommutative)
+TYPED_TEST(SimdVec3CrossProductTests, IsAntiCommutative)
 {
     flcn::simd::Vec3 crossProduct1 = flcn::simd::Vec3<TypeParam>::cross(this->_vecA, this->_vecB);
     flcn::simd::Vec3 crossProduct2 = flcn::simd::Vec3<TypeParam>::cross(this->_vecB, this->_vecA);
@@ -377,7 +377,7 @@ TYPED_TEST(Vec3CrossProductTests, IsAntiCommutative)
  *        Commutativity: \f$ \mathbf{a}\times\mathbf{b} = \mathbf{b}\times\mathbf{a} \f$,
  *        **given a and b are scalar multiples of each other**.
  */
-TYPED_TEST(Vec3CrossProductTests, BetweenParallelVectorIsCommutatives)
+TYPED_TEST(SimdVec3CrossProductTests, BetweenParallelVectorIsCommutatives)
 {
     const flcn::simd::Vec3 vecB    = TypeParam(2) * this->_vecA;
     flcn::simd::Vec3 crossProduct1 = flcn::simd::Vec3<TypeParam>::cross(this->_vecA, vecB);
@@ -391,7 +391,7 @@ TYPED_TEST(Vec3CrossProductTests, BetweenParallelVectorIsCommutatives)
 //  *        TENSOR PRODUCT TESTS        *
 //  **************************************/
 //
-// TYPED_TEST(Vec3TensorProductTests, TensorProduct_BetweenTwoVectorsReturnsAValid2DMatrix)
+// TYPED_TEST(SimdVec3TensorProductTests, TensorProduct_BetweenTwoVectorsReturnsAValid2DMatrix)
 // {
 //     const auto tensorProduct = this->_vecA.tensorProduct(this->_vecB);
 //     if constexpr (std::is_floating_point_v<TypeParam>)
@@ -405,7 +405,7 @@ TYPED_TEST(Vec3CrossProductTests, BetweenParallelVectorIsCommutatives)
 // }
 
 //
-// TYPED_TEST(Vec3TensorProductTests, StaticWrapper_TensorProduct_BetweenTwoVectorsReturnsAValid2DMatrix)
+// TYPED_TEST(SimdVec3TensorProductTests, StaticWrapper_TensorProduct_BetweenTwoVectorsReturnsAValid2DMatrix)
 // {
 //     const auto tensorProduct = flcn::simd::Vec3<TypeParam>::tensorProduct(this->_vecA, this->_vecB);
 //     if constexpr (std::is_floating_point_v<TypeParam>)

@@ -60,8 +60,8 @@ namespace flcn::simd
     template <Arithmetic U>
     FALCON_INLINE constexpr Vec2<T>::Vec2(const Vec2<U>& other) noexcept
     {
-        // Required for clearing the upper lanes.
         // TODO: Update to return a ptr (maybe overload operator*)?
+        // Required for clearing the upper lanes.
         _data.setZero();
         _data.set(static_cast<T>(other.x()), static_cast<T>(other.y()));
     }
@@ -71,19 +71,19 @@ namespace flcn::simd
     FALCON_INLINE constexpr Vec2<T>::Vec2(const Simd128_t<T, DIMENSION>& reg) noexcept: _data{ reg }
     {}
 
-    // TODO: add a aligned toCVec2 variant
+    // TODO: add a aligned toVec2 variant
 
     template <Arithmetic T>
-    FALCON_INLINE constexpr CVec2<T> Vec2<T>::toCVec2() const noexcept
+    FALCON_INLINE constexpr flcn::Vec2<T> Vec2<T>::toVec2() const noexcept
     {
-        CVec2<T> cVec{};
-        _data.store(cVec._data.data());
-        return cVec;
+        flcn::Vec2<T> sVec{};
+        _data.store(sVec._data.data());
+        return sVec;
     }
 
     template <Arithmetic T>
-    FALCON_INLINE constexpr CVec2<T> Vec2<T>::toCVec2(const Vec2& vec) noexcept
-    { return vec.toCVec2(); }
+    FALCON_INLINE constexpr flcn::Vec2<T> Vec2<T>::toVec2(const Vec2& vec) noexcept
+    { return vec.toVec2(); }
 
 
 

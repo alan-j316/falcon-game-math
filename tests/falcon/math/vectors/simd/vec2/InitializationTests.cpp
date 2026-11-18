@@ -28,9 +28,9 @@ namespace
      * @brief Test fixture for @ref Vec2 initialization.
      */
     template <typename>
-    class Vec2InitializationTests: public testing::Test
+    class SimdVec2InitializationTests: public testing::Test
     {};
-    TYPED_TEST_SUITE(Vec2InitializationTests, SupportedTypes);
+    TYPED_TEST_SUITE(SimdVec2InitializationTests, SupportedTypes);
 } // namespace
 
 
@@ -38,14 +38,14 @@ namespace
  *           RUNTIME TESTS            *
  **************************************/
 
-TYPED_TEST(Vec2InitializationTests, EmptyCtor_InitializesZeroVector)
+TYPED_TEST(SimdVec2InitializationTests, EmptyCtor_InitializesZeroVector)
 {
     const flcn::simd::Vec2<TypeParam> vec{};
     EXPECT_VEC_ZERO(vec);
 }
 
 
-TYPED_TEST(Vec2InitializationTests, Ctor_ParametersInitializesVector)
+TYPED_TEST(SimdVec2InitializationTests, Ctor_ParametersInitializesVector)
 {
     const auto a = static_cast<TypeParam>(3);
     const auto b = static_cast<TypeParam>(1);
@@ -55,7 +55,7 @@ TYPED_TEST(Vec2InitializationTests, Ctor_ParametersInitializesVector)
 }
 
 
-TYPED_TEST(Vec2InitializationTests, Ctor_SingleParameterInitializesVector)
+TYPED_TEST(SimdVec2InitializationTests, Ctor_SingleParameterInitializesVector)
 {
     const auto a = static_cast<TypeParam>(3);
     const flcn::simd::Vec2<TypeParam> vec(a);

@@ -38,9 +38,9 @@ namespace
 
         void SetUp() override
         {
-            _expectedReflectionX      = { flcn::CVec2{ T(1), T(0) }, flcn::CVec2{ T(0), T(-1) } };
-            _expectedReflectionY      = { flcn::CVec2{ T(-1), T(0) }, flcn::CVec2{ T(0), T(1) } };
-            _expectedReflectionOrigin = { flcn::CVec2{ T(-1), T(0) }, flcn::CVec2{ T(0), T(-1) } };
+            _expectedReflectionX      = { flcn::Vec2{ T(1), T(0) }, flcn::Vec2{ T(0), T(-1) } };
+            _expectedReflectionY      = { flcn::Vec2{ T(-1), T(0) }, flcn::Vec2{ T(0), T(1) } };
+            _expectedReflectionOrigin = { flcn::Vec2{ T(-1), T(0) }, flcn::Vec2{ T(0), T(-1) } };
         }
     };
     TYPED_TEST_SUITE(Mat2ReflectionFactoryTests, SupportedSignedArithmeticTypes);

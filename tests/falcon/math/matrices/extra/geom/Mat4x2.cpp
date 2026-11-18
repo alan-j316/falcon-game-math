@@ -42,7 +42,7 @@ namespace
     {
 
     protected:
-        flcn::CVec2<T> _vec2, _expectedFPCVec2, _expectedIntCVec2;
+        flcn::Vec2<T> _vec2, _expectedFPVec2, _expectedIntVec2;
         flcn::Vec4<T> _vec4, _expectedFPVec4, _expectedIntVec4;
 
         flcn::Mat4x2<T> _mat4x2;
@@ -51,9 +51,9 @@ namespace
         void SetUp() override
         {
 
-            _vec2            = flcn::CVec2{ T(1.23412341000000003), T(2.21341324399999984) };
-            _expectedFPCVec2  = flcn::CVec2{ T(43.60881556301329454), T(13.13528635912819098) };
-            _expectedIntCVec2 = flcn::CVec2{ T(41), T(12) };
+            _vec2            = flcn::Vec2{ T(1.23412341000000003), T(2.21341324399999984) };
+            _expectedFPVec2  = flcn::Vec2{ T(43.60881556301329454), T(13.13528635912819098) };
+            _expectedIntVec2 = flcn::Vec2{ T(41), T(12) };
 
 
             _vec4            = flcn::Vec4{ T(1.32194213899999991), T(2.12304122299999998), T(3.02134123399999988),
@@ -80,7 +80,7 @@ namespace
     namespace static_tests
     {
         // STATIC TEST SETUP
-        constexpr flcn::CVec2 VEC2(1, 2);
+        constexpr flcn::Vec2 VEC2(1, 2);
         constexpr flcn::Vec4 ROW_VEC4(1, 2, 3, 4);
 
         constexpr flcn::Mat4x2 MAT4X2(5, 1, 5, 2, 2, 1, 5, 1);
@@ -127,11 +127,11 @@ TYPED_TEST(Mat4x2GeometricOpsTests, 4DRowVectorTimesMat4x2_ReturnsAValid2DRowVec
     const auto expectedVector = this->_vec4 * this->_mat4x2;
     if constexpr (std::is_floating_point_v<TypeParam>)
     {
-        EXPECT_VEC_EQ(this->_expectedFPCVec2, expectedVector);
+        EXPECT_VEC_EQ(this->_expectedFPVec2, expectedVector);
     }
     else
     {
-        EXPECT_VEC_EQ(this->_expectedIntCVec2, expectedVector);
+        EXPECT_VEC_EQ(this->_expectedIntVec2, expectedVector);
     }
 }
 

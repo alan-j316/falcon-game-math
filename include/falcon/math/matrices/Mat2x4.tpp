@@ -34,13 +34,13 @@ namespace flcn
 
     template <Arithmetic T>
     FALCON_INLINE constexpr Mat2x4<T>::Mat2x4(T m00, T m01, T m02, T m03, T m10, T m11, T m12, T m13) noexcept
-        : _data{ CVec2<T>(m00, m10), CVec2<T>(m01, m11), CVec2<T>(m02, m12), CVec2<T>(m03, m13) }
+        : _data{ Vec2<T>(m00, m10), Vec2<T>(m01, m11), Vec2<T>(m02, m12), Vec2<T>(m03, m13) }
     {}
 
 
     template <Arithmetic T>
-    FALCON_INLINE constexpr Mat2x4<T>::Mat2x4(const CVec2<T>& col0, const CVec2<T>& col1, const CVec2<T>& col2,
-                                           const CVec2<T>& col3) noexcept
+    FALCON_INLINE constexpr Mat2x4<T>::Mat2x4(const Vec2<T>& col0, const Vec2<T>& col1, const Vec2<T>& col2,
+                                           const Vec2<T>& col3) noexcept
         : _data{ col0, col1, col2, col3 }
     {}
 
@@ -69,14 +69,14 @@ namespace flcn
      *************************************/
 
     template <Arithmetic T>
-    FALCON_INLINE constexpr CVec2<T>& Mat2x4<T>::operator[](const std::size_t col) noexcept
+    FALCON_INLINE constexpr Vec2<T>& Mat2x4<T>::operator[](const std::size_t col) noexcept
     {
         FALCON_ASSERT_MSG(col < COLUMNS, flcn::messages::assertion::MAT_OUT_OF_BOUNDS_ACCESS);
         return _data[col];
     }
 
     template <Arithmetic T>
-    FALCON_INLINE constexpr const CVec2<T>& Mat2x4<T>::operator[](const std::size_t col) const noexcept
+    FALCON_INLINE constexpr const Vec2<T>& Mat2x4<T>::operator[](const std::size_t col) const noexcept
     {
         FALCON_ASSERT_MSG(col < COLUMNS, flcn::messages::assertion::MAT_OUT_OF_BOUNDS_ACCESS);
         return _data[col];

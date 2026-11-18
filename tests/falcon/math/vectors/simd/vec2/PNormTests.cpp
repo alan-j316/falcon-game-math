@@ -28,7 +28,7 @@ namespace
      * @tparam T The scalar type (int, float, double...) of the vector components.
      */
     template <typename T>
-    class Vec2ManhattanNormTests: public testing::Test
+    class SimdVec2ManhattanNormTests: public testing::Test
     {
     protected:
         flcn::simd::Vec2<T> _vec;
@@ -40,7 +40,7 @@ namespace
             _norm = T(3);
         }
     };
-    TYPED_TEST_SUITE(Vec2ManhattanNormTests, SupportedArithmeticTypes);
+    TYPED_TEST_SUITE(SimdVec2ManhattanNormTests, SupportedArithmeticTypes);
 
 
 
@@ -49,7 +49,7 @@ namespace
      * @tparam T The scalar type (int, float, double...) of the vector components.
      */
     template <typename T>
-    class Vec2ChebyshevNormTests: public testing::Test
+    class SimdVec2ChebyshevNormTests: public testing::Test
     {
     protected:
         flcn::simd::Vec2<T> _vec;
@@ -61,7 +61,7 @@ namespace
             _norm = T(2);
         }
     };
-    TYPED_TEST_SUITE(Vec2ChebyshevNormTests, SupportedArithmeticTypes);
+    TYPED_TEST_SUITE(SimdVec2ChebyshevNormTests, SupportedArithmeticTypes);
 } // namespace
 
 
@@ -71,7 +71,7 @@ namespace
  **************************************/
 
 /** @test Verify that taking the manhattan norm of a non-unit vector returns non-unit scalar. */
-TYPED_TEST(Vec2ManhattanNormTests, ReturnsSumOfAbsoluteValueOfComponents)
+TYPED_TEST(SimdVec2ManhattanNormTests, ReturnsSumOfAbsoluteValueOfComponents)
 {
     const auto magnitude = this->_vec.manhattanNorm();
     EXPECT_MAG_EQ(this->_norm, magnitude);
@@ -82,7 +82,7 @@ TYPED_TEST(Vec2ManhattanNormTests, ReturnsSumOfAbsoluteValueOfComponents)
  * @test Verify that taking the manhattan norm of a non-unit vector using static variant of
  *        @ref flcn::simd::Vec2::manhattanNorm returns non-unit scalar.
  */
-TYPED_TEST(Vec2ManhattanNormTests, StaticWrapper_ReturnsSumOfAbsoluteValueOfComponents)
+TYPED_TEST(SimdVec2ManhattanNormTests, StaticWrapper_ReturnsSumOfAbsoluteValueOfComponents)
 {
     const auto magnitude = flcn::simd::Vec2<TypeParam>::manhattanNorm(this->_vec);
     EXPECT_MAG_EQ(this->_norm, magnitude);
@@ -95,7 +95,7 @@ TYPED_TEST(Vec2ManhattanNormTests, StaticWrapper_ReturnsSumOfAbsoluteValueOfComp
  **************************************/
 
 /** @test Verify that taking the chebyshev norm of a non-unit vector returns non-unit scalar. */
-TYPED_TEST(Vec2ChebyshevNormTests, ReturnsLongestAbsoluteComponent)
+TYPED_TEST(SimdVec2ChebyshevNormTests, ReturnsLongestAbsoluteComponent)
 {
     const auto magnitude = this->_vec.chebyshevNorm();
     EXPECT_MAG_EQ(this->_norm, magnitude);
@@ -106,7 +106,7 @@ TYPED_TEST(Vec2ChebyshevNormTests, ReturnsLongestAbsoluteComponent)
  * @test Verify that taking the chebyshev norm of a non-unit vector using static variant of
  *        @ref flcn::simd::Vec2::chebyshevNorm returns non-unit scalar.
  */
-TYPED_TEST(Vec2ChebyshevNormTests, StaticWrapper_ReturnsLongestAbsoluteComponent)
+TYPED_TEST(SimdVec2ChebyshevNormTests, StaticWrapper_ReturnsLongestAbsoluteComponent)
 {
     const auto magnitude = flcn::simd::Vec2<TypeParam>::chebyshevNorm(this->_vec);
     EXPECT_MAG_EQ(this->_norm, magnitude);

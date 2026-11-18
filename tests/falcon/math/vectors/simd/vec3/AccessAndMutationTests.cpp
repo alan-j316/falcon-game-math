@@ -22,7 +22,7 @@
  **************************************/
 
 /** @test Verify that the components are accessible via named spatial aliases (x, y, z). */
-TEST(Vec3AccessTests, AccessibleAsXYZW)
+TEST(SimdVec3AccessTests, AccessibleAsXYZW)
 {
     const flcn::simd::Vec3 vec(3.0f, 1.0f, 6.0f);
 
@@ -33,7 +33,7 @@ TEST(Vec3AccessTests, AccessibleAsXYZW)
 
 
 /** @test Verify that the components are accessible via named spatial aliases (s, t, p). */
-TEST(Vec3AccessTests, AccessibleAsSTPQ)
+TEST(SimdVec3AccessTests, AccessibleAsSTPQ)
 {
     const flcn::simd::Vec3 vec(3.0f, 1.0f, 6.0f);
 
@@ -44,7 +44,7 @@ TEST(Vec3AccessTests, AccessibleAsSTPQ)
 
 
 /** @test Verify that the components are accessible via named spatial aliases (r, g, b). */
-TEST(Vec3AccessTests, AccessibleAsRGBA)
+TEST(SimdVec3AccessTests, AccessibleAsRGBA)
 {
     const flcn::simd::Vec3 vec(3.0f, 1.0f, 6.0f);
 
@@ -55,7 +55,7 @@ TEST(Vec3AccessTests, AccessibleAsRGBA)
 
 
 /** @test Verify that the components are accessible via subscript indexing for reads. */
-TEST(Vec3AccessTests, AccessibleAsArray)
+TEST(SimdVec3AccessTests, AccessibleAsArray)
 {
     const flcn::simd::Vec3 vec(3.0f, 1.0f, 6.0f);
 
@@ -65,7 +65,7 @@ TEST(Vec3AccessTests, AccessibleAsArray)
 }
 
 
-TEST(Vec3AccessTests, ConstVec_AccessibleAsCompileTimeIndex)
+TEST(SimdVec3AccessTests, ConstVec_AccessibleAsCompileTimeIndex)
 {
     const flcn::simd::Vec3 vec(3.0f, 1.0f, 6.0f);
     EXPECT_FLOAT_EQ(3.0f, vec.get<0>());
@@ -74,7 +74,7 @@ TEST(Vec3AccessTests, ConstVec_AccessibleAsCompileTimeIndex)
 }
 
 
-TEST(Vec3AccessTests, NonConstVec_AccessibleAsCompileTimeIndex)
+TEST(SimdVec3AccessTests, NonConstVec_AccessibleAsCompileTimeIndex)
 {
     flcn::simd::Vec3 vec(3.0f, 1.0f, 6.0f);
 
@@ -90,7 +90,7 @@ TEST(Vec3AccessTests, NonConstVec_AccessibleAsCompileTimeIndex)
  **************************************/
 
 /** @test Verify that the components can be mutated via named spatial aliases (x, y, z). */
-TEST(Vec3MutationTests, ElementsCanBeMutatedUsingXYZW)
+TEST(SimdVec3MutationTests, ElementsCanBeMutatedUsingXYZW)
 {
     flcn::simd::Vec3<float> vec{};
 
@@ -105,7 +105,7 @@ TEST(Vec3MutationTests, ElementsCanBeMutatedUsingXYZW)
 
 
 /** @test Verify that the components can be mutated via named spatial aliases (s, t, p). */
-TEST(Vec3MutationTests, ElementsCanBeMutatedUsingSTPQ)
+TEST(SimdVec3MutationTests, ElementsCanBeMutatedUsingSTPQ)
 {
     flcn::simd::Vec3<float> vec{};
 
@@ -120,7 +120,7 @@ TEST(Vec3MutationTests, ElementsCanBeMutatedUsingSTPQ)
 
 
 /** @test Verify that the components can be mutated via named spatial aliases (r, g, b). */
-TEST(Vec3MutationTests, ElementsCanBeMutatedUsingRGBA)
+TEST(SimdVec3MutationTests, ElementsCanBeMutatedUsingRGBA)
 {
     flcn::simd::Vec3<float> vec{};
 
@@ -135,7 +135,7 @@ TEST(Vec3MutationTests, ElementsCanBeMutatedUsingRGBA)
 
 
 /** @test Verify that the components are accessible via subscript indexing for writing. */
-TEST(Vec3MutationTests, ElementsCanBeMutatedUsingIndex)
+TEST(SimdVec3MutationTests, ElementsCanBeMutatedUsingIndex)
 {
     flcn::simd::Vec3<float> vec{};
 
@@ -149,7 +149,7 @@ TEST(Vec3MutationTests, ElementsCanBeMutatedUsingIndex)
 }
 
 
-TEST(Vec3MutationTests, ElementsCanBeMutatedUsingCompileTimeIndexing)
+TEST(SimdVec3MutationTests, ElementsCanBeMutatedUsingCompileTimeIndexing)
 {
     flcn::simd::Vec3 vec{ 0.0f };
 

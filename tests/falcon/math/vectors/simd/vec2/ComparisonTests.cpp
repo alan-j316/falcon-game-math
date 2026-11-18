@@ -41,7 +41,7 @@ namespace
      * @tparam T The scalar type (int, float, double...) of the vector components.
      */
     template <typename T>
-    class Vec2ComparisonTests: public testing::Test
+    class SimdVec2ComparisonTests: public testing::Test
     {
     protected:
         flcn::simd::Vec2<T> _vecA;
@@ -59,7 +59,7 @@ namespace
             _expectedLTE = { True<T>, False<T> };
         }
     };
-    TYPED_TEST_SUITE(Vec2ComparisonTests, SupportedArithmeticTypes);
+    TYPED_TEST_SUITE(SimdVec2ComparisonTests, SupportedArithmeticTypes);
 
 } // namespace
 
@@ -69,14 +69,14 @@ namespace
  *         GREATER THAN TESTS         *
  **************************************/
 
-TYPED_TEST(Vec2ComparisonTests, GT_ReturnsBooleanVectorWithElementsGreaterThanAsTrue)
+TYPED_TEST(SimdVec2ComparisonTests, GT_ReturnsBooleanVectorWithElementsGreaterThanAsTrue)
 {
     const auto mask = this->_vecA.gt(this->_vecB);
     EXPECT_VEC_EQ(this->_expectedGT, mask);
 }
 
 
-TEST(Vec2ComparisonTests, GT_InfinityVector_ReturnsBooleanVectorWithCorrectValues)
+TEST(SimdVec2ComparisonTests, GT_InfinityVector_ReturnsBooleanVectorWithCorrectValues)
 {
 
     const flcn::simd::Vec2 vec(1.2f, 4.5f);
@@ -88,7 +88,7 @@ TEST(Vec2ComparisonTests, GT_InfinityVector_ReturnsBooleanVectorWithCorrectValue
 
 
 
-TEST(Vec2ComparisonTests, GT_NaNVector_ReturnsBooleanVectorWithCorrectValues)
+TEST(SimdVec2ComparisonTests, GT_NaNVector_ReturnsBooleanVectorWithCorrectValues)
 {
     const flcn::simd::Vec2 vec(1.2f, 4.5f);
     const flcn::simd::Vec2 infVec(NAN_F, NAN_F);
@@ -99,14 +99,14 @@ TEST(Vec2ComparisonTests, GT_NaNVector_ReturnsBooleanVectorWithCorrectValues)
 
 
 
-TYPED_TEST(Vec2ComparisonTests, GreaterThanOperator_ReturnsBooleanVectorWithElementsGreaterThanAsTrue)
+TYPED_TEST(SimdVec2ComparisonTests, GreaterThanOperator_ReturnsBooleanVectorWithElementsGreaterThanAsTrue)
 {
     const auto mask = this->_vecA > this->_vecB;
     EXPECT_VEC_EQ(this->_expectedGT, mask);
 }
 
 
-TYPED_TEST(Vec2ComparisonTests, StaticWrapper_GT_ReturnsBooleanVectorWithElementsGreaterThanAsTrue)
+TYPED_TEST(SimdVec2ComparisonTests, StaticWrapper_GT_ReturnsBooleanVectorWithElementsGreaterThanAsTrue)
 {
     const auto mask = flcn::simd::Vec2<TypeParam>::gt(this->_vecA, this->_vecB);
     EXPECT_VEC_EQ(this->_expectedGT, mask);
@@ -118,14 +118,14 @@ TYPED_TEST(Vec2ComparisonTests, StaticWrapper_GT_ReturnsBooleanVectorWithElement
  *    GREATER THAN OR EQUALS TESTS    *
  **************************************/
 
-TYPED_TEST(Vec2ComparisonTests, GTE_ReturnsBooleanVectorWithElementsGreaterThanOrEqualAsTrue)
+TYPED_TEST(SimdVec2ComparisonTests, GTE_ReturnsBooleanVectorWithElementsGreaterThanOrEqualAsTrue)
 {
     const auto mask = this->_vecA.gte(this->_vecB);
     EXPECT_VEC_EQ(this->_expectedGTE, mask);
 }
 
 
-TEST(Vec2ComparisonTests, GTE_InfinityVector_ReturnsBooleanVectorWithCorrectValues)
+TEST(SimdVec2ComparisonTests, GTE_InfinityVector_ReturnsBooleanVectorWithCorrectValues)
 {
     const flcn::simd::Vec2 vec(1.2f, 6.8f);
     const flcn::simd::Vec2 infVec(INF, -INF);
@@ -136,7 +136,7 @@ TEST(Vec2ComparisonTests, GTE_InfinityVector_ReturnsBooleanVectorWithCorrectValu
 }
 
 
-TEST(Vec2ComparisonTests, GTE_NanVector_ReturnsBooleanVectorWithCorrectValues)
+TEST(SimdVec2ComparisonTests, GTE_NanVector_ReturnsBooleanVectorWithCorrectValues)
 {
     const flcn::simd::Vec2 vec(1.2f, 6.8f);
     const flcn::simd::Vec2 infVec(NAN_F, -5.9f);
@@ -147,14 +147,14 @@ TEST(Vec2ComparisonTests, GTE_NanVector_ReturnsBooleanVectorWithCorrectValues)
 }
 
 
-TYPED_TEST(Vec2ComparisonTests, GreaterThanOrEqualsOperator_ReturnsBooleanVectorWithElementsGreaterThanOrEqualAsTrue)
+TYPED_TEST(SimdVec2ComparisonTests, GreaterThanOrEqualsOperator_ReturnsBooleanVectorWithElementsGreaterThanOrEqualAsTrue)
 {
     const auto mask = this->_vecA >= this->_vecB;
     EXPECT_VEC_EQ(this->_expectedGTE, mask);
 }
 
 
-TYPED_TEST(Vec2ComparisonTests, StaticWrapper_GTE_ReturnsBooleanVectorWithElementsGreaterThanOrEqualAsTrue)
+TYPED_TEST(SimdVec2ComparisonTests, StaticWrapper_GTE_ReturnsBooleanVectorWithElementsGreaterThanOrEqualAsTrue)
 {
     const auto mask = flcn::simd::Vec2<TypeParam>::gte(this->_vecA, this->_vecB);
     EXPECT_VEC_EQ(this->_expectedGTE, mask);
@@ -167,14 +167,14 @@ TYPED_TEST(Vec2ComparisonTests, StaticWrapper_GTE_ReturnsBooleanVectorWithElemen
  **************************************/
 
 
-TYPED_TEST(Vec2ComparisonTests, LT_ReturnsBooleanVectorWithElementsLessThanAsTrue)
+TYPED_TEST(SimdVec2ComparisonTests, LT_ReturnsBooleanVectorWithElementsLessThanAsTrue)
 {
     const auto mask = this->_vecA.lt(this->_vecB);
     EXPECT_VEC_EQ(this->_expectedLT, mask);
 }
 
 
-TEST(Vec2ComparisonTests, LT_InfinityVector_ReturnsBooleanVectorWithCorrectValues)
+TEST(SimdVec2ComparisonTests, LT_InfinityVector_ReturnsBooleanVectorWithCorrectValues)
 {
     const flcn::simd::Vec2 vec(1.2f, 6.8f);
     const flcn::simd::Vec2 infVec(INF, -INF);
@@ -186,7 +186,7 @@ TEST(Vec2ComparisonTests, LT_InfinityVector_ReturnsBooleanVectorWithCorrectValue
 }
 
 
-TEST(Vec2ComparisonTests, LT_NanVector_ReturnsBooleanVectorWithCorrectValues)
+TEST(SimdVec2ComparisonTests, LT_NanVector_ReturnsBooleanVectorWithCorrectValues)
 {
     const flcn::simd::Vec2 vec(1.2f, 6.8f);
     const flcn::simd::Vec2 nanVec(NAN_F, -5.9f);
@@ -207,14 +207,14 @@ TEST(Vec2ComparisonTests, LT_NanVector_ReturnsBooleanVectorWithCorrectValues)
 }
 
 
-TYPED_TEST(Vec2ComparisonTests, LessThanOperator_ReturnsBooleanVectorWithElementsLessThanAsTrue)
+TYPED_TEST(SimdVec2ComparisonTests, LessThanOperator_ReturnsBooleanVectorWithElementsLessThanAsTrue)
 {
     const auto mask = this->_vecA < this->_vecB;
     EXPECT_VEC_EQ(this->_expectedLT, mask);
 }
 
 
-TYPED_TEST(Vec2ComparisonTests, StaticWrapper_LT_ReturnsBooleanVectorWithElementsLessThanAsTrue)
+TYPED_TEST(SimdVec2ComparisonTests, StaticWrapper_LT_ReturnsBooleanVectorWithElementsLessThanAsTrue)
 {
     const auto mask = flcn::simd::Vec2<TypeParam>::lt(this->_vecA, this->_vecB);
     EXPECT_VEC_EQ(this->_expectedLT, mask);
@@ -226,13 +226,13 @@ TYPED_TEST(Vec2ComparisonTests, StaticWrapper_LT_ReturnsBooleanVectorWithElement
  *      LESS THAN OR EQUALS TESTS     *
  **************************************/
 
-TYPED_TEST(Vec2ComparisonTests, LTE_ReturnsBooleanVectorWithElementsLessThanOrEqualAsTrue)
+TYPED_TEST(SimdVec2ComparisonTests, LTE_ReturnsBooleanVectorWithElementsLessThanOrEqualAsTrue)
 {
     const auto mask = this->_vecA.lte(this->_vecB);
     EXPECT_VEC_EQ(this->_expectedLTE, mask);
 }
 
-TEST(Vec2ComparisonTests, LTE_InfinityVector_ReturnsBooleanVectorWithCorrectValues)
+TEST(SimdVec2ComparisonTests, LTE_InfinityVector_ReturnsBooleanVectorWithCorrectValues)
 {
     const flcn::simd::Vec2 vec(1.2f, 6.8f);
     const flcn::simd::Vec2 infVec(INF, -INF);
@@ -244,7 +244,7 @@ TEST(Vec2ComparisonTests, LTE_InfinityVector_ReturnsBooleanVectorWithCorrectValu
 }
 
 
-TEST(Vec2ComparisonTests, LTE_NanVector_ReturnsBooleanVectorWithCorrectValues)
+TEST(SimdVec2ComparisonTests, LTE_NanVector_ReturnsBooleanVectorWithCorrectValues)
 {
     const flcn::simd::Vec2 vec(1.2f, 6.8f);
     const flcn::simd::Vec2 nanVec(NAN_F, -5.9f);
@@ -265,14 +265,14 @@ TEST(Vec2ComparisonTests, LTE_NanVector_ReturnsBooleanVectorWithCorrectValues)
 }
 
 
-TYPED_TEST(Vec2ComparisonTests, LessThanOrEqualOperator_ReturnsBooleanVectorWithElementsLessThanOrEqualAsTrue)
+TYPED_TEST(SimdVec2ComparisonTests, LessThanOrEqualOperator_ReturnsBooleanVectorWithElementsLessThanOrEqualAsTrue)
 {
     const auto mask = this->_vecA <= this->_vecB;
     EXPECT_VEC_EQ(this->_expectedLTE, mask);
 }
 
 
-TYPED_TEST(Vec2ComparisonTests, StaticWrapper_LTE_ReturnsBooleanVectorWithElementsLessThanOrEqualAsTrue)
+TYPED_TEST(SimdVec2ComparisonTests, StaticWrapper_LTE_ReturnsBooleanVectorWithElementsLessThanOrEqualAsTrue)
 {
     const auto mask = flcn::simd::Vec2<TypeParam>::lte(this->_vecA, this->_vecB);
     EXPECT_VEC_EQ(this->_expectedLTE, mask);

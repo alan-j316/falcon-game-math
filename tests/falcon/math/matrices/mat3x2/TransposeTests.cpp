@@ -39,8 +39,8 @@ namespace
 
         void SetUp() override
         {
-            _matrix            = { flcn::CVec3{ T(1), T(2), T(3) }, flcn::CVec3{ T(4), T(5), T(6) } };
-            _expectedTranspose = { flcn::CVec2{ T(1), T(4) }, flcn::CVec2{ T(2), T(5) }, flcn::CVec2{ T(3), T(6) } };
+            _matrix            = { flcn::Vec3{ T(1), T(2), T(3) }, flcn::Vec3{ T(4), T(5), T(6) } };
+            _expectedTranspose = { flcn::Vec2{ T(1), T(4) }, flcn::Vec2{ T(2), T(5) }, flcn::Vec2{ T(3), T(6) } };
         }
     };
     TYPED_TEST_SUITE(Mat3x2TransposeTests, SupportedTypes);
@@ -57,22 +57,22 @@ namespace
         constexpr flcn::Mat3x2 MAT(1, 2, 3, 4, 5, 6);
 
         // NOTE: The matrix takes elements in row, col order
-        //       but when compared with CVec2, we are taking col, row order.
-        //       That's why CVec2(1, 2) is the transpose and not CVec2(1, 3)
+        //       but when compared with Vec2, we are taking col, row order.
+        //       That's why Vec2(1, 2) is the transpose and not Vec2(1, 3)
 
         /// @test Verify matrix transpose is returns a 2x3 matrix with swapped rows and
         ///       columns at compile time.
         constexpr auto TRANSPOSE_MAT = MAT.transpose();
-        static_assert(TRANSPOSE_MAT[0] == flcn::CVec2(1, 2));
-        static_assert(TRANSPOSE_MAT[1] == flcn::CVec2(3, 4));
-        static_assert(TRANSPOSE_MAT[2] == flcn::CVec2(5, 6));
+        static_assert(TRANSPOSE_MAT[0] == flcn::Vec2(1, 2));
+        static_assert(TRANSPOSE_MAT[1] == flcn::Vec2(3, 4));
+        static_assert(TRANSPOSE_MAT[2] == flcn::Vec2(5, 6));
 
         /// @test Verify matrix transpose using static variant returns a 2x3 matrix with
         ///       swapped rows and columns at compile time.
         constexpr auto TRANSPOSE_MAT_STATIC = flcn::Mat3x2<int>::transpose(MAT);
-        static_assert(TRANSPOSE_MAT_STATIC[0] == flcn::CVec2(1, 2));
-        static_assert(TRANSPOSE_MAT_STATIC[1] == flcn::CVec2(3, 4));
-        static_assert(TRANSPOSE_MAT_STATIC[2] == flcn::CVec2(5, 6));
+        static_assert(TRANSPOSE_MAT_STATIC[0] == flcn::Vec2(1, 2));
+        static_assert(TRANSPOSE_MAT_STATIC[1] == flcn::Vec2(3, 4));
+        static_assert(TRANSPOSE_MAT_STATIC[2] == flcn::Vec2(5, 6));
 
     } // namespace static_tests
 

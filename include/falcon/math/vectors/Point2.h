@@ -10,14 +10,14 @@
  */
 
 
-#include "CVec2.h"
+#include "Vec2.h"
 #include "falcon/math/common/Types.h"
 
 
 namespace flcn
 {
     template <StrictArithmetic T>
-    struct Point2: CVec2<T>
+    struct Point2: Vec2<T>
     {
 
         /**
@@ -25,8 +25,8 @@ namespace flcn
          * @{
          */
 
-        /// @brief @ref flcn::CVec2 CTORs
-        using CVec2<T>::CVec2;
+        /// @brief @ref flcn::Vec2 CTORs
+        using Vec2<T>::Vec2;
 
         /** @} */
 
@@ -51,7 +51,7 @@ namespace flcn
          */
         template <StrictArithmetic U>
             requires StrictSignedness<T, U>
-        [[nodiscard]] constexpr PromotedPoint2<T, U> operator+(const CVec2<U>& vector) const noexcept;
+        [[nodiscard]] constexpr PromotedPoint2<T, U> operator+(const Vec2<U>& vector) const noexcept;
 
 
         /**
@@ -67,24 +67,24 @@ namespace flcn
          */
         template <StrictArithmetic U>
             requires StrictSignedness<T, U>
-        constexpr Point2& operator+=(const CVec2<U>& vector) noexcept;
+        constexpr Point2& operator+=(const Vec2<U>& vector) noexcept;
 
 
         /**
          * @brief Subtract a point from this point yielding a direction.
          *
-         * @note Promotes the result to the wider type using @ref PromotedCVec2<T, U>.
+         * @note Promotes the result to the wider type using @ref PromotedVec2<T, U>.
          * @note Operation is restricted to numeric types via @ref StrictArithmetic.
          *
          * @tparam U Numeric type of the RHS point. Must satisfy @ref StrictArithmetic.
          *
          * @param[in] rhs The point to subtract.
          *
-         * @return A new @ref CVec2 representing a direction vector.
+         * @return A new @ref Vec2 representing a direction vector.
          */
         template <StrictArithmetic U>
             requires StrictSignedness<T, U>
-        [[nodiscard]] constexpr PromotedCVec2<T, U> operator-(const Point2<U>& rhs) const noexcept;
+        [[nodiscard]] constexpr PromotedVec2<T, U> operator-(const Point2<U>& rhs) const noexcept;
 
         /** @} */
     };

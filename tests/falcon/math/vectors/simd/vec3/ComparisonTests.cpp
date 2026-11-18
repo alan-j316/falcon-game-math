@@ -42,7 +42,7 @@ namespace
      * @tparam T The scalar type (int, float, double...) of the vector components.
      */
     template <typename T>
-    class Vec3ComparisonTests: public testing::Test
+    class SimdVec3ComparisonTests: public testing::Test
     {
     protected:
         flcn::simd::Vec3<T> _vecA;
@@ -60,7 +60,7 @@ namespace
             _expectedLTE = { True<T>, False<T>, True<T> };
         }
     };
-    TYPED_TEST_SUITE(Vec3ComparisonTests, SupportedArithmeticTypes);
+    TYPED_TEST_SUITE(SimdVec3ComparisonTests, SupportedArithmeticTypes);
 } // namespace
 
 
@@ -73,7 +73,7 @@ namespace
  * @test Verify that the greater-than (gt) function perform a component-wise comparison and
  *       returns the correct boolean mask.
  */
-TYPED_TEST(Vec3ComparisonTests, GT_ReturnsBooleanVectorWithElementsGreaterThanAsTrue)
+TYPED_TEST(SimdVec3ComparisonTests, GT_ReturnsBooleanVectorWithElementsGreaterThanAsTrue)
 {
     const flcn::simd::Vec3 mask = this->_vecA.gt(this->_vecB);
     EXPECT_VEC_EQ(this->_expectedGT, mask);
@@ -84,7 +84,7 @@ TYPED_TEST(Vec3ComparisonTests, GT_ReturnsBooleanVectorWithElementsGreaterThanAs
  * @test Verify that the greater-than operator perform a component-wise comparison and
  *       returns the correct boolean mask.
  */
-TYPED_TEST(Vec3ComparisonTests, GreaterThanOperator_ReturnsBooleanVectorWithElementsGreaterThanAsTrue)
+TYPED_TEST(SimdVec3ComparisonTests, GreaterThanOperator_ReturnsBooleanVectorWithElementsGreaterThanAsTrue)
 {
     const flcn::simd::Vec3 mask = this->_vecA > this->_vecB;
     EXPECT_VEC_EQ(this->_expectedGT, mask);
@@ -95,7 +95,7 @@ TYPED_TEST(Vec3ComparisonTests, GreaterThanOperator_ReturnsBooleanVectorWithElem
  * @test Verify that the static variant of greater-than (gt) function performs a component-wise comparison and
  *       returns the correct boolean mask.
  */
-TYPED_TEST(Vec3ComparisonTests, StaticWrapper_GT_ReturnsBooleanVectorWithElementsGreaterThanAsTrue)
+TYPED_TEST(SimdVec3ComparisonTests, StaticWrapper_GT_ReturnsBooleanVectorWithElementsGreaterThanAsTrue)
 {
     const flcn::simd::Vec3 mask = flcn::simd::Vec3<TypeParam>::gt(this->_vecA, this->_vecB);
     EXPECT_VEC_EQ(this->_expectedGT, mask);
@@ -106,7 +106,7 @@ TYPED_TEST(Vec3ComparisonTests, StaticWrapper_GT_ReturnsBooleanVectorWithElement
  * @test Verify that the greater-than (gt) function perform a component-wise comparison
  *       when handling infinite values.
  */
-TEST(Vec3Comparison, GT_InfinityVector_ReturnsBooleanVectorWithCorrectValues)
+TEST(SimdVec3Comparison, GT_InfinityVector_ReturnsBooleanVectorWithCorrectValues)
 {
     const flcn::simd::Vec3 vec(1.2f, 4.5f, 6.8f);
     const flcn::simd::Vec3 infVec(INF, INF, -INF);
@@ -122,7 +122,7 @@ TEST(Vec3Comparison, GT_InfinityVector_ReturnsBooleanVectorWithCorrectValues)
  * @test Verify that the greater-than (gt) function perform a component-wise comparison
  *       when handling NaN values.
  */
-TEST(Vec3Comparison, GT_NaNVector_ReturnsBooleanVectorWithCorrectValues)
+TEST(SimdVec3Comparison, GT_NaNVector_ReturnsBooleanVectorWithCorrectValues)
 {
     const flcn::simd::Vec3 vec(1.2f, 4.5f, 6.8f);
     const flcn::simd::Vec3 infVec(NAN_F, NAN_F, -5.9f);
@@ -142,7 +142,7 @@ TEST(Vec3Comparison, GT_NaNVector_ReturnsBooleanVectorWithCorrectValues)
  * @test Verify that the greater-than-or-equal (gte) function perform a component-wise comparison and
  *       returns the correct boolean mask.
  */
-TYPED_TEST(Vec3ComparisonTests, GTE_ReturnsBooleanVectorWithElementsGreaterThanOrEqualAsTrue)
+TYPED_TEST(SimdVec3ComparisonTests, GTE_ReturnsBooleanVectorWithElementsGreaterThanOrEqualAsTrue)
 {
     const flcn::simd::Vec3 mask = this->_vecA.gte(this->_vecB);
 
@@ -154,7 +154,7 @@ TYPED_TEST(Vec3ComparisonTests, GTE_ReturnsBooleanVectorWithElementsGreaterThanO
  * @test Verify that the greater-than-or-equal operator performs a component-wise comparison and
  *       returns the correct boolean mask.
  */
-TYPED_TEST(Vec3ComparisonTests, GreaterThanOrEqualsOperator_ReturnsBooleanVectorWithElementsGreaterThanOrEqualAsTrue)
+TYPED_TEST(SimdVec3ComparisonTests, GreaterThanOrEqualsOperator_ReturnsBooleanVectorWithElementsGreaterThanOrEqualAsTrue)
 {
     const flcn::simd::Vec3 mask = this->_vecA >= this->_vecB;
 
@@ -166,7 +166,7 @@ TYPED_TEST(Vec3ComparisonTests, GreaterThanOrEqualsOperator_ReturnsBooleanVector
  * @test Verify that the static variant of greater-than-or-equal (gte) function perform a component-wise
  *       comparison and returns the correct boolean mask.
  */
-TYPED_TEST(Vec3ComparisonTests, StaticWrapper_GTE_ReturnsBooleanVectorWithElementsGreaterThanOrEqualAsTrue)
+TYPED_TEST(SimdVec3ComparisonTests, StaticWrapper_GTE_ReturnsBooleanVectorWithElementsGreaterThanOrEqualAsTrue)
 {
     const flcn::simd::Vec3 mask = flcn::simd::Vec3<TypeParam>::gte(this->_vecA, this->_vecB);
 
@@ -178,7 +178,7 @@ TYPED_TEST(Vec3ComparisonTests, StaticWrapper_GTE_ReturnsBooleanVectorWithElemen
  * @test Verify that the greater-than-or-equal (gte) function perform a component-wise comparison
  *       when handling infinite values.
  */
-TEST(Vec3Comparison, GTE_InfinityVector_ReturnsBooleanVectorWithCorrectValues)
+TEST(SimdVec3Comparison, GTE_InfinityVector_ReturnsBooleanVectorWithCorrectValues)
 {
     const flcn::simd::Vec3 vec(1.2f, 4.5f, 6.8f);
     const flcn::simd::Vec3 infVec(INF, INF, -INF);
@@ -194,7 +194,7 @@ TEST(Vec3Comparison, GTE_InfinityVector_ReturnsBooleanVectorWithCorrectValues)
  * @test Verify that the greater-than-or-equal (gte) function perform a component-wise comparison
  *       when handling NaN values.
  */
-TEST(Vec3Comparison, GTE_NanVector_ReturnsBooleanVectorWithCorrectValues)
+TEST(SimdVec3Comparison, GTE_NanVector_ReturnsBooleanVectorWithCorrectValues)
 {
     const flcn::simd::Vec3 vec(1.2f, 4.5f, 6.8f);
     const flcn::simd::Vec3 infVec(NAN_F, NAN_F, -5.9f);
@@ -214,7 +214,7 @@ TEST(Vec3Comparison, GTE_NanVector_ReturnsBooleanVectorWithCorrectValues)
  * @test Verify that the less-than (lt) function perform a component-wise comparison and
  *       returns the correct boolean mask.
  */
-TYPED_TEST(Vec3ComparisonTests, LT_ReturnsBooleanVectorWithElementsLessThanAsTrue)
+TYPED_TEST(SimdVec3ComparisonTests, LT_ReturnsBooleanVectorWithElementsLessThanAsTrue)
 {
     const flcn::simd::Vec3 mask = this->_vecA.lt(this->_vecB);
 
@@ -226,7 +226,7 @@ TYPED_TEST(Vec3ComparisonTests, LT_ReturnsBooleanVectorWithElementsLessThanAsTru
  * @test Verify that the less-than operator perform a component-wise comparison and
  *       returns the correct boolean mask.
  */
-TYPED_TEST(Vec3ComparisonTests, LessThanOperator_ReturnsBooleanVectorWithElementsLessThanAsTrue)
+TYPED_TEST(SimdVec3ComparisonTests, LessThanOperator_ReturnsBooleanVectorWithElementsLessThanAsTrue)
 {
     const flcn::simd::Vec3 mask = this->_vecA < this->_vecB;
 
@@ -238,7 +238,7 @@ TYPED_TEST(Vec3ComparisonTests, LessThanOperator_ReturnsBooleanVectorWithElement
  * @test Verify that the static variant of less-than (lt) function perform a component-wise comparison and
  *		 returns the correct boolean mask.
  */
-TYPED_TEST(Vec3ComparisonTests, StaticWrapper_LT_ReturnsBooleanVectorWithElementsLessThanAsTrue)
+TYPED_TEST(SimdVec3ComparisonTests, StaticWrapper_LT_ReturnsBooleanVectorWithElementsLessThanAsTrue)
 {
     const flcn::simd::Vec3 mask = flcn::simd::Vec3<TypeParam>::lt(this->_vecA, this->_vecB);
 
@@ -250,7 +250,7 @@ TYPED_TEST(Vec3ComparisonTests, StaticWrapper_LT_ReturnsBooleanVectorWithElement
  * @test Verify that the less-than (lt) function perform a component-wise comparison
  *       when handling infinite values.
  */
-TEST(Vec3Comparison, LT_InfinityVector_ReturnsBooleanVectorWithCorrectValues)
+TEST(SimdVec3Comparison, LT_InfinityVector_ReturnsBooleanVectorWithCorrectValues)
 {
     const flcn::simd::Vec3 vec(1.2f, 4.5f, 6.8f);
     const flcn::simd::Vec3 infVec(INF, INF, -INF);
@@ -266,7 +266,7 @@ TEST(Vec3Comparison, LT_InfinityVector_ReturnsBooleanVectorWithCorrectValues)
  * @test Verify that the less-than (lt) function perform a component-wise comparison
  *       when handling NaN values.
  */
-TEST(Vec3Comparison, LT_NanVector_ReturnsBooleanVectorWithCorrectValues)
+TEST(SimdVec3Comparison, LT_NanVector_ReturnsBooleanVectorWithCorrectValues)
 {
     const flcn::simd::Vec3 vec(1.2f, 4.5f, 6.8f);
     const flcn::simd::Vec3 nanVec(NAN_F, NAN_F, -5.9f);
@@ -295,7 +295,7 @@ TEST(Vec3Comparison, LT_NanVector_ReturnsBooleanVectorWithCorrectValues)
  * @test Verify that the less-than-or-equal (lte) function perform a component-wise comparison and
  *       returns the correct boolean mask.
  */
-TYPED_TEST(Vec3ComparisonTests, LTE_ReturnsBooleanVectorWithElementsLessThanOrEqualAsTrue)
+TYPED_TEST(SimdVec3ComparisonTests, LTE_ReturnsBooleanVectorWithElementsLessThanOrEqualAsTrue)
 {
     const flcn::simd::Vec3 mask = this->_vecA.lte(this->_vecB);
 
@@ -307,7 +307,7 @@ TYPED_TEST(Vec3ComparisonTests, LTE_ReturnsBooleanVectorWithElementsLessThanOrEq
  * @test Verify that the less-than-or-equal operator perform a component-wise comparison and
  *       returns the correct boolean mask.
  */
-TYPED_TEST(Vec3ComparisonTests, LessThanOrEqualOperator_ReturnsBooleanVectorWithElementsLessThanOrEqualAsTrue)
+TYPED_TEST(SimdVec3ComparisonTests, LessThanOrEqualOperator_ReturnsBooleanVectorWithElementsLessThanOrEqualAsTrue)
 {
     const flcn::simd::Vec3 mask = this->_vecA <= this->_vecB;
 
@@ -319,7 +319,7 @@ TYPED_TEST(Vec3ComparisonTests, LessThanOrEqualOperator_ReturnsBooleanVectorWith
  * @test Verify that the static variant of less-than-or-equal (lte) function perform a component-wise comparison and
  *       returns the correct boolean mask.
  */
-TYPED_TEST(Vec3ComparisonTests, StaticWrapper_LTE_ReturnsBooleanVectorWithElementsLessThanOrEqualAsTrue)
+TYPED_TEST(SimdVec3ComparisonTests, StaticWrapper_LTE_ReturnsBooleanVectorWithElementsLessThanOrEqualAsTrue)
 {
     const flcn::simd::Vec3 mask = flcn::simd::Vec3<TypeParam>::lte(this->_vecA, this->_vecB);
 
@@ -331,7 +331,7 @@ TYPED_TEST(Vec3ComparisonTests, StaticWrapper_LTE_ReturnsBooleanVectorWithElemen
  * @test Verify that the less-than-or-equal (lte) function perform a component-wise comparison
  *       when handling infinite values.
  */
-TEST(Vec3Comparison, LTE_InfinityVector_ReturnsBooleanVectorWithCorrectValues)
+TEST(SimdVec3Comparison, LTE_InfinityVector_ReturnsBooleanVectorWithCorrectValues)
 {
     const flcn::simd::Vec3 vec(1.2f, 4.5f, 6.8f);
     const flcn::simd::Vec3 infVec(INF, INF, -INF);
@@ -347,7 +347,7 @@ TEST(Vec3Comparison, LTE_InfinityVector_ReturnsBooleanVectorWithCorrectValues)
  * @test Verify that the less-than-or-equal (lte) function perform a component-wise comparison
  *       when handling NaN values.
  */
-TEST(Vec3Comparison, LTE_NanVector_ReturnsBooleanVectorWithCorrectValues)
+TEST(SimdVec3Comparison, LTE_NanVector_ReturnsBooleanVectorWithCorrectValues)
 {
     const flcn::simd::Vec3 vec(1.2f, 4.5f, 6.8f);
     const flcn::simd::Vec3 nanVec(NAN_F, NAN_F, -5.9f);

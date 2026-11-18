@@ -35,10 +35,10 @@ namespace
     /**
      * @brief Test fixture for @ref flcn::simd::Vec2 Infinity Checking.
      */
-    class Vec2InfCheckerTests: public testing::TestWithParam<Vec2UtilityParams<float>>
+    class SimdVec2InfCheckerTests: public testing::TestWithParam<Vec2UtilityParams<float>>
     {};
     INSTANTIATE_TEST_SUITE_P(
-        Vec2UtilsInfVectors, Vec2InfCheckerTests,
+        SimdVec2UtilsInfVectors, SimdVec2InfCheckerTests,
         ::testing::Values(Vec2UtilityParams{ flcn::simd::Vec2(flcn::constants::INFINITY_F, 1.0f), true },
                           Vec2UtilityParams{ flcn::simd::Vec2(1.0f, flcn::constants::INFINITY_F), true },
                           Vec2UtilityParams{ flcn::simd::Vec2(flcn::constants::INFINITY_F, flcn::constants::INFINITY_F), true },
@@ -48,9 +48,9 @@ namespace
     /**
      * @brief Test fixture for @ref flcn::simd::Vec2 NaN Checking.
      */
-    class Vec2NaNCheckerTests: public testing::TestWithParam<Vec2UtilityParams<float>> {};
+    class SimdVec2NaNCheckerTests: public testing::TestWithParam<Vec2UtilityParams<float>> {};
 
-    INSTANTIATE_TEST_SUITE_P(Vec2UtilsNaNVectors, Vec2NaNCheckerTests,
+    INSTANTIATE_TEST_SUITE_P(SimdVec2UtilsNaNVectors, SimdVec2NaNCheckerTests,
                              ::testing::Values(Vec2UtilityParams{ flcn::simd::Vec2(flcn::constants::NaN, 1.0f), true },
                                  Vec2UtilityParams{ flcn::simd::Vec2(1.0f, flcn::constants::NaN), true },
                                  Vec2UtilityParams{ flcn::simd::Vec2(flcn::constants::NaN, flcn::constants::NaN),
@@ -62,9 +62,9 @@ namespace
      * @brief Test fixture for @ref flcn::simd::Vec2 utilities, verifying across various integral types.
      */
     template <typename>
-    class Vec2UtilsIntTests: public testing::Test {};
+    class SimdVec2UtilsIntTests: public testing::Test {};
 
-    TYPED_TEST_SUITE(Vec2UtilsIntTests, SupportedIntegralTypes);
+    TYPED_TEST_SUITE(SimdVec2UtilsIntTests, SupportedIntegralTypes);
 
 } // namespace
 
@@ -77,7 +77,7 @@ namespace
  * @test Verify that @ref std::Vec2::hasInf returns True if any of components are IEE754 infinity
  *       and False otherwise.
  */
-TEST_P(Vec2InfCheckerTests, ReturnTrueIfAnyComponentIsInfinity)
+TEST_P(SimdVec2InfCheckerTests, ReturnTrueIfAnyComponentIsInfinity)
 {
     const auto& [vec, expected] = GetParam();
     EXPECT_EQ(expected, vec.hasInf());
@@ -85,7 +85,7 @@ TEST_P(Vec2InfCheckerTests, ReturnTrueIfAnyComponentIsInfinity)
 
 
 /** @test Verify that @ref std::Vec2::hasInf returns False for integral types. */
-TYPED_TEST(Vec2UtilsIntTests, HasInf_ReturnsFalseForIntegrals)
+TYPED_TEST(SimdVec2UtilsIntTests, HasInf_ReturnsFalseForIntegrals)
 {
     const auto value = TypeParam(1);
     EXPECT_FALSE(flcn::simd::Vec2(value, value).hasInf());
@@ -96,7 +96,7 @@ TYPED_TEST(Vec2UtilsIntTests, HasInf_ReturnsFalseForIntegrals)
  * @test Verify that the static variant of @ref std::Vec2::hasInf returns True if any of components are IEE754
  *       infinity and False otherwise.
  */
-TEST_P(Vec2InfCheckerTests, StaticWrapper_ReturnTrueIfAnyComponentIsInfinity)
+TEST_P(SimdVec2InfCheckerTests, StaticWrapper_ReturnTrueIfAnyComponentIsInfinity)
 {
     const auto& [vec, expected] = GetParam();
     EXPECT_EQ(expected, flcn::simd::Vec2<float>::hasInf(vec));
@@ -104,7 +104,7 @@ TEST_P(Vec2InfCheckerTests, StaticWrapper_ReturnTrueIfAnyComponentIsInfinity)
 
 
 /** @test Verify that the static variant of @ref std::Vec2::hasInf returns False for integral types. */
-TYPED_TEST(Vec2UtilsIntTests, StaticWrapper_HasInf_ReturnsFalseForIntegrals)
+TYPED_TEST(SimdVec2UtilsIntTests, StaticWrapper_HasInf_ReturnsFalseForIntegrals)
 {
     const auto value = TypeParam(1);
     EXPECT_FALSE(flcn::simd::Vec2<TypeParam>::hasInf(flcn::simd::Vec2(value, value)));
@@ -119,7 +119,7 @@ TYPED_TEST(Vec2UtilsIntTests, StaticWrapper_HasInf_ReturnsFalseForIntegrals)
  * @test Verify that @ref std::Vec2::hasNaN returns True if any of components are IEE754 NaN(Not-a-Number)
  *       and False otherwise.
  */
-TEST_P(Vec2NaNCheckerTests, ReturnTrueIfAnyComponentIsNaN)
+TEST_P(SimdVec2NaNCheckerTests, ReturnTrueIfAnyComponentIsNaN)
 {
     const auto& [vec, expected] = GetParam();
     EXPECT_EQ(expected, vec.hasNaN());
@@ -127,7 +127,7 @@ TEST_P(Vec2NaNCheckerTests, ReturnTrueIfAnyComponentIsNaN)
 
 
 /** @test Verify that @ref std::Vec2::hasNaN returns False for integral types. */
-TYPED_TEST(Vec2UtilsIntTests, HasNaN_ReturnsFalseForIntegrals)
+TYPED_TEST(SimdVec2UtilsIntTests, HasNaN_ReturnsFalseForIntegrals)
 {
     const auto value = TypeParam(1);
     EXPECT_FALSE(flcn::simd::Vec2(value, value).hasNaN());
@@ -138,7 +138,7 @@ TYPED_TEST(Vec2UtilsIntTests, HasNaN_ReturnsFalseForIntegrals)
  * @test Verify that the static variant of @ref std::Vec2::hasNaN returns True if any of components are IEE754
  *       NaN(Not-a-Number) and False otherwise.
  */
-TEST_P(Vec2NaNCheckerTests, StaticWrapper_ReturnTrueIfAnyComponentIsNaN)
+TEST_P(SimdVec2NaNCheckerTests, StaticWrapper_ReturnTrueIfAnyComponentIsNaN)
 {
     const auto& [vec, expected] = GetParam();
     EXPECT_EQ(expected, flcn::simd::Vec2<float>::hasNaN(vec));
@@ -146,7 +146,7 @@ TEST_P(Vec2NaNCheckerTests, StaticWrapper_ReturnTrueIfAnyComponentIsNaN)
 
 
 /** @test Verify that the static variant of @ref std::Vec2::hasNaN returns False for integral types. */
-TYPED_TEST(Vec2UtilsIntTests, StaticWrapper_HasNaN_ReturnsFalseForIntegrals)
+TYPED_TEST(SimdVec2UtilsIntTests, StaticWrapper_HasNaN_ReturnsFalseForIntegrals)
 {
     const auto value = TypeParam(1);
     EXPECT_FALSE(flcn::simd::Vec2<TypeParam>::hasNaN(flcn::simd::Vec2(value, value)));

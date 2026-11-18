@@ -29,7 +29,7 @@ namespace
      * @tparam T The scalar type (int, float, double...) of the vector components.
      */
     template <typename T>
-    class Vec3AdditionTests: public testing::Test
+    class SimdVec3AdditionTests: public testing::Test
     {
     protected:
         flcn::simd::Vec3<T> _vecA;
@@ -43,7 +43,7 @@ namespace
             _expectedSum = { T(-5), T(6), T(4) };
         }
     };
-    TYPED_TEST_SUITE(Vec3AdditionTests, SupportedArithmeticTypes);
+    TYPED_TEST_SUITE(SimdVec3AdditionTests, SupportedArithmeticTypes);
 
 
 
@@ -52,7 +52,7 @@ namespace
      * @tparam T The scalar type (int, float, double...) of the vector components.
      */
     template <typename T>
-    class Vec3SubtractionTests: public testing::Test
+    class SimdVec3SubtractionTests: public testing::Test
     {
     protected:
         flcn::simd::Vec3<T> _vecA;
@@ -66,7 +66,7 @@ namespace
             _expectedDifference = { T(103), T(6), T(-4) };
         }
     };
-    TYPED_TEST_SUITE(Vec3SubtractionTests, SupportedArithmeticTypes);
+    TYPED_TEST_SUITE(SimdVec3SubtractionTests, SupportedArithmeticTypes);
 
 
 
@@ -75,7 +75,7 @@ namespace
      * @tparam T The scalar type (int, float, double...) of the vector components.
      */
     template <typename T>
-    class Vec3ScalarMultiplicationTests: public testing::Test
+    class SimdVec3ScalarMultiplicationTests: public testing::Test
     {
     protected:
         flcn::simd::Vec3<T> _vec;
@@ -91,7 +91,7 @@ namespace
             _expectedIntegralVec = { T(14), T(26), T(58) };
         }
     };
-    TYPED_TEST_SUITE(Vec3ScalarMultiplicationTests, SupportedArithmeticTypes);
+    TYPED_TEST_SUITE(SimdVec3ScalarMultiplicationTests, SupportedArithmeticTypes);
 
 
 
@@ -100,7 +100,7 @@ namespace
      * @tparam T The scalar type (int, float, double...) of the vector components.
      */
     template <typename T>
-    class Vec3ScalarDivisionTests: public testing::Test
+    class SimdVec3ScalarDivisionTests: public testing::Test
     {
     protected:
         flcn::simd::Vec3<T> _vec;
@@ -114,7 +114,7 @@ namespace
             _expectedScaledVec = { T(1.30769230769230769231), T(2.38461538461538461538), T(4.53846153846153846154) };
         }
     };
-    TYPED_TEST_SUITE(Vec3ScalarDivisionTests, SupportedArithmeticTypes);
+    TYPED_TEST_SUITE(SimdVec3ScalarDivisionTests, SupportedArithmeticTypes);
 
 
 
@@ -123,7 +123,7 @@ namespace
      * @tparam T The scalar type (int, float, double...) of the vector components.
      */
     template <typename T>
-    class Vec3NegationTests: public testing::Test
+    class SimdVec3NegationTests: public testing::Test
     {
     protected:
         flcn::simd::Vec3<T> _vec;
@@ -135,18 +135,18 @@ namespace
             _expectedInvertedVec = { T(8), T(0), T(2) };
         }
     };
-    TYPED_TEST_SUITE(Vec3NegationTests, SupportedSignedArithmeticTypes);
+    TYPED_TEST_SUITE(SimdVec3NegationTests, SupportedSignedArithmeticTypes);
 
 
     /// @brief Test fixture for @ref flcn::simd::Vec3 division with NaN vectors.
-    class Vec3DivisionNaNTests: public testing::TestWithParam<flcn::simd::Vec3<float>>
+    class SimdVec3DivisionNaNTests: public testing::TestWithParam<flcn::simd::Vec3<float>>
     {};
-    INSTANTIATE_TEST_SUITE_P(Vec3InvalidDivision, Vec3DivisionNaNTests,
+    INSTANTIATE_TEST_SUITE_P(SimdVec3InvalidDivision, SimdVec3DivisionNaNTests,
                              ::testing::Values(flcn::simd::Vec3<float>(flcn::constants::NaN, 3.0f, 3.0f),
                                                flcn::simd::Vec3<float>(3.0f, flcn::constants::NaN, 3.0f),
                                                flcn::simd::Vec3<float>(3.0f, 3.0f, flcn::constants::NaN),
                                                flcn::simd::Vec3<float>(flcn::constants::NaN, flcn::constants::NaN,
-                                                                flcn::constants::NaN)));
+                                                                       flcn::constants::NaN)));
 } // namespace
 
 
@@ -159,7 +159,7 @@ namespace
  * @test Verify that the binary addition operator perform a component-wise addition and
  *       returns a new vector instance.
  */
-TYPED_TEST(Vec3AdditionTests, PlusOperator_ReturnsVectorSum)
+TYPED_TEST(SimdVec3AdditionTests, PlusOperator_ReturnsVectorSum)
 {
     const flcn::simd::Vec3 result = this->_vecA + this->_vecB;
     EXPECT_VEC_EQ(this->_expectedSum, result);
@@ -170,7 +170,7 @@ TYPED_TEST(Vec3AdditionTests, PlusOperator_ReturnsVectorSum)
  * @test Verify that the compound addition assignment operator perform a component-wise addition and
  *       mutates the vector in-place.
  */
-TYPED_TEST(Vec3AdditionTests, PlusEqualsOperator_ReturnsSameVectorWithSum)
+TYPED_TEST(SimdVec3AdditionTests, PlusEqualsOperator_ReturnsSameVectorWithSum)
 {
     this->_vecA += this->_vecB;
     EXPECT_VEC_EQ(this->_expectedSum, this->_vecA);
@@ -185,7 +185,7 @@ TYPED_TEST(Vec3AdditionTests, PlusEqualsOperator_ReturnsSameVectorWithSum)
  * @test Verify that the binary subtraction operator perform a component-wise subtraction and
  *       returns a new vector instance.
  */
-TYPED_TEST(Vec3SubtractionTests, MinusOperator_ReturnsMatrixDifference)
+TYPED_TEST(SimdVec3SubtractionTests, MinusOperator_ReturnsMatrixDifference)
 {
     const flcn::simd::Vec3 result = this->_vecA - this->_vecB;
 
@@ -197,7 +197,7 @@ TYPED_TEST(Vec3SubtractionTests, MinusOperator_ReturnsMatrixDifference)
  * @test Verify that the compound subtraction assignment operator perform a component-wise subtraction
  *       and mutates the vector in-place.
  */
-TYPED_TEST(Vec3SubtractionTests, MinusEqualsOperator_ReturnsSameVectorWithDifference)
+TYPED_TEST(SimdVec3SubtractionTests, MinusEqualsOperator_ReturnsSameVectorWithDifference)
 {
     this->_vecA -= this->_vecB;
 
@@ -210,7 +210,7 @@ TYPED_TEST(Vec3SubtractionTests, MinusEqualsOperator_ReturnsSameVectorWithDiffer
  **************************************/
 
 /** @test Verify that scalar multiplication by zero returns a zero vector. */
-TEST(Vec3ScalarMultiplication, MultiplicationByZeroReturnsZeroVector)
+TEST(SimdVec3ScalarMultiplication, MultiplicationByZeroReturnsZeroVector)
 {
     const flcn::simd::Vec3 vec(3.0f, 1.0f, 6.0f);
 
@@ -221,7 +221,7 @@ TEST(Vec3ScalarMultiplication, MultiplicationByZeroReturnsZeroVector)
 
 
 /** @test Verify that scalar multiplication by one returns original vector. */
-TEST(Vec3ScalarMultiplication, MultiplicationByOneReturnsOriginalVector)
+TEST(SimdVec3ScalarMultiplication, MultiplicationByOneReturnsOriginalVector)
 {
     const flcn::simd::Vec3 vec(3.0f, 1.0f, 6.0f);
 
@@ -234,7 +234,7 @@ TEST(Vec3ScalarMultiplication, MultiplicationByOneReturnsOriginalVector)
 /**
  * @test Verify that the binary multiplication operator (vector * scalar) return a vector-scalar product.
  */
-TYPED_TEST(Vec3ScalarMultiplicationTests, VectorTimesScalarReturnsScaledVector)
+TYPED_TEST(SimdVec3ScalarMultiplicationTests, VectorTimesScalarReturnsScaledVector)
 {
     const flcn::simd::Vec3 result = this->_vec * this->_scalar;
 
@@ -252,7 +252,7 @@ TYPED_TEST(Vec3ScalarMultiplicationTests, VectorTimesScalarReturnsScaledVector)
 /**
  * @test Verify that the binary multiplication operator (vector * scalar) return a vector-scalar product.
  */
-TYPED_TEST(Vec3ScalarMultiplicationTests, ScalarTimesAVectorReturnsScaledVector)
+TYPED_TEST(SimdVec3ScalarMultiplicationTests, ScalarTimesAVectorReturnsScaledVector)
 {
     const flcn::simd::Vec3 result = this->_scalar * this->_vec;
 
@@ -270,7 +270,7 @@ TYPED_TEST(Vec3ScalarMultiplicationTests, ScalarTimesAVectorReturnsScaledVector)
 /**
  Verify that the compound multiplication operator (vector * scalar) performs a vector-scalar product in-place.
  */
-TYPED_TEST(Vec3ScalarMultiplicationTests, VectorTimesEqualScalarReturnsTheSameVectorWithScaledComponents)
+TYPED_TEST(SimdVec3ScalarMultiplicationTests, VectorTimesEqualScalarReturnsTheSameVectorWithScaledComponents)
 {
     this->_vec *= this->_scalar;
 
@@ -295,7 +295,7 @@ TYPED_TEST(Vec3ScalarMultiplicationTests, VectorTimesEqualScalarReturnsTheSameVe
  * @test Verify that dividing a float vector by zero returns an
  *       infinity vector of float type.
  */
-TEST(Vec3ScalarDivision, FloatVectorDivisionByZeroReturnsInfinityVector)
+TEST(SimdVec3ScalarDivision, FloatVectorDivisionByZeroReturnsInfinityVector)
 {
     const flcn::simd::Vec3 vec(1.0f, 2.0f, 3.0f);
     EXPECT_VEC_INF(vec / 0);
@@ -306,7 +306,7 @@ TEST(Vec3ScalarDivision, FloatVectorDivisionByZeroReturnsInfinityVector)
  * @test Verify that dividing a double vector by zero returns an
  *       infinity vector of double type.
  */
-TEST(Vec3ScalarDivision, DoubleVectorDivisionByZeroReturnsInfinityVector)
+TEST(SimdVec3ScalarDivision, DoubleVectorDivisionByZeroReturnsInfinityVector)
 {
     const flcn::simd::Vec3 vec(1.0, 2.0, 3.0);
     EXPECT_VEC_INF(vec / 0);
@@ -314,7 +314,7 @@ TEST(Vec3ScalarDivision, DoubleVectorDivisionByZeroReturnsInfinityVector)
 #endif
 
 /** @test Verify that dividing a vector by one returns the original vector. */
-TYPED_TEST(Vec3ScalarDivisionTests, DivisionByOneReturnsOriginalVector)
+TYPED_TEST(SimdVec3ScalarDivisionTests, DivisionByOneReturnsOriginalVector)
 {
     const flcn::simd::Vec3 result = this->_vec / 1;
 
@@ -326,7 +326,7 @@ TYPED_TEST(Vec3ScalarDivisionTests, DivisionByOneReturnsOriginalVector)
  * @test Verify that the binary division operator (vector / scalar) perform a component-wise divide and
  *       returns a vector instance.
  */
-TYPED_TEST(Vec3ScalarDivisionTests, ScalarDivision_ReturnsVectorWithDividedComponents)
+TYPED_TEST(SimdVec3ScalarDivisionTests, ScalarDivision_ReturnsVectorWithDividedComponents)
 {
     const flcn::simd::Vec3 result = this->_vec / this->_scalar;
 
@@ -338,7 +338,7 @@ TYPED_TEST(Vec3ScalarDivisionTests, ScalarDivision_ReturnsVectorWithDividedCompo
  * @test Verify that the compound division assignment operator perform a component-wise divide and
  *       mutates the vector in-place.
  */
-TYPED_TEST(Vec3ScalarDivisionTests, DivideEqualsOperator_ReturnsSameVectorWithDividedComponents)
+TYPED_TEST(SimdVec3ScalarDivisionTests, DivideEqualsOperator_ReturnsSameVectorWithDividedComponents)
 {
     this->_vec /= this->_scalar;
 
@@ -355,7 +355,7 @@ TYPED_TEST(Vec3ScalarDivisionTests, DivideEqualsOperator_ReturnsSameVectorWithDi
  * @test Verify that dividing a vector using @ref flcn::simd::Vec3::safeDiv perform a component-wise divide and
  *       returns a new vector instance.
  */
-TYPED_TEST(Vec3ScalarDivisionTests, SafeDiv_ReturnsVectorWithDividedComponents)
+TYPED_TEST(SimdVec3ScalarDivisionTests, SafeDiv_ReturnsVectorWithDividedComponents)
 {
     const auto result = this->_vec.safeDiv(this->_scalar);
 
@@ -367,7 +367,7 @@ TYPED_TEST(Vec3ScalarDivisionTests, SafeDiv_ReturnsVectorWithDividedComponents)
  * @test Verify that dividing a vector by integral zero using @ref flcn::simd::Vec3::safeDiv
  *       perform a component-wise divide and returns a new vector instance.
  */
-TYPED_TEST(Vec3ScalarDivisionTests, SafeDiv_ByIntegralZero_ReturnsZeroVector)
+TYPED_TEST(SimdVec3ScalarDivisionTests, SafeDiv_ByIntegralZero_ReturnsZeroVector)
 {
     const auto result = this->_vec.safeDiv(0);
     EXPECT_VEC_ZERO(result);
@@ -378,7 +378,7 @@ TYPED_TEST(Vec3ScalarDivisionTests, SafeDiv_ByIntegralZero_ReturnsZeroVector)
  * @test Verify that dividing a vector by floating point zero using @ref flcn::simd::Vec3::safeDiv
  *       perform a component-wise divide and returns a new vector instance.
  */
-TYPED_TEST(Vec3ScalarDivisionTests, SafeDiv_ByFloatZero_ReturnsZeroVector)
+TYPED_TEST(SimdVec3ScalarDivisionTests, SafeDiv_ByFloatZero_ReturnsZeroVector)
 {
     const auto result = this->_vec.safeDiv(0.0f);
     EXPECT_VEC_ZERO(result);
@@ -389,7 +389,7 @@ TYPED_TEST(Vec3ScalarDivisionTests, SafeDiv_ByFloatZero_ReturnsZeroVector)
  * @test Verify that dividing a vector using static variant of @ref flcn::simd::Vec3::safeDiv
  *       perform a component-wise divide and returns a new vector instance.
  */
-TYPED_TEST(Vec3ScalarDivisionTests, StaticWrapper_SafeDiv_ReturnsVectorWithDividedComponents)
+TYPED_TEST(SimdVec3ScalarDivisionTests, StaticWrapper_SafeDiv_ReturnsVectorWithDividedComponents)
 {
     const auto result = flcn::simd::Vec3<TypeParam>::safeDiv(this->_vec, this->_scalar);
     EXPECT_VEC_EQ(this->_expectedScaledVec, result);
@@ -400,7 +400,7 @@ TYPED_TEST(Vec3ScalarDivisionTests, StaticWrapper_SafeDiv_ReturnsVectorWithDivid
  * @test Verify that dividing a vector by integral zero using static variant of @ref flcn::simd::Vec3::safeDiv
  *       perform a component-wise divide and returns a new vector instance.
  */
-TEST(Vec3ScalarDivision, StaticWrapper_SafeDiv_ByIntergralZero_ReturnsZeroVector)
+TEST(SimdVec3ScalarDivision, StaticWrapper_SafeDiv_ByIntergralZero_ReturnsZeroVector)
 {
     const flcn::simd::Vec3 vec(1, 2, 3);
     EXPECT_VEC_ZERO(flcn::simd::Vec3<int>::safeDiv(vec, 0));
@@ -411,7 +411,7 @@ TEST(Vec3ScalarDivision, StaticWrapper_SafeDiv_ByIntergralZero_ReturnsZeroVector
  * @test Verify that dividing a vector by floating point zero using static variant @ref flcn::simd::Vec3::safeDiv
  *       perform a component-wise divide and returns a new vector instance.
  */
-TYPED_TEST(Vec3ScalarDivisionTests, StaticWrapper_SafeDiv_ByFloatZero_ReturnsZeroVector)
+TYPED_TEST(SimdVec3ScalarDivisionTests, StaticWrapper_SafeDiv_ByFloatZero_ReturnsZeroVector)
 {
     const auto result = flcn::simd::Vec3<TypeParam>::safeDiv(this->_vec, 0.0f);
     EXPECT_VEC_ZERO(result);
@@ -422,7 +422,7 @@ TYPED_TEST(Vec3ScalarDivisionTests, StaticWrapper_SafeDiv_ByFloatZero_ReturnsZer
  * @test Verify that dividing a vector by NaN using @ref flcn::simd::Vec3::safeDiv
  *       returns a zero vector.
  */
-TYPED_TEST(Vec3ScalarDivisionTests, SafeDiv_ByNaN_ReturnsZeroVector)
+TYPED_TEST(SimdVec3ScalarDivisionTests, SafeDiv_ByNaN_ReturnsZeroVector)
 {
     if constexpr (std::is_integral_v<TypeParam>)
     {
@@ -440,7 +440,7 @@ TYPED_TEST(Vec3ScalarDivisionTests, SafeDiv_ByNaN_ReturnsZeroVector)
  * @test Verify that dividing a vector by NaN using static variant of @ref flcn::simd::Vec3::safeDiv
  *       returns a zero vector.
  */
-TYPED_TEST(Vec3ScalarDivisionTests, StaticWrapper_SafeDiv_ByNaN_ReturnsZeroVector)
+TYPED_TEST(SimdVec3ScalarDivisionTests, StaticWrapper_SafeDiv_ByNaN_ReturnsZeroVector)
 {
     if constexpr (std::is_integral_v<TypeParam>)
     {
@@ -462,7 +462,7 @@ TYPED_TEST(Vec3ScalarDivisionTests, StaticWrapper_SafeDiv_ByNaN_ReturnsZeroVecto
  * @test Verify that dividing a vector using @ref flcn::simd::Vec3::tryDiv perform a component-wise divide and
  *       returns a new vector instance and sets the flag to @ref flcn::OperationStatus::SUCCESS.
  */
-TYPED_TEST(Vec3ScalarDivisionTests, TryDivide_ReturnsVectorWithDividedComponentsAndSetsCorrectFlag)
+TYPED_TEST(SimdVec3ScalarDivisionTests, TryDivide_ReturnsVectorWithDividedComponentsAndSetsCorrectFlag)
 {
     flcn::OperationStatus flag;
     const auto result = this->_vec.tryDiv(this->_scalar, flag);
@@ -476,7 +476,7 @@ TYPED_TEST(Vec3ScalarDivisionTests, TryDivide_ReturnsVectorWithDividedComponents
  * @test Verify that dividing a vector by integral zero using @ref flcn::simd::Vec3::tryDiv returns zero vector and
  *       sets the flag to @ref flcn::OperationStatus::DIVISIONBYZERO.
  */
-TYPED_TEST(Vec3ScalarDivisionTests, TryDivideByIntegralZero_ReturnsZeroVectorAndSetsCorrectFlag)
+TYPED_TEST(SimdVec3ScalarDivisionTests, TryDivideByIntegralZero_ReturnsZeroVectorAndSetsCorrectFlag)
 {
     flcn::OperationStatus flag;
     const auto result = this->_vec.tryDiv(0, flag);
@@ -487,10 +487,10 @@ TYPED_TEST(Vec3ScalarDivisionTests, TryDivideByIntegralZero_ReturnsZeroVectorAnd
 
 
 /**
- * @test Verify that dividing a vector by floating point zero using @ref flcn::simd::Vec3::tryDiv returns zero vector and
- *       sets the flag to @ref flcn::OperationStatus::DIVISIONBYZERO.
+ * @test Verify that dividing a vector by floating point zero using @ref flcn::simd::Vec3::tryDiv returns zero vector
+ * and sets the flag to @ref flcn::OperationStatus::DIVISIONBYZERO.
  */
-TYPED_TEST(Vec3ScalarDivisionTests, TryDivideByFloatZero_ReturnsZeroVectorAndSetsCorrectFlag)
+TYPED_TEST(SimdVec3ScalarDivisionTests, TryDivideByFloatZero_ReturnsZeroVectorAndSetsCorrectFlag)
 {
     flcn::OperationStatus flag;
     const auto result = this->_vec.tryDiv(0.0, flag);
@@ -504,7 +504,7 @@ TYPED_TEST(Vec3ScalarDivisionTests, TryDivideByFloatZero_ReturnsZeroVectorAndSet
  * @test Verify that dividing a NaN vector by zero using @ref flcn::simd::Vec3::tryDiv
  *       @ref flcn::OperationStatus::NANOPERAND takes precedence over @ref flcn::OperationStatus::NANOPERAND.
  */
-TEST(Vec3ScalarDivision, TryDivideNaNVectorByZero_NaNOperandStatusTakesPrecedence)
+TEST(SimdVec3ScalarDivision, TryDivideNaNVectorByZero_NaNOperandStatusTakesPrecedence)
 {
     flcn::OperationStatus flag;
     [[maybe_unused]] const auto result = flcn::simd::Vec3<double>::qnan().tryDiv(0, flag);
@@ -516,7 +516,7 @@ TEST(Vec3ScalarDivision, TryDivideNaNVectorByZero_NaNOperandStatusTakesPrecedenc
  * @test Verify that dividing a vector by NaN using @ref flcn::simd::Vec3::tryDiv returns a zero vector and
  *       sets the flag to @ref flcn::OperationStatus::NANOPERAND.
  */
-TYPED_TEST(Vec3ScalarDivisionTests, TryDivideByNaN_ReturnsZeroVectorAndSetsCorrectFlag)
+TYPED_TEST(SimdVec3ScalarDivisionTests, TryDivideByNaN_ReturnsZeroVectorAndSetsCorrectFlag)
 {
     flcn::OperationStatus flag;
     const auto result = this->_vec.tryDiv(flcn::constants::NaN, flag);
@@ -531,7 +531,7 @@ TYPED_TEST(Vec3ScalarDivisionTests, TryDivideByNaN_ReturnsZeroVectorAndSetsCorre
  *       perform a component-wise divide and returns a new vector instance and
  *       sets the flag to @ref flcn::OperationStatus::SUCCESS.
  */
-TYPED_TEST(Vec3ScalarDivisionTests, StaticWrapper_TryDivide_ReturnsVectorWithDividedComponentsAndSetsCorrectFlag)
+TYPED_TEST(SimdVec3ScalarDivisionTests, StaticWrapper_TryDivide_ReturnsVectorWithDividedComponentsAndSetsCorrectFlag)
 {
     flcn::OperationStatus flag;
     const auto result = flcn::simd::Vec3<TypeParam>::tryDiv(this->_vec, this->_scalar, flag);
@@ -545,7 +545,7 @@ TYPED_TEST(Vec3ScalarDivisionTests, StaticWrapper_TryDivide_ReturnsVectorWithDiv
  * @test Verify that dividing a vector by integral zero using static variant of @ref flcn::simd::Vec3::tryDiv
  *       returns zero vector and sets the flag to @ref flcn::OperationStatus::DIVISIONBYZERO.
  */
-TYPED_TEST(Vec3ScalarDivisionTests, StaticWrapper_TryDivideByIntegralZero_ReturnsZeroVectorAndSetsCorrectFlag)
+TYPED_TEST(SimdVec3ScalarDivisionTests, StaticWrapper_TryDivideByIntegralZero_ReturnsZeroVectorAndSetsCorrectFlag)
 {
     flcn::OperationStatus flag;
     const auto result = flcn::simd::Vec3<TypeParam>::tryDiv(this->_vec, 0, flag);
@@ -559,7 +559,7 @@ TYPED_TEST(Vec3ScalarDivisionTests, StaticWrapper_TryDivideByIntegralZero_Return
  * @test Verify that dividing a vector by floating point zero using static variant of @ref flcn::simd::Vec3::tryDiv
  *       returns zero vector and sets the flag to @ref flcn::OperationStatus::DIVISIONBYZERO.
  */
-TYPED_TEST(Vec3ScalarDivisionTests, StaticWrapper_TryDivideByFloatZero_ReturnsZeroVectorAndSetsCorrectFlag)
+TYPED_TEST(SimdVec3ScalarDivisionTests, StaticWrapper_TryDivideByFloatZero_ReturnsZeroVectorAndSetsCorrectFlag)
 {
     flcn::OperationStatus flag;
     const auto result = flcn::simd::Vec3<TypeParam>::tryDiv(this->_vec, 0.0, flag);
@@ -573,7 +573,7 @@ TYPED_TEST(Vec3ScalarDivisionTests, StaticWrapper_TryDivideByFloatZero_ReturnsZe
  * @test Verify that dividing a vector by floating point zero using static variant of @ref flcn::simd::Vec3::tryDiv
  *       returns zero vector and sets the flag to @ref flcn::OperationStatus::NANOPERAND.
  */
-TEST(Vec3ScalarDivision, StaticWrapper_TryDivideNaNVector_ReturnsZeroVectorAndSetsCorrectFlag)
+TEST(SimdVec3ScalarDivision, StaticWrapper_TryDivideNaNVector_ReturnsZeroVectorAndSetsCorrectFlag)
 {
     flcn::OperationStatus flag;
     const auto result = flcn::simd::Vec3<double>::tryDiv(flcn::simd::Vec3<double>::qnan(), 3, flag);
@@ -587,7 +587,7 @@ TEST(Vec3ScalarDivision, StaticWrapper_TryDivideNaNVector_ReturnsZeroVectorAndSe
  * @test Verify that dividing a vector by NaN using static variant of @ref flcn::simd::Vec3::tryDiv returns zero vector
  * and sets the flag to @ref flcn::OperationStatus::NANOPERAND.
  */
-TYPED_TEST(Vec3ScalarDivisionTests, StaticWrapper_TryDivideByNaN_ReturnsZeroVectorAndSetsCorrectFlag)
+TYPED_TEST(SimdVec3ScalarDivisionTests, StaticWrapper_TryDivideByNaN_ReturnsZeroVectorAndSetsCorrectFlag)
 {
     flcn::OperationStatus flag;
     const auto result = flcn::simd::Vec3<TypeParam>::tryDiv(this->_vec, flcn::constants::NaN, flag);
@@ -607,7 +607,7 @@ TYPED_TEST(Vec3ScalarDivisionTests, StaticWrapper_TryDivideByNaN_ReturnsZeroVect
  * @test Verify that dividing a nan vector by a scalar using @ref flcn::simd::Vec3::safeDiv
  *       returns vector with NaN-components as zero.
  */
-TEST_P(Vec3DivisionNaNTests, SafeDiv_ReturnsVectorWithNaNComponentsAsZero)
+TEST_P(SimdVec3DivisionNaNTests, SafeDiv_ReturnsVectorWithNaNComponentsAsZero)
 {
     const auto& vec = GetParam();
     EXPECT_VEC_ZERO(vec.safeDiv(3));
@@ -617,7 +617,7 @@ TEST_P(Vec3DivisionNaNTests, SafeDiv_ReturnsVectorWithNaNComponentsAsZero)
  * @test Verify that dividing a nan vector by a scalar using static variant of @ref flcn::simd::Vec3::safeDiv
  *       returns zero vector.
  */
-TEST_P(Vec3DivisionNaNTests, StaticWrapper_SafeDiv_ReturnsVectorWithNaNComponentsAsZero)
+TEST_P(SimdVec3DivisionNaNTests, StaticWrapper_SafeDiv_ReturnsVectorWithNaNComponentsAsZero)
 {
     const auto& vec = GetParam();
     EXPECT_VEC_ZERO(flcn::simd::Vec3<float>::safeDiv(vec, 3));
@@ -628,7 +628,7 @@ TEST_P(Vec3DivisionNaNTests, StaticWrapper_SafeDiv_ReturnsVectorWithNaNComponent
  * @test Verify that dividing a nan vector by a scalar using @ref flcn::simd::Vec3::tryDiv
  *       returns zero vector and sets flag to OperationStatus::NANOPERAND.
  */
-TEST_P(Vec3DivisionNaNTests, TryDiv_ReturnsVectorWithNaNComponentsAsZero)
+TEST_P(SimdVec3DivisionNaNTests, TryDiv_ReturnsVectorWithNaNComponentsAsZero)
 {
     const auto& vec = GetParam();
     flcn::OperationStatus flag;
@@ -641,7 +641,7 @@ TEST_P(Vec3DivisionNaNTests, TryDiv_ReturnsVectorWithNaNComponentsAsZero)
  * @test Verify that dividing a nan vector by a scalar using static variant of @ref flcn::simd::Vec3::tryDiv
  *       returns zero vector and sets flag to OperationStatus::NANOPERAND.
  */
-TEST_P(Vec3DivisionNaNTests, StaticWrapper_TryDiv_ReturnsVectorWithNaNComponentsAsZero)
+TEST_P(SimdVec3DivisionNaNTests, StaticWrapper_TryDiv_ReturnsVectorWithNaNComponentsAsZero)
 {
     const auto& vec = GetParam();
     flcn::OperationStatus flag;
@@ -658,7 +658,7 @@ TEST_P(Vec3DivisionNaNTests, StaticWrapper_TryDiv_ReturnsVectorWithNaNComponents
  * @test Verify that  @ref flcn::simd::Vec3 unary minus operator inverts each component and
  * returns a new vector.
  */
-TYPED_TEST(Vec3NegationTests, InvertsTheSignOfEachComponents)
+TYPED_TEST(SimdVec3NegationTests, InvertsTheSignOfEachComponents)
 {
     const flcn::simd::Vec3 inverted = -this->_vec;
     EXPECT_VEC_EQ(this->_expectedInvertedVec, inverted);
@@ -666,7 +666,7 @@ TYPED_TEST(Vec3NegationTests, InvertsTheSignOfEachComponents)
 
 
 /** @test Verify that @ref flcn::simd::Vec3 unary minus operator inverts each component of an infinity vector. */
-TEST(Vec3Negation, InvertsSignOfInfinity)
+TEST(SimdVec3Negation, InvertsSignOfInfinity)
 {
     const flcn::simd::Vec3 infVec = {
         flcn::constants::INFINITY_F,
@@ -686,7 +686,7 @@ TEST(Vec3Negation, InvertsSignOfInfinity)
 
 
 /** @test Verify that @ref flcn::simd::Vec3 unary minus follows IEEE 754 rules for NaN. */
-TEST(Vec3Negation, NoOpOnNaNVectors)
+TEST(SimdVec3Negation, NoOpOnNaNVectors)
 {
     const flcn::simd::Vec3 nanVec = {
         flcn::constants::NaN,

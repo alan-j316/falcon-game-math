@@ -34,8 +34,8 @@ namespace
 
         void SetUp() override
         {
-            _matA        = { flcn::CVec2<T>(-1, 2), flcn::CVec2<T>(5, 6), flcn::CVec2<T>(0, 15), flcn::CVec2<T>(1, 3) };
-            _expectedMat = { flcn::CVec2<T>(1, -2), flcn::CVec2<T>(-5, -6), flcn::CVec2<T>(0, -15), flcn::CVec2<T>(-1, -3) };
+            _matA        = { flcn::Vec2<T>(-1, 2), flcn::Vec2<T>(5, 6), flcn::Vec2<T>(0, 15), flcn::Vec2<T>(1, 3) };
+            _expectedMat = { flcn::Vec2<T>(1, -2), flcn::Vec2<T>(-5, -6), flcn::Vec2<T>(0, -15), flcn::Vec2<T>(-1, -3) };
         }
     };
     /** @brief Test fixture for @ref flcn::Mat2x4 negation, parameterized by @ref SupportedSignedArithmeticTypes. */

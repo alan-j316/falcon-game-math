@@ -37,7 +37,7 @@ namespace
 
         void SetUp() override
         {
-            _expectedMat = { flcn::CVec2{ T(5.3821839321), T(0) }, flcn::CVec2{ T(0), T(5.3821839321) } };
+            _expectedMat = { flcn::Vec2{ T(5.3821839321), T(0) }, flcn::Vec2{ T(0), T(5.3821839321) } };
             _scale       = T(5.3821839321);
         }
     };
@@ -59,7 +59,7 @@ namespace
 
         void SetUp() override
         {
-            _expectedMat = { flcn::CVec2{ T(5.3821839321), T(0) }, flcn::CVec2{ T(0), T(8.1234921348) } };
+            _expectedMat = { flcn::Vec2{ T(5.3821839321), T(0) }, flcn::Vec2{ T(0), T(8.1234921348) } };
             _scaleX      = T(5.3821839321);
             _scaleY      = T(8.1234921348);
         }

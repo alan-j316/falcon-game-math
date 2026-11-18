@@ -39,9 +39,9 @@ namespace
 
         void SetUp() override
         {
-            _matrix         = { flcn::CVec2<T>{ 7, 3 }, flcn::CVec2<T>{ 1, 6 } };
+            _matrix         = { flcn::Vec2<T>{ 7, 3 }, flcn::Vec2<T>{ 1, 6 } };
             _scalar         = T(3);
-            _expectedMatrix = { flcn::CVec2{ T(2.333333333333333), T(1) }, flcn::CVec2{ T(0.3333333333333333), T(2) } };
+            _expectedMatrix = { flcn::Vec2{ T(2.333333333333333), T(1) }, flcn::Vec2{ T(0.3333333333333333), T(2) } };
         }
     };
     TYPED_TEST_SUITE(Mat2DivisionTests, SupportedArithmeticTypes);

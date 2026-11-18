@@ -32,7 +32,7 @@ namespace
     class Point2AdditionTests: public testing::Test
     {
     protected:
-        flcn::CVec2<T> _vector;
+        flcn::Vec2<T> _vector;
         flcn::Point2<T> _point;
         flcn::Point2<T> _expectedPoint;
 
@@ -77,19 +77,19 @@ namespace
     namespace static_tests
     {
         constexpr flcn::Point2 POINT_A(1, 2);
-        constexpr flcn::CVec2 DIR_VEC(1, 3);
+        constexpr flcn::Vec2 DIR_VEC(1, 3);
         constexpr flcn::Point2 POINT_B(4, 3);
 
 
-        /// @test Verify that a Point2 + CVec2 returns a valid Point2 at compile time.
+        /// @test Verify that a Point2 + Vec2 returns a valid Point2 at compile time.
         constexpr auto SUM_POINT = POINT_A + DIR_VEC;
         static_assert(std::is_same_v<decltype(SUM_POINT), const flcn::Point2<int>>);
         static_assert(SUM_POINT.x() == 2);
         static_assert(SUM_POINT.y() == 5);
 
-        /// @test Verify that a Point2 - Point2 returns a valid CVec2 at compile time.
+        /// @test Verify that a Point2 - Point2 returns a valid Vec2 at compile time.
         constexpr auto SUB_DIR_VEC = POINT_A - POINT_B;
-        static_assert(std::is_same_v<decltype(SUB_DIR_VEC), const flcn::CVec2<int>>);
+        static_assert(std::is_same_v<decltype(SUB_DIR_VEC), const flcn::Vec2<int>>);
         static_assert(SUB_DIR_VEC.x() == -3);
         static_assert(SUB_DIR_VEC.y() == -1);
 
@@ -113,7 +113,7 @@ TYPED_TEST(Point2AdditionTests, PlusOperator_ReturnsAPointWithComponentwiseSum)
 TEST(Point2AdditionTests, PlusOperator_MixedType_PromotesType)
 {
     const flcn::Point2 point(3.0f, 0.0f);
-    const flcn::CVec2 vector(9.0, -5.0);
+    const flcn::Vec2 vector(9.0, -5.0);
 
     [[maybe_unused]] const flcn::Point2 result = point + vector;
 
@@ -131,7 +131,7 @@ TYPED_TEST(Point2AdditionTests, PlusEqualsOperator_ReturnsSamePointWithComponent
 TEST(Point2AdditionTests, PlusEqualsOperator_MixedType_DoesNotPromoteType)
 {
     flcn::Point2 point(3.0f, 0.0f);
-    const flcn::CVec2 vector(9.0, -5.0);
+    const flcn::Vec2 vector(9.0, -5.0);
 
     static_cast<void>(point += vector);
 

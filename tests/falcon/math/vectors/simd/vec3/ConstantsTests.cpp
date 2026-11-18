@@ -27,13 +27,13 @@ namespace
      * @tparam T The scalar type (int, float, double...) of the vector components.
      */
     template <typename T>
-    class Vec3ConstantsTests: public testing::Test
+    class SimdVec3ConstantsTests: public testing::Test
     {
     protected:
         T _one  = T(1);
         T _zero = T(0);
     };
-    TYPED_TEST_SUITE(Vec3ConstantsTests, SupportedSignedArithmeticTypes);
+    TYPED_TEST_SUITE(SimdVec3ConstantsTests, SupportedSignedArithmeticTypes);
 
 } // namespace
 
@@ -44,7 +44,7 @@ namespace
  **************************************/
 
 /** @test Verify that @ref flcn::simd::Vec3::ONE() returns a 3D vector with unit components. */
-TYPED_TEST(Vec3ConstantsTests, ONE_ReturnsVectorWithUnitComponents)
+TYPED_TEST(SimdVec3ConstantsTests, ONE_ReturnsVectorWithUnitComponents)
 {
     const auto one = TypeParam(1);
     EXPECT_VEC_CONTAINS(flcn::simd::Vec3<TypeParam>::one(), one, one, one);
@@ -52,11 +52,11 @@ TYPED_TEST(Vec3ConstantsTests, ONE_ReturnsVectorWithUnitComponents)
 
 
 /** @test Verify that @ref flcn::simd::Vec3::ZERO returns a 3D vector with zero components. */
-TYPED_TEST(Vec3ConstantsTests, ZERO_ReturnsVectorWithZeroComponents) { EXPECT_VEC_ZERO(flcn::simd::Vec3<TypeParam>::zero()); }
+TYPED_TEST(SimdVec3ConstantsTests, ZERO_ReturnsVectorWithZeroComponents) { EXPECT_VEC_ZERO(flcn::simd::Vec3<TypeParam>::zero()); }
 
 
 /** @test Verify that @ref flcn::simd::Vec3<float>::INF returns a 3D vector with infinity components. */
-TEST(Vec3Constants, INF_Float_ReturnsFloatVectorWithInfinityComponents)
+TEST(SimdVec3Constants, INF_Float_ReturnsFloatVectorWithInfinityComponents)
 {
     const auto inf = flcn::simd::Vec3<float>::inf();
     static_assert(std::is_same_v<typename decltype(inf)::value_type, float>);
@@ -65,7 +65,7 @@ TEST(Vec3Constants, INF_Float_ReturnsFloatVectorWithInfinityComponents)
 
 
 /** @test Verify that @ref flcn::simd::Vec3<double>::INF returns a 3D vector with infinity components. */
-TEST(Vec3Constants, INF_Double_ReturnsDoubleVectorWithInfinityComponents)
+TEST(SimdVec3Constants, INF_Double_ReturnsDoubleVectorWithInfinityComponents)
 {
     const auto inf = flcn::simd::Vec3<double>::inf();
     static_assert(std::is_same_v<typename decltype(inf)::value_type, double>);
@@ -74,7 +74,7 @@ TEST(Vec3Constants, INF_Double_ReturnsDoubleVectorWithInfinityComponents)
 
 
 /** @test Verify that @ref flcn::simd::Vec3<float>::INF_NEG returns a 3D vector with negative infinity components. */
-TEST(Vec3Constants, INFNEG_Float_ReturnsFloatVectorWithNegativeInfinityComponents)
+TEST(SimdVec3Constants, INFNEG_Float_ReturnsFloatVectorWithNegativeInfinityComponents)
 {
     const auto inf = flcn::simd::Vec3<float>::infNeg();
     static_assert(std::is_same_v<typename decltype(inf)::value_type, float>);
@@ -83,7 +83,7 @@ TEST(Vec3Constants, INFNEG_Float_ReturnsFloatVectorWithNegativeInfinityComponent
 
 
 /** @test Verify that @ref flcn::simd::Vec3<double>::INF_NEG returns a 3D vector with negative infinity components. */
-TEST(Vec3Constants, INFNEG_Double_ReturnsDoubleVectorWithNegativeInfinityComponents)
+TEST(SimdVec3Constants, INFNEG_Double_ReturnsDoubleVectorWithNegativeInfinityComponents)
 {
     const auto inf = flcn::simd::Vec3<double>::infNeg();
     static_assert(std::is_same_v<typename decltype(inf)::value_type, double>);
@@ -92,7 +92,7 @@ TEST(Vec3Constants, INFNEG_Double_ReturnsDoubleVectorWithNegativeInfinityCompone
 
 
 /** @test Verify that @ref flcn::simd::Vec3<float>::QNAN returns a 3D vector with NaN components. */
-TEST(Vec3Constants, Float_QNAN_ReturnsFloatVectorWithNaNComponents)
+TEST(SimdVec3Constants, Float_QNAN_ReturnsFloatVectorWithNaNComponents)
 {
     const auto nan = flcn::simd::Vec3<float>::qnan();
     EXPECT_TRUE(std::isnan(nan.x()));
@@ -101,7 +101,7 @@ TEST(Vec3Constants, Float_QNAN_ReturnsFloatVectorWithNaNComponents)
 
 
 /** @test Verify that @ref flcn::simd::Vec3<double>::QNAN returns a 3D vector with NaN components. */
-TEST(Vec3Constants, Double_QNAN_ReturnsDoubleVectorWithNaNComponents)
+TEST(SimdVec3Constants, Double_QNAN_ReturnsDoubleVectorWithNaNComponents)
 {
     const auto nan = flcn::simd::Vec3<double>::qnan();
     EXPECT_TRUE(std::isnan(nan.x()));
@@ -110,7 +110,7 @@ TEST(Vec3Constants, Double_QNAN_ReturnsDoubleVectorWithNaNComponents)
 
 
 /** @test Verify that @ref flcn::simd::Vec3::RIGHT returns a unit vector aligned with positive x-axis. */
-TYPED_TEST(Vec3ConstantsTests, RIGHT_ReturnsUnitVectorWithOnlyPositiveXComponent)
+TYPED_TEST(SimdVec3ConstantsTests, RIGHT_ReturnsUnitVectorWithOnlyPositiveXComponent)
 {
     const auto vec = flcn::simd::Vec3<TypeParam>::right();
     EXPECT_VEC_CONTAINS(vec, this->_one, this->_zero, this->_zero);
@@ -118,7 +118,7 @@ TYPED_TEST(Vec3ConstantsTests, RIGHT_ReturnsUnitVectorWithOnlyPositiveXComponent
 
 
 /** @test Verify that @ref flcn::simd::Vec3::LEFT returns a unit vector aligned with negative x-axis. */
-TYPED_TEST(Vec3ConstantsTests, LEFT_ReturnsUnitVectorWithOnlyNegativeXComponent)
+TYPED_TEST(SimdVec3ConstantsTests, LEFT_ReturnsUnitVectorWithOnlyNegativeXComponent)
 {
     const auto vec = flcn::simd::Vec3<TypeParam>::left();
     EXPECT_VEC_CONTAINS(vec, TypeParam(-this->_one), this->_zero, this->_zero);
@@ -126,7 +126,7 @@ TYPED_TEST(Vec3ConstantsTests, LEFT_ReturnsUnitVectorWithOnlyNegativeXComponent)
 
 
 /** @test Verify that @ref flcn::simd::Vec3::UP returns a unit vector aligned with positive y-axis. */
-TYPED_TEST(Vec3ConstantsTests, UP_ReturnsUnitVectorWithOnlyPositiveYComponent)
+TYPED_TEST(SimdVec3ConstantsTests, UP_ReturnsUnitVectorWithOnlyPositiveYComponent)
 {
     const auto vec = flcn::simd::Vec3<TypeParam>::up();
     EXPECT_VEC_CONTAINS(vec, this->_zero, this->_one, this->_zero);
@@ -134,7 +134,7 @@ TYPED_TEST(Vec3ConstantsTests, UP_ReturnsUnitVectorWithOnlyPositiveYComponent)
 
 
 /** @test Verify that @ref flcn::simd::Vec3::DOWN returns a unit vector aligned with negative y-axis. */
-TYPED_TEST(Vec3ConstantsTests, DOWN_ReturnsUnitVectorWithOnlyNegativeYComponent)
+TYPED_TEST(SimdVec3ConstantsTests, DOWN_ReturnsUnitVectorWithOnlyNegativeYComponent)
 {
     const auto vec = flcn::simd::Vec3<TypeParam>::down();
     EXPECT_VEC_CONTAINS(vec, this->_zero, TypeParam(-this->_one), this->_zero);
@@ -144,7 +144,7 @@ TYPED_TEST(Vec3ConstantsTests, DOWN_ReturnsUnitVectorWithOnlyNegativeYComponent)
 #ifdef FALCON_LEFT_HANDED
 
 /** @test Verify that @ref flcn::simd::Vec3::FORWARD returns a unit vector aligned with positive z-axis. */
-TYPED_TEST(Vec3ConstantsTests, FORWARD_ReturnsUnitVectorWithOnlyPositiveZComponent)
+TYPED_TEST(SimdVec3ConstantsTests, FORWARD_ReturnsUnitVectorWithOnlyPositiveZComponent)
 {
     const auto vec = flcn::simd::Vec3<TypeParam>::forward();
     EXPECT_VEC_CONTAINS(vec, this->_zero, this->_zero, this->_one);
@@ -152,7 +152,7 @@ TYPED_TEST(Vec3ConstantsTests, FORWARD_ReturnsUnitVectorWithOnlyPositiveZCompone
 
 
 /** @test Verify that @ref flcn::simd::Vec3::BACKWARD returns a unit vector aligned with negative z-axis. */
-TYPED_TEST(Vec3ConstantsTests, BACKWARD_ReturnsUnitVectorWithOnlyNegativeZComponent)
+TYPED_TEST(SimdVec3ConstantsTests, BACKWARD_ReturnsUnitVectorWithOnlyNegativeZComponent)
 {
     const auto vec = flcn::simd::Vec3<TypeParam>::backward();
     EXPECT_VEC_CONTAINS(vec, this->_zero, this->_zero, TypeParam(-this->_one));
@@ -161,7 +161,7 @@ TYPED_TEST(Vec3ConstantsTests, BACKWARD_ReturnsUnitVectorWithOnlyNegativeZCompon
 #else
 
 /** @test Verify that @ref flcn::simd::Vec3::FORWARD returns a unit vector aligned with negative z-axis. */
-TYPED_TEST(Vec3ConstantsTests, FORWARD_ReturnsUnitVectorWithOnlyPositiveZComponent)
+TYPED_TEST(SimdVec3ConstantsTests, FORWARD_ReturnsUnitVectorWithOnlyPositiveZComponent)
 {
     const auto vec = flcn::simd::Vec3<TypeParam>::forward();
     EXPECT_VEC_CONTAINS(vec, this->_zero, this->_zero, TypeParam(-this->_one));
@@ -169,7 +169,7 @@ TYPED_TEST(Vec3ConstantsTests, FORWARD_ReturnsUnitVectorWithOnlyPositiveZCompone
 
 
 /** @test Verify that @ref flcn::simd::Vec3::BACKWARD returns a unit vector aligned with positive z-axis. */
-TYPED_TEST(Vec3ConstantsTests, BACKWARD_ReturnsUnitVectorWithOnlyNegativeZComponent)
+TYPED_TEST(SimdVec3ConstantsTests, BACKWARD_ReturnsUnitVectorWithOnlyNegativeZComponent)
 {
     const auto vec = flcn::simd::Vec3<TypeParam>::backward();
     EXPECT_VEC_CONTAINS(vec, this->_zero, this->_zero, this->_one);

@@ -65,9 +65,9 @@ namespace
 
         void SetUp() override
         {
-            _matrix         = { flcn::CVec2<T>{ 7, 3 }, flcn::CVec2<T>{ 1, 6 } };
+            _matrix         = { flcn::Vec2<T>{ 7, 3 }, flcn::Vec2<T>{ 1, 6 } };
             _scalar         = T(3);
-            _expectedMatrix = { flcn::CVec2{ T(2.333333333333333), T(1) }, flcn::CVec2{ T(0.3333333333333333), T(2) } };
+            _expectedMatrix = { flcn::Vec2{ T(2.333333333333333), T(1) }, flcn::Vec2{ T(0.3333333333333333), T(2) } };
         }
     };
     TYPED_TEST_SUITE(Mat2DivisionTests, SupportedArithmeticTypes);
@@ -79,11 +79,11 @@ namespace
     class Mat2InverseSingularTests: public testing::TestWithParam<flcn::Mat2<float>>
     {};
     INSTANTIATE_TEST_SUITE_P(Mat2SingularMatrixInverse, Mat2InverseSingularTests,
-                             ::testing::Values(flcn::Mat2{ flcn::CVec2{ 1.0f, 2.0f }, flcn::CVec2{ 1.0f, 2.0f } },
-                                               flcn::Mat2{ flcn::CVec2{ 2.0f, 2.0f }, flcn::CVec2{ 2.0f, 2.0f } },
-                                               flcn::Mat2{ flcn::CVec2{ 3.0f, 2.0f }, flcn::CVec2{ 6.0f, 4.0f } },
-                                               flcn::Mat2{ flcn::CVec2{ 0.0f, 0.0f }, flcn::CVec2{ 4.0f, 5.0f } },
-                                               flcn::Mat2{ flcn::CVec2{ 0.0f, 3.0f }, flcn::CVec2{ 0.0f, 5.0f } }));
+                             ::testing::Values(flcn::Mat2{ flcn::Vec2{ 1.0f, 2.0f }, flcn::Vec2{ 1.0f, 2.0f } },
+                                               flcn::Mat2{ flcn::Vec2{ 2.0f, 2.0f }, flcn::Vec2{ 2.0f, 2.0f } },
+                                               flcn::Mat2{ flcn::Vec2{ 3.0f, 2.0f }, flcn::Vec2{ 6.0f, 4.0f } },
+                                               flcn::Mat2{ flcn::Vec2{ 0.0f, 0.0f }, flcn::Vec2{ 4.0f, 5.0f } },
+                                               flcn::Mat2{ flcn::Vec2{ 0.0f, 3.0f }, flcn::Vec2{ 0.0f, 5.0f } }));
 
 
 
@@ -122,7 +122,7 @@ TEST_P(Mat2IndexingTests, OutOfBoundAccess_TriggersAssertInDebugMode)
 TEST_P(Mat2ColumnIndexingTests, OutOfBoundMutation_TriggersAssertInDebugMode)
 {
     const auto col = GetParam();
-    EXPECT_DEBUG_DEATH(static_cast<void>(mat[col] = flcn::CVec2<int>::zero()), "");
+    EXPECT_DEBUG_DEATH(static_cast<void>(mat[col] = flcn::Vec2<int>::zero()), "");
 }
 
 TEST_P(Mat2IndexingTests, OutOfBoundMutationTriggersAssertInDebugMode)

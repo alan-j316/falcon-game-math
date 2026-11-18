@@ -85,28 +85,28 @@
                  */
 
                 /**
-                 * @defgroup Falcon_CVec3 3D Vectors
+                 * @defgroup Falcon_Vec3 3D Vectors
                  * @brief 3-dimensional Euclidean vectors.
                  * @ingroup Falcon_Vectors
                  * @{
-                 *   @defgroup Falcon_CVec3_Members Class Members
-                 *   @defgroup Falcon_CVec3_Init Constructors
-                 *   @defgroup Falcon_CVec3_Access Accessors
-                 *   @defgroup Falcon_CVec3_Arithmetic Arithmetic Operations
-                 *   @defgroup Falcon_CVec3_Bitwise Boolean Bitwise Operations
-                 *   @defgroup Falcon_CVec3_Equality Equality
-                 *   @defgroup Falcon_CVec3_Comparison Comparisons
-                 *   @defgroup Falcon_CVec3_Product Geometric Products
-                 *   @defgroup Falcon_CVec3_Mag Vector Magnitude and Norms
-                 *   @defgroup Falcon_CVec3_Dist Vector Distance
-                 *   @defgroup Falcon_CVec3_Normalize Vector Normalization
-                 *   @defgroup Falcon_CVec3_Proj Vector Projection and Rejection
-                 *   @defgroup Falcon_CVec3_Alias Spatial Alias
-                 *   @defgroup Falcon_CVec3_Log String Representation
-                 *   @defgroup Falcon_CVec3_Const Vector Constants
-                 *   @defgroup Falcon_CVec3_Utils Vector Utilities
-                 *   @defgroup Falcon_CVec3_Swizzle Vector Swizzling
-                 *   @defgroup Falcon_CVec3_Ptr Internal Storage Access
+                 *   @defgroup Falcon_Vec3_Members Class Members
+                 *   @defgroup Falcon_Vec3_Init Constructors
+                 *   @defgroup Falcon_Vec3_Access Accessors
+                 *   @defgroup Falcon_Vec3_Arithmetic Arithmetic Operations
+                 *   @defgroup Falcon_Vec3_Bitwise Boolean Bitwise Operations
+                 *   @defgroup Falcon_Vec3_Equality Equality
+                 *   @defgroup Falcon_Vec3_Comparison Comparisons
+                 *   @defgroup Falcon_Vec3_Product Geometric Products
+                 *   @defgroup Falcon_Vec3_Mag Vector Magnitude and Norms
+                 *   @defgroup Falcon_Vec3_Dist Vector Distance
+                 *   @defgroup Falcon_Vec3_Normalize Vector Normalization
+                 *   @defgroup Falcon_Vec3_Proj Vector Projection and Rejection
+                 *   @defgroup Falcon_Vec3_Alias Spatial Alias
+                 *   @defgroup Falcon_Vec3_Log String Representation
+                 *   @defgroup Falcon_Vec3_Const Vector Constants
+                 *   @defgroup Falcon_Vec3_Utils Vector Utilities
+                 *   @defgroup Falcon_Vec3_Swizzle Vector Swizzling
+                 *   @defgroup Falcon_Vec3_Ptr Internal Storage Access
                  * @}
                  */
 
@@ -176,54 +176,54 @@
                  */
 
                 /**
-                 * @defgroup Falcon_CVec2 2D Vectors
+                 * @defgroup Falcon_Vec2 2D Vectors
                  * @brief 2-dimensional Euclidean vectors.
                  * @ingroup Falcon_Vectors
                  * @{
-                 *   @defgroup Falcon_CVec2_Members Class Members
-                 *   @defgroup Falcon_CVec2_Init Constructors
-                 *   @defgroup Falcon_CVec2_Access Accessors
-                 *   @defgroup Falcon_CVec2_Arithmetic Arithmetic Operations
-                 *   @defgroup Falcon_CVec2_Bitwise Boolean Bitwise Operations
-                 *   @defgroup Falcon_CVec2_Equality Equality
-                 *   @defgroup Falcon_CVec2_Comparison Comparisons
-                 *   @defgroup Falcon_CVec2_Product Geometric Products
-                 *   @defgroup Falcon_CVec2_Mag Vector Magnitude and Norms
-                 *   @defgroup Falcon_CVec2_Dist Vector Distance
-                 *   @defgroup Falcon_CVec2_Normalize Vector Normalization
-                 *   @defgroup Falcon_CVec2_Proj Vector Projection and Rejection
-                 *   @defgroup Falcon_CVec2_Alias Spatial Alias
-                 *   @defgroup Falcon_CVec2_Log String Representation
-                 *   @defgroup Falcon_CVec2_Const Vector Constants
-                 *   @defgroup Falcon_CVec2_Utils Vector Utilities
-                 *   @defgroup Falcon_CVec2_Swizzle Vector Swizzling
-                 *   @defgroup Falcon_CVec2_Ptr Internal Storage Access
+                 *   @defgroup Falcon_Vec2_Members Class Members
+                 *   @defgroup Falcon_Vec2_Init Constructors
+                 *   @defgroup Falcon_Vec2_Access Accessors
+                 *   @defgroup Falcon_Vec2_Arithmetic Arithmetic Operations
+                 *   @defgroup Falcon_Vec2_Bitwise Boolean Bitwise Operations
+                 *   @defgroup Falcon_Vec2_Equality Equality
+                 *   @defgroup Falcon_Vec2_Comparison Comparisons
+                 *   @defgroup Falcon_Vec2_Product Geometric Products
+                 *   @defgroup Falcon_Vec2_Mag Vector Magnitude and Norms
+                 *   @defgroup Falcon_Vec2_Dist Vector Distance
+                 *   @defgroup Falcon_Vec2_Normalize Vector Normalization
+                 *   @defgroup Falcon_Vec2_Proj Vector Projection and Rejection
+                 *   @defgroup Falcon_Vec2_Alias Spatial Alias
+                 *   @defgroup Falcon_Vec2_Log String Representation
+                 *   @defgroup Falcon_Vec2_Const Vector Constants
+                 *   @defgroup Falcon_Vec2_Utils Vector Utilities
+                 *   @defgroup Falcon_Vec2_Swizzle Vector Swizzling
+                 *   @defgroup Falcon_Vec2_Ptr Internal Storage Access
                  * @}
                  */
 
                 /**
-                 * @defgroup Falcon_CVec3 3D Vectors
+                 * @defgroup Falcon_Vec3 3D Vectors
                  * @brief 3-dimensional Euclidean vectors.
                  * @ingroup Falcon_Vectors
                  * @{
-                 *   @defgroup Falcon_CCVec3_Members Class Members
-                 *   @defgroup Falcon_CCVec3_Init Constructors
-                 *   @defgroup Falcon_CCVec3_Access Accessors
-                 *   @defgroup Falcon_CCVec3_Arithmetic Arithmetic Operations
-                 *   @defgroup Falcon_CCVec3_Bitwise Boolean Bitwise Operations
-                 *   @defgroup Falcon_CCVec3_Equality Equality
-                 *   @defgroup Falcon_CCVec3_Comparison Comparisons
-                 *   @defgroup Falcon_CCVec3_Product Geometric Products
-                 *   @defgroup Falcon_CCVec3_Mag Vector Magnitude and Norms
-                 *   @defgroup Falcon_CCVec3_Dist Vector Distance
-                 *   @defgroup Falcon_CCVec3_Normalize Vector Normalization
-                 *   @defgroup Falcon_CCVec3_Proj Vector Projection and Rejection
-                 *   @defgroup Falcon_CCVec3_Alias Spatial Alias
-                 *   @defgroup Falcon_CCVec3_Log String Representation
-                 *   @defgroup Falcon_CCVec3_Const Vector Constants
-                 *   @defgroup Falcon_CCVec3_Utils Vector Utilities
-                 *   @defgroup Falcon_CCVec3_Swizzle Vector Swizzling
-                 *   @defgroup Falcon_CCVec3_Ptr Internal Storage Access
+                 *   @defgroup Falcon_CVec3_Members Class Members
+                 *   @defgroup Falcon_CVec3_Init Constructors
+                 *   @defgroup Falcon_CVec3_Access Accessors
+                 *   @defgroup Falcon_CVec3_Arithmetic Arithmetic Operations
+                 *   @defgroup Falcon_CVec3_Bitwise Boolean Bitwise Operations
+                 *   @defgroup Falcon_CVec3_Equality Equality
+                 *   @defgroup Falcon_CVec3_Comparison Comparisons
+                 *   @defgroup Falcon_CVec3_Product Geometric Products
+                 *   @defgroup Falcon_CVec3_Mag Vector Magnitude and Norms
+                 *   @defgroup Falcon_CVec3_Dist Vector Distance
+                 *   @defgroup Falcon_CVec3_Normalize Vector Normalization
+                 *   @defgroup Falcon_CVec3_Proj Vector Projection and Rejection
+                 *   @defgroup Falcon_CVec3_Alias Spatial Alias
+                 *   @defgroup Falcon_CVec3_Log String Representation
+                 *   @defgroup Falcon_CVec3_Const Vector Constants
+                 *   @defgroup Falcon_CVec3_Utils Vector Utilities
+                 *   @defgroup Falcon_CVec3_Swizzle Vector Swizzling
+                 *   @defgroup Falcon_CVec3_Ptr Internal Storage Access
                  * @}
                  */
 

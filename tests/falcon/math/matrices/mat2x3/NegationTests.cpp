@@ -36,8 +36,8 @@ namespace
 
         void SetUp() override
         {
-            _matA        = { flcn::CVec2<T>(-1, 2), flcn::CVec2<T>(5, 6), flcn::CVec2<T>(0, 15) };
-            _expectedMat = { flcn::CVec2<T>(1, -2), flcn::CVec2<T>(-5, -6), flcn::CVec2<T>(0, -15) };
+            _matA        = { flcn::Vec2<T>(-1, 2), flcn::Vec2<T>(5, 6), flcn::Vec2<T>(0, 15) };
+            _expectedMat = { flcn::Vec2<T>(1, -2), flcn::Vec2<T>(-5, -6), flcn::Vec2<T>(0, -15) };
         }
     };
     TYPED_TEST_SUITE(Mat2x3NegationTests, SupportedSignedArithmeticTypes);

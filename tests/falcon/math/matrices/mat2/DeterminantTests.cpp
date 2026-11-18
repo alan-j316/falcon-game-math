@@ -38,7 +38,7 @@ namespace
 
         void SetUp() override
         {
-            _matrix              = { flcn::CVec2<T>{ 4, 1 }, flcn::CVec2<T>{ 2, 5 } };
+            _matrix              = { flcn::Vec2<T>{ 4, 1 }, flcn::Vec2<T>{ 2, 5 } };
             _expectedDeterminant = 18;
         }
     };
@@ -52,11 +52,11 @@ namespace
     class Mat2DeterminantSingularTests: public ::testing::TestWithParam<flcn::Mat2<float>>
     {};
     INSTANTIATE_TEST_SUITE_P(Mat2InvalidDeterminantTests, Mat2DeterminantSingularTests,
-                             ::testing::Values(flcn::Mat2{ flcn::CVec2{ 1.0f, 2.0f }, flcn::CVec2{ 1.0f, 2.0f } },
-                                               flcn::Mat2{ flcn::CVec2{ 2.0f, 2.0f }, flcn::CVec2{ 2.0f, 2.0f } },
-                                               flcn::Mat2{ flcn::CVec2{ 3.0f, 2.0f }, flcn::CVec2{ 6.0f, 4.0f } },
-                                               flcn::Mat2{ flcn::CVec2{ 0.0f, 0.0f }, flcn::CVec2{ 4.0f, 5.0f } },
-                                               flcn::Mat2{ flcn::CVec2{ 0.0f, 3.0f }, flcn::CVec2{ 0.0f, 5.0f } }));
+                             ::testing::Values(flcn::Mat2{ flcn::Vec2{ 1.0f, 2.0f }, flcn::Vec2{ 1.0f, 2.0f } },
+                                               flcn::Mat2{ flcn::Vec2{ 2.0f, 2.0f }, flcn::Vec2{ 2.0f, 2.0f } },
+                                               flcn::Mat2{ flcn::Vec2{ 3.0f, 2.0f }, flcn::Vec2{ 6.0f, 4.0f } },
+                                               flcn::Mat2{ flcn::Vec2{ 0.0f, 0.0f }, flcn::Vec2{ 4.0f, 5.0f } },
+                                               flcn::Mat2{ flcn::Vec2{ 0.0f, 3.0f }, flcn::Vec2{ 0.0f, 5.0f } }));
 
 
 
@@ -66,7 +66,7 @@ namespace
 
     namespace static_tests
     {
-        constexpr flcn::Mat2 MAT{ flcn::CVec2{ 4, 2 }, flcn::CVec2{ 3, 4 } };
+        constexpr flcn::Mat2 MAT{ flcn::Vec2{ 4, 2 }, flcn::Vec2{ 3, 4 } };
 
         /// @test Verify that Mat2 determinant returns a valid value at compile time.
         static_assert(MAT.determinant() == 10);

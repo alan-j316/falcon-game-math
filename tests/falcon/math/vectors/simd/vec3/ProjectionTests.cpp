@@ -29,7 +29,7 @@ namespace
      * @tparam T The scalar type (e.g., float, double) used for the vectors.
      */
     template <typename T>
-    class Vec3ProjectionTests: public ::testing::Test
+    class SimdVec3ProjectionTests: public ::testing::Test
     {
     protected:
         flcn::simd::Vec3<T> _vec;
@@ -45,13 +45,13 @@ namespace
             _expectedProjection = { T(0), T(9), T(0) };
         }
     };
-    TYPED_TEST_SUITE(Vec3ProjectionTests, SupportedFloatingPointTypes);
+    TYPED_TEST_SUITE(SimdVec3ProjectionTests, SupportedFloatingPointTypes);
 
 
     /**
      * @brief Test fixture for @ref flcn::simd::Vec3 projection with NaN vectors.
      */
-    // class Vec3ProjectionNaNTests: public testing::TestWithParam<flcn::simd::Vec3<float>>
+    // class SimdVec3ProjectionNaNTests: public testing::TestWithParam<flcn::simd::Vec3<float>>
     // {};
     // INSTANTIATE_TEST_SUITE_P(Vec3ProjectionNanVectors, Vec3ProjectionNaNTests,
     //                          ::testing::Values(flcn::simd::Vec3<float>(flcn::constants::NaN, 1.0f, 1.0f),
@@ -70,7 +70,7 @@ namespace
  **************************************/
 
 /** @test Verify that projecting onto an orthogonal vector using @ref flcn::simd::Vec3::project returns a zero vector. */
-TYPED_TEST(Vec3ProjectionTests, OrthogonalVectorsReturnsZeroVector)
+TYPED_TEST(SimdVec3ProjectionTests, OrthogonalVectorsReturnsZeroVector)
 {
     const flcn::simd::Vec3 actualProjection = this->_perpendicularVec.project(this->_ontoVec);
 
@@ -82,7 +82,7 @@ TYPED_TEST(Vec3ProjectionTests, OrthogonalVectorsReturnsZeroVector)
  * @test Verify that projecting onto a vector parallel to x-axis using @ref flcn::simd::Vec3::project
  *       returns a vector containing only an x-component.
  */
-TEST(Vec3ProjectionTests, Project_XAxis_ReturnVectorWithNonZeroXComponent)
+TEST(SimdVec3ProjectionTests, Project_XAxis_ReturnVectorWithNonZeroXComponent)
 {
     // Given an arbitrary vector
     const flcn::simd::Vec3 a(10.0f, 20.0f, 30.0f);
@@ -101,7 +101,7 @@ TEST(Vec3ProjectionTests, Project_XAxis_ReturnVectorWithNonZeroXComponent)
  * @test Verify that projecting onto a vector parallel to y-axis using @ref flcn::simd::Vec3::project
  *       returns a vector containing only a y-component.
  */
-TEST(Vec3ProjectionTests, Project_YAxis_ReturnVectorWithNonZeroYComponent)
+TEST(SimdVec3ProjectionTests, Project_YAxis_ReturnVectorWithNonZeroYComponent)
 {
     // Given an arbitrary vector
     const flcn::simd::Vec3 a(10.0f, 20.0f, 30.0f);
@@ -120,7 +120,7 @@ TEST(Vec3ProjectionTests, Project_YAxis_ReturnVectorWithNonZeroYComponent)
  * @test Verify that projecting onto a vector parallel to z-axis using @ref flcn::simd::Vec3::project
  *       returns a vector containing only a z-component.
  */
-TEST(Vec3ProjectionTests, Project_ZAxis_ReturnVectorWithNonZeroZComponent)
+TEST(SimdVec3ProjectionTests, Project_ZAxis_ReturnVectorWithNonZeroZComponent)
 {
     // Given an arbitrary vector
     const flcn::simd::Vec3 a(10.0f, 20.0f, 30.0f);
@@ -139,7 +139,7 @@ TEST(Vec3ProjectionTests, Project_ZAxis_ReturnVectorWithNonZeroZComponent)
  * @test Verify that projecting onto a non-orthogonal vector using @ref flcn::simd::Vec3::project
  *       returns a non-zero vector.
  */
-TYPED_TEST(Vec3ProjectionTests, Project_NonOrthogonalVectors_ReturnsNonZeroVector)
+TYPED_TEST(SimdVec3ProjectionTests, Project_NonOrthogonalVectors_ReturnsNonZeroVector)
 {
     const flcn::simd::Vec3 actualProjection = this->_vec.project(this->_ontoVec);
 
@@ -151,7 +151,7 @@ TYPED_TEST(Vec3ProjectionTests, Project_NonOrthogonalVectors_ReturnsNonZeroVecto
  * @test Verify that projecting onto a non-orthogonal vector using static variant of @ref flcn::simd::Vec3::project
  *       returns a non-zero vector.
  */
-TYPED_TEST(Vec3ProjectionTests, StaticWrapper_Project_NonOrthogonalVectors_ReturnsNonZeroVector)
+TYPED_TEST(SimdVec3ProjectionTests, StaticWrapper_Project_NonOrthogonalVectors_ReturnsNonZeroVector)
 {
     const flcn::simd::Vec3 actualProjection = flcn::simd::Vec3<TypeParam>::project(this->_vec, this->_ontoVec);
 
@@ -163,7 +163,7 @@ TYPED_TEST(Vec3ProjectionTests, StaticWrapper_Project_NonOrthogonalVectors_Retur
  * @test Verify that projecting onto a non-orthogonal unit vector using @ref flcn::simd::Vec3::projectNorm
  *       returns a non-zero vector.
  */
-TEST(Vec3ProjectionTests, ProjectionOntoNormalizedVectorReturnsNonZeroVector)
+TEST(SimdVec3ProjectionTests, ProjectionOntoNormalizedVectorReturnsNonZeroVector)
 {
     // Given an arbitrary vector and a normalized vector
     const flcn::simd::Vec3 a(1.0f, 2.0f, 3.0f);
@@ -182,7 +182,7 @@ TEST(Vec3ProjectionTests, ProjectionOntoNormalizedVectorReturnsNonZeroVector)
  * @test Verify that projecting onto a non-orthogonal vector pointing in the opposite direction
  *       using @ref flcn::simd::Vec3::project returns a non-zero vector.
  */
-TEST(Vec3ProjectionTests, ProjectionOntoVectorInOppositeDirectionReturnsNonZeroVectorInSameDirection)
+TEST(SimdVec3ProjectionTests, ProjectionOntoVectorInOppositeDirectionReturnsNonZeroVectorInSameDirection)
 {
     // Given an arbitrary vector and a vector in the opposite Direction
     const flcn::simd::Vec3 a(4.0f, 4.0f, 4.0f);
@@ -201,7 +201,7 @@ TEST(Vec3ProjectionTests, ProjectionOntoVectorInOppositeDirectionReturnsNonZeroV
  * @test Verify that projecting onto a non-orthogonal unit vector using static variant of
  *       @ref flcn::simd::Vec3::projectNorm returns a non-zero vector.
  */
-TEST(Vec3ProjectionTests, StaticWrapper_ProjectionOntoNormalizedVectorReturnsNonZeroVector)
+TEST(SimdVec3ProjectionTests, StaticWrapper_ProjectionOntoNormalizedVectorReturnsNonZeroVector)
 {
     // Given an arbitrary vector and a normalized vector
     const flcn::simd::Vec3 a(1.0f, 2.0f, 3.0f);
@@ -217,7 +217,7 @@ TEST(Vec3ProjectionTests, StaticWrapper_ProjectionOntoNormalizedVectorReturnsNon
 
 
 /** @test Verify that projection using @ref flcn::simd::Vec3::project always return floating-point vector. */
-TYPED_TEST(Vec3ProjectionTests, Project_AlwaysReturnFloatingPointVector)
+TYPED_TEST(SimdVec3ProjectionTests, Project_AlwaysReturnFloatingPointVector)
 {
     [[maybe_unused]] const flcn::simd::Vec3 projection = this->_vec.project(this->_ontoVec);
     static_assert(std::is_floating_point_v<typename decltype(projection)::value_type>);
@@ -228,7 +228,7 @@ TYPED_TEST(Vec3ProjectionTests, Project_AlwaysReturnFloatingPointVector)
  * @test Verify that projection using static variant of @ref flcn::simd::Vec3::project
  *       always return floating-point vector.
  */
-TYPED_TEST(Vec3ProjectionTests, StaticWrapper_Project_AlwaysReturnFloatingPointVector)
+TYPED_TEST(SimdVec3ProjectionTests, StaticWrapper_Project_AlwaysReturnFloatingPointVector)
 {
     [[maybe_unused]] const flcn::simd::Vec3 projection = flcn::simd::Vec3<TypeParam>::project(this->_vec, this->_ontoVec);
     static_assert(std::is_floating_point_v<typename decltype(projection)::value_type>);
@@ -244,7 +244,7 @@ TYPED_TEST(Vec3ProjectionTests, StaticWrapper_Project_AlwaysReturnFloatingPointV
 //  * @test Verify that projecting onto an orthogonal vector using @ref flcn::simd::Vec3::safeProject
 //  *       returns a zero vector.
 //  */
-// TYPED_TEST(Vec3ProjectionTests, SafeProject_Project_NonOrthogonalVectors_ReturnsNonZeroVector)
+// TYPED_TEST(SimdVec3ProjectionTests, SafeProject_Project_NonOrthogonalVectors_ReturnsNonZeroVector)
 // {
 //     const flcn::simd::Vec3 actualProjection = this->_vec.safeProject(this->_ontoVec);
 //
@@ -256,7 +256,7 @@ TYPED_TEST(Vec3ProjectionTests, StaticWrapper_Project_AlwaysReturnFloatingPointV
 //  * @test Verify that projecting onto a non-orthogonal unit vector using @ref flcn::simd::Vec3::safeProjectNorm
 //  *       returns a non-zero vector.
 //  */
-// TEST(Vec3ProjectionTests, SafeProjectNorm_ProjectionOntoNormalizedVectorReturnsNonZeroVector)
+// TEST(SimdVec3ProjectionTests, SafeProjectNorm_ProjectionOntoNormalizedVectorReturnsNonZeroVector)
 // {
 //     // Given an arbitrary vector and a normalized vector
 //     const flcn::simd::Vec3 a(1.0f, 2.0f, 3.0f);
@@ -275,7 +275,7 @@ TYPED_TEST(Vec3ProjectionTests, StaticWrapper_Project_AlwaysReturnFloatingPointV
 //  * @test Verify that projecting a NaN vector onto a non-orthogonal unit vector using @ref
 //  * flcn::simd::Vec3::safeProjectNorm returns a zero vector.
 //  */
-// TEST(Vec3ProjectionTests, SafeProjectNorm_NaNVectorReturnsNonZeroVector)
+// TEST(SimdVec3ProjectionTests, SafeProjectNorm_NaNVectorReturnsNonZeroVector)
 // {
 //     // Given a NaN vector and a normalized vector
 //     const flcn::simd::Vec3 a(1.0f, 2.0f, flcn::constants::NaN);
@@ -293,7 +293,7 @@ TYPED_TEST(Vec3ProjectionTests, StaticWrapper_Project_AlwaysReturnFloatingPointV
 //  * @test Verify that projecting a NaN vector onto a non-orthogonal unit vector using @ref
 //  * flcn::simd::Vec3::safeProjectNorm returns a zero vector.
 //  */
-// TEST(Vec3ProjectionTests, SafeProjectNorm_OntoNaNVectorReturnsNonZeroVector)
+// TEST(SimdVec3ProjectionTests, SafeProjectNorm_OntoNaNVectorReturnsNonZeroVector)
 // {
 //     // Given an arbitrary vector and a normalized vector
 //     const flcn::simd::Vec3 a(1.0f, 2.0f, 3.0f);
@@ -311,7 +311,7 @@ TYPED_TEST(Vec3ProjectionTests, StaticWrapper_Project_AlwaysReturnFloatingPointV
 //  * @test Verify that projecting onto a non-orthogonal vector pointing in the opposite direction
 //  *       using @ref flcn::simd::Vec3::safeProject returns a non-zero vector.
 //  */
-// TEST(Vec3ProjectionTests, SafeProject_OntoVectorInOppositeDirectionReturnsVectorInSameDirection)
+// TEST(SimdVec3ProjectionTests, SafeProject_OntoVectorInOppositeDirectionReturnsVectorInSameDirection)
 // {
 //     // Given an arbitrary vector and a vector in the opposite Direction
 //     const flcn::simd::Vec3 a(4.0f, 4.0f, 4.0f);
@@ -330,7 +330,7 @@ TYPED_TEST(Vec3ProjectionTests, StaticWrapper_Project_AlwaysReturnFloatingPointV
 //  * @test Verify that projecting onto a zero length vector using @ref flcn::simd::Vec3::safeProject
 //  *       returns a zero vector.
 //  */
-// TYPED_TEST(Vec3ProjectionTests, SafeProject_OntoZeroReturnsZeroVector)
+// TYPED_TEST(SimdVec3ProjectionTests, SafeProject_OntoZeroReturnsZeroVector)
 // {
 //     const flcn::simd::Vec3 zeroVec = flcn::simd::Vec3<TypeParam>::zero();
 //
@@ -343,7 +343,7 @@ TYPED_TEST(Vec3ProjectionTests, StaticWrapper_Project_AlwaysReturnFloatingPointV
 //  * @test Verify that projecting onto a non-orthogonal vector using static variant of @ref flcn::simd::Vec3::safeProject
 //  *       returns a non-zero vector.
 //  */
-// TYPED_TEST(Vec3ProjectionTests, StaticWrapper_SafeProject_Project_NonOrthogonalVectors_ReturnsNonZeroVector)
+// TYPED_TEST(SimdVec3ProjectionTests, StaticWrapper_SafeProject_Project_NonOrthogonalVectors_ReturnsNonZeroVector)
 // {
 //     const flcn::simd::Vec3 actualProjection = flcn::simd::Vec3<TypeParam>::safeProject(this->_vec, this->_ontoVec);
 //
@@ -355,7 +355,7 @@ TYPED_TEST(Vec3ProjectionTests, StaticWrapper_Project_AlwaysReturnFloatingPointV
 //  * @test Verify that projecting onto a non-orthogonal unit vector using static variant of
 //  *       @ref flcn::simd::Vec3::safeProjectNorm returns a non-zero vector.
 //  */
-// TEST(Vec3ProjectionTests, StaticWrapper_SafeProjectNorm_ProjectionOntoNormalizedVectorReturnsNonZeroVector)
+// TEST(SimdVec3ProjectionTests, StaticWrapper_SafeProjectNorm_ProjectionOntoNormalizedVectorReturnsNonZeroVector)
 // {
 //     // Given an arbitrary vector and a normalized vector
 //     const flcn::simd::Vec3 a(1.0f, 2.0f, 3.0f);
@@ -375,7 +375,7 @@ TYPED_TEST(Vec3ProjectionTests, StaticWrapper_Project_AlwaysReturnFloatingPointV
 //  * @test Verify that projecting a NaN vector onto a non-orthogonal unit vector using static variant of
 //  *       @ref flcn::simd::Vec3::safeProjectNorm returns a zero vector.
 //  */
-// TEST(Vec3ProjectionTests, StaticWrapper_SafeProjectNorm_NaNVectorReturnsNonZeroVector)
+// TEST(SimdVec3ProjectionTests, StaticWrapper_SafeProjectNorm_NaNVectorReturnsNonZeroVector)
 // {
 //     // Given a NaN vector and a normalized vector
 //     const flcn::simd::Vec3 a(1.0f, 2.0f, flcn::constants::NaN);
@@ -393,7 +393,7 @@ TYPED_TEST(Vec3ProjectionTests, StaticWrapper_Project_AlwaysReturnFloatingPointV
 //  * @test Verify that projecting a NaN vector onto a non-orthogonal unit vector using static variant of
 //  *       @ref flcn::simd::Vec3::safeProjectNorm returns a zero vector.
 //  */
-// TEST(Vec3ProjectionTests, StaticWrapper_SafeProjectNorm_OntoNaNVectorReturnsNonZeroVector)
+// TEST(SimdVec3ProjectionTests, StaticWrapper_SafeProjectNorm_OntoNaNVectorReturnsNonZeroVector)
 // {
 //     // Given an arbitrary vector and a normalized vector
 //     const flcn::simd::Vec3 a(1.0f, 2.0f, 3.0f);
@@ -410,7 +410,7 @@ TYPED_TEST(Vec3ProjectionTests, StaticWrapper_Project_AlwaysReturnFloatingPointV
 //  * @test Verify that projecting onto a non-orthogonal vector pointing in the opposite direction
 //  *       using static variant of @ref flcn::simd::Vec3::safeProject returns a non-zero vector.
 //  */
-// TEST(Vec3ProjectionTests, StaticWrapper_SafeProject_OntoVectorInOppositeDirectionReturnsVectorInSameDirection)
+// TEST(SimdVec3ProjectionTests, StaticWrapper_SafeProject_OntoVectorInOppositeDirectionReturnsVectorInSameDirection)
 // {
 //     // Given an arbitrary vector and a vector in the opposite Direction
 //     const flcn::simd::Vec3 a(4.0f, 4.0f, 4.0f);
@@ -429,7 +429,7 @@ TYPED_TEST(Vec3ProjectionTests, StaticWrapper_Project_AlwaysReturnFloatingPointV
 //  * @test Verify that projecting onto a zero length vector using static variant of @ref flcn::simd::Vec3::safeProject
 //  *       returns a type-promoted vector.
 //  */
-// TYPED_TEST(Vec3ProjectionTests, StaticWrapper_SafeProject_OntoZeroVectorReturnsZeroVector)
+// TYPED_TEST(SimdVec3ProjectionTests, StaticWrapper_SafeProject_OntoZeroVectorReturnsZeroVector)
 // {
 //     const flcn::simd::Vec3 zeroVec = flcn::simd::Vec3<TypeParam>::zero();
 //
@@ -440,7 +440,7 @@ TYPED_TEST(Vec3ProjectionTests, StaticWrapper_Project_AlwaysReturnFloatingPointV
 //
 //
 // /** @test Verify that projection using @ref flcn::simd::Vec3::safeProject always return floating-point vector. */
-// TYPED_TEST(Vec3ProjectionTests, SafeProject_AlwaysReturnFloatingPointVector)
+// TYPED_TEST(SimdVec3ProjectionTests, SafeProject_AlwaysReturnFloatingPointVector)
 // {
 //     [[maybe_unused]] const flcn::simd::Vec3 projection = this->_vec.safeProject(this->_ontoVec);
 //     static_assert(std::is_floating_point_v<typename decltype(projection)::value_type>);
@@ -451,7 +451,7 @@ TYPED_TEST(Vec3ProjectionTests, StaticWrapper_Project_AlwaysReturnFloatingPointV
 //  * @test Verify that projection using static variant of @ref flcn::simd::Vec3::safeProject
 //  *       always return floating-point vector.
 //  */
-// TYPED_TEST(Vec3ProjectionTests, StaticWrapper_SafeProject_AlwaysReturnFloatingPointVector)
+// TYPED_TEST(SimdVec3ProjectionTests, StaticWrapper_SafeProject_AlwaysReturnFloatingPointVector)
 // {
 //     [[maybe_unused]] const flcn::simd::Vec3 projection = flcn::simd::Vec3<TypeParam>::safeProject(this->_vec, this->_ontoVec);
 //     static_assert(std::is_floating_point_v<typename decltype(projection)::value_type>);
@@ -462,7 +462,7 @@ TYPED_TEST(Vec3ProjectionTests, StaticWrapper_Project_AlwaysReturnFloatingPointV
 //  * @test Verify that projection of NaN vector using @ref flcn::simd::Vec3::safeProject
 //  *       returns zero vector and sets the flag to @ref flcn::OperationStatus::NANOPERAND.
 //  */
-// TEST_P(Vec3ProjectionNaNTests, SafeProject_NaNVectorReturnsZeroVectorAndSetsCorrectFlag)
+// TEST_P(SimdVec3ProjectionNaNTests, SafeProject_NaNVectorReturnsZeroVectorAndSetsCorrectFlag)
 // {
 //     const auto& nanVec  = GetParam();
 //     const auto& ontoVec = flcn::simd::Vec3<float>::one();
@@ -475,7 +475,7 @@ TYPED_TEST(Vec3ProjectionTests, StaticWrapper_Project_AlwaysReturnFloatingPointV
 //  * @test Verify that projection onto NaN vector using @ref flcn::simd::Vec3::safeProject
 //  *       returns zero vector and sets the flag to @ref flcn::OperationStatus::NANOPERAND.
 //  */
-// TEST_P(Vec3ProjectionNaNTests, SafeProject_OntoNaNVectorReturnsZeroVectorAndSetsCorrectFlag)
+// TEST_P(SimdVec3ProjectionNaNTests, SafeProject_OntoNaNVectorReturnsZeroVectorAndSetsCorrectFlag)
 // {
 //     const auto& oneVec     = flcn::simd::Vec3<float>::one();
 //     const auto& ontoNaNVec = GetParam();
@@ -488,7 +488,7 @@ TYPED_TEST(Vec3ProjectionTests, StaticWrapper_Project_AlwaysReturnFloatingPointV
 //  * @test Verify that projection of NaN vector using static variant of @ref flcn::simd::Vec3::safeProject
 //  *       returns zero vector.
 //  */
-// TEST_P(Vec3ProjectionNaNTests, StaticWrapper_SafeProject_NaNVectorReturnsZeroVectorAndSetsCorrectFlag)
+// TEST_P(SimdVec3ProjectionNaNTests, StaticWrapper_SafeProject_NaNVectorReturnsZeroVectorAndSetsCorrectFlag)
 // {
 //     const auto& nanVec  = GetParam();
 //     const auto& ontoVec = flcn::simd::Vec3<float>::one();
@@ -501,7 +501,7 @@ TYPED_TEST(Vec3ProjectionTests, StaticWrapper_Project_AlwaysReturnFloatingPointV
 //  * @test Verify that projection onto NaN vector using static variant of @ref flcn::simd::Vec3::safeProject
 //  *       returns zero vector.
 //  */
-// TEST_P(Vec3ProjectionNaNTests, StaticWrapper_SafeProject_OntoNaNVectorReturnsZeroVectorAndSetsCorrectFlag)
+// TEST_P(SimdVec3ProjectionNaNTests, StaticWrapper_SafeProject_OntoNaNVectorReturnsZeroVectorAndSetsCorrectFlag)
 // {
 //     const auto& oneVec     = flcn::simd::Vec3<float>::one();
 //     const auto& ontoNaNVec = GetParam();
@@ -518,7 +518,7 @@ TYPED_TEST(Vec3ProjectionTests, StaticWrapper_Project_AlwaysReturnFloatingPointV
 //  * @test Verify that projecting onto an orthogonal vector using @ref flcn::simd::Vec3::tryProject
 //  *       returns a zero vector and sets the flag to @ref flcn::OperationStatus::SUCCESS.
 //  */
-// TYPED_TEST(Vec3ProjectionTests, TryProject_Project_NonOrthogonalVectors_ReturnsNonZeroVectorAndSetsCorrectFlag)
+// TYPED_TEST(SimdVec3ProjectionTests, TryProject_Project_NonOrthogonalVectors_ReturnsNonZeroVectorAndSetsCorrectFlag)
 // {
 //     flcn::OperationStatus flag;
 //     const flcn::simd::Vec3 actualProjection = this->_vec.tryProject(this->_ontoVec, flag);
@@ -530,7 +530,7 @@ TYPED_TEST(Vec3ProjectionTests, StaticWrapper_Project_AlwaysReturnFloatingPointV
 //  * @test Verify that projecting onto a non-orthogonal unit vector using @ref flcn::simd::Vec3::tryProject
 //  *       returns a non-zero vector and sets the flag to @ref flcn::OperationStatus::SUCCESS.
 //  */
-// TEST(Vec3ProjectionTests, TryProjectNorm_ProjectionOntoNormalizedVectorReturnsNonZeroVectorAndSetsCorrectFlag)
+// TEST(SimdVec3ProjectionTests, TryProjectNorm_ProjectionOntoNormalizedVectorReturnsNonZeroVectorAndSetsCorrectFlag)
 // {
 //     // Given an arbitrary vector and a normalized vector
 //     const flcn::simd::Vec3 a(1.0f, 2.0f, 3.0f);
@@ -552,7 +552,7 @@ TYPED_TEST(Vec3ProjectionTests, StaticWrapper_Project_AlwaysReturnFloatingPointV
 //  * @test Verify that projecting a NaN vector onto a non-orthogonal unit vector using @ref flcn::simd::Vec3::tryProjectNorm
 //  *       returns a zero vector and sets the flag to @ref flcn::OperationStatus::NANOPERAND.
 //  */
-// TEST(Vec3ProjectionTests, TryProjectNorm_NaNVectorReturnsZeroVectorAndSetsCorrectFlag)
+// TEST(SimdVec3ProjectionTests, TryProjectNorm_NaNVectorReturnsZeroVectorAndSetsCorrectFlag)
 // {
 //     // Given an arbitrary vector and a normalized vector
 //     const flcn::simd::Vec3 a(flcn::constants::NaN, 2.0f, 3.0f);
@@ -572,7 +572,7 @@ TYPED_TEST(Vec3ProjectionTests, StaticWrapper_Project_AlwaysReturnFloatingPointV
 //  * @test Verify that projecting a vector onto a NaN vector using @ref flcn::simd::Vec3::tryProjectNorm
 //  *       returns a zero vector and sets the flag to @ref flcn::OperationStatus::NANOPERAND.
 //  */
-// TEST(Vec3ProjectionTests, TryProjectNorm_OntoNaNVectorReturnsZeroVectorAndSetsCorrectFlag)
+// TEST(SimdVec3ProjectionTests, TryProjectNorm_OntoNaNVectorReturnsZeroVectorAndSetsCorrectFlag)
 // {
 //     // Given an arbitrary vector and a normalized vector
 //     const flcn::simd::Vec3 a(1.0f, 2.0f, 3.0f);
@@ -594,7 +594,7 @@ TYPED_TEST(Vec3ProjectionTests, StaticWrapper_Project_AlwaysReturnFloatingPointV
 //  *       using @ref flcn::simd::Vec3::tryProject returns a non-zero vector
 //  *       and sets the flag to @ref flcn::OperationStatus::SUCCESS.
 //  */
-// TEST(Vec3ProjectionTests, TryProject_OntoVectorInOppositeDirectionReturnsVectorInSameDirectionAndSetsCorrectFlag)
+// TEST(SimdVec3ProjectionTests, TryProject_OntoVectorInOppositeDirectionReturnsVectorInSameDirectionAndSetsCorrectFlag)
 // {
 //     // Given an arbitrary vector and a vector in the opposite Direction
 //     const flcn::simd::Vec3 a(4.0f, 4.0f, 4.0f);
@@ -616,7 +616,7 @@ TYPED_TEST(Vec3ProjectionTests, StaticWrapper_Project_AlwaysReturnFloatingPointV
 //  * @test Verify that projecting onto a zero length vector using @ref flcn::simd::Vec3::tryProject
 //  *       returns a zero vector and sets the flag to @ref flcn::OperationStatus::DIVISIONBYZERO.
 //  */
-// TYPED_TEST(Vec3ProjectionTests, TryProject_OntoZeroReturnsZeroVectorAndSetsCorrectFlag)
+// TYPED_TEST(SimdVec3ProjectionTests, TryProject_OntoZeroReturnsZeroVectorAndSetsCorrectFlag)
 // {
 //     const flcn::simd::Vec3 zeroVec = flcn::simd::Vec3<TypeParam>::zero();
 //     flcn::OperationStatus flag;
@@ -633,7 +633,7 @@ TYPED_TEST(Vec3ProjectionTests, StaticWrapper_Project_AlwaysReturnFloatingPointV
 //  * @test Verify that projecting onto a non-orthogonal vector using static variant of @ref flcn::simd::Vec3::tryProject
 //  *       returns a non-zero vector and sets the flag to @ref flcn::OperationStatus::SUCCESS.
 //  */
-// TYPED_TEST(Vec3ProjectionTests,
+// TYPED_TEST(SimdVec3ProjectionTests,
 //            StaticWrapper_TryProject_Project_NonOrthogonalVectors_ReturnsNonZeroVectorAndSetsCorrectFlag)
 // {
 //     flcn::OperationStatus flag;
@@ -649,7 +649,7 @@ TYPED_TEST(Vec3ProjectionTests, StaticWrapper_Project_AlwaysReturnFloatingPointV
 //  *       @ref flcn::simd::Vec3::tryProject returns a non-zero vector and sets the flag to
 //  *       @ref flcn::OperationStatus::SUCCESS.
 //  */
-// TEST(Vec3ProjectionTests,
+// TEST(SimdVec3ProjectionTests,
 // StaticWrapper_TryProject_ProjectionOntoNormalizedVectorReturnsNonZeroVectorAndSetsCorrectFlag)
 // {
 //     // Given an arbitrary vector and a normalized vector
@@ -673,7 +673,7 @@ TYPED_TEST(Vec3ProjectionTests, StaticWrapper_Project_AlwaysReturnFloatingPointV
 //  * @test Verify that projecting a NaN vector onto a non-orthogonal unit vector using static variant of @ref
 //  * flcn::simd::Vec3::tryProjectNorm returns a zero vector and sets the flag to @ref flcn::OperationStatus::NANOPERAND.
 //  */
-// TEST(Vec3ProjectionTests, StaticWrapper_TryProjectNorm_NaNVectorReturnsZeroVectorAndSetsCorrectFlag)
+// TEST(SimdVec3ProjectionTests, StaticWrapper_TryProjectNorm_NaNVectorReturnsZeroVectorAndSetsCorrectFlag)
 // {
 //     // Given an arbitrary vector and a NaN vector
 //     const flcn::simd::Vec3 a(flcn::constants::NaN, 2.0f, 3.0f);
@@ -693,7 +693,7 @@ TYPED_TEST(Vec3ProjectionTests, StaticWrapper_Project_AlwaysReturnFloatingPointV
 //  * @test Verify that projecting a vector onto a NaN vector using static variant of @ref flcn::simd::Vec3::tryProjectNorm
 //  *       returns a zero vector and sets the flag to @ref flcn::OperationStatus::NANOPERAND.
 //  */
-// TEST(Vec3ProjectionTests, StaticWrapper_TryProjectNorm_OntoNaNVectorReturnsZeroVectorAndSetsCorrectFlag)
+// TEST(SimdVec3ProjectionTests, StaticWrapper_TryProjectNorm_OntoNaNVectorReturnsZeroVectorAndSetsCorrectFlag)
 // {
 //     // Given an arbitrary vector and a NaN vector
 //     const flcn::simd::Vec3 a(1.0f, 2.0f, 3.0f);
@@ -716,7 +716,7 @@ TYPED_TEST(Vec3ProjectionTests, StaticWrapper_Project_AlwaysReturnFloatingPointV
 //  *       using static variant of @ref flcn::simd::Vec3::tryProject returns a non-zero vector
 //  *       and sets the flag to @ref flcn::OperationStatus::SUCCESS.
 //  */
-// TEST(Vec3ProjectionTests,
+// TEST(SimdVec3ProjectionTests,
 //      StaticWrapper_TryProject_OntoVectorInOppositeDirectionReturnsVectorInSameDirectionAndSetsCorrectFlag)
 // {
 //     // Given an arbitrary vector and a vector in the opposite Direction
@@ -739,7 +739,7 @@ TYPED_TEST(Vec3ProjectionTests, StaticWrapper_Project_AlwaysReturnFloatingPointV
 //  * @test Verify that projecting onto a zero length vector using static variant of @ref flcn::simd::Vec3::tryProject
 //  *       returns a type-promoted vector and sets the flag to @ref flcn::OperationStatus::DIVISIONBYZERO.
 //  */
-// TYPED_TEST(Vec3ProjectionTests, StaticWrapper_TryProject_OntoZeroVectorReturnsZeroVectorAndSetsCorrectFlag)
+// TYPED_TEST(SimdVec3ProjectionTests, StaticWrapper_TryProject_OntoZeroVectorReturnsZeroVectorAndSetsCorrectFlag)
 // {
 //     const flcn::simd::Vec3 zeroVec = flcn::simd::Vec3<TypeParam>::zero();
 //     flcn::OperationStatus flag;
@@ -752,7 +752,7 @@ TYPED_TEST(Vec3ProjectionTests, StaticWrapper_Project_AlwaysReturnFloatingPointV
 //
 //
 // /** @test Verify that projection using @ref flcn::simd::Vec3::tryProject always return floating-point vector. */
-// TYPED_TEST(Vec3ProjectionTests, TryProject_AlwaysReturnFloatingPointVectorAndSetsCorrectFlag)
+// TYPED_TEST(SimdVec3ProjectionTests, TryProject_AlwaysReturnFloatingPointVectorAndSetsCorrectFlag)
 // {
 //     [[maybe_unused]] flcn::OperationStatus flag;
 //     [[maybe_unused]] const flcn::simd::Vec3 projection = this->_vec.tryProject(this->_ontoVec, flag);
@@ -764,7 +764,7 @@ TYPED_TEST(Vec3ProjectionTests, StaticWrapper_Project_AlwaysReturnFloatingPointV
 //  * @test Verify that projection using static variant of @ref flcn::simd::Vec3::tryProject
 //  *       always return floating-point vector.
 //  */
-// TYPED_TEST(Vec3ProjectionTests, StaticWrapper_TryProject_AlwaysReturnFloatingPointVector)
+// TYPED_TEST(SimdVec3ProjectionTests, StaticWrapper_TryProject_AlwaysReturnFloatingPointVector)
 // {
 //     [[maybe_unused]] flcn::OperationStatus flag;
 //     [[maybe_unused]] const flcn::simd::Vec3 projection = flcn::simd::Vec3<TypeParam>::tryProject(this->_vec, this->_ontoVec,
@@ -776,7 +776,7 @@ TYPED_TEST(Vec3ProjectionTests, StaticWrapper_Project_AlwaysReturnFloatingPointV
 //  * @test Verify that projection of NaN vector using @ref flcn::simd::Vec3::tryProject
 //  *       returns zero vector and sets the flag to @ref flcn::OperationStatus::NANOPERAND.
 //  */
-// TEST_P(Vec3ProjectionNaNTests, TryProject_NaNVectorReturnsZeroVectorAndSetsCorrectFlag)
+// TEST_P(SimdVec3ProjectionNaNTests, TryProject_NaNVectorReturnsZeroVectorAndSetsCorrectFlag)
 // {
 //     const auto& nanVec  = GetParam();
 //     const auto& ontoVec = flcn::simd::Vec3<float>::one();
@@ -791,7 +791,7 @@ TYPED_TEST(Vec3ProjectionTests, StaticWrapper_Project_AlwaysReturnFloatingPointV
 //  * @test Verify that projection onto NaN vector using @ref flcn::simd::Vec3::tryProject
 //  *       returns zero vector and sets the flag to @ref flcn::OperationStatus::NANOPERAND.
 //  */
-// TEST_P(Vec3ProjectionNaNTests, TryProject_OntoNaNVectorReturnsZeroVectorAndSetsCorrectFlag)
+// TEST_P(SimdVec3ProjectionNaNTests, TryProject_OntoNaNVectorReturnsZeroVectorAndSetsCorrectFlag)
 // {
 //     const auto& oneVec     = flcn::simd::Vec3<float>::one();
 //     const auto& ontoNaNVec = GetParam();
@@ -806,7 +806,7 @@ TYPED_TEST(Vec3ProjectionTests, StaticWrapper_Project_AlwaysReturnFloatingPointV
 //  * @test Verify that projection of NaN vector using static variant of @ref flcn::simd::Vec3::tryProject
 //  *       returns zero vector and sets the flag to @ref flcn::OperationStatus::NANOPERAND.
 //  */
-// TEST_P(Vec3ProjectionNaNTests, StaticWrapper_TryProject_NaNVectorReturnsZeroVectorAndSetsCorrectFlag)
+// TEST_P(SimdVec3ProjectionNaNTests, StaticWrapper_TryProject_NaNVectorReturnsZeroVectorAndSetsCorrectFlag)
 // {
 //     const auto& nanVec  = GetParam();
 //     const auto& ontoVec = flcn::simd::Vec3<float>::one();
@@ -821,7 +821,7 @@ TYPED_TEST(Vec3ProjectionTests, StaticWrapper_Project_AlwaysReturnFloatingPointV
 //  * @test Verify that projection onto NaN vector using static variant of @ref flcn::simd::Vec3::tryProject
 //  *       returns zero vector and sets the flag to @ref flcn::OperationStatus::NANOPERAND.
 //  */
-// TEST_P(Vec3ProjectionNaNTests, StaticWrapper_TryProject_OntoNaNVectorReturnsZeroVectorAndSetsCorrectFlag)
+// TEST_P(SimdVec3ProjectionNaNTests, StaticWrapper_TryProject_OntoNaNVectorReturnsZeroVectorAndSetsCorrectFlag)
 // {
 //     const auto& oneVec     = flcn::simd::Vec3<float>::one();
 //     const auto& ontoNaNVec = GetParam();

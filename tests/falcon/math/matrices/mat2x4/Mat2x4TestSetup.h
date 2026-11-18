@@ -16,7 +16,7 @@
 
 #include <falcon/math/common/MathTraits.h>
 #include <falcon/math/matrices/Mat2x4.h>
-#include <falcon/math/vectors/CVec2.h>
+#include <falcon/math/vectors/Vec2.h>
 
 
 

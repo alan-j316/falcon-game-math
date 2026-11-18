@@ -38,7 +38,7 @@ namespace
      * @tparam T The scalar type (int, float, double...) of the vector components.
      */
     template <typename T>
-    class Vec3EqualityTests: public testing::Test
+    class SimdVec3EqualityTests: public testing::Test
     {
     protected:
         flcn::simd::Vec3<T> _eqVecA;
@@ -57,7 +57,7 @@ namespace
             _inequalityMask = { True<T>, False<T>, True<T> };
         }
     };
-    TYPED_TEST_SUITE(Vec3EqualityTests, SupportedArithmeticTypes);
+    TYPED_TEST_SUITE(SimdVec3EqualityTests, SupportedArithmeticTypes);
 
 } // namespace
 
@@ -68,7 +68,7 @@ namespace
  **************************************/
 
 /** @test Verify that @ref flcn::simd::Vec3::allEq returns True for identical vectors. */
-TYPED_TEST(Vec3EqualityTests, AllEq_IdenticalVectorsReturnsTrue)
+TYPED_TEST(SimdVec3EqualityTests, AllEq_IdenticalVectorsReturnsTrue)
 {
     const bool equality = this->_eqVecA.allEq(this->_eqVecB);
     EXPECT_TRUE(equality);
@@ -76,7 +76,7 @@ TYPED_TEST(Vec3EqualityTests, AllEq_IdenticalVectorsReturnsTrue)
 
 
 /** @test Verify that @ref flcn::simd::Vec3::allEq returns False if any component differ. */
-TYPED_TEST(Vec3EqualityTests, Equality_DifferentVectorsReturnsFalse)
+TYPED_TEST(SimdVec3EqualityTests, Equality_DifferentVectorsReturnsFalse)
 {
     const bool equality = this->_eqVecA.allEq(this->_dissimilarVec);
     EXPECT_FALSE(equality);
@@ -84,7 +84,7 @@ TYPED_TEST(Vec3EqualityTests, Equality_DifferentVectorsReturnsFalse)
 
 
 /** @test Verify that the static variant of @ref flcn::simd::Vec3::allEq for identical vectors. */
-TYPED_TEST(Vec3EqualityTests, StaticWrapper_AllEq_IdenticalVectorsReturnsTrue)
+TYPED_TEST(SimdVec3EqualityTests, StaticWrapper_AllEq_IdenticalVectorsReturnsTrue)
 {
     const bool equality = flcn::simd::Vec3<TypeParam>::allEq(this->_eqVecA, this->_eqVecB);
     EXPECT_TRUE(equality);
@@ -92,7 +92,7 @@ TYPED_TEST(Vec3EqualityTests, StaticWrapper_AllEq_IdenticalVectorsReturnsTrue)
 
 
 /** @test Verify that the static variant of @ref flcn::simd::Vec3::allEq for different vectors. */
-TYPED_TEST(Vec3EqualityTests, StaticWrapper_Equality_DifferentVectorsReturnsFalse)
+TYPED_TEST(SimdVec3EqualityTests, StaticWrapper_Equality_DifferentVectorsReturnsFalse)
 {
     const bool equality = flcn::simd::Vec3<TypeParam>::allEq(this->_eqVecA, this->_dissimilarVec);
     EXPECT_FALSE(equality);
@@ -100,7 +100,7 @@ TYPED_TEST(Vec3EqualityTests, StaticWrapper_Equality_DifferentVectorsReturnsFals
 
 
 /** @test Verify that @ref flcn::simd::Vec3::allEq follows IEEE 754 for NaN comparisons. */
-TEST(Vec3EqualityTests, NanEqualityReturnsFalse)
+TEST(SimdVec3EqualityTests, NanEqualityReturnsFalse)
 {
     const flcn::simd::Vec3 vecA = { NAN_F, NAN_F, NAN_F };
     const flcn::simd::Vec3 vecB = { 1.0f, -5.88874789f, flcn::constants::INFINITY_F };
@@ -111,7 +111,7 @@ TEST(Vec3EqualityTests, NanEqualityReturnsFalse)
 
 
 /** @test Verify that @ref flcn::simd::Vec3::allEq follows IEEE 754 for INFINITY comparisons. */
-TEST(Vec3EqualityTests, InfinityAllEq_IdenticalVectorsReturnsTrue)
+TEST(SimdVec3EqualityTests, InfinityAllEq_IdenticalVectorsReturnsTrue)
 {
     const flcn::simd::Vec3 vecA = { INF, -INF, INF };
     const flcn::simd::Vec3 vecB = { INF, -INF, INF };
@@ -122,7 +122,7 @@ TEST(Vec3EqualityTests, InfinityAllEq_IdenticalVectorsReturnsTrue)
 
 
 /** @test Verify that @ref flcn::simd::Vec3::allEq follows IEEE 754 for INFINITY comparisons. */
-TEST(Vec3EqualityTests, InfinityEquality_DifferentVectorsReturnsFalse)
+TEST(SimdVec3EqualityTests, InfinityEquality_DifferentVectorsReturnsFalse)
 {
     const flcn::simd::Vec3 vecA = { INF, INF, INF };
     const flcn::simd::Vec3 vecB = { INF, -INF, INF };
@@ -133,7 +133,7 @@ TEST(Vec3EqualityTests, InfinityEquality_DifferentVectorsReturnsFalse)
 
 
 /** @test Verify that the equality operator returns True for identical vectors. */
-TYPED_TEST(Vec3EqualityTests, EqualityOperator_IdenticalVectorsReturnsTrue)
+TYPED_TEST(SimdVec3EqualityTests, EqualityOperator_IdenticalVectorsReturnsTrue)
 {
     const bool equality = this->_eqVecA == this->_eqVecB;
     EXPECT_TRUE(equality);
@@ -141,7 +141,7 @@ TYPED_TEST(Vec3EqualityTests, EqualityOperator_IdenticalVectorsReturnsTrue)
 
 
 /** @test Verify that the equality operator returns False if any component differ. */
-TYPED_TEST(Vec3EqualityTests, EqualityOperator_DifferentVectorsReturnsFalse)
+TYPED_TEST(SimdVec3EqualityTests, EqualityOperator_DifferentVectorsReturnsFalse)
 {
     const bool equality = this->_eqVecA == this->_dissimilarVec;
     EXPECT_FALSE(equality);
@@ -149,7 +149,7 @@ TYPED_TEST(Vec3EqualityTests, EqualityOperator_DifferentVectorsReturnsFalse)
 
 
 /** @test Verify that the equality operator works for bool vector with identical components. */
-TEST(Vec3EqualityTests, EqualityOperator_IdenticalBooleanVectorsReturnsTrue)
+TEST(SimdVec3EqualityTests, EqualityOperator_IdenticalBooleanVectorsReturnsTrue)
 {
     const flcn::simd::Vec3 vecA(True<float>, False<float>, True<float>);
     const flcn::simd::Vec3 vecB(True<float>, False<float>, True<float>);
@@ -160,7 +160,7 @@ TEST(Vec3EqualityTests, EqualityOperator_IdenticalBooleanVectorsReturnsTrue)
 
 
 /** @test Verify that the equality operator works for bool vector with different components. */
-TEST(Vec3EqualityTests, EqualityOperator_DifferentBooleanVectorsReturnsFalse)
+TEST(SimdVec3EqualityTests, EqualityOperator_DifferentBooleanVectorsReturnsFalse)
 {
     const flcn::simd::Vec3 vecA(True<float>, False<float>, True<float>);
     const flcn::simd::Vec3 vecB(True<float>, True<float>, True<float>);
@@ -171,7 +171,7 @@ TEST(Vec3EqualityTests, EqualityOperator_DifferentBooleanVectorsReturnsFalse)
 
 
 /** @test Verify that @ref flcn::simd::Vec3::eq returns @ref flcn::simd::Vec3 mask for identical vectors. */
-TYPED_TEST(Vec3EqualityTests, EqualityReturnsCorrectBooleanMask)
+TYPED_TEST(SimdVec3EqualityTests, EqualityReturnsCorrectBooleanMask)
 {
     const flcn::simd::Vec3 mask = this->_eqVecA.eq(this->_dissimilarVec);
     EXPECT_VEC_EQ(this->_equalityMask, mask);
@@ -179,7 +179,7 @@ TYPED_TEST(Vec3EqualityTests, EqualityReturnsCorrectBooleanMask)
 
 
 /** @test Verify that @ref flcn::simd::Vec3::eq follows IEEE 754 for NaN comparisons. */
-TEST(Vec3EqualityTests, NanEqualityReturnsFalseBooleanMask)
+TEST(SimdVec3EqualityTests, NanEqualityReturnsFalseBooleanMask)
 {
     const flcn::simd::Vec3 vecA         = { NAN_F, NAN_F, NAN_F };
     const flcn::simd::Vec3 vecB         = { 1.0f, -5.88874789f, flcn::constants::INFINITY_F };
@@ -191,7 +191,7 @@ TEST(Vec3EqualityTests, NanEqualityReturnsFalseBooleanMask)
 
 
 /** @test Verify that @ref flcn::simd::Vec3::eq follows IEEE 754 for INFINITY comparisons. */
-TEST(Vec3EqualityTests, InfinityEqualityReturnsCorrectBooleanMask)
+TEST(SimdVec3EqualityTests, InfinityEqualityReturnsCorrectBooleanMask)
 {
     const flcn::simd::Vec3 vecA         = { INF, -INF, INF };
     const flcn::simd::Vec3 vecB         = { flcn::constants::INFINITY_F, flcn::constants::INFINITY_F, 10.0f };
@@ -206,7 +206,7 @@ TEST(Vec3EqualityTests, InfinityEqualityReturnsCorrectBooleanMask)
  * @test Verify that the static variant of @ref flcn::simd::Vec3::eq returns @ref flcn::simd::Vec3<bool> mask
  *       for different vectors.
  */
-TYPED_TEST(Vec3EqualityTests, StaticWrapper_EqualityReturnsCorrectBooleanMask)
+TYPED_TEST(SimdVec3EqualityTests, StaticWrapper_EqualityReturnsCorrectBooleanMask)
 {
     const flcn::simd::Vec3 mask = flcn::simd::Vec3<TypeParam>::eq(this->_eqVecA, this->_dissimilarVec);
     EXPECT_VEC_EQ(this->_equalityMask, mask);
@@ -219,7 +219,7 @@ TYPED_TEST(Vec3EqualityTests, StaticWrapper_EqualityReturnsCorrectBooleanMask)
  **************************************/
 
 /** @test Verify that @ref flcn::simd::Vec3::anyNeq returns False for identical vectors. */
-TYPED_TEST(Vec3EqualityTests, Inequality_IdenticalVectorsReturnsFalse)
+TYPED_TEST(SimdVec3EqualityTests, Inequality_IdenticalVectorsReturnsFalse)
 {
     const bool inequality = this->_eqVecA.anyNeq(this->_eqVecB);
     EXPECT_FALSE(inequality);
@@ -227,7 +227,7 @@ TYPED_TEST(Vec3EqualityTests, Inequality_IdenticalVectorsReturnsFalse)
 
 
 /** @test Verify that @ref flcn::simd::Vec3::anyNeq returns True if any component differ. */
-TYPED_TEST(Vec3EqualityTests, Inequality_DifferentVectorsReturnsTrue)
+TYPED_TEST(SimdVec3EqualityTests, Inequality_DifferentVectorsReturnsTrue)
 {
     const bool inequality = this->_eqVecA.anyNeq(this->_dissimilarVec);
     EXPECT_TRUE(inequality);
@@ -235,7 +235,7 @@ TYPED_TEST(Vec3EqualityTests, Inequality_DifferentVectorsReturnsTrue)
 
 
 /** @test Verify that the static variant of @ref flcn::simd::Vec3::anyNeq for identical vectors. */
-TYPED_TEST(Vec3EqualityTests, StaticWrapper_Inequality_IdenticalVectorsReturnsFalse)
+TYPED_TEST(SimdVec3EqualityTests, StaticWrapper_Inequality_IdenticalVectorsReturnsFalse)
 {
     const bool inequality = flcn::simd::Vec3<TypeParam>::anyNeq(this->_eqVecA, this->_eqVecB);
     EXPECT_FALSE(inequality);
@@ -243,7 +243,7 @@ TYPED_TEST(Vec3EqualityTests, StaticWrapper_Inequality_IdenticalVectorsReturnsFa
 
 
 /** @test Verify that the static variant of @ref flcn::simd::Vec3::anyNeq for different vectors. */
-TYPED_TEST(Vec3EqualityTests, StaticWrapper_Inequality_DifferentVectorsReturnsTrue)
+TYPED_TEST(SimdVec3EqualityTests, StaticWrapper_Inequality_DifferentVectorsReturnsTrue)
 {
     const bool inequality = flcn::simd::Vec3<TypeParam>::anyNeq(this->_eqVecA, this->_dissimilarVec);
     EXPECT_TRUE(inequality);
@@ -251,7 +251,7 @@ TYPED_TEST(Vec3EqualityTests, StaticWrapper_Inequality_DifferentVectorsReturnsTr
 
 
 /** @test Verify that @ref flcn::simd::Vec3::anyNeq follows IEEE 754 for NaN comparisons. */
-TEST(Vec3EqualityTests, NanInequalityReturnsTrue)
+TEST(SimdVec3EqualityTests, NanInequalityReturnsTrue)
 {
     const flcn::simd::Vec3 vecA = { NAN_F, NAN_F, NAN_F };
     const flcn::simd::Vec3 vecB = {
@@ -266,7 +266,7 @@ TEST(Vec3EqualityTests, NanInequalityReturnsTrue)
 
 
 /** @test Verify that @ref flcn::simd::Vec3::anyNeq follows IEEE 754 for INFINITY comparisons. */
-TEST(Vec3EqualityTests, InfinityInequality_IdenticalVectorsReturnsFalse)
+TEST(SimdVec3EqualityTests, InfinityInequality_IdenticalVectorsReturnsFalse)
 {
     const flcn::simd::Vec3 vecA = { INF, -INF, INF };
     const flcn::simd::Vec3 vecB = { INF, -INF, INF };
@@ -277,7 +277,7 @@ TEST(Vec3EqualityTests, InfinityInequality_IdenticalVectorsReturnsFalse)
 
 
 /** @test Verify that @ref flcn::simd::Vec3::anyNeq follows IEEE 754 for INFINITY comparisons. */
-TEST(Vec3EqualityTests, InfinityInequality_DifferentVectorsReturnsTrue)
+TEST(SimdVec3EqualityTests, InfinityInequality_DifferentVectorsReturnsTrue)
 {
     const flcn::simd::Vec3 vecA = { INF, INF, INF };
     const flcn::simd::Vec3 vecB = { INF, -INF, INF };
@@ -288,7 +288,7 @@ TEST(Vec3EqualityTests, InfinityInequality_DifferentVectorsReturnsTrue)
 
 
 /** @test Verify that the operator returns False for identical vectors. */
-TYPED_TEST(Vec3EqualityTests, NotEqualsOperator_IdenticalVectorsReturnsFalse)
+TYPED_TEST(SimdVec3EqualityTests, NotEqualsOperator_IdenticalVectorsReturnsFalse)
 {
     const bool inequality = this->_eqVecA != this->_eqVecB;
     EXPECT_FALSE(inequality);
@@ -296,7 +296,7 @@ TYPED_TEST(Vec3EqualityTests, NotEqualsOperator_IdenticalVectorsReturnsFalse)
 
 
 /** @test Verify that the inequality operator returns True for different vectors. */
-TYPED_TEST(Vec3EqualityTests, NotEqualsOperator_DifferentVectorsReturnsTrue)
+TYPED_TEST(SimdVec3EqualityTests, NotEqualsOperator_DifferentVectorsReturnsTrue)
 {
     const bool inequality = this->_eqVecA != this->_dissimilarVec;
     EXPECT_TRUE(inequality);
@@ -304,7 +304,7 @@ TYPED_TEST(Vec3EqualityTests, NotEqualsOperator_DifferentVectorsReturnsTrue)
 
 
 /** @test Verify that the inequality operator works for @ref flcn::simd::Vec3<bool> with identical components. */
-TEST(Vec3EqualityTests, InequalityOperator_IdenticalBooleanVectorsReturnsFalse)
+TEST(SimdVec3EqualityTests, InequalityOperator_IdenticalBooleanVectorsReturnsFalse)
 {
     const flcn::simd::Vec3 vecA(True<float>, False<float>, True<float>);
     const flcn::simd::Vec3 vecB(True<float>, False<float>, True<float>);
@@ -315,7 +315,7 @@ TEST(Vec3EqualityTests, InequalityOperator_IdenticalBooleanVectorsReturnsFalse)
 
 
 /** @test Verify that the inequality operator works for @ref flcn::simd::Vec3<bool> with different components. */
-TEST(Vec3EqualityTests, InequalityOperator_DifferentBooleanVectorsReturnsTrue)
+TEST(SimdVec3EqualityTests, InequalityOperator_DifferentBooleanVectorsReturnsTrue)
 {
     const flcn::simd::Vec3 vecA(True<float>, False<float>, True<float>);
     const flcn::simd::Vec3 vecB(True<float>, True<float>, True<float>);
@@ -326,7 +326,7 @@ TEST(Vec3EqualityTests, InequalityOperator_DifferentBooleanVectorsReturnsTrue)
 
 
 /** @test Verify that @ref flcn::simd::Vec3::neq returns @ref flcn::simd::Vec3<bool> mask for identical vectors. */
-TYPED_TEST(Vec3EqualityTests, InequalityReturnsCorrectBooleanMask)
+TYPED_TEST(SimdVec3EqualityTests, InequalityReturnsCorrectBooleanMask)
 {
     const flcn::simd::Vec3 mask = this->_eqVecA.neq(this->_dissimilarVec);
     EXPECT_VEC_EQ(this->_inequalityMask, mask);
@@ -334,7 +334,7 @@ TYPED_TEST(Vec3EqualityTests, InequalityReturnsCorrectBooleanMask)
 
 
 /** @test Verify that @ref flcn::simd::Vec3::neq follows IEEE 754 for NaN comparisons. */
-TEST(Vec3EqualityTests, NanInequalityReturnsTrueBooleanMask)
+TEST(SimdVec3EqualityTests, NanInequalityReturnsTrueBooleanMask)
 {
     const flcn::simd::Vec3 vecA         = { NAN_F, NAN_F, NAN_F };
     const flcn::simd::Vec3 vecB         = { 1.0f, -5.88874789f, flcn::constants::INFINITY_F };
@@ -346,7 +346,7 @@ TEST(Vec3EqualityTests, NanInequalityReturnsTrueBooleanMask)
 
 
 /** @test Verify that @ref flcn::simd::Vec3::neq follows IEEE 754 for INFINITY comparisons. */
-TEST(Vec3EqualityTests, InfinityInequalityReturnsCorrectBooleanMask)
+TEST(SimdVec3EqualityTests, InfinityInequalityReturnsCorrectBooleanMask)
 {
     const flcn::simd::Vec3 vecA         = { INF, -INF, INF };
     const flcn::simd::Vec3 vecB         = { flcn::constants::INFINITY_F, flcn::constants::INFINITY_F, 10.f };
@@ -361,7 +361,7 @@ TEST(Vec3EqualityTests, InfinityInequalityReturnsCorrectBooleanMask)
  * @test Verify that the static variant of @ref flcn::simd::Vec3::neq returns @ref flcn::simd::Vec3<bool> mask
  *       for different vectors.
  */
-TYPED_TEST(Vec3EqualityTests, StaticWrapper_InequalityReturnsCorrectBooleanMask)
+TYPED_TEST(SimdVec3EqualityTests, StaticWrapper_InequalityReturnsCorrectBooleanMask)
 {
     const flcn::simd::Vec3 mask = flcn::simd::Vec3<TypeParam>::neq(this->_eqVecA, this->_dissimilarVec);
     EXPECT_VEC_EQ(this->_inequalityMask, mask);

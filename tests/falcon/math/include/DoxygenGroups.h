@@ -32,31 +32,31 @@
          */
 
             /**
-             * @defgroup Falcon_CVec2_Tests Constexpr-Capable 2D Vector Tests
+             * @defgroup Falcon_Vec2_Tests Constexpr-Capable 2D Vector Tests
              * @brief Verification of 2D Euclidean vector operations.
              * @ingroup VectorTests
              * @{
-             *   @defgroup T_Falcon_CVec2_Access Component Access and Mutation
-             *   @defgroup T_Falcon_CVec2_Alias Spatial Aliasing
-             *   @defgroup T_Falcon_CVec2_Const Vector Constants
-             *   @defgroup T_Falcon_CVec2_Arithmetic Arithmetic Operations(+, -, *, /)
-             *   @defgroup T_Falcon_CVec2_Bool_Bit Boolean Bitwise Operation
-             *   @defgroup T_Falcon_CVec2_Comp Vector Comparisons(>, >=, <, <=)
-             *   @defgroup T_Falcon_CVec2_Equality Component-wise and Masked Equality and Inequality
-             *   @defgroup T_Falcon_CVec2_Init Initialization
-             *   @defgroup T_Falcon_CVec2_Magnitude Scalar Length(Magnitude)
-             *   @defgroup T_Falcon_CVec2_Norm P-Norm (Length)
-             *   @defgroup T_Falcon_CVec2_Dist Vector Distance
-             *   @defgroup T_Falcon_CVec2_Normalize Vector Normalization
-             *   @defgroup T_Falcon_CVec2_Product Dot and Cross Product
-             *   @defgroup T_Falcon_CVec2_Proj Vector Projection
-             *   @defgroup T_Falcon_CVec2_Rej Vector Rejection
-             *   @defgroup T_Falcon_CVec2_String_Repr Formatted String Representation
-             *   @defgroup T_Falcon_CVec2_Type_Conv Conversion Constructor
-             *   @defgroup T_Falcon_CVec2_Negation Negation(-)
-             *   @defgroup T_Falcon_CVec2_Utils Vector Utilities
-             *   @defgroup T_Falcon_CVec2_Swizzle Vector Swizzling
-             *   @defgroup T_Falcon_CVec2_Ptr Internal Storage Access(Raw Pointer)
+             *   @defgroup T_Falcon_Vec2_Access Component Access and Mutation
+             *   @defgroup T_Falcon_Vec2_Alias Spatial Aliasing
+             *   @defgroup T_Falcon_Vec2_Const Vector Constants
+             *   @defgroup T_Falcon_Vec2_Arithmetic Arithmetic Operations(+, -, *, /)
+             *   @defgroup T_Falcon_Vec2_Bool_Bit Boolean Bitwise Operation
+             *   @defgroup T_Falcon_Vec2_Comp Vector Comparisons(>, >=, <, <=)
+             *   @defgroup T_Falcon_Vec2_Equality Component-wise and Masked Equality and Inequality
+             *   @defgroup T_Falcon_Vec2_Init Initialization
+             *   @defgroup T_Falcon_Vec2_Magnitude Scalar Length(Magnitude)
+             *   @defgroup T_Falcon_Vec2_Norm P-Norm (Length)
+             *   @defgroup T_Falcon_Vec2_Dist Vector Distance
+             *   @defgroup T_Falcon_Vec2_Normalize Vector Normalization
+             *   @defgroup T_Falcon_Vec2_Product Dot and Cross Product
+             *   @defgroup T_Falcon_Vec2_Proj Vector Projection
+             *   @defgroup T_Falcon_Vec2_Rej Vector Rejection
+             *   @defgroup T_Falcon_Vec2_String_Repr Formatted String Representation
+             *   @defgroup T_Falcon_Vec2_Type_Conv Conversion Constructor
+             *   @defgroup T_Falcon_Vec2_Negation Negation(-)
+             *   @defgroup T_Falcon_Vec2_Utils Vector Utilities
+             *   @defgroup T_Falcon_Vec2_Swizzle Vector Swizzling
+             *   @defgroup T_Falcon_Vec2_Ptr Internal Storage Access(Raw Pointer)
              * @}
              */
 
@@ -90,37 +90,35 @@
               * @}
               */
 
-
             /**
-             * @defgroup Falcon_CVec3_Tests 3D Vector Tests
+             * @defgroup Falcon_Vec3_Tests 3D Vector Tests
              * @brief Verification of 3D Euclidean vector operations.
              * @ingroup VectorTests
              * @{
-             *   @defgroup T_Falcon_CVec3_Access Component Access and Mutation
-             *   @defgroup T_Falcon_CVec3_Alias Spatial Aliasing
-             *   @defgroup T_Falcon_CVec3_Const Vector Constants
-             *   @defgroup T_Falcon_CVec3_Arithmetic Arithmetic Operations(+, -, *, /)
-             *   @defgroup T_Falcon_CVec3_Bool_Bit Boolean Bitwise Operation
-             *   @defgroup T_Falcon_CVec3_Comp Vector Comparisons(>, >=, <, <=)
-             *   @defgroup T_Falcon_CVec3_Equality Component-wise and Masked Equality and Inequality
-             *   @defgroup T_Falcon_CVec3_Init Initialization
-             *   @defgroup T_Falcon_CVec3_Magnitude Scalar Length(Magnitude)
-             *   @defgroup T_Falcon_CVec3_Norm P-Norm (Length)
-             *   @defgroup T_Falcon_CVec3_Dist Vector Distance
-             *   @defgroup T_Falcon_CVec3_Normalize Vector Normalization
-             *   @defgroup T_Falcon_CVec3_Product Dot and Cross Product
-             *   @defgroup T_Falcon_CVec3_Proj Vector Projection
-             *   @defgroup T_Falcon_CVec3_Rej Vector Rejection
-             *   @defgroup T_Falcon_CVec3_String_Repr Formatted String Representation
-             *   @defgroup T_Falcon_CVec3_Type_Conv Conversion Constructor
-             *   @defgroup T_Falcon_CVec3_Negation Negation(-)
-             *   @defgroup T_Falcon_CVec3_Utils Vector Utilities
-             *   @defgroup T_Falcon_CVec3_Swizzle Vector Swizzling
-             *   @defgroup T_Falcon_CVec3_Ptr Internal Storage Access(Raw Pointer)
-             *   @defgroup T_Falcon_CVec3_Conv Constexpr Vec to SIMD Accelerated Vec conversion.
+             *   @defgroup T_Falcon_Vec3_Access Component Access and Mutation
+             *   @defgroup T_Falcon_Vec3_Alias Spatial Aliasing
+             *   @defgroup T_Falcon_Vec3_Const Vector Constants
+             *   @defgroup T_Falcon_Vec3_Arithmetic Arithmetic Operations(+, -, *, /)
+             *   @defgroup T_Falcon_Vec3_Bool_Bit Boolean Bitwise Operation
+             *   @defgroup T_Falcon_Vec3_Comp Vector Comparisons(>, >=, <, <=)
+             *   @defgroup T_Falcon_Vec3_Equality Component-wise and Masked Equality and Inequality
+             *   @defgroup T_Falcon_Vec3_Init Initialization
+             *   @defgroup T_Falcon_Vec3_Magnitude Scalar Length(Magnitude)
+             *   @defgroup T_Falcon_Vec3_Norm P-Norm (Length)
+             *   @defgroup T_Falcon_Vec3_Dist Vector Distance
+             *   @defgroup T_Falcon_Vec3_Normalize Vector Normalization
+             *   @defgroup T_Falcon_Vec3_Product Dot and Cross Product
+             *   @defgroup T_Falcon_Vec3_Proj Vector Projection
+             *   @defgroup T_Falcon_Vec3_Rej Vector Rejection
+             *   @defgroup T_Falcon_Vec3_String_Repr Formatted String Representation
+             *   @defgroup T_Falcon_Vec3_Type_Conv Conversion Constructor
+             *   @defgroup T_Falcon_Vec3_Negation Negation(-)
+             *   @defgroup T_Falcon_Vec3_Utils Vector Utilities
+             *   @defgroup T_Falcon_Vec3_Swizzle Vector Swizzling
+             *   @defgroup T_Falcon_Vec3_Ptr Internal Storage Access(Raw Pointer)
+             *   @defgroup T_Falcon_Vec3_Conv Constexpr Vec to SIMD Accelerated Vec conversion.
              * @}
              */
-
 
             /**
              * @defgroup Falcon_Vec4_Tests 4D Vector Tests
@@ -161,6 +159,12 @@
              *   @defgroup T_Falcon_Point3_Subtraction Subtraction
              *   @defgroup T_Falcon_Point3_Init Initialization
              * @}
+             */
+
+            /**
+             * @defgroup Vec_Converter_Tests Vector Converter Tests
+             * @brief Verifies conversion between scalar and SIMD-accelerated vector types.
+             * @ingroup VectorTests
              */
 
         /** @} */ // End of VectorTests
@@ -254,7 +258,6 @@
              * @}
              */
 
-
             /**
              * @defgroup Falcon_Mat3x2_Tests 3x2 Matrix Test Suite
              * @brief Verification of 3x2 matrix operations.
@@ -340,7 +343,6 @@
              * @}
              */
 
-
             /**
              * @defgroup Falcon_Mat4x2_Tests 4x2 Matrix Test Suite
              * @brief Verification of 4x2 matrix operations.
@@ -371,7 +373,6 @@
              * @}
              */
 
-
             /**
              * @defgroup Falcon_Mat4x3_Tests 4x3 Matrix Test Suite
              * @brief Verification of 4x3  matrix operations.
@@ -401,7 +402,6 @@
              *   @defgroup T_Falcon_Mat4x3_Assertion Matrix Death Tests
              * @}
              */
-
 
             /**
              * @defgroup Falcon_Mat4x4_Tests 4x4 Matrix Test Suite
@@ -483,6 +483,9 @@
          *   @defgroup T_Falcon_Quaternion_Utils Quaternion Utilities
          * @}
          */
+
+
+
 
         /**
          * @defgroup Falcon_Common_Tests Common

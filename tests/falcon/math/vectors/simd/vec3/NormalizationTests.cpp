@@ -29,7 +29,7 @@ namespace
      * @tparam T The scalar type (int, float, double...) of the vector components.
      */
     template <typename T>
-    class Vec3NormalizationTests: public testing::Test
+    class SimdVec3NormalizationTests: public testing::Test
     {
         using R = flcn::Magnitude<T>;
 
@@ -44,7 +44,7 @@ namespace
                                  static_cast<R>(0.9389476707655972) };
         }
     };
-    TYPED_TEST_SUITE(Vec3NormalizationTests, SupportedArithmeticTypes);
+    TYPED_TEST_SUITE(SimdVec3NormalizationTests, SupportedArithmeticTypes);
 
 
 
@@ -53,21 +53,21 @@ namespace
      * @tparam T The scalar type (int, float, double...) of the vector components.
      */
     template <typename T>
-    class Vec3ZeroNormalizationTests: public testing::Test
+    class SimdVec3ZeroNormalizationTests: public testing::Test
     {
     protected:
         flcn::simd::Vec3<T> _vec;
 
         void SetUp() override { _vec = { T(0), T(0), T(0) }; }
     };
-    TYPED_TEST_SUITE(Vec3ZeroNormalization, SupportedArithmeticTypes);
+    TYPED_TEST_SUITE(SimdVec3ZeroNormalization, SupportedArithmeticTypes);
 
 
 
     /**
      * @brief Test fixture for @ref Vec3 normalization with NaN vectors.
      */
-    class Vec3NormalizationNaNTests: public testing::TestWithParam<flcn::simd::Vec3<float>>
+    class SimdVec3NormalizationNaNTests: public testing::TestWithParam<flcn::simd::Vec3<float>>
     {};
     INSTANTIATE_TEST_SUITE_P(Vec3NormalizationNaNVectors, Vec3NormalizationNaNTests,
                              ::testing::Values(flcn::simd::Vec3<float>(flcn::constants::NaN, 1.0f, 1.0f),
@@ -97,7 +97,7 @@ namespace
  **************************************/
 
 /** @test Verify that normalizing a vector using @ref flcn::simd::Vec3::normalize returns a unit vector. */
-TYPED_TEST(Vec3NormalizationTests, Normalize_NonZeroVectorReturnsUnitVector)
+TYPED_TEST(SimdVec3NormalizationTests, Normalize_NonZeroVectorReturnsUnitVector)
 {
     const flcn::simd::Vec3 normalized = this->_vec.normalize();
 
@@ -109,7 +109,7 @@ TYPED_TEST(Vec3NormalizationTests, Normalize_NonZeroVectorReturnsUnitVector)
  * @test Verify that normalizing a vector using static variant of @ref flcn::simd::Vec3::normalize
  *       returns a unit vector.
  */
-TYPED_TEST(Vec3NormalizationTests, StaticWrapper_Normalize_NonZeroVectorReturnsUnitVector)
+TYPED_TEST(SimdVec3NormalizationTests, StaticWrapper_Normalize_NonZeroVectorReturnsUnitVector)
 {
     const flcn::simd::Vec3 normalized = flcn::simd::Vec3<TypeParam>::normalize(this->_vec);
 
@@ -121,7 +121,7 @@ TYPED_TEST(Vec3NormalizationTests, StaticWrapper_Normalize_NonZeroVectorReturnsU
  * @test Verify that normalizing a vector using @ref flcn::simd::Vec3::normalize
  *       always return a floating-point vector.
  */
-TYPED_TEST(Vec3NormalizationTests, NormalizedVectorIsAlwaysTypedPromotedToFloatingPointType)
+TYPED_TEST(SimdVec3NormalizationTests, NormalizedVectorIsAlwaysTypedPromotedToFloatingPointType)
 {
     [[maybe_unused]] const auto normalized = this->_vec.normalize();
     static_assert(std::is_floating_point_v<typename decltype(normalized)::value_type>);
@@ -134,7 +134,7 @@ TYPED_TEST(Vec3NormalizationTests, NormalizedVectorIsAlwaysTypedPromotedToFloati
  **************************************/
 
 /** @test Verify that normalizing a vector using @ref flcn::simd::Vec3::safeNormalize returns a unit vector. */
-TYPED_TEST(Vec3NormalizationTests, SafeNormalize_NonZeroVectorReturnsUnitVector)
+TYPED_TEST(SimdVec3NormalizationTests, SafeNormalize_NonZeroVectorReturnsUnitVector)
 {
     const flcn::simd::Vec3 normalized = this->_vec.safeNormalize();
     EXPECT_VEC_EQ(this->_expectedUnitVec, normalized);
@@ -145,7 +145,7 @@ TYPED_TEST(Vec3NormalizationTests, SafeNormalize_NonZeroVectorReturnsUnitVector)
  * @test Verify that attempting to normalize a zero-magnitude vector using @ref flcn::simd::Vec3::safeNormalize
  *       returns a zero-vector.
  */
-TYPED_TEST(Vec3NormalizationTests, SafeNormalize_ZeroVectorReturnsZeroVector)
+TYPED_TEST(SimdVec3NormalizationTests, SafeNormalize_ZeroVectorReturnsZeroVector)
 { EXPECT_VEC_ZERO(flcn::simd::Vec3<TypeParam>::zero().safeNormalize()); }
 
 
@@ -153,7 +153,7 @@ TYPED_TEST(Vec3NormalizationTests, SafeNormalize_ZeroVectorReturnsZeroVector)
  * @test Verify that attempting to normalize a NaN vector using @ref flcn::simd::Vec3::safeNormalize
  *       returns a zero-vector.
  */
-TEST(Vec3Normalization, SafeNormalize_NaNVectorReturnsZeroVector)
+TEST(SimdVec3Normalization, SafeNormalize_NaNVectorReturnsZeroVector)
 { EXPECT_VEC_ZERO(flcn::simd::Vec3<float>::qnan().safeNormalize()); }
 
 
@@ -161,7 +161,7 @@ TEST(Vec3Normalization, SafeNormalize_NaNVectorReturnsZeroVector)
  * @test Verify that normalizing a vector using @ref flcn::simd::Vec3::safeNormalize always
  *       return a floating-point vector.
  */
-TYPED_TEST(Vec3NormalizationTests, SafeNormalize_NormalizedVectorIsAlwaysTypedPromotedToFloatingPointType)
+TYPED_TEST(SimdVec3NormalizationTests, SafeNormalize_NormalizedVectorIsAlwaysTypedPromotedToFloatingPointType)
 {
     [[maybe_unused]] const auto normalized = this->_vec.safeNormalize();
     static_assert(std::is_floating_point_v<typename decltype(normalized)::value_type>);
@@ -172,7 +172,7 @@ TYPED_TEST(Vec3NormalizationTests, SafeNormalize_NormalizedVectorIsAlwaysTypedPr
  * @test Verify that normalizing a 3D vector using static variant of @ref flcn::simd::Vec3::safeNormalize
  *       returns a unit vector.
  */
-TYPED_TEST(Vec3NormalizationTests, StaticWrapper_SafeNormalize_NonZeroVectorReturnsUnitVector)
+TYPED_TEST(SimdVec3NormalizationTests, StaticWrapper_SafeNormalize_NonZeroVectorReturnsUnitVector)
 {
     const flcn::simd::Vec3 normalized = flcn::simd::Vec3<TypeParam>::safeNormalize(this->_vec);
     EXPECT_VEC_EQ(this->_expectedUnitVec, normalized);
@@ -183,7 +183,7 @@ TYPED_TEST(Vec3NormalizationTests, StaticWrapper_SafeNormalize_NonZeroVectorRetu
  * @test Verify that attempting to normalize a zero-magnitude vector using static variant of
  *       @ref flcn::simd::Vec3::safeNormalize returns a zero-vector.
  */
-TYPED_TEST(Vec3NormalizationTests, StaticWrapper_SafeNormalize_ZeroVectorReturnsZeroVector)
+TYPED_TEST(SimdVec3NormalizationTests, StaticWrapper_SafeNormalize_ZeroVectorReturnsZeroVector)
 { EXPECT_VEC_ZERO(flcn::simd::Vec3<TypeParam>::safeNormalize(flcn::simd::Vec3<TypeParam>::zero())); }
 
 
@@ -191,7 +191,7 @@ TYPED_TEST(Vec3NormalizationTests, StaticWrapper_SafeNormalize_ZeroVectorReturns
  * @test Verify that attempting to normalize a NaN vector using static variant of @ref flcn::simd::Vec3::safeNormalize
  *       returns a zero-vector.
  */
-TEST(Vec3Normalization, StaticWrapper_SafeNormalize_NaNVectorReturnsZeroVector)
+TEST(SimdVec3Normalization, StaticWrapper_SafeNormalize_NaNVectorReturnsZeroVector)
 { EXPECT_VEC_ZERO(flcn::simd::Vec3<float>::safeNormalize(flcn::simd::Vec3<float>::qnan())); }
 
 
@@ -199,7 +199,7 @@ TEST(Vec3Normalization, StaticWrapper_SafeNormalize_NaNVectorReturnsZeroVector)
  * @test Verify that the normalizing a 3D vector using static variant of @ref flcn::simd::Vec3::safeNormalize
  *       always return a floating-point vector.
  */
-TYPED_TEST(Vec3NormalizationTests, StaticWrapper_SafeNormalize_NormalizedVectorIsAlwaysTypedPromotedToFloatingPointType)
+TYPED_TEST(SimdVec3NormalizationTests, StaticWrapper_SafeNormalize_NormalizedVectorIsAlwaysTypedPromotedToFloatingPointType)
 {
     [[maybe_unused]] const auto normalized = flcn::simd::Vec3<TypeParam>::safeNormalize(this->_vec);
     static_assert(std::is_floating_point_v<typename decltype(normalized)::value_type>);
@@ -214,7 +214,7 @@ TYPED_TEST(Vec3NormalizationTests, StaticWrapper_SafeNormalize_NormalizedVectorI
  * @test Verify that normalizing a vector using @ref flcn::simd::Vec3::tryNormalize
  *       returns a unit vector and sets the flag to @ref flcn::OperationStatus::SUCCESS.
  */
-TYPED_TEST(Vec3NormalizationTests, TryNormalize_NonZeroVectorReturnsUnitVector)
+TYPED_TEST(SimdVec3NormalizationTests, TryNormalize_NonZeroVectorReturnsUnitVector)
 {
     flcn::OperationStatus flag;
     const flcn::simd::Vec3 normalized = this->_vec.tryNormalize(flag);
@@ -228,7 +228,7 @@ TYPED_TEST(Vec3NormalizationTests, TryNormalize_NonZeroVectorReturnsUnitVector)
  * @test Verify that attempting to normalize a zero-magnitude vector using @ref flcn::simd::Vec3::tryNormalize
  *       returns a zero-vector and sets the flag to @ref flcn::OperationStatus::DIVISIONBYZERO.
  */
-TYPED_TEST(Vec3NormalizationTests, TryNormalize_ZeroVectorReturnsZeroVectorAndSetsCorrectFlag)
+TYPED_TEST(SimdVec3NormalizationTests, TryNormalize_ZeroVectorReturnsZeroVectorAndSetsCorrectFlag)
 {
     flcn::OperationStatus flag;
     EXPECT_VEC_ZERO(flcn::simd::Vec3<TypeParam>::zero().tryNormalize(flag));
@@ -240,7 +240,7 @@ TYPED_TEST(Vec3NormalizationTests, TryNormalize_ZeroVectorReturnsZeroVectorAndSe
  * @test Verify that attempting to normalize a NaN vector using @ref flcn::simd::Vec3::tryNormalize
  *       returns a zero-vector and sets the flag to @ref flcn::OperationStatus::NANOPERAND.
  */
-TEST(Vec3Normalization, TryNormalize_NaNVectorReturnsZeroVectorAndSetsCorrectFlag)
+TEST(SimdVec3Normalization, TryNormalize_NaNVectorReturnsZeroVectorAndSetsCorrectFlag)
 {
     flcn::OperationStatus flag;
     EXPECT_VEC_ZERO(flcn::simd::Vec3<float>::qnan().tryNormalize(flag));
@@ -252,7 +252,7 @@ TEST(Vec3Normalization, TryNormalize_NaNVectorReturnsZeroVectorAndSetsCorrectFla
  * @test Verify that normalizing a vector using @ref flcn::simd::Vec3::tryNormalize always
  *       return a floating-point vector.
  */
-TYPED_TEST(Vec3NormalizationTests, TryNormalize_NormalizedVectorIsAlwaysTypedPromotedToFloatingPointType)
+TYPED_TEST(SimdVec3NormalizationTests, TryNormalize_NormalizedVectorIsAlwaysTypedPromotedToFloatingPointType)
 {
     [[maybe_unused]] flcn::OperationStatus flag;
     [[maybe_unused]] const auto normalized = this->_vec.tryNormalize(flag);
@@ -264,7 +264,7 @@ TYPED_TEST(Vec3NormalizationTests, TryNormalize_NormalizedVectorIsAlwaysTypedPro
  * @test Verify that normalizing a 3D vector using static variant of @ref flcn::simd::Vec3::tryNormalize
  *       returns a unit vector and sets the flag to @ref flcn::OperationStatus::SUCCESS.
  */
-TYPED_TEST(Vec3NormalizationTests, StaticWrapper_TryNormalize_NonZeroVectorReturnsUnitVectorAndSetsCorrectFlag)
+TYPED_TEST(SimdVec3NormalizationTests, StaticWrapper_TryNormalize_NonZeroVectorReturnsUnitVectorAndSetsCorrectFlag)
 {
     flcn::OperationStatus flag;
     const flcn::simd::Vec3 normalized = flcn::simd::Vec3<TypeParam>::tryNormalize(this->_vec, flag);
@@ -279,7 +279,7 @@ TYPED_TEST(Vec3NormalizationTests, StaticWrapper_TryNormalize_NonZeroVectorRetur
  *       @ref flcn::simd::Vec3::tryNormalize returns a zero-vector and
  *       sets the flag to @ref flcn::OperationStatus::DIVISIONBYZERO.
  */
-TYPED_TEST(Vec3NormalizationTests, StaticWrapper_TryNormalize_ZeroVectorReturnsZeroVectorAndSetsCorrectFlag)
+TYPED_TEST(SimdVec3NormalizationTests, StaticWrapper_TryNormalize_ZeroVectorReturnsZeroVectorAndSetsCorrectFlag)
 {
     flcn::OperationStatus flag;
     EXPECT_VEC_ZERO(flcn::simd::Vec3<TypeParam>::zero().tryNormalize(flag));
@@ -291,7 +291,7 @@ TYPED_TEST(Vec3NormalizationTests, StaticWrapper_TryNormalize_ZeroVectorReturnsZ
  * @test Verify that attempting to normalize a NaN vector using static variant of @ref flcn::simd::Vec3::tryNormalize
  *       returns a zero-vector and sets the flag to @ref flcn::OperationStatus::NANOPERAND.
  */
-TEST(Vec3Normalization, StaticWrapper_TryNormalize_NaNVectorReturnsZeroVectorAndSetsCorrectFlag)
+TEST(SimdVec3Normalization, StaticWrapper_TryNormalize_NaNVectorReturnsZeroVectorAndSetsCorrectFlag)
 {
     flcn::OperationStatus flag;
     EXPECT_VEC_ZERO(flcn::simd::Vec3<float>::tryNormalize(flcn::simd::Vec3<float>::qnan(), flag));
@@ -303,7 +303,7 @@ TEST(Vec3Normalization, StaticWrapper_TryNormalize_NaNVectorReturnsZeroVectorAnd
  * @test Verify that the normalizing a 3D vector using static variant of @ref flcn::simd::Vec3::tryNormalize
  *       always return a floating-point vector.
  */
-TYPED_TEST(Vec3NormalizationTests, StaticWrapper_TryNormalize_NormalizedVectorIsAlwaysTypedPromotedToFloatingPointType)
+TYPED_TEST(SimdVec3NormalizationTests, StaticWrapper_TryNormalize_NormalizedVectorIsAlwaysTypedPromotedToFloatingPointType)
 {
     [[maybe_unused]] flcn::OperationStatus flag;
     [[maybe_unused]] const auto normalized = flcn::simd::Vec3<TypeParam>::tryNormalize(this->_vec, flag);
@@ -321,7 +321,7 @@ TYPED_TEST(Vec3NormalizationTests, StaticWrapper_TryNormalize_NormalizedVectorIs
  * @test Verify that attempting to normalize a NaN vector of @ref flcn::simd::Vec3::safeNormalize
  *       returns a zero-vector.
  */
-TEST_P(Vec3NormalizationNaNTests, SafeNormalize_NaNVectorReturnsZeroVector)
+TEST_P(SimdVec3NormalizationNaNTests, SafeNormalize_NaNVectorReturnsZeroVector)
 {
     const auto& vec = GetParam();
 
@@ -333,7 +333,7 @@ TEST_P(Vec3NormalizationNaNTests, SafeNormalize_NaNVectorReturnsZeroVector)
  * @test Verify that attempting to normalize a NaN vector using static variant of @ref flcn::simd::Vec3::safeNormalize
  *       returns a zero-vector.
  */
-TEST_P(Vec3NormalizationNaNTests, StaticWrapper_SafeNormalize_NaNVectorReturnsZeroVector)
+TEST_P(SimdVec3NormalizationNaNTests, StaticWrapper_SafeNormalize_NaNVectorReturnsZeroVector)
 {
     const auto& vec = GetParam();
 
@@ -345,7 +345,7 @@ TEST_P(Vec3NormalizationNaNTests, StaticWrapper_SafeNormalize_NaNVectorReturnsZe
  * @test Verify that attempting to normalize a NaN vector of @ref flcn::simd::Vec3::tryNormalize
  *       returns a zero-vector and sets the flag to @ref flcn::OperationStatus::NANOPERAND.
  */
-TEST_P(Vec3NormalizationNaNTests, TryNormalize_NaNVectorReturnsZeroVectorAndSetsCorrectFlag)
+TEST_P(SimdVec3NormalizationNaNTests, TryNormalize_NaNVectorReturnsZeroVectorAndSetsCorrectFlag)
 {
     flcn::OperationStatus flag;
     const auto& vec = GetParam();
@@ -359,7 +359,7 @@ TEST_P(Vec3NormalizationNaNTests, TryNormalize_NaNVectorReturnsZeroVectorAndSets
  * @test Verify that attempting to normalize a NaN vector using static variant of @ref flcn::simd::Vec3::tryNormalize
  *       returns a zero-vector and sets the flag to @ref flcn::OperationStatus::NANOPERAND.
  */
-TEST_P(Vec3NormalizationNaNTests, StaticWrapper_TryNormalize_NaNVectorReturnsZeroVectorAndSetsCorrectFlag)
+TEST_P(SimdVec3NormalizationNaNTests, StaticWrapper_TryNormalize_NaNVectorReturnsZeroVectorAndSetsCorrectFlag)
 {
     flcn::OperationStatus flag;
     const auto& vec = GetParam();

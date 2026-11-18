@@ -208,8 +208,126 @@ namespace flcn
     { return _reg[0]; }
 
 
+
     /// +---------------------------------------------------------------------------------------+
-    /// |                                INITIALIZATION                                         |
+    /// |                              BITWISE OPERATIONS                                       |
     /// +---------------------------------------------------------------------------------------+
+
+    template <typename DataType, size_t Lane>
+    constexpr Simd128<SimdBackend::ARCH_UNKNOWN, DataType, Lane> Simd128<SimdBackend::ARCH_UNKNOWN, DataType,
+                                                                         Lane>::operator~() const noexcept
+    {
+        Simd128 retReg{};
+        using Uint = types::UInt_t<DataType>;
+        for (size_t i = 0; i < Lane; ++i)
+        {
+            retReg[i] = ~std::bit_cast<Uint>(_reg[i]);
+        }
+        return retReg;
+    }
+
+
+    template <typename DataType, size_t Lane>
+    constexpr Simd128<SimdBackend::ARCH_UNKNOWN, DataType, Lane> Simd128<SimdBackend::ARCH_UNKNOWN, DataType,
+                                                                         Lane>::operator&(Simd128 other) const noexcept
+    {
+        Simd128 retReg{};
+        using Uint = types::UInt_t<DataType>;
+        for (size_t i = 0; i < Lane; ++i)
+        {
+            retReg[i] = std::bit_cast<Uint>(_reg[i]) & std::bit_cast<Uint>(other._reg[i]);
+        }
+        return retReg;
+    }
+
+
+    template <typename DataType, size_t Lane>
+    constexpr Simd128<SimdBackend::ARCH_UNKNOWN, DataType, Lane>& Simd128<SimdBackend::ARCH_UNKNOWN, DataType,
+                                                                          Lane>::operator&=(Simd128 other) noexcept
+    {
+        *this = *this & other;
+        return *this;
+    }
+
+
+    template <typename DataType, size_t Lane>
+    constexpr Simd128<SimdBackend::ARCH_UNKNOWN, DataType, Lane> Simd128<SimdBackend::ARCH_UNKNOWN, DataType,
+                                                                         Lane>::operator|(Simd128 other) const noexcept
+    {
+        Simd128 retReg{};
+        using Uint = types::UInt_t<DataType>;
+        for (size_t i = 0; i < Lane; ++i)
+        {
+            retReg[i] = std::bit_cast<Uint>(_reg[i]) | std::bit_cast<Uint>(other._reg[i]);
+        }
+        return retReg;
+    }
+
+
+    template <typename DataType, size_t Lane>
+    constexpr Simd128<SimdBackend::ARCH_UNKNOWN, DataType, Lane>& Simd128<SimdBackend::ARCH_UNKNOWN, DataType,
+                                                                          Lane>::operator|=(Simd128 other) noexcept
+    {
+        *this = *this | other;
+        return *this;
+    }
+
+
+    template <typename DataType, size_t Lane>
+    constexpr Simd128<SimdBackend::ARCH_UNKNOWN, DataType, Lane> Simd128<SimdBackend::ARCH_UNKNOWN, DataType,
+                                                                         Lane>::operator^(Simd128 other) const noexcept
+    {
+
+        Simd128 retReg{};
+        using Uint = types::UInt_t<DataType>;
+        for (size_t i = 0; i < Lane; ++i)
+        {
+            retReg[i] = std::bit_cast<Uint>(_reg[i]) ^ std::bit_cast<Uint>(other._reg[i]);
+        }
+        return retReg;
+    }
+
+
+    template <typename DataType, size_t Lane>
+    constexpr Simd128<SimdBackend::ARCH_UNKNOWN, DataType, Lane>& Simd128<SimdBackend::ARCH_UNKNOWN, DataType,
+                                                                          Lane>::operator^=(Simd128 other) noexcept
+    {
+        *this = *this ^ other;
+        return *this;
+    }
+
+
+    template <typename DataType, size_t Lane>
+    constexpr Simd128<SimdBackend::ARCH_UNKNOWN, DataType, Lane> Simd128<SimdBackend::ARCH_UNKNOWN, DataType,
+                                                                         Lane>::andNot(Simd128 other) const noexcept
+    { return (~*this) & other; }
+
+
+    template <typename DataType, size_t Lane>
+    constexpr DataType Simd128<SimdBackend::ARCH_UNKNOWN, DataType, Lane>::horizontalOr() const noexcept
+    {
+        using Uint = types::UInt_t<DataType>;
+        Uint retVal;
+        for (size_t i = 0; i < Lane; ++i)
+        {
+            retVal |= std::bit_cast<Uint>(_reg[i]);
+        }
+        return std::bit_cast<std::make_signed<DataType>>(retVal);
+    }
+
+
+    template <typename DataType, size_t Lane>
+    constexpr DataType Simd128<SimdBackend::ARCH_UNKNOWN, DataType, Lane>::horizontalAnd() const noexcept
+    {
+        using Uint  = types::UInt_t<DataType>;
+        Uint retVal = static_cast<Uint>(~0ULL);
+        for (size_t i = 0; i < Lane; ++i)
+        {
+            retVal &= std::bit_cast<Uint>(_reg[i]);
+        }
+        return std::bit_cast<std::make_signed<DataType>>(retVal);
+    }
+
+
 
 } // namespace flcn

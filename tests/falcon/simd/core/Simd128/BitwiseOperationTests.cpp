@@ -314,7 +314,7 @@ TYPED_TEST(Simd128BitwiseOperationTests, BitwiseXorEquals_PerformsXOROperationIn
         }
     }
 
-    flcn::Simd128_t<Type, Lane> regA{lhs}, regB{rhs};
+    flcn::Simd128_t<Type, Lane> regA{ lhs }, regB{ rhs };
     regA ^= regB;
 
     regA.storeAligned(result.data());

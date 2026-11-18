@@ -112,14 +112,26 @@ namespace flcn
 
     template <typename DataType, size_t Lane>
     FALCON_INLINE constexpr void Simd128<SimdBackend::ARCH_UNKNOWN, DataType, Lane>::setOne() noexcept
-    { _reg.fill(1); }
+    {
+        if constexpr (types::IsFP64<DataType>)
+        {
+            _reg.fill(std::bit_cast<double>(~0ULL));
+        }
+        else if constexpr (types::IsFP32<DataType>)
+        {
+            _reg.fill(std::bit_cast<float>(~0U));
+        }
+        else
+        {
+            _reg.fill(static_cast<DataType>(~0ULL));
+        }
+    }
 
 
 
     /// +---------------------------------------------------------------------------------------+
     /// |                                LOAD AND STORE                                         |
     /// +---------------------------------------------------------------------------------------+
-
 
     template <typename DataType, size_t Lane>
     FALCON_INLINE constexpr void Simd128<SimdBackend::ARCH_UNKNOWN, DataType, Lane>::loadAligned(
@@ -165,6 +177,35 @@ namespace flcn
     /// |                                    SET/GET                                            |
     /// +---------------------------------------------------------------------------------------+
 
+    template <typename DataType, size_t Lane>
+    FALCON_INLINE constexpr DataType Simd128<SimdBackend::ARCH_UNKNOWN, DataType, Lane>::getAt(
+        size_t index) const noexcept
+    { return _reg[index]; }
+
+
+    template <typename DataType, size_t Lane>
+    FALCON_INLINE constexpr void Simd128<SimdBackend::ARCH_UNKNOWN, DataType, Lane>::setAt(size_t index,
+                                                                                           DataType value) noexcept
+    { _reg[index] = value; }
+
+
+    template <typename DataType, size_t Lane>
+    template <size_t Index>
+        requires(Index < Lane)
+    FALCON_INLINE constexpr DataType Simd128<SimdBackend::ARCH_UNKNOWN, DataType, Lane>::getAt() const noexcept
+    { return _reg[Index]; }
+
+
+    template <typename DataType, size_t Lane>
+    template <size_t Index>
+        requires(Index < Lane)
+    FALCON_INLINE constexpr void Simd128<SimdBackend::ARCH_UNKNOWN, DataType, Lane>::setAt(DataType value) noexcept
+    { _reg[Index] = value; }
+
+
+    template <typename DataType, size_t Lane>
+    FALCON_INLINE constexpr DataType Simd128<SimdBackend::ARCH_UNKNOWN, DataType, Lane>::extractFirst() noexcept
+    { return _reg[0]; }
 
 
     /// +---------------------------------------------------------------------------------------+

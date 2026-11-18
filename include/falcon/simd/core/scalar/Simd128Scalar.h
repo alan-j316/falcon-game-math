@@ -261,74 +261,74 @@ namespace flcn
          */
         constexpr void storeAligned(DataType* pBuffer) const noexcept;
 
-        // /**
-        //  * Get the value at @p index.
-        //  *
-        //  * @param index The index of the register. Must be between 0 and Lane - 1.
-        //  *
-        //  * @note For indices known at compile-time, use get<Index>() as it is faster
-        //  *       due to the availability of direct hardware intrinsic.
-        //  *
-        //  * @return The value at index [read-only].
-        //  *
-        //  * @relatedalso setAt(size_t, DataType)
-        //  * @relatedalso getAt<size_t>()
-        //  * @relatedalso setAt<size_t>(DataType)
-        //  */
-        // [[nodiscard]] constexpr DataType getAt(size_t index) const noexcept;
-        // // TODO: Migrate runtime getAt to use a switch expression if it's faster
-        //
-        // /**
-        //  * @brief Set the value at @p index to @p value.
-        //  *
-        //  * @param index The index of the register. Must be between 0 and Lane - 1.
-        //  * @param value The value to set.
-        //  *
-        //  * @note For indices known at compile-time, use set<Index>(value) as it is faster
-        //  *       due to the availability of direct hardware intrinsic.
-        //  *
-        //  * @relatedalso getAt(size_t)
-        //  * @relatedalso getAt<size_t>()
-        //  * @relatedalso setAt<size_t>(DataType)
-        //  */
-        // constexpr void setAt(size_t index, DataType value) noexcept;
-        //
-        //
-        // /**
-        //  * @brief Get the value at @p index.
-        //  *
-        //  * @tparam Index The index of the register. Must be between 0 and Lane - 1.
-        //  *
-        //  * @return The value at index [read-only].
-        //  *
-        //  * @relatedalso getAt(size_t)
-        //  * @relatedalso setAt(size_t, DataType)
-        //  * @relatedalso setAt<size_t>(DataType)
-        //  */
-        // template <size_t Index>
-        //     requires(Index < Lane)
-        // [[nodiscard]] constexpr DataType getAt() const noexcept;
-        //
-        //
-        // /**
-        //  * @brief Set the value at @p index to @p value.
-        //  *
-        //  * @tparam Index The index of the register. Must be between 0 and Lane - 1.
-        //  *
-        //  * @return The value at index [read-only].
-        //  *
-        //  * @relatedalso getAt(size_t)
-        //  * @relatedalso setAt(size_t, DataType)
-        //  * @relatedalso getAt<size_t>()
-        //  */
-        // template <size_t Index>
-        //     requires(Index < Lane)
-        // constexpr void setAt(DataType value) noexcept;
-        //
-        // /// @brief Get the element from the lowest lane(0-th index).
-        // constexpr DataType extractFirst() noexcept;
-        //
-        //
+        /**
+         * Get the value at @p index.
+         *
+         * @param index The index of the register. Must be between 0 and Lane - 1.
+         *
+         * @note For indices known at compile-time, use get<Index>() as it is faster
+         *       due to the availability of direct hardware intrinsic.
+         *
+         * @return The value at index [read-only].
+         *
+         * @relatedalso setAt(size_t, DataType)
+         * @relatedalso getAt<size_t>()
+         * @relatedalso setAt<size_t>(DataType)
+         */
+        [[nodiscard]] constexpr DataType getAt(size_t index) const noexcept;
+
+        /**
+         * @brief Set the value at @p index to @p value.
+         *
+         * @param index The index of the register. Must be between 0 and Lane - 1.
+         * @param value The value to set.
+         *
+         * @note For indices known at compile-time, use set<Index>(value) as it is faster
+         *       due to the availability of direct hardware intrinsic.
+         *
+         * @relatedalso getAt(size_t)
+         * @relatedalso getAt<size_t>()
+         * @relatedalso setAt<size_t>(DataType)
+         */
+        constexpr void setAt(size_t index, DataType value) noexcept;
+
+
+        /**
+         * @brief Get the value at @p index.
+         *
+         * @tparam Index The index of the register. Must be between 0 and Lane - 1.
+         *
+         * @return The value at index [read-only].
+         *
+         * @relatedalso getAt(size_t)
+         * @relatedalso setAt(size_t, DataType)
+         * @relatedalso setAt<size_t>(DataType)
+         */
+        template <size_t Index>
+            requires(Index < Lane)
+        [[nodiscard]] constexpr DataType getAt() const noexcept;
+
+
+        /**
+         * @brief Set the value at @p index to @p value.
+         *
+         * @tparam Index The index of the register. Must be between 0 and Lane - 1.
+         *
+         * @return The value at index [read-only].
+         *
+         * @relatedalso getAt(size_t)
+         * @relatedalso setAt(size_t, DataType)
+         * @relatedalso getAt<size_t>()
+         */
+        template <size_t Index>
+            requires(Index < Lane)
+        constexpr void setAt(DataType value) noexcept;
+
+
+        /// @brief Get the element from the lowest lane(0-th index).
+        constexpr DataType extractFirst() noexcept;
+
+
         // ///+=+=+=+=+=+=+=+=+=+=+=+=+=
         // ///    BITWISE OPERATIONS
         // ///+=+=+=+=+=+=+=+=+=+=+=+=+=

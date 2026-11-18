@@ -1,10 +1,11 @@
 [![Unit Tests](https://github.com/alanabrahampkochumon-zqict/falcon-game-math/actions/workflows/unit-tests.yml/badge.svg)](https://github.com/alanabrahampkochumon-zqict/falcon-game-math/actions/workflows/unit-tests.yml)
 [![Vectorization(SIMD) Tests](https://github.com/alan-j316/falcon-game-math/actions/workflows/vectorization-tests.yml/badge.svg)](https://github.com/alan-j316/falcon-game-math/actions/workflows/vectorization-tests.yml)
+
 # Falcon Game Math
 
 Modern High Performance Game Math library with SIMD acceleration on supported platforms.
 
-*Requires C++20 or above*
+_Requires C++20 or above_
 
 ## Requirements
 
@@ -22,23 +23,28 @@ Modern High Performance Game Math library with SIMD acceleration on supported pl
 
 ### Testing and Benchmarks
 
-- **FALCON_BENCHMARK**: Enables FALCON Benchmark Suite.
+Backed by a rigorous, TDD-driven test infrastructure featuring over 23,000 assertions across multiple compiled binaries
+to guarantee deterministic mathematical precision and hardware reliability.
+
+- **FALCON_BENCHMARK**: Enables FALCON Benchmark Suite (_Unused_).
 - **FALCON_TESTS**: Enable FALCON Unit Tests.
 - **NONCOMPREHENSIVE**: Run unit tests with essential type matrix only.
 
 ### SIMD
 
-The flag is currently only available for testing targets and will need to be defined per target using the
-`AddSimdCompilerFlag` CMake function.
+Hardware SIMD instruction sets are controlled globally via the FALCON_SIMD_MODE CMake variable. Set this variable to
+configure the target architecture for the library and its consumers.
 
 - **AUTO**: Automatically detect SIMD based on the host machine.
-- **FALCON_ENABLE_AVX512**: Enables AVX512 support.
+- **FALCON_ENABLE_AVX512EX**: Enables AVX512EX support (EX require all AVX512 extensions like BW/VL...).
+- **FALCON_ENABLE_AVX512F**: Enables AVX512F support.
 - **FALCON_ENABLE_AVX10**: Enables AVX10.1 support. *No auto-detect available*
 - **FALCON_ENABLE_AVX2**: Enables AVX2 support.
 - **FALCON_ENABLE_AVX**: Enables AVX support.
 - **FALCON_ENABLE_SSE4**: Enables SSE4 support.
 - **FALCON_ENABLE_SSE2**: Enables SSE2 support.
-- **FALCON_DISABLE_SIMD**: Disables SIMD.
+- **FALCON_ENABLE_NEON**: Enables Neon support (Not supported yet!).
+- **FALCON_DISABLE_SIMD**: Disables SIMD (Not supported yet!).
 
 ## How to install (CMake FetchContent)
 
@@ -59,7 +65,56 @@ The flag is currently only available for testing targets and will need to be def
         target_link_libraries(SampleGame PRIVATE Falcon::Falcon)    
    ```
 
-## References
+### Usage
+
+```c++
+    flcn::Vec4F position{1, 2, 3, 1};
+    flcn::Mat4F scale = flcn::Mat4F::makeScale(1.2);
+    const auto scaled = scale * position;
+
+    // Simd Accelerated types.
+    flcn::simd::Vec2F posXY{1, 2};
+    
+    // Simd Types
+    flcn::Simd128_t<float, 4> simd1{1, 2, 3, 4}, simd2{4, 5, 6, 7};
+    const auto res = simd1 + simd2;
+```
+
+### Limitation and Future Expansion
+
+Currently, supports foundational primitives (Vec2-4, Mat2-4). Advanced operations like packing, unpacking, and
+perspective projections are planned for upcoming iterations. Hardware SIMD abstractions (SSE2, AVX, AVX2) are available,
+with functional support expanding as needed. A cross-platform scalar fallback (ARCH_UNKNOWN) for SIMD types is the
+immediate development priority.
+
+### Immediate expansion
+
+- [ ] Simd128/256 scalar
+- [ ] Matrix Projection and Translation Factories
+- [ ] Vec4, Mat2, 3, 4 refactor to Simd
+- [ ] Packing and Unpacking
+- [ ] Quaternion
+
+### Future Development
+
+- [ ] Simd512
+- [ ] Neon Support
+- [ ] Dual Quaternions
+- [ ] Geometric Primitives including lines, planes, etc
+- [ ] Constexpr variants of Trigonometric and math functions.
+- [ ] Collision Primitives
+
+_Note: This roadmap is non-exhaustive and the order of development is subject to change._
+
+### Project Samples
+
+- [Tempest: Vulkan-based Game Engine](https://github.com/alan-j316/tempest)
+- [Ephemeral: Vulkan-based API decoupled renderer](https://github.com/alan-j316/ephemeral)
+- [Colloid: Software Rasterizer w/ SIMD acceleration](https://github.com/alan-j316/colloid)
+
+----
+
+#### References
 
 - <a href="https://foundationsofgameenginedev.com/" target="_blank">Eric Lengyel's Foundations of Game Engine
   Development Series</a>

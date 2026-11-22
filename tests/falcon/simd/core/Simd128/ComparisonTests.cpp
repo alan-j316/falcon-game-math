@@ -23,7 +23,7 @@
 
 // TODO: Remove Preprocessor after implementing individual simd paths
 #if defined(FALCON_ENABLE_AVX512) || defined(FALCON_ENABLE_AVX2) || defined(FALCON_ENABLE_AVX) ||                      \
-    defined(FALCON_ENABLE_SSE4) || defined(FALCON_ENABLE_SSE2)
+    defined(FALCON_ENABLE_SSE4) || defined(FALCON_ENABLE_SSE2) || defined(FALCON_DISABLE_SIMD)
 namespace
 {
     /**
@@ -259,8 +259,8 @@ TEST(Simd128ComparisonTests, NotEqualsOperator_EqualValuesInTheFirstTwoLanesRetu
  **************************************/
 
 static constexpr float NaN = std::numeric_limits<float>::quiet_NaN();
-// TEST NOTE: For floats ~0 when static cast results in -1, which is not the mask
-//            returned. For comparisons of floats NaN is returned but since we use
+// TEST NOTE: For floats ~0 when static cast results in -1, which is not the returned
+//            mask. For comparisons of floats, NaN is returned but since we use
 //            isBitwiseEqual, it will compare on a bitwise basis so the result will
 //            be accurate only if we compare truthiness against NaN and not -1 or ~0.
 

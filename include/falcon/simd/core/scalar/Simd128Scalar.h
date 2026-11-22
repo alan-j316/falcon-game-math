@@ -545,22 +545,22 @@ namespace flcn
         // TODO: Add masked variants comparison AVX512(__mmask) and emulate
 
 
-        // ///+=+=+=+=+=+=+=+=+=+=+=+=+=
-        // ///   COMPARISON/EQUALITY
-        // ///+=+=+=+=+=+=+=+=+=+=+=+=+=
-        //
-        // [[nodiscard]] constexpr Simd128 operator==(Simd128 other) const noexcept;
-        //
-        // [[nodiscard]] constexpr Simd128 operator!=(Simd128 other) const noexcept;
-        //
-        // [[nodiscard]] constexpr Simd128 operator>(Simd128 other) const noexcept;
-        //
-        // [[nodiscard]] constexpr Simd128 operator>=(Simd128 other) const noexcept;
-        //
-        // [[nodiscard]] constexpr Simd128 operator<(Simd128 other) const noexcept;
-        //
-        // [[nodiscard]] constexpr Simd128 operator<=(Simd128 other) const noexcept;
-        //
+        ///+=+=+=+=+=+=+=+=+=+=+=+=+=
+        ///   COMPARISON/EQUALITY
+        ///+=+=+=+=+=+=+=+=+=+=+=+=+=
+
+        [[nodiscard]] constexpr Simd128 operator==(Simd128 other) const noexcept;
+
+        [[nodiscard]] constexpr Simd128 operator!=(Simd128 other) const noexcept;
+
+        [[nodiscard]] constexpr Simd128 operator>(Simd128 other) const noexcept;
+
+        [[nodiscard]] constexpr Simd128 operator>=(Simd128 other) const noexcept;
+
+        [[nodiscard]] constexpr Simd128 operator<(Simd128 other) const noexcept;
+
+        [[nodiscard]] constexpr Simd128 operator<=(Simd128 other) const noexcept;
+
         /**
          * @brief Perform a logical left shift on this register by @p count.
          *

@@ -56,6 +56,12 @@ namespace flcn::constants
     template <typename T>
     inline constexpr T TrueMask = static_cast<T>(~0ULL); // NOLINT
 
+    template<>
+    inline constexpr double TrueMask<double> = std::bit_cast<double>(~0ULL);
+
+    template<>
+    inline constexpr float TrueMask<float> = std::bit_cast<float>(~0U);
+
     /// Bitwise comparison mask representing falsiness.
     template <typename T>
     inline constexpr T FalseMask = static_cast<T>(0); // NOLINT

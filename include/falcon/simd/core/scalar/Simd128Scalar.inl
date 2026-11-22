@@ -497,6 +497,20 @@ namespace flcn
     }
 
 
+    template <typename DataType, size_t Lane>
+    FALCON_INLINE constexpr Simd128<SimdBackend::ARCH_UNKNOWN, DataType, Lane> Simd128<
+        SimdBackend::ARCH_UNKNOWN, DataType, Lane>::sqrt() const noexcept
+    {
+        Simd128 retReg{};
+        for (size_t i = 0; i < Lane; ++i)
+        {
+            // TODO: Update to flcn::sqrt
+            // NOTE: sqrt of negative numbers are undefined and returns a zero.
+            retReg._reg[i] = std::sqrt(std::max(_reg[i], DataType(0)));
+        }
+        return retReg;
+    }
+
 
 
     /// +---------------------------------------------------------------------------------------+

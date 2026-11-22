@@ -65,21 +65,21 @@ namespace flcn
      [[nodiscard]] constexpr _REG_128_SCALAR<DataType, Lane> abs(_REG_128_SCALAR<DataType, Lane> reg) noexcept;
 
 
-//     /**
-//      * @brief Compute the square root of each entry in the register.
-//      *
-//      * @note For integral square roots less than zero, this will generate a zero value.
-//      *       For floating-point number, the function follow standard behavior of returning a NaN for negatives.
-//      *
-//      * @tparam DataType The data type of the Simd128 register.
-//      * @tparam Lane     The number of lanes of the Simd128 register.
-//      *
-//      * @param reg The register.
-//      *
-//      * @return A Simd128 register with square root of each entry.
-//      */
-//     template <typename DataType, size_t Lane>
-//     [[nodiscard]] constexpr _REG_128_SCALAR<DataType, Lane> sqrt(_REG_128_SCALAR<DataType, Lane> reg) noexcept;
+     /**
+      * @brief Compute the square root of each entry in the register.
+      *
+      * @note For integral square roots less than zero, this will generate a zero value.
+      *       For floating-point number, the function follow standard behavior of returning a NaN for negatives.
+      *
+      * @tparam DataType The data type of the Simd128 register.
+      * @tparam Lane     The number of lanes of the Simd128 register.
+      *
+      * @param reg The register.
+      *
+      * @return A Simd128 register with square root of each entry.
+      */
+     template <typename DataType, size_t Lane>
+     [[nodiscard]] constexpr _REG_128_SCALAR<DataType, Lane> sqrt(_REG_128_SCALAR<DataType, Lane> reg) noexcept;
 
 
      /**

@@ -446,6 +446,37 @@ namespace flcn
 
 
 
+    /// +---------------------------------------------------------------------------------------+
+    /// |                                     UTILITIES                                         |
+    /// +---------------------------------------------------------------------------------------+
+
+    template <typename DataType, size_t Lane>
+    FALCON_INLINE constexpr DataType Simd128<SimdBackend::ARCH_UNKNOWN, DataType, Lane>::horizontalMin() const noexcept
+    {
+        // TODO: Update to flcn::min
+        DataType min{ _reg[0] };
+        for (size_t i = 1; i < Lane; ++i)
+        {
+            min = std::min(min, _reg[i]);
+        }
+        return min;
+    }
+
+
+    template <typename DataType, size_t Lane>
+    FALCON_INLINE constexpr DataType Simd128<SimdBackend::ARCH_UNKNOWN, DataType, Lane>::horizontalMax() const noexcept
+    {
+        // TODO: Update to flcn::max
+        DataType max{ _reg[0] };
+        for (size_t i = 1; i < Lane; ++i)
+        {
+            max = std::max(max, _reg[i]);
+        }
+        return max;
+    }
+
+
+
 
     /// +---------------------------------------------------------------------------------------+
     /// |                            ARITHMETIC OPERATIONS                                      |

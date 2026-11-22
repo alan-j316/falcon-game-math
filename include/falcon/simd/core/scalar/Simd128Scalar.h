@@ -804,21 +804,21 @@ namespace flcn
         // /// @brief Get the internal register used by Simd128.
         // [[nodiscard]] FALCON_INLINE constexpr simd::internal::Simd128Register_t<DataType> operator*() const noexcept
         // { return _register; }
-        //
-        //
-        //
-        // ///+=+=+=+=+=+=+=+=+=+=+=+=+=
-        // ///       UTILITIES
-        // ///+=+=+=+=+=+=+=+=+=+=+=+=+=
-        //
-        //
-        // /// @brief Get the minimum value from this register.
-        // [[nodiscard]] constexpr DataType horizontalMin() const noexcept;
-        //
-        //
-        // /// @brief Get the maximum value from this register.
-        // [[nodiscard]] constexpr DataType horizontalMax() const noexcept;
-        //
+
+
+
+        ///+=+=+=+=+=+=+=+=+=+=+=+=+=
+        ///       UTILITIES
+        ///+=+=+=+=+=+=+=+=+=+=+=+=+=
+
+
+        /// @brief Get the minimum value from this register.
+        [[nodiscard]] constexpr DataType horizontalMin() const noexcept;
+
+
+        /// @brief Get the maximum value from this register.
+        [[nodiscard]] constexpr DataType horizontalMax() const noexcept;
+
         // /**
         //  * @brief Compute the absolute value of each entry in this register.
         //  * @note For unsigned types the value will not be affected.
@@ -851,6 +851,16 @@ namespace flcn
 
     private:
         std::array<DataType, Lane> _reg{};
+
+        /// +---------------------------------------------------------------------------------------+
+        /// |                              FRIEND FUNCTIONS                                         |
+        /// +---------------------------------------------------------------------------------------+
+        template <typename T, size_t L>
+        friend constexpr Simd128<SimdBackend::ARCH_UNKNOWN, T, L> min(
+            Simd128<SimdBackend::ARCH_UNKNOWN, T, L>, Simd128<SimdBackend::ARCH_UNKNOWN, T, L>) noexcept;
+        template <typename T, size_t L>
+        friend constexpr Simd128<SimdBackend::ARCH_UNKNOWN, T, L> max(
+            Simd128<SimdBackend::ARCH_UNKNOWN, T, L>, Simd128<SimdBackend::ARCH_UNKNOWN, T, L>) noexcept;
     };
 
 } // namespace flcn

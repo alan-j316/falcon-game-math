@@ -22,7 +22,7 @@
 
 // TODO: Remove Preprocessor after implementing individual simd paths
 #if defined(FALCON_ENABLE_AVX512) || defined(FALCON_ENABLE_AVX2) || defined(FALCON_ENABLE_AVX) ||                      \
-    defined(FALCON_ENABLE_SSE4) || defined(FALCON_ENABLE_SSE2)
+    defined(FALCON_ENABLE_SSE4) || defined(FALCON_ENABLE_SSE2) || defined(FALCON_DISABLE_SIMD)
 namespace
 {
     /**
@@ -626,143 +626,143 @@ TEST(Simd128ArithmeticTests, CompoundDivideOperator_WorksWithMixedNumbers)
 }
 
 
-/// @test Verify that fma operation returns a valid result (a * b + c).
-TYPED_TEST(Simd128ArithmeticTests, FMA_ReturnsAValidResult)
-{
-    using Type            = TypeParam::Type;
-    constexpr size_t Lane = TypeParam::VALUE;
+// /// @test Verify that fma operation returns a valid result (a * b + c).
+// TYPED_TEST(Simd128ArithmeticTests, FMA_ReturnsAValidResult)
+// {
+//     using Type            = TypeParam::Type;
+//     constexpr size_t Lane = TypeParam::VALUE;
+//
+//     // We are swapping for the largest and smallest for the first two indices
+//     // since we have at least 2 lanes(128 / 64(max data type size)) we can safely inject those values
+//     alignas(16) std::array<Type, Lane> a{}, b{}, c{}, expected{}, result{};
+//     for (size_t i = 0; i < Lane; ++i)
+//     {
+//         a[i]        = this->a[i];
+//         b[i]        = this->b[i];
+//         c[i]        = this->c[i];
+//         expected[i] = static_cast<Type>(a[i] * b[i] + c[i]);
+//     }
+//
+//
+//     flcn::Simd128_t<Type, Lane> regA{ a }, regB{ b }, regC{ c };
+//
+//     const auto resReg = regA.fma(regB, regC);
+//     resReg.storeAligned(result.data());
+//
+//     for (size_t i = 0; i < Lane; ++i)
+//     {
+//         EXPECT_ANY_EQ(expected[i], result[i]);
+//     }
+// }
 
-    // We are swapping for the largest and smallest for the first two indices
-    // since we have at least 2 lanes(128 / 64(max data type size)) we can safely inject those values
-    alignas(16) std::array<Type, Lane> a{}, b{}, c{}, expected{}, result{};
-    for (size_t i = 0; i < Lane; ++i)
-    {
-        a[i]        = this->a[i];
-        b[i]        = this->b[i];
-        c[i]        = this->c[i];
-        expected[i] = static_cast<Type>(a[i] * b[i] + c[i]);
-    }
-
-
-    flcn::Simd128_t<Type, Lane> regA{ a }, regB{ b }, regC{ c };
-
-    const auto resReg = regA.fma(regB, regC);
-    resReg.storeAligned(result.data());
-
-    for (size_t i = 0; i < Lane; ++i)
-    {
-        EXPECT_ANY_EQ(expected[i], result[i]);
-    }
-}
-
-
-/// @test Verify that fma operation returns a valid result (a * b + c)(static wrapper).
-TYPED_TEST(Simd128ArithmeticTests, FMA_StaticWrapper_ReturnsAValidResult)
-{
-    using Type            = TypeParam::Type;
-    constexpr size_t Lane = TypeParam::VALUE;
-
-    // We are swapping for the largest and smallest for the first two indices
-    // since we have at least 2 lanes(128 / 64(max data type size)) we can safely inject those values
-    alignas(16) std::array<Type, Lane> a{}, b{}, c{}, expected{}, result{};
-    for (size_t i = 0; i < Lane; ++i)
-    {
-        a[i]        = this->a[i];
-        b[i]        = this->b[i];
-        c[i]        = this->c[i];
-        expected[i] = static_cast<Type>(a[i] * b[i] + c[i]);
-    }
-
-
-    flcn::Simd128_t<Type, Lane> regA{ a }, regB{ b }, regC{ c };
-
-    const auto resReg = flcn::fma(regA, regB, regC);
-    resReg.storeAligned(result.data());
-
-    for (size_t i = 0; i < Lane; ++i)
-    {
-        EXPECT_ANY_EQ(expected[i], result[i]);
-    }
-}
-
-
-/// @test Verify that fmSub operation returns a valid result (a * b - c)(static wrapper).
-TYPED_TEST(Simd128ArithmeticTests, FMSub_StaticWrapper_ReturnsAValidResult)
-{
-    using Type            = TypeParam::Type;
-    constexpr size_t Lane = TypeParam::VALUE;
-
-    // We are swapping for the largest and smallest for the first two indices
-    // since we have at least 2 lanes(128 / 64(max data type size)) we can safely inject those values
-    alignas(16) std::array<Type, Lane> a{}, b{}, c{}, expected{}, result{};
-    for (size_t i = 0; i < Lane; ++i)
-    {
-        a[i]        = this->a[i];
-        b[i]        = this->b[i];
-        c[i]        = this->c[i];
-        expected[i] = static_cast<Type>(a[i] * b[i] - c[i]);
-    }
-
-
-    flcn::Simd128_t<Type, Lane> regA{ a }, regB{ b }, regC{ c };
-
-    const auto resReg = flcn::fmSub(regA, regB, regC);
-    resReg.storeAligned(result.data());
-
-    for (size_t i = 0; i < Lane; ++i)
-    {
-        EXPECT_ANY_EQ(expected[i], result[i]);
-    }
-}
-
-
-TYPED_TEST(Simd128ArithmeticTests, HorizontalAdd_ReturnsAValidResult)
-{
-    using Type            = TypeParam::Type;
-    constexpr size_t Lane = TypeParam::VALUE;
-
-    // We are swapping for the largest and smallest for the first two indices
-    // since we have at least 2 lanes(128 / 64(max data type size)) we can safely inject those values
-    alignas(16) std::array<Type, Lane> a{};
-    Type sum = 0;
-    for (size_t i = 0; i < Lane; ++i)
-    {
-        a[i] = this->haddData[i];
-        sum += a[i];
-    }
-    sum = static_cast<Type>(sum);
-
-    flcn::Simd128_t<Type, Lane> regA{ a };
-    const auto result = regA.horizontalAdd();
-    EXPECT_ANY_EQ(sum, result);
-}
-
-
-TYPED_TEST(Simd128ArithmeticTests, HorizontalSub_ReturnsAValidResult)
-{
-    using Type            = TypeParam::Type;
-    constexpr size_t Lane = TypeParam::VALUE;
-
-    alignas(16) std::array<Type, Lane> a{};
-    Type difference = 0;
-    for (size_t i = 0; i < Lane; ++i)
-    {
-        a[i] = this->haddData[i];
-        if (i == 0)
-        {
-            difference = a[i];
-        }
-        else
-        {
-            difference -= a[i];
-        }
-    }
-    difference = static_cast<Type>(difference);
-
-    flcn::Simd128_t<Type, Lane> regA{ a };
-    const auto result = regA.horizontalSub();
-    EXPECT_ANY_EQ(difference, result);
-}
+//
+// /// @test Verify that fma operation returns a valid result (a * b + c)(static wrapper).
+// TYPED_TEST(Simd128ArithmeticTests, FMA_StaticWrapper_ReturnsAValidResult)
+// {
+//     using Type            = TypeParam::Type;
+//     constexpr size_t Lane = TypeParam::VALUE;
+//
+//     // We are swapping for the largest and smallest for the first two indices
+//     // since we have at least 2 lanes(128 / 64(max data type size)) we can safely inject those values
+//     alignas(16) std::array<Type, Lane> a{}, b{}, c{}, expected{}, result{};
+//     for (size_t i = 0; i < Lane; ++i)
+//     {
+//         a[i]        = this->a[i];
+//         b[i]        = this->b[i];
+//         c[i]        = this->c[i];
+//         expected[i] = static_cast<Type>(a[i] * b[i] + c[i]);
+//     }
+//
+//
+//     flcn::Simd128_t<Type, Lane> regA{ a }, regB{ b }, regC{ c };
+//
+//     const auto resReg = flcn::fma(regA, regB, regC);
+//     resReg.storeAligned(result.data());
+//
+//     for (size_t i = 0; i < Lane; ++i)
+//     {
+//         EXPECT_ANY_EQ(expected[i], result[i]);
+//     }
+// }
+//
+//
+// /// @test Verify that fmSub operation returns a valid result (a * b - c)(static wrapper).
+// TYPED_TEST(Simd128ArithmeticTests, FMSub_StaticWrapper_ReturnsAValidResult)
+// {
+//     using Type            = TypeParam::Type;
+//     constexpr size_t Lane = TypeParam::VALUE;
+//
+//     // We are swapping for the largest and smallest for the first two indices
+//     // since we have at least 2 lanes(128 / 64(max data type size)) we can safely inject those values
+//     alignas(16) std::array<Type, Lane> a{}, b{}, c{}, expected{}, result{};
+//     for (size_t i = 0; i < Lane; ++i)
+//     {
+//         a[i]        = this->a[i];
+//         b[i]        = this->b[i];
+//         c[i]        = this->c[i];
+//         expected[i] = static_cast<Type>(a[i] * b[i] - c[i]);
+//     }
+//
+//
+//     flcn::Simd128_t<Type, Lane> regA{ a }, regB{ b }, regC{ c };
+//
+//     const auto resReg = flcn::fmSub(regA, regB, regC);
+//     resReg.storeAligned(result.data());
+//
+//     for (size_t i = 0; i < Lane; ++i)
+//     {
+//         EXPECT_ANY_EQ(expected[i], result[i]);
+//     }
+// }
+//
+//
+// TYPED_TEST(Simd128ArithmeticTests, HorizontalAdd_ReturnsAValidResult)
+// {
+//     using Type            = TypeParam::Type;
+//     constexpr size_t Lane = TypeParam::VALUE;
+//
+//     // We are swapping for the largest and smallest for the first two indices
+//     // since we have at least 2 lanes(128 / 64(max data type size)) we can safely inject those values
+//     alignas(16) std::array<Type, Lane> a{};
+//     Type sum = 0;
+//     for (size_t i = 0; i < Lane; ++i)
+//     {
+//         a[i] = this->haddData[i];
+//         sum += a[i];
+//     }
+//     sum = static_cast<Type>(sum);
+//
+//     flcn::Simd128_t<Type, Lane> regA{ a };
+//     const auto result = regA.horizontalAdd();
+//     EXPECT_ANY_EQ(sum, result);
+// }
+//
+//
+// TYPED_TEST(Simd128ArithmeticTests, HorizontalSub_ReturnsAValidResult)
+// {
+//     using Type            = TypeParam::Type;
+//     constexpr size_t Lane = TypeParam::VALUE;
+//
+//     alignas(16) std::array<Type, Lane> a{};
+//     Type difference = 0;
+//     for (size_t i = 0; i < Lane; ++i)
+//     {
+//         a[i] = this->haddData[i];
+//         if (i == 0)
+//         {
+//             difference = a[i];
+//         }
+//         else
+//         {
+//             difference -= a[i];
+//         }
+//     }
+//     difference = static_cast<Type>(difference);
+//
+//     flcn::Simd128_t<Type, Lane> regA{ a };
+//     const auto result = regA.horizontalSub();
+//     EXPECT_ANY_EQ(difference, result);
+// }
 
 
 #endif

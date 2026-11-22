@@ -575,4 +575,28 @@ namespace flcn
         SimdBackend::ARCH_UNKNOWN, DataType, Lane>::fmSub(Simd128 b, Simd128 c) const noexcept
     { return *this * b - c; }
 
+
+    template <typename DataType, size_t Lane>
+    FALCON_INLINE constexpr DataType Simd128<SimdBackend::ARCH_UNKNOWN, DataType, Lane>::horizontalAdd() const noexcept
+    {
+        DataType sum{};
+        for (size_t i = 0; i < Lane; ++i)
+        {
+            sum += _reg[i];
+        }
+        return sum;
+    }
+
+
+    template <typename DataType, size_t Lane>
+    FALCON_INLINE constexpr DataType Simd128<SimdBackend::ARCH_UNKNOWN, DataType, Lane>::horizontalSub() const noexcept
+    {
+        DataType diff{ _reg[0] };
+        for (size_t i = 1; i < Lane; ++i)
+        {
+            diff -= _reg[i];
+        }
+        return diff;
+    }
+
 } // namespace flcn

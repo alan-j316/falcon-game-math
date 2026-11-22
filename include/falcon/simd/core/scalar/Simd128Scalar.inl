@@ -521,8 +521,8 @@ namespace flcn
 
 
     template <typename DataType, size_t Lane>
-    FALCON_INLINE constexpr Simd128<SimdBackend::ARCH_UNKNOWN, DataType, Lane>& Simd128<SimdBackend::ARCH_UNKNOWN, DataType,
-                                                                          Lane>::operator*=(Simd128 other) noexcept
+    FALCON_INLINE constexpr Simd128<SimdBackend::ARCH_UNKNOWN, DataType, Lane>& Simd128<
+        SimdBackend::ARCH_UNKNOWN, DataType, Lane>::operator*=(Simd128 other) noexcept
     {
         *this = *this * other;
         return *this;
@@ -530,8 +530,8 @@ namespace flcn
 
 
     template <typename DataType, size_t Lane>
-    FALCON_INLINE constexpr Simd128<SimdBackend::ARCH_UNKNOWN, DataType, Lane> Simd128<SimdBackend::ARCH_UNKNOWN, DataType,
-                                                                         Lane>::divReg(Simd128 other) const noexcept
+    FALCON_INLINE constexpr Simd128<SimdBackend::ARCH_UNKNOWN, DataType, Lane> Simd128<
+        SimdBackend::ARCH_UNKNOWN, DataType, Lane>::divReg(Simd128 other) const noexcept
     {
         Simd128 retReg{};
         for (size_t i = 0; i < Lane; ++i)
@@ -556,11 +556,23 @@ namespace flcn
 
 
     template <typename DataType, size_t Lane>
-    FALCON_INLINE constexpr Simd128<SimdBackend::ARCH_UNKNOWN, DataType, Lane>& Simd128<SimdBackend::ARCH_UNKNOWN, DataType,
-                                                                          Lane>::operator/=(DataType scalar) noexcept
+    FALCON_INLINE constexpr Simd128<SimdBackend::ARCH_UNKNOWN, DataType, Lane>& Simd128<
+        SimdBackend::ARCH_UNKNOWN, DataType, Lane>::operator/=(DataType scalar) noexcept
     {
         *this = *this / scalar;
         return *this;
     }
+
+
+    template <typename DataType, size_t Lane>
+    FALCON_INLINE constexpr Simd128<SimdBackend::ARCH_UNKNOWN, DataType, Lane> Simd128<
+        SimdBackend::ARCH_UNKNOWN, DataType, Lane>::fma(Simd128 b, Simd128 c) const noexcept
+    { return *this * b + c; }
+
+
+    template <typename DataType, size_t Lane>
+    FALCON_INLINE constexpr Simd128<SimdBackend::ARCH_UNKNOWN, DataType, Lane> Simd128<
+        SimdBackend::ARCH_UNKNOWN, DataType, Lane>::fmSub(Simd128 b, Simd128 c) const noexcept
+    { return *this * b - c; }
 
 } // namespace flcn

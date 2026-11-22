@@ -505,30 +505,30 @@ namespace flcn
         constexpr Simd128& operator/=(DataType scalar) noexcept;
 
 
-        // /**
-        //  * @brief Perform a fused multiply and add (this * b + c).
-        //  *
-        //  * @note Register arithmetic is limited to same data types and lanes.
-        //  * @param b The register containing the multiplier.
-        //  * @param c The register containing the addend.
-        //  *
-        //  * @return A new register with the fused-multiply-add result.
-        //  */
-        // [[nodiscard]] constexpr Simd128 fma(Simd128 b, Simd128 c) const noexcept;
-        //
-        //
-        // /**
-        //  * @brief Perform a fused multiply and subtract (this * b - c).
-        //  *
-        //  * @note Register arithmetic is limited to same data types and lanes.
-        //  * @param b The register containing the multiplier.
-        //  * @param c The register containing the the subtrahend.
-        //  *
-        //  * @return A new register with the fused-multiply-subtract result.
-        //  */
-        // [[nodiscard]] constexpr Simd128 fmSub(Simd128 b, Simd128 c) const noexcept;
-        //
-        //
+        /**
+         * @brief Perform a fused multiply and add (this * b + c).
+         *
+         * @note Register arithmetic is limited to same data types and lanes.
+         * @param b The register containing the multiplier.
+         * @param c The register containing the addend.
+         *
+         * @return A new register with the fused-multiply-add result.
+         */
+        [[nodiscard]] constexpr Simd128 fma(Simd128 b, Simd128 c) const noexcept;
+
+
+        /**
+         * @brief Perform a fused multiply and subtract (this * b - c).
+         *
+         * @note Register arithmetic is limited to same data types and lanes.
+         * @param b The register containing the multiplier.
+         * @param c The register containing the the subtrahend.
+         *
+         * @return A new register with the fused-multiply-subtract result.
+         */
+        [[nodiscard]] constexpr Simd128 fmSub(Simd128 b, Simd128 c) const noexcept;
+
+
         // /**
         //  * @brief Add together elements from all the lanes of the current register.
         //  * @return The sum of elements in all the lanes.

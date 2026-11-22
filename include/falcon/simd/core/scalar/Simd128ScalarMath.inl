@@ -36,13 +36,13 @@ namespace flcn
         }
         return retReg;
     }
-    //
-    //
-    //     template <typename DataType, size_t Lane>
-    //     FALCON_INLINE constexpr _REG_128_SCALAR<DataType, Lane> abs(_REG_128_SCALAR<DataType, Lane> reg) noexcept
-    //     { return reg.abs(); }
-    //
-    //
+
+
+    template <typename DataType, size_t Lane>
+    FALCON_INLINE constexpr _REG_128_SCALAR<DataType, Lane> abs(_REG_128_SCALAR<DataType, Lane> reg) noexcept
+    { return reg.abs(); }
+
+
     //     template <typename DataType, size_t Lane>
     //     FALCON_INLINE constexpr _REG_128_SCALAR<DataType, Lane> sqrt(_REG_128_SCALAR<DataType, Lane> reg) noexcept
     //     { return reg.sqrt(); }

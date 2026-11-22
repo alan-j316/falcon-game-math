@@ -49,22 +49,22 @@ namespace flcn
                                                               _REG_128_SCALAR<DataType, Lane> b) noexcept;
 
 
-//     /**
-//      * @brief Compute the absolute value of each entry in the register.
-//      *
-//      * @note For unsigned types the value will not be affected.
-//      *
-//      * @tparam DataType The data type of the Simd128 register.
-//      * @tparam Lane     The number of lanes of the Simd128 register.
-//      *
-//      * @param reg The register.
-//      *
-//      * @return A Simd128 register with absolute values.
-//      */
-//     template <typename DataType, size_t Lane>
-//     [[nodiscard]] constexpr _REG_128_SCALAR<DataType, Lane> abs(_REG_128_SCALAR<DataType, Lane> reg) noexcept;
-//
-//
+     /**
+      * @brief Compute the absolute value of each entry in the register.
+      *
+      * @note For unsigned types the value will not be affected.
+      *
+      * @tparam DataType The data type of the Simd128 register.
+      * @tparam Lane     The number of lanes of the Simd128 register.
+      *
+      * @param reg The register.
+      *
+      * @return A Simd128 register with absolute values.
+      */
+     template <typename DataType, size_t Lane>
+     [[nodiscard]] constexpr _REG_128_SCALAR<DataType, Lane> abs(_REG_128_SCALAR<DataType, Lane> reg) noexcept;
+
+
 //     /**
 //      * @brief Compute the square root of each entry in the register.
 //      *

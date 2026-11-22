@@ -476,6 +476,27 @@ namespace flcn
     }
 
 
+    template <typename DataType, size_t Lane>
+    FALCON_INLINE constexpr Simd128<SimdBackend::ARCH_UNKNOWN, DataType, Lane> Simd128<
+        SimdBackend::ARCH_UNKNOWN, DataType, Lane>::abs() const noexcept
+    {
+        if constexpr (std::is_unsigned_v<DataType>)
+        {
+            return *this;
+        }
+        else
+        {
+            Simd128 retReg{};
+            for (size_t i = 0; i < Lane; ++i)
+            {
+                // TODO: Update to flcn::abs
+                retReg._reg[i] = std::abs(_reg[i]);
+            }
+            return retReg;
+        }
+    }
+
+
 
 
     /// +---------------------------------------------------------------------------------------+

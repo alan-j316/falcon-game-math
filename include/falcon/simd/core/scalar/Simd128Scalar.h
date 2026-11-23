@@ -713,33 +713,33 @@ namespace flcn
         [[nodiscard]] constexpr Simd128 shiftRightLogical() const noexcept;
 
 
-        // ///+=+=+=+=+=+=+=+=+=+=+=+=+=
-        // ///   MASKING/BLENDING
-        // ///+=+=+=+=+=+=+=+=+=+=+=+=+=
-        //
-        // /**
-        //  * @brief Create a mask for register value blending.
-        //  *
-        //  * @tparam Mask The bool mask to be converted. The first bool translates to the lower n-bits.
-        //  *              Number of Mask arguments must be between 2 and @p Lane and must be a power of 2.
-        //  *
-        //  * @code
-        //  * // float x 4(lane) mask.
-        //  * const Simd128_t<float, 4> reg{ 1.0f, 2.0f, 3.0f, 4.0f };
-        //  * const auto mask = reg.makeBlendMask<true, false, true, false>();
-        //  * // 0b00000000111111110000000011111111 or 0x00FF00FF
-        //  * const auto mask = reg.makeBlendMask<true, false, true, true>();
-        //  * // 0b11111111111111110000000011111111 or 0xFFFF00FF
-        //  * @endcode
-        //  *
-        //  * @return A 32-bit integral mask usable across Simd128 const blending.
-        //  */
-        // template <bool... Mask>
-        //     requires(std::has_single_bit(sizeof...(Mask)) && sizeof...(Mask) >= 2 && sizeof...(Mask) <= Lane)
-        // static constexpr BlendMask32_t makeBlendMask() noexcept
-        // { return simd::makeBlendMask32<MAX_LANE_COUNT, Mask...>(); }
-        //
-        //
+        ///+=+=+=+=+=+=+=+=+=+=+=+=+=
+        ///   MASKING/BLENDING
+        ///+=+=+=+=+=+=+=+=+=+=+=+=+=
+
+        /**
+         * @brief Create a mask for register value blending.
+         *
+         * @tparam Mask The bool mask to be converted. The first bool translates to the lower n-bits.
+         *              Number of Mask arguments must be between 2 and @p Lane and must be a power of 2.
+         *
+         * @code
+         * // float x 4(lane) mask.
+         * const Simd128_t<float, 4> reg{ 1.0f, 2.0f, 3.0f, 4.0f };
+         * const auto mask = reg.makeBlendMask<true, false, true, false>();
+         * // 0b00000000111111110000000011111111 or 0x00FF00FF
+         * const auto mask = reg.makeBlendMask<true, false, true, true>();
+         * // 0b11111111111111110000000011111111 or 0xFFFF00FF
+         * @endcode
+         *
+         * @return A 32-bit integral mask usable across Simd128 const blending.
+         */
+        template <bool... Mask>
+            requires(std::has_single_bit(sizeof...(Mask)) && sizeof...(Mask) >= 2 && sizeof...(Mask) <= Lane)
+        static constexpr BlendMask32_t makeBlendMask() noexcept
+        { return simd::makeBlendMask32<MAX_LANE_COUNT, Mask...>(); }
+
+
         // /**
         //  * @brief Selectively blend values from this register and @p other using the @p mask.
         //  *

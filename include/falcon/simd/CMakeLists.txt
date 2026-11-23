@@ -17,6 +17,8 @@ add_library(${FALCON_SIMD_TARGET_NAME} INTERFACE
 
         core/scalar/Simd128Scalar.h
         core/scalar/Simd128Scalar.inl
+        core/scalar/Simd128ScalarMath.h
+        core/scalar/Simd128ScalarMath.inl
 
         utils/SIMDUtils.h
         utils/TypeTraits.h

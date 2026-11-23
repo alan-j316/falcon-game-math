@@ -364,203 +364,203 @@ namespace flcn
         /// @brief Perform an AND operation on the entire vector, horizontally.
         [[nodiscard]] constexpr DataType horizontalAnd() const noexcept;
 
-        // ///+=+=+=+=+=+=+=+=+=+=+=+=+=
-        // ///   ARITHMETIC OPERATIONS
-        // ///+=+=+=+=+=+=+=+=+=+=+=+=+=
-        //
-        // /**
-        //  * @brief Add two registers together and return a new register.
-        //  *
-        //  * @note Register arithmetic to limited is same data types and lanes.
-        //  *
-        //  * @param other The register to add.
-        //  *
-        //  * @return A new register with the sum elements from this register and @p other.
-        //  */
-        // [[nodiscard]] constexpr Simd128 operator+(Simd128 other) const noexcept;
-        //
-        //
-        // /**
-        //  * @brief Add contents of this register with @p other in-place.
-        //  *
-        //  * @note Register arithmetic to limited is same data types and lanes.
-        //  *
-        //  * @param other The register to add.
-        //  *
-        //  * @return A reference to this register with sum.
-        //  */
-        // constexpr Simd128& operator+=(Simd128 other) noexcept;
-        //
-        //
-        // /**
-        //  * @brief Subtract two registers and return a new register.
-        //  *
-        //  * @note Register arithmetic is limited to same data types and lanes.
-        //  *
-        //  * @param other The register to subtract.
-        //  * @return A new register with the difference between elements of this register and @p other.
-        //  */
-        // [[nodiscard]] constexpr Simd128 operator-(Simd128 other) const noexcept;
-        //
-        //
-        // /**
-        //  * @brief Perform a arithmetic negation on this register(NOT BITWISE) and return a new register.
-        //  *        Analogous to (0 - reg) or -reg.
-        //  * @return A new register with negated elements.
-        //  */
-        // [[nodiscard]] constexpr Simd128 operator-() const noexcept;
-        //
-        //
-        // /**
-        //  * @brief Subtract contents of this register from @p other in-place.
-        //  *
-        //  * @note Register arithmetic is limited to same data types and lanes.
-        //  *
-        //  * @param other The register to subtract.
-        //  *
-        //  * @return A reference to this register with difference.
-        //  */
-        // constexpr Simd128& operator-=(Simd128 other) noexcept;
-        //
-        //
-        // /**
-        //  * @brief Multiply two registers and return a new register.
-        //  *
-        //  * @note Register arithmetic is limited to same data types and lanes.
-        //  *
-        //  * @param other The register to multiply.
-        //  * @return A new register with the product of elements of this register and @p other.
-        //  */
-        // [[nodiscard]] constexpr Simd128 operator*(Simd128 other) const noexcept;
-        //
-        //
-        // /**
-        //  * @brief Multiply contents of this register with @p other in-place.
-        //  *
-        //  * @note Register arithmetic is limited to same data types and lanes.
-        //  *
-        //  * @param other The register to multiply.
-        //  *
-        //  * @return A reference to this register with products.
-        //  */
-        // constexpr Simd128& operator*=(Simd128 other) noexcept;
-        //
-        //
-        // /**
-        //  * @brief Divide contents of this register by another register(@p other).
-        //  *
-        //  * @note Register arithmetic is limited to same data types and lanes.
-        //  * @note Direct SIMD operations are limited to floating-point numbers only.
-        //  *       Therefore the operations for integrals are emulated by converting them to floating points, but some
-        //  *       integrals like for `uint64_t` and `int64_t` are fully scalar since converting them to floating point
-        //  *       can lead to precision loss due to the 53-bit maximum precision of double precision float point
-        //  numbers.
-        //  *
-        //  * @note For division with same divisor it is faster to use operator/ or operator/= which implements division
-        //  *       by constant from Hackers Delight. (TODO)
-        //  *
-        //  * @param other The register containing the divisors.
-        //  *
-        //  * @return A new register with the quotient.
-        //  *
-        //  * @relatedalso operator/(const DataType)
-        //  * @relatedalso operator/=(const DataType)
-        //  */
-        // [[nodiscard]] constexpr Simd128 divReg(Simd128 other) const noexcept;
-        //
-        //
-        // /**
-        //  * @brief Divide contents of this register by a @p scalar.
-        //  * @todo Update to use division by constant and update readme
-        //  *
-        //  * @note Register arithmetic is limited to same data types and lanes.
-        //  * @note For integral division with different divisors @ref divReg may be
-        //  *       faster.
-        //  *
-        //  * @param scalar The divisor.
-        //  *
-        //  * @return A new register with the quotient.
-        //  *
-        //  * @relatedalso divReg(const Simd128)
-        //  * @relatedalso operator/=(const DataType)
-        //  */
-        // [[nodiscard]] constexpr Simd128 operator/(DataType scalar) const noexcept;
-        //
-        //
-        // /**
-        //  * @brief Divide contents of this register by a @p scalar in-place.
-        //  * @todo Update to use division by constant and update readme
-        //  *
-        //  * @note Register arithmetic is limited to same data types and lanes.
-        //  * @note For integral division with different divisors @ref divReg may be
-        //  *       faster.
-        //  *
-        //  * @param scalar The divisor.
-        //  *
-        //  * @return A reference to this register with products.
-        //  *
-        //  * @relatedalso divReg(const Simd128)
-        //  * @relatedalso operator/(const DataType)
-        //  */
-        // constexpr Simd128& operator/=(DataType scalar) noexcept;
-        //
-        //
-        // /**
-        //  * @brief Perform a fused multiply and add (this * b + c).
-        //  *
-        //  * @note Register arithmetic is limited to same data types and lanes.
-        //  * @param b The register containing the multiplier.
-        //  * @param c The register containing the addend.
-        //  *
-        //  * @return A new register with the fused-multiply-add result.
-        //  */
-        // [[nodiscard]] constexpr Simd128 fma(Simd128 b, Simd128 c) const noexcept;
-        //
-        //
-        // /**
-        //  * @brief Perform a fused multiply and subtract (this * b - c).
-        //  *
-        //  * @note Register arithmetic is limited to same data types and lanes.
-        //  * @param b The register containing the multiplier.
-        //  * @param c The register containing the the subtrahend.
-        //  *
-        //  * @return A new register with the fused-multiply-subtract result.
-        //  */
-        // [[nodiscard]] constexpr Simd128 fmSub(Simd128 b, Simd128 c) const noexcept;
-        //
-        //
-        // /**
-        //  * @brief Add together elements from all the lanes of the current register.
-        //  * @return The sum of elements in all the lanes.
-        //  */
-        // [[nodiscard]] constexpr DataType horizontalAdd() const noexcept;
-        //
-        // /**
-        //  * @brief Subtract upper lane elements from the lower lanes of the current register.
-        //  * @return The difference between elements in all the lanes.
-        //  */
-        // [[nodiscard]] constexpr DataType horizontalSub() const noexcept;
-        //
-        //
-        // // TODO: Add masked variants comparison AVX512(__mmask) and emulate
-        //
-        //
-        // ///+=+=+=+=+=+=+=+=+=+=+=+=+=
-        // ///   COMPARISON/EQUALITY
-        // ///+=+=+=+=+=+=+=+=+=+=+=+=+=
-        //
-        // [[nodiscard]] constexpr Simd128 operator==(Simd128 other) const noexcept;
-        //
-        // [[nodiscard]] constexpr Simd128 operator!=(Simd128 other) const noexcept;
-        //
-        // [[nodiscard]] constexpr Simd128 operator>(Simd128 other) const noexcept;
-        //
-        // [[nodiscard]] constexpr Simd128 operator>=(Simd128 other) const noexcept;
-        //
-        // [[nodiscard]] constexpr Simd128 operator<(Simd128 other) const noexcept;
-        //
-        // [[nodiscard]] constexpr Simd128 operator<=(Simd128 other) const noexcept;
-        //
+        ///+=+=+=+=+=+=+=+=+=+=+=+=+=
+        ///   ARITHMETIC OPERATIONS
+        ///+=+=+=+=+=+=+=+=+=+=+=+=+=
+
+        /**
+         * @brief Add two registers together and return a new register.
+         *
+         * @note Register arithmetic to limited is same data types and lanes.
+         *
+         * @param other The register to add.
+         *
+         * @return A new register with the sum elements from this register and @p other.
+         */
+        [[nodiscard]] constexpr Simd128 operator+(Simd128 other) const noexcept;
+
+
+        /**
+         * @brief Add contents of this register with @p other in-place.
+         *
+         * @note Register arithmetic to limited is same data types and lanes.
+         *
+         * @param other The register to add.
+         *
+         * @return A reference to this register with sum.
+         */
+        constexpr Simd128& operator+=(Simd128 other) noexcept;
+
+
+        /**
+         * @brief Subtract two registers and return a new register.
+         *
+         * @note Register arithmetic is limited to same data types and lanes.
+         *
+         * @param other The register to subtract.
+         * @return A new register with the difference between elements of this register and @p other.
+         */
+        [[nodiscard]] constexpr Simd128 operator-(Simd128 other) const noexcept;
+
+
+        /**
+         * @brief Perform a arithmetic negation on this register(NOT BITWISE) and return a new register.
+         *        Analogous to (0 - reg) or -reg.
+         * @return A new register with negated elements.
+         */
+        [[nodiscard]] constexpr Simd128 operator-() const noexcept;
+
+
+        /**
+         * @brief Subtract contents of this register from @p other in-place.
+         *
+         * @note Register arithmetic is limited to same data types and lanes.
+         *
+         * @param other The register to subtract.
+         *
+         * @return A reference to this register with difference.
+         */
+        constexpr Simd128& operator-=(Simd128 other) noexcept;
+
+
+        /**
+         * @brief Multiply two registers and return a new register.
+         *
+         * @note Register arithmetic is limited to same data types and lanes.
+         *
+         * @param other The register to multiply.
+         * @return A new register with the product of elements of this register and @p other.
+         */
+        [[nodiscard]] constexpr Simd128 operator*(Simd128 other) const noexcept;
+
+
+        /**
+         * @brief Multiply contents of this register with @p other in-place.
+         *
+         * @note Register arithmetic is limited to same data types and lanes.
+         *
+         * @param other The register to multiply.
+         *
+         * @return A reference to this register with products.
+         */
+        constexpr Simd128& operator*=(Simd128 other) noexcept;
+
+
+        /**
+         * @brief Divide contents of this register by another register(@p other).
+         *
+         * @note Register arithmetic is limited to same data types and lanes.
+         * @note Direct SIMD operations are limited to floating-point numbers only.
+         *       Therefore the operations for integrals are emulated by converting them to floating points, but some
+         *       integrals like for `uint64_t` and `int64_t` are fully scalar since converting them to floating point
+         *       can lead to precision loss due to the 53-bit maximum precision of double precision float point
+         numbers.
+         *
+         * @note For division with same divisor it is faster to use operator/ or operator/= which implements division
+         *       by constant from Hackers Delight. (TODO)
+         *
+         * @param other The register containing the divisors.
+         *
+         * @return A new register with the quotient.
+         *
+         * @relatedalso operator/(const DataType)
+         * @relatedalso operator/=(const DataType)
+         */
+        [[nodiscard]] constexpr Simd128 divReg(Simd128 other) const noexcept;
+
+
+        /**
+         * @brief Divide contents of this register by a @p scalar.
+         * @todo Update to use division by constant and update readme
+         *
+         * @note Register arithmetic is limited to same data types and lanes.
+         * @note For integral division with different divisors @ref divReg may be
+         *       faster.
+         *
+         * @param scalar The divisor.
+         *
+         * @return A new register with the quotient.
+         *
+         * @relatedalso divReg(const Simd128)
+         * @relatedalso operator/=(const DataType)
+         */
+        [[nodiscard]] constexpr Simd128 operator/(DataType scalar) const noexcept;
+
+
+        /**
+         * @brief Divide contents of this register by a @p scalar in-place.
+         * @todo Update to use division by constant and update readme
+         *
+         * @note Register arithmetic is limited to same data types and lanes.
+         * @note For integral division with different divisors @ref divReg may be
+         *       faster.
+         *
+         * @param scalar The divisor.
+         *
+         * @return A reference to this register with products.
+         *
+         * @relatedalso divReg(const Simd128)
+         * @relatedalso operator/(const DataType)
+         */
+        constexpr Simd128& operator/=(DataType scalar) noexcept;
+
+
+        /**
+         * @brief Perform a fused multiply and add (this * b + c).
+         *
+         * @note Register arithmetic is limited to same data types and lanes.
+         * @param b The register containing the multiplier.
+         * @param c The register containing the addend.
+         *
+         * @return A new register with the fused-multiply-add result.
+         */
+        [[nodiscard]] constexpr Simd128 fma(Simd128 b, Simd128 c) const noexcept;
+
+
+        /**
+         * @brief Perform a fused multiply and subtract (this * b - c).
+         *
+         * @note Register arithmetic is limited to same data types and lanes.
+         * @param b The register containing the multiplier.
+         * @param c The register containing the the subtrahend.
+         *
+         * @return A new register with the fused-multiply-subtract result.
+         */
+        [[nodiscard]] constexpr Simd128 fmSub(Simd128 b, Simd128 c) const noexcept;
+
+
+        /**
+         * @brief Add together elements from all the lanes of the current register.
+         * @return The sum of elements in all the lanes.
+         */
+        [[nodiscard]] constexpr DataType horizontalAdd() const noexcept;
+
+        /**
+         * @brief Subtract upper lane elements from the lower lanes of the current register.
+         * @return The difference between elements in all the lanes.
+         */
+        [[nodiscard]] constexpr DataType horizontalSub() const noexcept;
+
+
+        // TODO: Add masked variants comparison AVX512(__mmask) and emulate
+
+
+        ///+=+=+=+=+=+=+=+=+=+=+=+=+=
+        ///   COMPARISON/EQUALITY
+        ///+=+=+=+=+=+=+=+=+=+=+=+=+=
+
+        [[nodiscard]] constexpr Simd128 operator==(Simd128 other) const noexcept;
+
+        [[nodiscard]] constexpr Simd128 operator!=(Simd128 other) const noexcept;
+
+        [[nodiscard]] constexpr Simd128 operator>(Simd128 other) const noexcept;
+
+        [[nodiscard]] constexpr Simd128 operator>=(Simd128 other) const noexcept;
+
+        [[nodiscard]] constexpr Simd128 operator<(Simd128 other) const noexcept;
+
+        [[nodiscard]] constexpr Simd128 operator<=(Simd128 other) const noexcept;
+
         /**
          * @brief Perform a logical left shift on this register by @p count.
          *
@@ -804,41 +804,41 @@ namespace flcn
         // /// @brief Get the internal register used by Simd128.
         // [[nodiscard]] FALCON_INLINE constexpr simd::internal::Simd128Register_t<DataType> operator*() const noexcept
         // { return _register; }
-        //
-        //
-        //
-        // ///+=+=+=+=+=+=+=+=+=+=+=+=+=
-        // ///       UTILITIES
-        // ///+=+=+=+=+=+=+=+=+=+=+=+=+=
-        //
-        //
-        // /// @brief Get the minimum value from this register.
-        // [[nodiscard]] constexpr DataType horizontalMin() const noexcept;
-        //
-        //
-        // /// @brief Get the maximum value from this register.
-        // [[nodiscard]] constexpr DataType horizontalMax() const noexcept;
-        //
-        // /**
-        //  * @brief Compute the absolute value of each entry in this register.
-        //  * @note For unsigned types the value will not be affected.
-        //  *
-        //  * @return A Simd128 register with absolute values.
-        //  */
-        // [[nodiscard]] constexpr Simd128 abs() const noexcept;
-        //
-        //
-        // /**
-        //  * @brief Compute the square root value of each entry in this register.
-        //  *
-        //  * @note For integral square roots less than zero, this will generate a zero value.
-        //  *       For floating-point number, the function follow standard behavior of returning a NaN for negatives.
-        //  *
-        //  * @return A Simd128 register with square root of values, rounded to the same target type.
-        //  */
-        // [[nodiscard]] constexpr Simd128 sqrt() const noexcept;
-        //
-        //
+
+
+
+        ///+=+=+=+=+=+=+=+=+=+=+=+=+=
+        ///       UTILITIES
+        ///+=+=+=+=+=+=+=+=+=+=+=+=+=
+
+
+        /// @brief Get the minimum value from this register.
+        [[nodiscard]] constexpr DataType horizontalMin() const noexcept;
+
+
+        /// @brief Get the maximum value from this register.
+        [[nodiscard]] constexpr DataType horizontalMax() const noexcept;
+
+        /**
+         * @brief Compute the absolute value of each entry in this register.
+         * @note For unsigned types the value will not be affected.
+         *
+         * @return A Simd128 register with absolute values.
+         */
+        [[nodiscard]] constexpr Simd128 abs() const noexcept;
+
+
+        /**
+         * @brief Compute the square root value of each entry in this register.
+         *
+         * @note For integral square roots less than zero, this will generate a zero value.
+         *       For floating-point number, the function follow standard behavior of returning a NaN for negatives.
+         *
+         * @return A Simd128 register with square root of values, rounded to the same target type.
+         */
+        [[nodiscard]] constexpr Simd128 sqrt() const noexcept;
+
+
         // /// @brief Get a mask with the Nan status of each Lane of elements.
         // /// @note Integrals always return a zero register.
         // [[nodiscard]] constexpr Simd128 hasNan() const noexcept;
@@ -851,6 +851,16 @@ namespace flcn
 
     private:
         std::array<DataType, Lane> _reg{};
+
+        /// +---------------------------------------------------------------------------------------+
+        /// |                              FRIEND FUNCTIONS                                         |
+        /// +---------------------------------------------------------------------------------------+
+        template <typename T, size_t L>
+        friend constexpr Simd128<SimdBackend::ARCH_UNKNOWN, T, L> min(
+            Simd128<SimdBackend::ARCH_UNKNOWN, T, L>, Simd128<SimdBackend::ARCH_UNKNOWN, T, L>) noexcept;
+        template <typename T, size_t L>
+        friend constexpr Simd128<SimdBackend::ARCH_UNKNOWN, T, L> max(
+            Simd128<SimdBackend::ARCH_UNKNOWN, T, L>, Simd128<SimdBackend::ARCH_UNKNOWN, T, L>) noexcept;
     };
 
 } // namespace flcn

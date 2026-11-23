@@ -18,7 +18,7 @@
 
 // TODO: Remove Preprocessor after implementing individual simd paths
 #if defined(FALCON_ENABLE_AVX512) || defined(FALCON_ENABLE_AVX2) || defined(FALCON_ENABLE_AVX) ||                      \
-    defined(FALCON_ENABLE_SSE4) || defined(FALCON_ENABLE_SSE2)
+    defined(FALCON_ENABLE_SSE4) || defined(FALCON_ENABLE_SSE2) || defined(FALCON_DISABLE_SIMD)
 namespace
 {
     /**
@@ -212,7 +212,8 @@ TYPED_TEST(Simd128BasicMathTests, MemberSqrtFunction_ReturnsARegisterWithSquareR
     }
 }
 
-/// @test Verify that the non member variant of sqrt function returns the sqrt of the register values.
+
+/// @test Verify that the non-member variant of sqrt function returns the sqrt of the register values.
 TYPED_TEST(Simd128BasicMathTests, Sqrt_ReturnsARegisterWithSquareRootValues)
 {
     using Type            = TypeParam::Type;
@@ -221,7 +222,7 @@ TYPED_TEST(Simd128BasicMathTests, Sqrt_ReturnsARegisterWithSquareRootValues)
     alignas(16) std::array<Type, Lane> data{}, expected{}, result{};
     for (size_t i = 0; i < Lane; ++i)
     {
-        data[i]     = this->a[i];
+        data[i] = this->a[i];
         // For our simd sqrt, we clamp the values for integrals to zero
         auto clampedVal = data[i];
         if constexpr (std::is_integral_v<Type>)
@@ -242,7 +243,6 @@ TYPED_TEST(Simd128BasicMathTests, Sqrt_ReturnsARegisterWithSquareRootValues)
         EXPECT_ANY_EQ(expected[i], result[i]);
     }
 }
-
 
 
 /// @test Verify that horizontal max return the maximum element from the register.
@@ -266,6 +266,7 @@ TYPED_TEST(Simd128BasicMathTests, HorizontalMax_ReturnsTheMaxValueFromTheRegiste
     EXPECT_ANY_EQ(max, res);
 }
 
+
 /// @test Verify that horizontal min return the minimum element from the register.
 TYPED_TEST(Simd128BasicMathTests, HorizontalMin_ReturnsTheMaxValueFromTheRegister)
 {
@@ -286,7 +287,6 @@ TYPED_TEST(Simd128BasicMathTests, HorizontalMin_ReturnsTheMaxValueFromTheRegiste
 
     EXPECT_ANY_EQ(min, res);
 }
-
 
 #endif
 

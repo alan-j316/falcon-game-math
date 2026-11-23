@@ -9,7 +9,10 @@ add_executable(FalconSIMDCoreTests
         Simd128/PermuteTests.cpp
         Simd128/ConstructorTests.cpp
         Simd128/UtilTests.cpp
+        Simd128/ShiftLeftTests.cpp
+        Simd128/ShiftRightTests.cpp
         Simd128/BasicMathOperationTests.cpp
+        Simd128/Simd128Setup.h
 
         Simd256/ArithmeticTests.cpp
         Simd256/ComparisonTests.cpp
@@ -28,7 +31,7 @@ target_include_directories(FalconSIMDCoreTests PRIVATE "${FALCON_SIMD_TEST_ROOT_
 
 # Enable Large objects for MinGW
 if (MINGW OR (CMAKE_CXX_COMPILER_ID STREQUAL "GNU" AND WIN32))
-    target_compile_options(FalconSIMDCoreTests PRIVATE "-Wa,-mbig-obj")
+    target_compile_options(FalconSIMDCoreTests PRIVATE "-Wa,-mbig-obj,-Og")
 endif ()
 # Forces stack realignment to prevent 16-byte ABI boundary SEGFAULTs with AVX2 spills
 if (CMAKE_CXX_COMPILER_ID MATCHES "GNU|Clang")

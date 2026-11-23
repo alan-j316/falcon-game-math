@@ -1,4 +1,5 @@
 #pragma once
+#include "falcon/math/common/Constants.h"
 /**
  * @file Simd128Scalar.inl
  * @author Alan Abraham P Kochumon
@@ -341,7 +342,6 @@ namespace flcn
     /// |                            SHIFTING OPERATIONS                                        |
     /// +---------------------------------------------------------------------------------------+
 
-
     template <typename DataType, size_t Lane>
     FALCON_INLINE constexpr Simd128<SimdBackend::ARCH_UNKNOWN, DataType, Lane> Simd128<
         SimdBackend::ARCH_UNKNOWN, DataType, Lane>::operator<<(uint32_t count) const noexcept
@@ -445,5 +445,308 @@ namespace flcn
     { return shiftRightLogical(Count); }
 
 
+
+    /// +---------------------------------------------------------------------------------------+
+    /// |                                     UTILITIES                                         |
+    /// +---------------------------------------------------------------------------------------+
+
+    template <typename DataType, size_t Lane>
+    FALCON_INLINE constexpr DataType Simd128<SimdBackend::ARCH_UNKNOWN, DataType, Lane>::horizontalMin() const noexcept
+    {
+        // TODO: Update to flcn::min
+        DataType min{ _reg[0] };
+        for (size_t i = 1; i < Lane; ++i)
+        {
+            min = std::min(min, _reg[i]);
+        }
+        return min;
+    }
+
+
+    template <typename DataType, size_t Lane>
+    FALCON_INLINE constexpr DataType Simd128<SimdBackend::ARCH_UNKNOWN, DataType, Lane>::horizontalMax() const noexcept
+    {
+        // TODO: Update to flcn::max
+        DataType max{ _reg[0] };
+        for (size_t i = 1; i < Lane; ++i)
+        {
+            max = std::max(max, _reg[i]);
+        }
+        return max;
+    }
+
+
+    template <typename DataType, size_t Lane>
+    FALCON_INLINE constexpr Simd128<SimdBackend::ARCH_UNKNOWN, DataType, Lane> Simd128<
+        SimdBackend::ARCH_UNKNOWN, DataType, Lane>::abs() const noexcept
+    {
+        if constexpr (std::is_unsigned_v<DataType>)
+        {
+            return *this;
+        }
+        else
+        {
+            Simd128 retReg{};
+            for (size_t i = 0; i < Lane; ++i)
+            {
+                // TODO: Update to flcn::abs
+                retReg._reg[i] = std::abs(_reg[i]);
+            }
+            return retReg;
+        }
+    }
+
+
+    template <typename DataType, size_t Lane>
+    FALCON_INLINE constexpr Simd128<SimdBackend::ARCH_UNKNOWN, DataType, Lane> Simd128<
+        SimdBackend::ARCH_UNKNOWN, DataType, Lane>::sqrt() const noexcept
+    {
+        Simd128 retReg{};
+        for (size_t i = 0; i < Lane; ++i)
+        {
+            // TODO: Update to flcn::sqrt
+            // NOTE: sqrt of negative numbers are undefined and returns a zero.
+            retReg._reg[i] = std::sqrt(std::max(_reg[i], DataType(0)));
+        }
+        return retReg;
+    }
+
+
+
+    /// +---------------------------------------------------------------------------------------+
+    /// |                            ARITHMETIC OPERATIONS                                      |
+    /// +---------------------------------------------------------------------------------------+
+
+    template <typename DataType, size_t Lane>
+    FALCON_INLINE constexpr Simd128<SimdBackend::ARCH_UNKNOWN, DataType, Lane> Simd128<
+        SimdBackend::ARCH_UNKNOWN, DataType, Lane>::operator+(Simd128 other) const noexcept
+    {
+        Simd128 retReg{};
+        for (size_t i = 0; i < Lane; ++i)
+        {
+            retReg._reg[i] = _reg[i] + other._reg[i];
+        }
+        return retReg;
+    }
+
+
+    template <typename DataType, size_t Lane>
+    FALCON_INLINE constexpr Simd128<SimdBackend::ARCH_UNKNOWN, DataType, Lane>& Simd128<
+        SimdBackend::ARCH_UNKNOWN, DataType, Lane>::operator+=(Simd128 other) noexcept
+    {
+        *this = *this + other;
+        return *this;
+    }
+
+
+    template <typename DataType, size_t Lane>
+    FALCON_INLINE constexpr Simd128<SimdBackend::ARCH_UNKNOWN, DataType, Lane> Simd128<
+        SimdBackend::ARCH_UNKNOWN, DataType, Lane>::operator-(Simd128 other) const noexcept
+    {
+        Simd128 retReg{};
+        for (size_t i = 0; i < Lane; ++i)
+        {
+            retReg._reg[i] = _reg[i] - other._reg[i];
+        }
+        return retReg;
+    }
+
+
+    template <typename DataType, size_t Lane>
+    FALCON_INLINE constexpr Simd128<SimdBackend::ARCH_UNKNOWN, DataType, Lane> Simd128<
+        SimdBackend::ARCH_UNKNOWN, DataType, Lane>::operator-() const noexcept
+    {
+        Simd128 retReg{};
+        for (size_t i = 0; i < Lane; ++i)
+        {
+            retReg._reg[i] = -_reg[i];
+        }
+        return retReg;
+    }
+
+
+    template <typename DataType, size_t Lane>
+    FALCON_INLINE constexpr Simd128<SimdBackend::ARCH_UNKNOWN, DataType, Lane>& Simd128<
+        SimdBackend::ARCH_UNKNOWN, DataType, Lane>::operator-=(Simd128 other) noexcept
+    {
+        *this = *this - other;
+        return *this;
+    }
+
+
+    template <typename DataType, size_t Lane>
+    FALCON_INLINE constexpr Simd128<SimdBackend::ARCH_UNKNOWN, DataType, Lane> Simd128<
+        SimdBackend::ARCH_UNKNOWN, DataType, Lane>::operator*(Simd128 other) const noexcept
+    {
+        Simd128 retReg{};
+        for (size_t i = 0; i < Lane; ++i)
+        {
+            retReg._reg[i] = _reg[i] * other._reg[i];
+        }
+        return retReg;
+    }
+
+
+    template <typename DataType, size_t Lane>
+    FALCON_INLINE constexpr Simd128<SimdBackend::ARCH_UNKNOWN, DataType, Lane>& Simd128<
+        SimdBackend::ARCH_UNKNOWN, DataType, Lane>::operator*=(Simd128 other) noexcept
+    {
+        *this = *this * other;
+        return *this;
+    }
+
+
+    template <typename DataType, size_t Lane>
+    FALCON_INLINE constexpr Simd128<SimdBackend::ARCH_UNKNOWN, DataType, Lane> Simd128<
+        SimdBackend::ARCH_UNKNOWN, DataType, Lane>::divReg(Simd128 other) const noexcept
+    {
+        Simd128 retReg{};
+        for (size_t i = 0; i < Lane; ++i)
+        {
+            retReg._reg[i] = _reg[i] / other._reg[i];
+        }
+        return retReg;
+    }
+
+
+    template <typename DataType, size_t Lane>
+    FALCON_INLINE constexpr Simd128<SimdBackend::ARCH_UNKNOWN, DataType, Lane> Simd128<
+        SimdBackend::ARCH_UNKNOWN, DataType, Lane>::operator/(DataType scalar) const noexcept
+    {
+        Simd128 retReg{};
+        for (size_t i = 0; i < Lane; ++i)
+        {
+            retReg._reg[i] = _reg[i] / scalar;
+        }
+        return retReg;
+    }
+
+
+    template <typename DataType, size_t Lane>
+    FALCON_INLINE constexpr Simd128<SimdBackend::ARCH_UNKNOWN, DataType, Lane>& Simd128<
+        SimdBackend::ARCH_UNKNOWN, DataType, Lane>::operator/=(DataType scalar) noexcept
+    {
+        *this = *this / scalar;
+        return *this;
+    }
+
+
+    template <typename DataType, size_t Lane>
+    FALCON_INLINE constexpr Simd128<SimdBackend::ARCH_UNKNOWN, DataType, Lane> Simd128<
+        SimdBackend::ARCH_UNKNOWN, DataType, Lane>::fma(Simd128 b, Simd128 c) const noexcept
+    { return *this * b + c; }
+
+
+    template <typename DataType, size_t Lane>
+    FALCON_INLINE constexpr Simd128<SimdBackend::ARCH_UNKNOWN, DataType, Lane> Simd128<
+        SimdBackend::ARCH_UNKNOWN, DataType, Lane>::fmSub(Simd128 b, Simd128 c) const noexcept
+    { return *this * b - c; }
+
+
+    template <typename DataType, size_t Lane>
+    FALCON_INLINE constexpr DataType Simd128<SimdBackend::ARCH_UNKNOWN, DataType, Lane>::horizontalAdd() const noexcept
+    {
+        DataType sum{};
+        for (size_t i = 0; i < Lane; ++i)
+        {
+            sum += _reg[i];
+        }
+        return sum;
+    }
+
+
+    template <typename DataType, size_t Lane>
+    FALCON_INLINE constexpr DataType Simd128<SimdBackend::ARCH_UNKNOWN, DataType, Lane>::horizontalSub() const noexcept
+    {
+        DataType diff{ _reg[0] };
+        for (size_t i = 1; i < Lane; ++i)
+        {
+            diff -= _reg[i];
+        }
+        return diff;
+    }
+
+
+
+    /// +---------------------------------------------------------------------------------------+
+    /// |                              EQUALITY OPERATIONS                                      |
+    /// +---------------------------------------------------------------------------------------+
+
+    template <typename DataType, size_t Lane>
+    FALCON_INLINE constexpr Simd128<SimdBackend::ARCH_UNKNOWN, DataType, Lane> Simd128<
+        SimdBackend::ARCH_UNKNOWN, DataType, Lane>::operator==(Simd128 other) const noexcept
+    {
+        Simd128 mask{};
+        for (size_t i = 0; i < Lane; ++i)
+        {
+            mask._reg[i] = (_reg[i] == other._reg[i]) ? constants::TrueMask<DataType> : constants::FalseMask<DataType>;
+        }
+        return mask;
+    }
+
+
+    template <typename DataType, size_t Lane>
+    FALCON_INLINE constexpr Simd128<SimdBackend::ARCH_UNKNOWN, DataType, Lane> Simd128<
+        SimdBackend::ARCH_UNKNOWN, DataType, Lane>::operator!=(Simd128 other) const noexcept
+    {
+        Simd128 mask{};
+        for (size_t i = 0; i < Lane; ++i)
+        {
+            mask._reg[i] = (_reg[i] != other._reg[i]) ? constants::TrueMask<DataType> : constants::FalseMask<DataType>;
+        }
+        return mask;
+    }
+
+
+    template <typename DataType, size_t Lane>
+    FALCON_INLINE constexpr Simd128<SimdBackend::ARCH_UNKNOWN, DataType, Lane> Simd128<
+        SimdBackend::ARCH_UNKNOWN, DataType, Lane>::operator>(Simd128 other) const noexcept
+    {
+        Simd128 mask{};
+        for (size_t i = 0; i < Lane; ++i)
+        {
+            mask._reg[i] = (_reg[i] > other._reg[i]) ? constants::TrueMask<DataType> : constants::FalseMask<DataType>;
+        }
+        return mask;
+    }
+
+
+    template <typename DataType, size_t Lane>
+    FALCON_INLINE constexpr Simd128<SimdBackend::ARCH_UNKNOWN, DataType, Lane> Simd128<
+        SimdBackend::ARCH_UNKNOWN, DataType, Lane>::operator>=(Simd128 other) const noexcept
+    {
+        Simd128 mask{};
+        for (size_t i = 0; i < Lane; ++i)
+        {
+            mask._reg[i] = (_reg[i] >= other._reg[i]) ? constants::TrueMask<DataType> : constants::FalseMask<DataType>;
+        }
+        return mask;
+    }
+
+
+    template <typename DataType, size_t Lane>
+    FALCON_INLINE constexpr Simd128<SimdBackend::ARCH_UNKNOWN, DataType, Lane> Simd128<
+        SimdBackend::ARCH_UNKNOWN, DataType, Lane>::operator<(Simd128 other) const noexcept
+    {
+        Simd128 mask{};
+        for (size_t i = 0; i < Lane; ++i)
+        {
+            mask._reg[i] = (_reg[i] < other._reg[i]) ? constants::TrueMask<DataType> : constants::FalseMask<DataType>;
+        }
+        return mask;
+    }
+
+
+    template <typename DataType, size_t Lane>
+    FALCON_INLINE constexpr Simd128<SimdBackend::ARCH_UNKNOWN, DataType, Lane> Simd128<
+        SimdBackend::ARCH_UNKNOWN, DataType, Lane>::operator<=(Simd128 other) const noexcept
+    {
+        Simd128 mask{};
+        for (size_t i = 0; i < Lane; ++i)
+        {
+            mask._reg[i] = (_reg[i] <= other._reg[i]) ? constants::TrueMask<DataType> : constants::FalseMask<DataType>;
+        }
+        return mask;
+    }
 
 } // namespace flcn

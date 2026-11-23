@@ -53,7 +53,7 @@ configure the target architecture for the library and its consumers.
 ```cmake
     FetchContent_Declare(
         falcon
-        GIT_REPOSITORY https://github.com/alanabrahampkochumon-zqict/falcon-game-math.git
+        GIT_REPOSITORY https://github.com/alan-j316/falcon-game-math.git
         GIT_TAG 538f41eeeda7f1d2e61f21c06ea118b7a98b4ddd
         SYSTEM
 )

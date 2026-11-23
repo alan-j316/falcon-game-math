@@ -536,6 +536,27 @@ namespace flcn
     }
 
 
+    template <typename DataType, size_t Lane>
+    FALCON_INLINE constexpr Simd128<SimdBackend::ARCH_UNKNOWN, DataType, Lane> Simd128<
+        SimdBackend::ARCH_UNKNOWN, DataType, Lane>::hasInf() const noexcept
+    {
+        Simd128 retReg{};
+        if constexpr (std::is_integral_v<DataType>)
+        {
+            retReg.setZero();
+        }
+        else
+        {
+            for (size_t i = 0; i < Lane; ++i)
+            {
+                // TODO: Update to flcn::isinf
+                retReg._reg[i] = std::isinf(_reg[i]) ? constants::TrueMask<DataType> : constants::FalseMask<DataType>;
+            }
+        }
+        return retReg;
+    }
+
+
 
     /// +---------------------------------------------------------------------------------------+
     /// |                            ARITHMETIC OPERATIONS                                      |

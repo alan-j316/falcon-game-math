@@ -10,6 +10,7 @@
  */
 
 
+#include "falcon/core/Bitwise.h"
 #include "falcon/math/common/Constants.h"
 
 #include <cmath>
@@ -452,6 +453,23 @@ namespace flcn
     /// +---------------------------------------------------------------------------------------+
     /// |                                     UTILITIES                                         |
     /// +---------------------------------------------------------------------------------------+
+
+    template <typename DataType, size_t Lane>
+    FALCON_INLINE constexpr Simd128<SimdBackend::ARCH_UNKNOWN, DataType, Lane> Simd128<
+        SimdBackend::ARCH_UNKNOWN, DataType, Lane>::blend(Simd128 other, Simd128 mask) const noexcept
+    {
+        constexpr auto trueMask = constants::TrueMask<DataType>;
+        Simd128 retReg{};
+        // Select the element from other register for a true mask value and from this register for a false value
+        // on a per-lane basis.
+        for (size_t i = 0; i < Lane; ++i)
+        {
+            retReg._reg[i] = flcn::bitwiseEq(mask._reg[i], trueMask) ? other._reg[i] : _reg[i];
+        }
+
+        return retReg;
+    }
+
 
     template <typename DataType, size_t Lane>
     FALCON_INLINE constexpr DataType Simd128<SimdBackend::ARCH_UNKNOWN, DataType, Lane>::horizontalMin() const noexcept

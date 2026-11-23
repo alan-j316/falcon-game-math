@@ -1,5 +1,4 @@
 #pragma once
-#include "falcon/math/common/Constants.h"
 /**
  * @file Simd128Scalar.inl
  * @author Alan Abraham P Kochumon
@@ -10,6 +9,10 @@
  * @copyright Copyright (c) 2026 Alan Abraham P Kochumon
  */
 
+
+#include "falcon/math/common/Constants.h"
+
+#include <cmath>
 
 namespace flcn
 {
@@ -512,6 +515,27 @@ namespace flcn
     }
 
 
+    template <typename DataType, size_t Lane>
+    FALCON_INLINE constexpr Simd128<SimdBackend::ARCH_UNKNOWN, DataType, Lane> Simd128<
+        SimdBackend::ARCH_UNKNOWN, DataType, Lane>::hasNan() const noexcept
+    {
+        Simd128 retReg{};
+        if constexpr (std::is_integral_v<DataType>)
+        {
+            retReg.setZero();
+        }
+        else
+        {
+            for (size_t i = 0; i < Lane; ++i)
+            {
+                // TODO: Update to flcn::isnan
+                retReg._reg[i] = std::isnan(_reg[i]) ? constants::TrueMask<DataType> : constants::FalseMask<DataType>;
+            }
+        }
+        return retReg;
+    }
+
+
 
     /// +---------------------------------------------------------------------------------------+
     /// |                            ARITHMETIC OPERATIONS                                      |
@@ -566,7 +590,6 @@ namespace flcn
         }
         else
         {
-            using SType = std::make_signed_t<DataType>;
             for (size_t i = 0; i < Lane; ++i)
             {
                 retReg._reg[i] = static_cast<DataType>(-1 * _reg[i]);

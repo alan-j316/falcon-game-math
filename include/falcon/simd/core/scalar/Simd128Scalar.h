@@ -845,11 +845,11 @@ namespace flcn
         [[nodiscard]] constexpr Simd128 sqrt() const noexcept;
 
 
-        // /// @brief Get a mask with the Nan status of each Lane of elements.
-        // /// @note Integrals always return a zero register.
-        // [[nodiscard]] constexpr Simd128 hasNan() const noexcept;
-        //
-        //
+        /// @brief Get a mask with the Nan status of each Lane of elements.
+        /// @note Integrals always return a zero register.
+        [[nodiscard]] constexpr Simd128 hasNan() const noexcept;
+
+
         // /// @brief Get a mask with the Inf status of each Lane of elements.
         // /// @note Integrals always return a zero register.
         // [[nodiscard]] constexpr Simd128 hasInf() const noexcept;

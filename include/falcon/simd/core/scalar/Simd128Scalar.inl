@@ -315,7 +315,7 @@ namespace flcn
     constexpr DataType Simd128<SimdBackend::ARCH_UNKNOWN, DataType, Lane>::horizontalOr() const noexcept
     {
         using Uint = types::UInt_t<DataType>;
-        Uint retVal;
+        Uint retVal{};
         for (size_t i = 0; i < Lane; ++i)
         {
             retVal |= std::bit_cast<Uint>(_reg[i]);
@@ -490,7 +490,7 @@ namespace flcn
             for (size_t i = 0; i < Lane; ++i)
             {
                 // TODO: Update to flcn::abs
-                retReg._reg[i] = std::abs(_reg[i]);
+                retReg._reg[i] = static_cast<DataType>(std::abs(_reg[i]));
             }
             return retReg;
         }
@@ -506,7 +506,7 @@ namespace flcn
         {
             // TODO: Update to flcn::sqrt
             // NOTE: sqrt of negative numbers are undefined and returns a zero.
-            retReg._reg[i] = std::sqrt(std::max(_reg[i], DataType(0)));
+            retReg._reg[i] = static_cast<DataType>(std::sqrt(std::max(_reg[i], DataType(0))));
         }
         return retReg;
     }
@@ -557,9 +557,20 @@ namespace flcn
         SimdBackend::ARCH_UNKNOWN, DataType, Lane>::operator-() const noexcept
     {
         Simd128 retReg{};
-        for (size_t i = 0; i < Lane; ++i)
+        if constexpr (std::is_signed_v<DataType>)
         {
-            retReg._reg[i] = -_reg[i];
+            for (size_t i = 0; i < Lane; ++i)
+            {
+                retReg._reg[i] = -_reg[i];
+            }
+        }
+        else
+        {
+            using SType = std::make_signed_t<DataType>;
+            for (size_t i = 0; i < Lane; ++i)
+            {
+                retReg._reg[i] = static_cast<DataType>(-1 * _reg[i]);
+            }
         }
         return retReg;
     }

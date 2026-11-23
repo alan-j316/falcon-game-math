@@ -29,3 +29,10 @@ protected:
     }
 };
 TYPED_TEST_SUITE(Simd128BitwiseTests, Simd128RegisterTypeHints);
+
+// template<typename Type>
+// struct Simd128ShiftTestParam
+// {
+//     using T = Type;
+//     T
+// };

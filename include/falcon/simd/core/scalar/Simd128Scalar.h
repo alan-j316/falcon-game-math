@@ -30,6 +30,12 @@
 #include <format>
 #include <span>
 
+
+#ifdef _MSC_VER
+    #pragma warning(push)
+    #pragma warning(disable : 4324) // Padded Added
+#endif
+
 namespace flcn
 {
     /**
@@ -864,6 +870,10 @@ namespace flcn
     };
 
 } // namespace flcn
+
+#ifdef _MSC_VER
+    #pragma warning(pop)
+#endif
 
 
 // --- THESE SHOULD BE INCLUDED FIRST as the .inl files use functions declared in this header.

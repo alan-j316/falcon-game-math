@@ -53,6 +53,17 @@
       }
     },
     {
+      "name": "MSVC-Debug-No-SIMD",
+      "displayName": "MSVC Debug (No SIMD)",
+      "inherits": "windows-base",
+      "cacheVariables": {
+        "CMAKE_BUILD_TYPE": "Debug",
+        "CMAKE_CXX_COMPILER": "cl",
+        "CMAKE_C_COMPILER": "cl",
+        "FALCON_SIMD_MODE": "FALCON_DISABLE_SIMD"
+      }
+    },
+    {
       "name": "MSVC-Debug-AVX",
       "displayName": "MSVC Debug AVX",
       "inherits": "windows-base",

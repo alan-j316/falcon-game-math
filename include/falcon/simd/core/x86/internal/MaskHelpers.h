@@ -79,7 +79,7 @@ namespace flcn::simd::internal
             // If the indices are in the same lane, we can just pass it as it is but switch the permuted to 0x80.
             if (inSameLane)
             {
-                // NOTE: We can only shuffle within the 16 positions so the the positions are split into
+                // NOTE: We can only shuffle within the 16 positions so the positions are split into
                 //       [16-0 | 16-0] so we need to % by Lane or 16 to index the values in that range.
                 // We mod by the Lane since we need to take the 16 indices and transforming it into 32
                 // by using adjacency math (2n and 2n + 1).
@@ -156,7 +156,7 @@ namespace flcn::simd::internal
             // If the indices are in the same lane, we can just pass it as it is but switch the permuted to 0x80.
             if (inSameLane)
             {
-                // NOTE: We can only shuffle within the 16 positions so the the positions are split into
+                // NOTE: We can only shuffle within the 16 positions so the positions are split into
                 //       [16-0 | 16-0] so we need to % by Half the lanes or 16 to index the values in that range.
                 inLaneIdx[i] = indices[i] % HalfLane;
 

@@ -506,7 +506,7 @@ namespace flcn
          *
          * @note Register arithmetic is limited to same data types and lanes.
          * @param b The register containing the multiplier.
-         * @param c The register containing the the subtrahend.
+         * @param c The register containing the subtrahend.
          *
          * @return A new register with the fused-multiply-subtract result.
          */

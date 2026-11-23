@@ -14,7 +14,7 @@ if (TARGET gtest AND (FALCON_TESTS OR FALCON_SIMD_TESTS))
 endif ()
 
 
-add_library(FalconTestSetup INTERFACE)
+add_library(FalconTestSetup INTERFACE falcon/CommonSetup.h)
 target_link_libraries(
         FalconTestSetup INTERFACE
 
@@ -25,6 +25,7 @@ target_link_libraries(
         ${PROJECT_NAME}-ProjectSanitizers
 )
 target_compile_features(FalconTestSetup INTERFACE cxx_std_20)
+target_include_directories(FalconTestSetup INTERFACE ${CMAKE_CURRENT_SOURCE_DIR}/falcon)
 
 AddCompilerFlag(FalconTestSetup INTERFACE ${FALCON_SIMD_MODE})
 target_compile_definitions(FalconTestSetup INTERFACE $<$<CONFIG:Debug>:ENABLE_DEBUG_TESTS>)

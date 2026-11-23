@@ -10,8 +10,8 @@
 
 
 
+#include "../../../CommonSetup.h"
 #include "Vec3TestSetup.h"
-#include "CommonSetup.h"
 
 #include <numbers>
 

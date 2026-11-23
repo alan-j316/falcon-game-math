@@ -1,5 +1,4 @@
 add_library(FalconMathTestSetup INTERFACE
-        include/CommonSetup.h
         include/DoxygenGroups.h
         include/utils/FloatEquals.h
         include/utils/MatrixUtils.h

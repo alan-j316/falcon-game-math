@@ -11,11 +11,11 @@
 
 #define ENABLE_FALCON_SHADER_OPERATORS
 
-#include "CommonSetup.h"
+#include "../../../../CommonSetup.h"
 #include "utils/VectorUtils.h"
 
-#include <falcon/math/vectors/simd/Vec3.h>
 #include <falcon/math/common/MathTraits.h>
+#include <falcon/math/vectors/simd/Vec3.h>
 
 
 using namespace testutils;

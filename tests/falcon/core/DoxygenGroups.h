@@ -23,5 +23,11 @@
      * @ingroup Falcon_Core_Tests
      */
 
+    /**
+     * @defgroup TFalcon_Bitwise Falcon Bitwise Operations
+     * @brief Verifies falcon bitwise operations.
+     * @ingroup Falcon_Core_Tests
+     */
+
 /** @} */ // End of Falcon_Core_Tests
 // clang-format on

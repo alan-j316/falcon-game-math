@@ -12,7 +12,7 @@
 #define FORCE_SCALAR
 #define ENABLE_FALCON_SHADER_OPERATORS
 
-#include "CommonSetup.h"
+#include "../../../CommonSetup.h"
 #include "utils/VectorUtils.h"
 
 #include <falcon/math/vectors/Point3.h>

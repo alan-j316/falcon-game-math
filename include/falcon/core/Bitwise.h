@@ -25,7 +25,7 @@ namespace flcn
      * @return False otherwise.
      */
     template <typename T>
-    constexpr bool bitwiseEq(T a, T b)
+    constexpr bool bitEq(T a, T b)
     {
         if constexpr (std::is_same_v<T, double>)
         {

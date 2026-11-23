@@ -9,7 +9,7 @@
  */
 
 
-#include "CommonSetup.h"
+#include "../../CommonSetup.h"
 #include "utils/VectorUtils.h"
 
 #include <falcon/math/common/Wrappers.h>

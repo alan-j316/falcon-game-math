@@ -7,6 +7,7 @@ target_sources(
         FalconCoreTests
         PRIVATE
         traits/TypeHelpersTests.cpp
+        Bitwise.cpp
 )
 
 target_compile_options(FalconCoreTests INTERFACE $<$<CXX_COMPILER_ID:MSVC>:/fp:strict;>)

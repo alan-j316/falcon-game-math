@@ -9,7 +9,7 @@
  */
 
 #ifdef ENABLE_DEBUG_TESTS
-    #include "CommonSetup.h"
+    #include "../../../CommonSetup.h"
 
     #include <falcon/math/vectors/Vec3.h>
     #include <gtest/gtest.h>

@@ -9,7 +9,7 @@
  */
 
 
-#include "CommonSetup.h"
+#include "../../../CommonSetup.h"
 #include "utils/MatrixUtils.h"
 
 #include <falcon/math/matrices/Mat4.h>

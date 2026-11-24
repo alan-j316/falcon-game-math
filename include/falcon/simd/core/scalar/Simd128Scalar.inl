@@ -13,6 +13,7 @@
 #include "falcon/core/Bitwise.h"
 #include "falcon/math/common/Constants.h"
 
+#include <bit>
 #include <cmath>
 
 namespace flcn
@@ -464,9 +465,44 @@ namespace flcn
         // on a per-lane basis.
         for (size_t i = 0; i < Lane; ++i)
         {
-            retReg._reg[i] = flcn::bitwiseEq(mask._reg[i], trueMask) ? other._reg[i] : _reg[i];
+            retReg._reg[i] = flcn::bitEq(mask._reg[i], trueMask) ? other._reg[i] : _reg[i];
         }
 
+        return retReg;
+    }
+
+
+    template <typename DataType, size_t Lane>
+    template <BlendMask32_t Mask>
+    FALCON_INLINE constexpr Simd128<SimdBackend::ARCH_UNKNOWN, DataType, Lane> Simd128<
+        SimdBackend::ARCH_UNKNOWN, DataType, Lane>::blend(Simd128 other) const noexcept
+    {
+        // constexpr auto falseMask = constants::FalseMask<DataType>;
+        constexpr auto maskTypeBitSize = sizeof(BlendMask32_t) * 8;
+        constexpr auto maskWidth = maskTypeBitSize / MAX_LANE_COUNT;
+        // Create the extraction mask for extracting the bits shuffle bits from Mask for a given index.
+        // 11111111 >> (bitSize - maskWidth) = 11111111 >> (8 - 2) = 00000011
+        constexpr auto extractMask = constants::TrueMask<BlendMask32_t> >> (maskTypeBitSize - maskWidth);
+        Simd128 retReg{};
+        // Select the element from other register for a true mask value and from this register for a false value
+        // on a per-lane basis.
+        for (size_t i = 0; i < Lane; ++i)
+        {
+            // Assuming an 8-bit mask for simplicity with MaxLanes of 4 and sizeof(BlendMask32_t) = 8 bits
+            // maskWidth = 8 / 4 = 2 bits.
+            // Extract Mask = 00000011
+            // Mask = 11000011
+            // Mask(0) = 11000011 & (00000011 << (0 * maskWidth)) = 00000011
+            // Mask(1) = 11000011 & (00000011 << (1 * maskWidth)) = 00000000
+            // Mask(2) = 11000011 & (00000011 << (2 * maskWidth)) = 00000000
+            // Mask(3) = 11000011 & (00000011 << (3 * maskWidth)) = 11000000
+            const auto curMask = Mask & (extractMask << (i * maskWidth));
+            // Here instead of doing a truthy compare we can do a comparison with zero since the
+            // bit-width will be different based on the Lanes, requiring an expansion to the full 32-bits.
+            // Instead, we can compare if it's a zero and select the value at that location based
+            // on that falsy comparison.
+            retReg._reg[i] = (curMask == 0) ? _reg[i] : other._reg[i];
+        }
         return retReg;
     }
 

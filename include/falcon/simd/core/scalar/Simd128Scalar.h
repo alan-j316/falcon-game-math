@@ -759,36 +759,36 @@ namespace flcn
         [[nodiscard]] constexpr Simd128 blend(Simd128 other, Simd128 mask) const noexcept;
 
 
-        // /**
-        //  * @brief Selectively blend values from this register and @p other using the compile-time @p Mask.
-        //  * @tparam Mask The mask to use for blending.
-        //  *              Use @ref flcn::makeBlendMask32<...>() to create the mask.
-        //  *              `true` selects values from the other register and `false` from this register.
-        //  * @note   Even though the mask is uint32_t, only lower 8-bit will be considered
-        //  *
-        //  * @code
-        //  * // Masking sample
-        //  * this  -> 0x ff 23 15 81
-        //  * other -> 0x 32 3f ed 55
-        //  * mask  -> 0x ff 00 ff 00
-        //  * ret   -> 0x 32 23 ed 81
-        //  *
-        //  *
-        //  * // Usage
-        //  * const flcn::Simd128_t<float, 4> reg1{1.0f, 2.0f, 3.0f, 4.0f};
-        //  * const flcn::Simd128_t<float, 4> reg2{8.0f, 9.0f, 10.0f, 11.0f};
-        //  * constexpr auto mask = flcn::makeBlendMask32<true, false, false, true>();
-        //  * const auto blended = reg1.template blend<mask>(reg2); // {8.0f, 2.0f, 3.0f, 11.0f}
-        //  * @endcode
-        //  *
-        //  * @param other The register whose values are selected when mask is 0b11..11 or 0xf..f.
-        //  *
-        //  * @return Return a new register with blended values.
-        //  */
-        // template <BlendMask32_t Mask>
-        // [[nodiscard]] constexpr Simd128 blend(Simd128 other) const noexcept;
-        //
-        //
+        /**
+         * @brief Selectively blend values from this register and @p other using the compile-time @p Mask.
+         * @tparam Mask The mask to use for blending.
+         *              Use @ref flcn::makeBlendMask32<...>() to create the mask.
+         *              `true` selects values from the other register and `false` from this register.
+         * @note   Even though the mask is uint32_t, only lower 8-bit will be considered
+         *
+         * @code
+         * // Masking sample
+         * this  -> 0x ff 23 15 81
+         * other -> 0x 32 3f ed 55
+         * mask  -> 0x ff 00 ff 00
+         * ret   -> 0x 32 23 ed 81
+         *
+         *
+         * // Usage
+         * const flcn::Simd128_t<float, 4> reg1{1.0f, 2.0f, 3.0f, 4.0f};
+         * const flcn::Simd128_t<float, 4> reg2{8.0f, 9.0f, 10.0f, 11.0f};
+         * constexpr auto mask = flcn::makeBlendMask32<true, false, false, true>();
+         * const auto blended = reg1.template blend<mask>(reg2); // {8.0f, 2.0f, 3.0f, 11.0f}
+         * @endcode
+         *
+         * @param other The register whose values are selected when mask is 0b11..11 or 0xf..f.
+         *
+         * @return Return a new register with blended values.
+         */
+        template <BlendMask32_t Mask>
+        [[nodiscard]] constexpr Simd128 blend(Simd128 other) const noexcept;
+
+
         // /**
         //  * @brief Permutates the values as per given indices.
         //  *

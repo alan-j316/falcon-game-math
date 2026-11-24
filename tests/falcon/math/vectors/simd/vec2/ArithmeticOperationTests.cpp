@@ -95,6 +95,29 @@ namespace
     TYPED_TEST_SUITE(SimdVec2ScalarMultiplicationTests, SupportedArithmeticTypes);
 
 
+    /**
+     * @brief Test fixture for @ref flcn::simd::Vec2 vector multiplication.
+     * @tparam T The scalar type (int, float, double...) of the vector components.
+     */
+    template <typename T>
+    class SimdVec2VectorMultiplicationTests: public testing::Test
+    {
+    protected:
+        flcn::Vec2<T> _vecA, _vecB;
+        flcn::Vec2<T> _expectedFloatingVec;
+        flcn::Vec2<T> _expectedIntegralVec;
+
+        void SetUp() override
+        {
+            _vecA                = { T(5.238923), T(2.394328) };
+            _vecB                = { T(12.2380123), T(45.38912) };
+            _expectedFloatingVec = { T(64.1140041127529), T(108.67644091135999) };
+            _expectedIntegralVec = { T(60), T(90) };
+        }
+    };
+    TYPED_TEST_SUITE(SimdVec2VectorMultiplicationTests, SupportedArithmeticTypes);
+
+
 
     /**
      * @brief Test fixture for @ref Vec2 scalar division.
@@ -267,6 +290,40 @@ TYPED_TEST(SimdVec2ScalarMultiplicationTests, TimesEqualsOperator_ByScalarReturn
 
 
 /**************************************
+ *     VECTOR MULTIPLICATION TESTS    *
+ **************************************/
+
+TYPED_TEST(SimdVec2VectorMultiplicationTests, TimesOperator_ReturnVectorComponentwiseProduct)
+{
+    const flcn::Vec2 result = this->_vecA * this->_vecB;
+
+    if (std::is_floating_point_v<TypeParam>)
+    {
+        EXPECT_VEC_EQ(this->_expectedFloatingVec, result);
+    }
+    else
+    {
+        EXPECT_VEC_EQ(this->_expectedIntegralVec, result);
+    }
+}
+
+
+TYPED_TEST(SimdVec2VectorMultiplicationTests, TimesEqualsOperator_PerformComponentwiseProductInPlace)
+{
+    this->_vecA *= this->_vecB;
+
+    if (std::is_floating_point_v<TypeParam>)
+    {
+        EXPECT_VEC_EQ(this->_expectedFloatingVec, this->_vecA);
+    }
+    else
+    {
+        EXPECT_VEC_EQ(this->_expectedIntegralVec, this->_vecA);
+    }
+}
+
+
+/**************************************
  *           DIVIDE OPERATOR          *
  **************************************/
 
@@ -431,8 +488,8 @@ TYPED_TEST(SimdVec2ScalarDivisionTests, TryDivideByIntegralZero_ReturnsZeroVecto
 
 
 /**
- * @test Verify that dividing a vector by floating point zero using @ref flcn::simd::Vec2::tryDiv returns zero vector and
- *       sets the flag to @ref flcn::OperationStatus::DIVISIONBYZERO.
+ * @test Verify that dividing a vector by floating point zero using @ref flcn::simd::Vec2::tryDiv returns zero vector
+ * and sets the flag to @ref flcn::OperationStatus::DIVISIONBYZERO.
  */
 TYPED_TEST(SimdVec2ScalarDivisionTests, TryDivideByFloatZero_ReturnsZeroVectorAndSetsCorrectFlag)
 {

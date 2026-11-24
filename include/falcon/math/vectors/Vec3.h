@@ -496,9 +496,9 @@ namespace flcn
         template <Arithmetic U>
             requires StrictSignedness<T, U>
         [[nodiscard]] constexpr Vec3<bool> eq(const Vec3<U>& rhs,
-                                               double epsilon = std::is_same_v<T, double> || std::is_same_v<U, double>
-                                                   ? Config::DOUBLE_EPSILON
-                                                   : Config::FLOAT_EPSILON) const noexcept;
+                                              double epsilon = std::is_same_v<T, double> || std::is_same_v<U, double>
+                                                  ? Config::DOUBLE_EPSILON
+                                                  : Config::FLOAT_EPSILON) const noexcept;
 
 
         /**
@@ -517,10 +517,10 @@ namespace flcn
         template <Arithmetic U>
             requires StrictSignedness<T, U>
         [[nodiscard]] static constexpr Vec3<bool> eq(const Vec3& lhs, const Vec3<U>& rhs,
-                                                      double epsilon = std::is_same_v<T, double> ||
-                                                              std::is_same_v<U, double>
-                                                          ? Config::DOUBLE_EPSILON
-                                                          : Config::FLOAT_EPSILON) noexcept;
+                                                     double epsilon = std::is_same_v<T, double> ||
+                                                             std::is_same_v<U, double>
+                                                         ? Config::DOUBLE_EPSILON
+                                                         : Config::FLOAT_EPSILON) noexcept;
 
 
         /**
@@ -540,9 +540,9 @@ namespace flcn
         template <Arithmetic U>
             requires StrictSignedness<T, U>
         [[nodiscard]] constexpr Vec3<bool> neq(const Vec3<U>& rhs,
-                                                double epsilon = std::is_same_v<T, double> || std::is_same_v<U, double>
-                                                    ? Config::DOUBLE_EPSILON
-                                                    : Config::FLOAT_EPSILON) const noexcept;
+                                               double epsilon = std::is_same_v<T, double> || std::is_same_v<U, double>
+                                                   ? Config::DOUBLE_EPSILON
+                                                   : Config::FLOAT_EPSILON) const noexcept;
 
 
         /**
@@ -561,10 +561,10 @@ namespace flcn
         template <Arithmetic U>
             requires StrictSignedness<T, U>
         [[nodiscard]] static constexpr Vec3<bool> neq(const Vec3& lhs, const Vec3<U>& rhs,
-                                                       double epsilon = std::is_same_v<T, double> ||
-                                                               std::is_same_v<U, double>
-                                                           ? Config::DOUBLE_EPSILON
-                                                           : Config::FLOAT_EPSILON) noexcept;
+                                                      double epsilon = std::is_same_v<T, double> ||
+                                                              std::is_same_v<U, double>
+                                                          ? Config::DOUBLE_EPSILON
+                                                          : Config::FLOAT_EPSILON) noexcept;
 
         /** @} */
 
@@ -954,6 +954,33 @@ namespace flcn
 
 
         /**
+         * @brief Multiply the components of this vector with @p rhs.
+         * @note Promotes the result to the wider type using @ref PromotedVec3<T, U>.
+         * @tparam U  The numeric type of multiplier.
+         *
+         * @param[in] rhs The multiplier vector.
+         *
+         * @return A new type-promoted vector with component-wise product.
+         */
+        template <StrictArithmetic U>
+        [[nodiscard]] constexpr PromotedVec3<T, U> operator*(const Vec3<U>& rhs) const noexcept
+            requires StrictArithmetic<T>;
+
+
+        /**
+         * @brief Multiply the components of this vector with @p rhs in place.
+         * @tparam U  The numeric type of multiplier.
+         *
+         * @param[in] rhs The multiplier vector.
+         *
+         * @return A reference to this vector post-multiplication.
+         */
+        template <StrictArithmetic U>
+        constexpr Vec3& operator*=(const Vec3<U>& rhs) noexcept
+            requires StrictArithmetic<T>;
+
+
+        /**
          * @brief Compute the component-wise division of this vector by @p scalar and return a new vector.
          *
          * @note Promotes the result to the wider type using @ref PromotedVec3<T, S>.
@@ -1077,7 +1104,7 @@ namespace flcn
          */
         template <StrictArithmetic S>
         [[nodiscard]] static constexpr PromotedVec3<T, S> tryDiv(const Vec3& vec, S scalar,
-                                                                  OperationStatus& status) noexcept
+                                                                 OperationStatus& status) noexcept
             requires StrictArithmetic<T>;
 
         /** @} */
@@ -1432,8 +1459,7 @@ namespace flcn
          */
         template <StrictArithmetic U>
             requires StrictSignedness<T, U>
-        [[nodiscard]] static constexpr PromotedValue_t<T, U> manhattanDist(const Vec3& lhs,
-                                                                           const Vec3<U>& rhs) noexcept
+        [[nodiscard]] static constexpr PromotedValue_t<T, U> manhattanDist(const Vec3& lhs, const Vec3<U>& rhs) noexcept
             requires StrictArithmetic<T>;
 
 
@@ -1472,8 +1498,7 @@ namespace flcn
          */
         template <StrictArithmetic U>
             requires StrictSignedness<T, U>
-        [[nodiscard]] static constexpr PromotedValue_t<T, U> chebyshevDist(const Vec3& lhs,
-                                                                           const Vec3<U>& rhs) noexcept
+        [[nodiscard]] static constexpr PromotedValue_t<T, U> chebyshevDist(const Vec3& lhs, const Vec3<U>& rhs) noexcept
             requires StrictArithmetic<T>;
 
         /** @} */
@@ -1587,7 +1612,7 @@ namespace flcn
          *         epsilon threshold or if the vector has NaN(Not-a-Number) component(s).
          */
         [[nodiscard]] static constexpr Vec3<Magnitude<T>> tryNormalize(const Vec3& vec,
-                                                                        OperationStatus& status) noexcept
+                                                                       OperationStatus& status) noexcept
             requires StrictArithmetic<T>;
 
         /** @} */
@@ -1766,7 +1791,7 @@ namespace flcn
         template <StrictArithmetic U>
             requires StrictSignedness<T, U>
         [[nodiscard]] static constexpr PromotedFloatVec3<T, U> safeProject(const Vec3& vec,
-                                                                            const Vec3<U>& onto) noexcept
+                                                                           const Vec3<U>& onto) noexcept
             requires StrictArithmetic<T>;
 
 
@@ -1791,8 +1816,7 @@ namespace flcn
          */
         template <StrictArithmetic U>
             requires StrictSignedness<T, U>
-        [[nodiscard]] static constexpr PromotedVec3<T, U> safeProjectNorm(const Vec3& vec,
-                                                                           const Vec3<U>& onto) noexcept
+        [[nodiscard]] static constexpr PromotedVec3<T, U> safeProjectNorm(const Vec3& vec, const Vec3<U>& onto) noexcept
             requires StrictArithmetic<T>;
 
 
@@ -1822,7 +1846,7 @@ namespace flcn
         template <StrictArithmetic U>
             requires StrictSignedness<T, U>
         [[nodiscard]] constexpr PromotedFloatVec3<T, U> tryProject(const Vec3<U>& onto,
-                                                                    OperationStatus& status) const noexcept
+                                                                   OperationStatus& status) const noexcept
             requires StrictArithmetic<T>;
 
 
@@ -1850,7 +1874,7 @@ namespace flcn
         template <StrictArithmetic U>
             requires StrictSignedness<T, U>
         [[nodiscard]] constexpr PromotedVec3<T, U> tryProjectNorm(const Vec3<U>& onto,
-                                                                   OperationStatus& status) const noexcept
+                                                                  OperationStatus& status) const noexcept
             requires StrictArithmetic<T>;
 
 
@@ -1881,7 +1905,7 @@ namespace flcn
         template <StrictArithmetic U>
             requires StrictSignedness<T, U>
         [[nodiscard]] static constexpr PromotedFloatVec3<T, U> tryProject(const Vec3& vec, const Vec3<U>& onto,
-                                                                           OperationStatus& status) noexcept
+                                                                          OperationStatus& status) noexcept
             requires StrictArithmetic<T>;
 
 
@@ -1910,7 +1934,7 @@ namespace flcn
         template <StrictArithmetic U>
             requires StrictSignedness<T, U>
         [[nodiscard]] static constexpr PromotedVec3<T, U> tryProjectNorm(const Vec3& vec, const Vec3<U>& onto,
-                                                                          OperationStatus& status) noexcept
+                                                                         OperationStatus& status) noexcept
             requires StrictArithmetic<T>;
 
 
@@ -1974,8 +1998,7 @@ namespace flcn
          */
         template <StrictArithmetic U>
             requires StrictSignedness<T, U>
-        [[nodiscard]] static constexpr PromotedFloatVec3<T, U> reject(const Vec3& vector,
-                                                                       const Vec3<U>& from) noexcept
+        [[nodiscard]] static constexpr PromotedFloatVec3<T, U> reject(const Vec3& vector, const Vec3<U>& from) noexcept
             requires StrictArithmetic<T>;
 
 
@@ -1996,8 +2019,7 @@ namespace flcn
          */
         template <StrictArithmetic U>
             requires StrictSignedness<T, U>
-        [[nodiscard]] static constexpr PromotedVec3<T, U> rejectNorm(const Vec3& vector,
-                                                                      const Vec3<U>& from) noexcept
+        [[nodiscard]] static constexpr PromotedVec3<T, U> rejectNorm(const Vec3& vector, const Vec3<U>& from) noexcept
             requires StrictArithmetic<T>;
 
 
@@ -2066,8 +2088,7 @@ namespace flcn
          */
         template <StrictArithmetic U>
             requires StrictSignedness<T, U>
-        [[nodiscard]] static constexpr PromotedFloatVec3<T, U> safeReject(const Vec3& vec,
-                                                                           const Vec3<U>& from) noexcept
+        [[nodiscard]] static constexpr PromotedFloatVec3<T, U> safeReject(const Vec3& vec, const Vec3<U>& from) noexcept
             requires StrictArithmetic<T>;
 
 
@@ -2090,8 +2111,7 @@ namespace flcn
          */
         template <StrictArithmetic U>
             requires StrictSignedness<T, U>
-        [[nodiscard]] static constexpr PromotedVec3<T, U> safeRejectNorm(const Vec3& vec,
-                                                                          const Vec3<U>& from) noexcept
+        [[nodiscard]] static constexpr PromotedVec3<T, U> safeRejectNorm(const Vec3& vec, const Vec3<U>& from) noexcept
             requires StrictArithmetic<T>;
 
 
@@ -2117,7 +2137,7 @@ namespace flcn
         template <StrictArithmetic U>
             requires StrictSignedness<T, U>
         [[nodiscard]] constexpr PromotedFloatVec3<T, U> tryReject(const Vec3<U>& from,
-                                                                   OperationStatus& status) const noexcept
+                                                                  OperationStatus& status) const noexcept
             requires StrictArithmetic<T>;
 
 
@@ -2143,7 +2163,7 @@ namespace flcn
         template <StrictArithmetic U>
             requires StrictSignedness<T, U>
         [[nodiscard]] constexpr PromotedVec3<T, U> tryRejectNorm(const Vec3<U>& from,
-                                                                  OperationStatus& status) const noexcept
+                                                                 OperationStatus& status) const noexcept
             requires StrictArithmetic<T>;
 
 
@@ -2171,7 +2191,7 @@ namespace flcn
         template <StrictArithmetic U>
             requires StrictSignedness<T, U>
         [[nodiscard]] static constexpr PromotedFloatVec3<T, U> tryReject(const Vec3& vec, const Vec3<U>& from,
-                                                                          OperationStatus& status) noexcept
+                                                                         OperationStatus& status) noexcept
             requires StrictArithmetic<T>;
 
 
@@ -2197,7 +2217,7 @@ namespace flcn
         template <StrictArithmetic U>
             requires StrictSignedness<T, U>
         [[nodiscard]] static constexpr PromotedVec3<T, U> tryRejectNorm(const Vec3& vec, const Vec3<U>& from,
-                                                                         OperationStatus& status) noexcept
+                                                                        OperationStatus& status) noexcept
             requires StrictArithmetic<T>;
 
         /** @} */

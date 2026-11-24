@@ -112,12 +112,12 @@ namespace flcn
          *       can cause segmentation faults.
          * @note Unused lanes must be zeroed-out manually.
          *
-         * @param buffer The starting address of the values to fill the register with.
+         * @param pBuffer The starting address of the values to fill the register with.
          *
          * @warning @p buffer must be aligned to 16-byte boundary. For unaligned data,
          *          use @ref load to load data manually.
          */
-        constexpr explicit Simd128(const DataType* buffer) noexcept;
+        constexpr explicit Simd128(const DataType* pBuffer) noexcept;
 
 
         /**
@@ -166,9 +166,9 @@ namespace flcn
          with
          *       zeroes.
          *
-         * @param data The data to load.
+         * @param pData The data to load.
          */
-        constexpr void loadAligned(const DataType* data) noexcept;
+        constexpr void loadAligned(const DataType* pData) noexcept;
 
 
         /**
@@ -180,7 +180,7 @@ namespace flcn
          with
          *       zeroes.
          *
-         * @param data The data to load.
+         * @param pData The data to load.
          *
          * @relatedalso loadAligned(DataType*)
          * @relatedalso store(DataType*)
@@ -188,7 +188,7 @@ namespace flcn
          * @relatedalso broadcast(DataType)
          * @relatedalso setZero()
          */
-        constexpr void load(const DataType* data) noexcept;
+        constexpr void load(const DataType* pData) noexcept;
 
 
         /**
@@ -607,7 +607,7 @@ namespace flcn
 
 
         /**
-         * @brief Perform a arithmetic/logical(type dependent) right shift by @p count and return a new register.
+         * @brief Perform an arithmetic/logical(type dependent) right shift by @p count and return a new register.
          *
          * @warning If @p count is known at compile time then it is recommended to use @ref shiftRight<Count> as
          *          it is faster.

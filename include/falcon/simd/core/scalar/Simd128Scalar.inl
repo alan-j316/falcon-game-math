@@ -89,8 +89,8 @@ namespace flcn
 
 
     template <typename DataType, size_t Lane>
-    FALCON_INLINE constexpr Simd128<SimdBackend::ARCH_UNKNOWN, DataType, Lane>::Simd128(const DataType* buffer) noexcept
-    { std::copy_n(buffer, Lane, _reg.begin()); }
+    FALCON_INLINE constexpr Simd128<SimdBackend::ARCH_UNKNOWN, DataType, Lane>::Simd128(const DataType* pBuffer) noexcept
+    { std::copy_n(pBuffer, Lane, _reg.begin()); }
 
 
     template <typename DataType, size_t Lane>
@@ -141,19 +141,19 @@ namespace flcn
 
     template <typename DataType, size_t Lane>
     FALCON_INLINE constexpr void Simd128<SimdBackend::ARCH_UNKNOWN, DataType, Lane>::loadAligned(
-        const DataType* data) noexcept
+        const DataType* pData) noexcept
     {
         // TODO: Add death tests
         FALCON_ASSERT_MSG(
-            (reinterpret_cast<uintptr_t>(data) & (ALIGNMENT - 1)) == 0,
+            (reinterpret_cast<uintptr_t>(pData) & (ALIGNMENT - 1)) == 0,
             "[Falcon Simd]: Loading from unaligned memory when aligned address was expected. Use load() instead.");
-        std::copy_n(data, Lane, _reg.begin());
+        std::copy_n(pData, Lane, _reg.begin());
     }
 
 
     template <typename DataType, size_t Lane>
-    FALCON_INLINE constexpr void Simd128<SimdBackend::ARCH_UNKNOWN, DataType, Lane>::load(const DataType* data) noexcept
-    { std::copy_n(data, Lane, _reg.begin()); }
+    FALCON_INLINE constexpr void Simd128<SimdBackend::ARCH_UNKNOWN, DataType, Lane>::load(const DataType* pData) noexcept
+    { std::copy_n(pData, Lane, _reg.begin()); }
 
 
     template <typename DataType, size_t Lane>

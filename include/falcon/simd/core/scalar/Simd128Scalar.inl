@@ -477,10 +477,9 @@ namespace flcn
     FALCON_INLINE constexpr Simd128<SimdBackend::ARCH_UNKNOWN, DataType, Lane> Simd128<
         SimdBackend::ARCH_UNKNOWN, DataType, Lane>::blend(Simd128 other) const noexcept
     {
-        // constexpr auto falseMask = constants::FalseMask<DataType>;
         constexpr auto maskTypeBitSize = sizeof(BlendMask32_t) * 8;
-        constexpr auto maskWidth = maskTypeBitSize / MAX_LANE_COUNT;
-        // Create the extraction mask for extracting the bits shuffle bits from Mask for a given index.
+        constexpr auto maskWidth       = maskTypeBitSize / MAX_LANE_COUNT;
+        // Create the extraction mask for extracting the bits for a given index.
         // 11111111 >> (bitSize - maskWidth) = 11111111 >> (8 - 2) = 00000011
         constexpr auto extractMask = constants::TrueMask<BlendMask32_t> >> (maskTypeBitSize - maskWidth);
         Simd128 retReg{};
@@ -504,6 +503,16 @@ namespace flcn
             retReg._reg[i] = (curMask == 0) ? _reg[i] : other._reg[i];
         }
         return retReg;
+    }
+
+
+    template <typename DataType, size_t Lane>
+    template <uint8_t... PermuteIndex>
+    FALCON_INLINE constexpr Simd128<SimdBackend::ARCH_UNKNOWN, DataType, Lane> Simd128<
+        SimdBackend::ARCH_UNKNOWN, DataType, Lane>::permute() const noexcept
+    {
+        const std::array<DataType, Lane> permuted{ _reg[PermuteIndex]... };
+        return Simd128(permuted.data());
     }
 
 

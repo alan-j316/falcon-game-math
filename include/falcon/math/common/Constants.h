@@ -14,6 +14,8 @@
 #include <cstdint>
 #include <limits>
 #include <numbers>
+#include <bit>
+#include <bitset>
 
 
 /**

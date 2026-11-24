@@ -14,8 +14,8 @@
  *
  * @tparam T The type of operands. Must satisfy `std::floating_point` or `std::integral`.
  *
- * @param a The first operand.
- * @param b The second operand.
+ * @param[in] a The first operand.
+ * @param[in] b The second operand.
  *
  * @return A boolean whether the values are equal.
  */

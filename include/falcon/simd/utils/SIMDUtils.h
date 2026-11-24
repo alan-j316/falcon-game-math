@@ -31,8 +31,8 @@ namespace flcn::simd
      * @brief Calculate the aligned Byte Size, padding, packed register width, and number of registers required to store
      *        the given bytes, with a given alignment.
      *
-     * @param totalByteSize The total unaligned byte size.
-     * @param maxAlignAs    The maximum possible alignment for a given CPU architecture.
+     * @param[in] totalByteSize The total unaligned byte size.
+     * @param[in] maxAlignAs    The maximum possible alignment for a given CPU architecture.
      *                      **16 for SSE, 32 for AVX and AVX2, and 64 for AVX512**
      *
      * @return The aligned byte size, additional required padding, target register width,
@@ -158,7 +158,7 @@ namespace flcn::simd
      * @brief Expand a 32-bit BlendMask into 128-bit integer by performing bit expansion.
      *        For e.g: When `10` is expanded, we get `1111 0000`.
      *
-     * @param mask The 32-bit mask to expand/unfold.
+     * @param[in] mask The 32-bit mask to expand/unfold.
      * @return A custom @ref uint128_t type with the expanded values.
      */
     constexpr u128 expandFourFold(BlendMask32_t mask)
@@ -183,7 +183,7 @@ namespace flcn::simd
      * @brief Expand a 32-bit BlendMask into 256-bit integer by performing bit expansion.
      *        For e.g: When `10` is expanded, we get `1111 0000`.
      *
-     * @param mask The 32-bit mask to expand/unfold.
+     * @param[in] mask The 32-bit mask to expand/unfold.
      * @return A custom @ref u256 type with the expanded values.
      */
     constexpr u256 expandEightFold(BlendMask32_t mask)
@@ -212,7 +212,7 @@ namespace flcn::simd
      * @brief Expand a Blend32_t into Blend64_t by performing bit expansion.
      *        For e.g: When `10` is expanded, we get `1100`.
      *
-     * @param mask The 32-bit mask to expand/unfold.
+     * @param[in] mask The 32-bit mask to expand/unfold.
      * @return A 64-bit BlendMask type with the expanded values.
      */
     constexpr BlendMask64_t expandTwoFold(BlendMask32_t mask)
@@ -242,7 +242,7 @@ namespace flcn::simd
      *       i.e, only the LSB from each of the 8 bits will be considered for packing.
      *
      * @tparam N   The resultant packing bit count.
-     * @param mask The mask to pack.
+     * @param[in] mask The mask to pack.
      * @return A 32-bit mask with values packed to the lower N-bits.
      */
     template <size_t N>

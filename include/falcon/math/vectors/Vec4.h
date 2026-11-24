@@ -2259,8 +2259,8 @@ namespace flcn
          * @brief Write the vector to an output stream.
          *        Format the vector as <x, y, z, w> string representation for debugging or logging.
          *
-         * @param os     The output stream to write to.
-         * @param vector The vector to be streamed.
+         * @param[in] os     The output stream to write to.
+         * @param[in] vector The vector to be streamed.
          *
          * @return A reference to the output stream @p os.
          */

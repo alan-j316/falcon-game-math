@@ -37,9 +37,9 @@ namespace testutils
      * @tparam T The type of expected matrix.
      * @tparam U The type of actual matrix.
      *
-     * @param expected The matrix serving as the reference for comparison.
-     * @param actual   The matrix being evaluated.
-     * @param epsilon The precision threshold for IEEE-754 floating point numbers.
+     * @param[in] expected The matrix serving as the reference for comparison.
+     * @param[in] actual   The matrix being evaluated.
+     * @param[in] epsilon The precision threshold for IEEE-754 floating point numbers.
      *                Ignored for integrals.
      *
      * @note Uses GoogleTest macros for validation. This function will trigger a non-fatal test failure
@@ -78,9 +78,9 @@ namespace testutils
      * @tparam T The numeric type of the expected data.
      * @tparam U The type of the actual matrix.
      *
-     * @param expectedElements The elements in row-major order that forms the elements of the matrix.
-     * @param actual           The matrix being evaluated.
-     * @param epsilon The precision threshold for IEEE-754 floating point numbers.
+     * @param[in] expectedElements The elements in row-major order that forms the elements of the matrix.
+     * @param[in] actual           The matrix being evaluated.
+     * @param[in] epsilon The precision threshold for IEEE-754 floating point numbers.
      *                Ignored for integrals.
      *
      * @note Uses GoogleTest macros for validation. This function will trigger a non-fatal test failure
@@ -117,8 +117,8 @@ namespace testutils
      * @tparam T The numeric type of the expected data.
      * @tparam U The type of the actual matrix.
      *
-     * @param expectedElements The elements in row-major order that forms the elements of the matrix.
-     * @param actual           The matrix being evaluated.
+     * @param[in] expectedElements The elements in row-major order that forms the elements of the matrix.
+     * @param[in] actual           The matrix being evaluated.
      *
      * @note Uses static asserts so the test should be compile time.
      */
@@ -144,9 +144,9 @@ namespace testutils
      * @tparam T The type of expected matrix.
      * @tparam U The type of actual matrix.
      *
-     * @param expected  The matrix serving as the ground truth.
-     * @param actual    The matrix being evaluated.
-     * @param tolerance The maximum allowable absolute difference between components.
+     * @param[in] expected  The matrix serving as the ground truth.
+     * @param[in] actual    The matrix being evaluated.
+     * @param[in] tolerance The maximum allowable absolute difference between components.
      *
      * @note Uses GoogleTest macros for validation. This function will trigger a non-fatal test failure
      *       if the matrices are out of the @p tolerance range.
@@ -175,8 +175,8 @@ namespace testutils
      *
      * @tparam T The type of the matrix.
      *
-     * @param actual The matrix to verify as an identity matrix.
-     * @param epsilon The precision threshold for IEEE-754 floating point numbers.
+     * @param[in] actual The matrix to verify as an identity matrix.
+     * @param[in] epsilon The precision threshold for IEEE-754 floating point numbers.
      *                Ignored for integrals.
      *
      * @note Uses GoogleTest macros for validation. This function will trigger a non-fatal test failure
@@ -211,8 +211,8 @@ namespace testutils
      *
      * @tparam T The type of the matrix.
      *
-     * @param actual The matrix to verify as an identity matrix.
-     * @param epsilon The precision threshold for IEEE-754 floating point numbers.
+     * @param[in] actual The matrix to verify as an identity matrix.
+     * @param[in] epsilon The precision threshold for IEEE-754 floating point numbers.
      *                Ignored for integrals.
      *
      * @note Uses GoogleTest macros for validation. This function will trigger a non-fatal test failure
@@ -246,8 +246,8 @@ namespace testutils
      *
      * @tparam T The type of the matrix.
      *
-     * @param actual The matrix to verify as a zero matrix.
-     * @param epsilon The precision threshold for IEEE-754 floating point numbers.
+     * @param[in] actual The matrix to verify as a zero matrix.
+     * @param[in] epsilon The precision threshold for IEEE-754 floating point numbers.
      *                Ignored for integrals.
      *
      * @note Uses GoogleTest macros for validation. This function will trigger a non-fatal test failure
@@ -281,7 +281,7 @@ namespace testutils
      *
      * @tparam T The type of the matrix.
      *
-     * @param actual The matrix to verify as an infinity matrix.
+     * @param[in] actual The matrix to verify as an infinity matrix.
      *
      * @note Uses GoogleTest macros for validation. This function will trigger a non-fatal test failure
      *       if the matrix is not an infinity matrix.

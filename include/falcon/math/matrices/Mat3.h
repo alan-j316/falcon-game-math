@@ -751,7 +751,7 @@ namespace flcn
          *
          * @note Operation is restricted to **signed** numeric types via @ref SignedStrictArithmetic.
          *
-         * @param matrix The matrix to compute the determinant of.
+         * @param[in] matrix The matrix to compute the determinant of.
          *
          * @return A non-zero scalar if the matrix is non-singular, else zero.
          */
@@ -797,7 +797,7 @@ namespace flcn
          *            \end{bmatrix}
          *        \f$
          *
-         * @param matrix The matrix to transpose.
+         * @param[in] matrix The matrix to transpose.
          *
          * @return A new @ref Mat3 with its elements flipped along the diagonal.
          */
@@ -1015,7 +1015,7 @@ namespace flcn
         /**
          * @brief Compute the sum of diagonal entries of @p matrix.
          *
-         * @param matrix The matrix whose trace is to be computed.
+         * @param[in] matrix The matrix whose trace is to be computed.
          *
          * @return The sum of entries along the main diagonal of the given matrix.
          */
@@ -1045,7 +1045,7 @@ namespace flcn
          *
          * @note Always returns false for integral types.
          *
-         * @param matrix The matrix to evaluate for indefinite elements.
+         * @param[in] matrix The matrix to evaluate for indefinite elements.
          *
          * @return True if at least one element is positive or negative infinity.
          */
@@ -1067,7 +1067,7 @@ namespace flcn
          *
          * @note Always return false for integral types.
          *
-         * @param matrix The matrix to evaluate for indefinite elements.
+         * @param[in] matrix The matrix to evaluate for indefinite elements.
          *
          * @return True if at least one element is NaN.
          */
@@ -1092,8 +1092,8 @@ namespace flcn
          *            \end{bmatrix}
          *        \f$ string representation for debugging or logging.
          *
-         * @param os     The output stream to write to.
-         * @param matrix The matrix to be streamed.
+         * @param[in] os     The output stream to write to.
+         * @param[in] matrix The matrix to be streamed.
          *
          * @return A reference to the output stream @p os.
          */
@@ -1554,8 +1554,8 @@ namespace flcn
 
         /**
          * @brief Construct a 2D affine transform matrix from a 2D linear transform matrix and a 2D translation vector.
-         * @param linearTransform The 2D linear transformation matrix.
-         * @param translation     The 2D translation vector.
+         * @param[in] linearTransform The 2D linear transformation matrix.
+         * @param[in] translation     The 2D translation vector.
          * @return A @ref Mat3 containing the 2D affine transformation.
          */
         [[nodiscard]] static constexpr Mat3 makeAffine(const Mat2<T>& linearTransform,

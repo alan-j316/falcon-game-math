@@ -28,7 +28,7 @@ namespace flcn
      *
      * @tparam T The numeric type of the value. Must satisfy @ref SignedStrictArithmetic.
      *
-     * @param num The number to take the absolute value of.
+     * @param[in] num The number to take the absolute value of.
      *
      * @return Return the absolute value of @p value.
      */
@@ -42,7 +42,7 @@ namespace flcn
      *
      * @tparam T The numeric type of the value. Must satisfy @ref Arithmetic.
      *
-     * @param num The number to check for NaN.
+     * @param[in] num The number to check for NaN.
      *
      * @return Return the absolute value of @p value.
      */
@@ -56,7 +56,7 @@ namespace flcn
      *
      * @tparam T The numeric type of the value. Must satisfy @ref Arithmetic.
      *
-     * @param num The number to check for indefinite value.
+     * @param[in] num The number to check for indefinite value.
      *
      * @return Return the absolute value of @p value.
      */

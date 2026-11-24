@@ -160,7 +160,7 @@ namespace flcn
 
         /**
          * @brief Set the translation vector of this transformation matrix.
-         * @param translation The translation vector/point.
+         * @param[in] translation The translation vector/point.
          */
         constexpr void setTranslation(const Point3<T>& translation) noexcept;
 

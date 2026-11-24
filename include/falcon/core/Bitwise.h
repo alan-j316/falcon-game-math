@@ -19,8 +19,8 @@ namespace flcn
     /**
      * @brief Perform a bitwise equality among the operands.
      * @tparam T The numeric type of the values.
-     * @param a The first operand.
-     * @param b The second operand.
+     * @param[in] a The first operand.
+     * @param[in] b The second operand.
      * @return True if both the operands are bitwise equal.
      * @return False otherwise.
      */

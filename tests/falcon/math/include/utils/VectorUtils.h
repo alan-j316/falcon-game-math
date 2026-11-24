@@ -38,8 +38,8 @@ namespace testutils
      * @tparam T Numeric type of the expected vector components.
      * @tparam U Numeric type of the actual vector components.
      *
-     * @param expected The vector serving as the reference for comparison.
-     * @param actual   The vector being evaluated.
+     * @param[in] expected The vector serving as the reference for comparison.
+     * @param[in] actual   The vector being evaluated.
      *
      * @note Uses GoogleTest macros for validation. This function will trigger a non-fatal test failure
      *       if the vectors are not equal.
@@ -77,9 +77,9 @@ namespace testutils
      *
      * @tparam T Numeric type of the vector and scalar components.
      *
-     * @param vector The 2D vector instance being evaluated.
-     * @param x      The expected value for the x-component.
-     * @param y      The expected value for the y-component.
+     * @param[in] vector The 2D vector instance being evaluated.
+     * @param[in] x      The expected value for the x-component.
+     * @param[in] y      The expected value for the y-component.
      *
      * @note Uses GoogleTest macros. Triggers a non-fatal test failure if the vector's
      *       internal state does not match the provided scalars.
@@ -110,9 +110,9 @@ namespace testutils
      *
      * @tparam T Numeric type of the vector and scalar components.
      *
-     * @param vector The 2D vector instance being evaluated.
-     * @param x      The expected value for the x-component.
-     * @param y      The expected value for the y-component.
+     * @param[in] vector The 2D vector instance being evaluated.
+     * @param[in] x      The expected value for the x-component.
+     * @param[in] y      The expected value for the y-component.
      *
      * @note Uses GoogleTest macros. Triggers a non-fatal test failure if the vector's
      *       internal state does not match the provided scalars.
@@ -143,10 +143,10 @@ namespace testutils
      *
      * @tparam T Numeric type of the vector and scalar components.
      *
-     * @param vector The 3D vector instance being evaluated.
-     * @param x      The expected value for the x-component.
-     * @param y      The expected value for the y-component.
-     * @param z      The expected value for the z-component.
+     * @param[in] vector The 3D vector instance being evaluated.
+     * @param[in] x      The expected value for the x-component.
+     * @param[in] y      The expected value for the y-component.
+     * @param[in] z      The expected value for the z-component.
      *
      * @note Uses GoogleTest macros. Triggers a non-fatal test failure if the vector's
      *       internal state does not match the provided scalars.
@@ -179,10 +179,10 @@ namespace testutils
      *
      * @tparam T Numeric type of the vector and scalar components.
      *
-     * @param vector The 3D vector instance being evaluated.
-     * @param x      The expected value for the x-component.
-     * @param y      The expected value for the y-component.
-     * @param z      The expected value for the z-component.
+     * @param[in] vector The 3D vector instance being evaluated.
+     * @param[in] x      The expected value for the x-component.
+     * @param[in] y      The expected value for the y-component.
+     * @param[in] z      The expected value for the z-component.
      *
      * @note Uses GoogleTest macros. Triggers a non-fatal test failure if the vector's
      *       internal state does not match the provided scalars.
@@ -216,11 +216,11 @@ namespace testutils
      *
      * @tparam T Numeric type of the vector and scalar components.
      *
-     * @param vector The 4D vector instance being evaluated.
-     * @param x      The expected value for the x-component.
-     * @param y      The expected value for the y-component.
-     * @param z      The expected value for the z-component.
-     * @param w      The expected value for the w-component.
+     * @param[in] vector The 4D vector instance being evaluated.
+     * @param[in] x      The expected value for the x-component.
+     * @param[in] y      The expected value for the y-component.
+     * @param[in] z      The expected value for the z-component.
+     * @param[in] w      The expected value for the w-component.
      *
      * @note Uses GoogleTest macros. Triggers a non-fatal test failure if the vector's
      *       internal state does not match the provided scalars.
@@ -257,7 +257,7 @@ namespace testutils
      *
      * @tparam T Numeric type of the actual vector components.
      *
-     * @param vector The vector being evaluated.
+     * @param[in] vector The vector being evaluated.
      *
      * @note Uses GoogleTest macros for validation. This function will trigger a non-fatal test failure
      *       if any of the vectors components are not unit.
@@ -293,7 +293,7 @@ namespace testutils
      *
      * @tparam T Numeric type of the actual vector components.
      *
-     * @param vector The vector being evaluated.
+     * @param[in] vector The vector being evaluated.
      *
      * @note Uses GoogleTest macros for validation. This function will trigger a non-fatal test failure
      *       if any of the vectors components are not zero.
@@ -327,7 +327,7 @@ namespace testutils
      *
      * @tparam T Numeric type of the actual vector components.
      *
-     * @param vector The vector being evaluated.
+     * @param[in] vector The vector being evaluated.
      *
      * @note Uses GoogleTest macros for validation. This function will trigger a non-fatal test failure
      *       if any of the vectors components are not @ref `INFINITY` or `-INFINITY`.
@@ -351,8 +351,8 @@ namespace testutils
      *
      * @tparam T Numeric type of the values being compared.
      *
-     * @param expected The ground-truth reference value.
-     * @param actual   The value being evaluated.
+     * @param[in] expected The ground-truth reference value.
+     * @param[in] actual   The value being evaluated.
      *
      * @note Uses GoogleTest macros. Triggers a non-fatal failure if the absolute difference
      *       between expected and actual exceeds the library's standard epsilon.
@@ -380,7 +380,7 @@ namespace testutils
     /**
      * @brief Validates that a @ref flcn::Vec4 components are positive `INFINITY`.
      *
-     * @param Vec The vector to evaluate.
+     * @param[in] Vec The vector to evaluate.
      */
     #define EXPECT_VEC4_POS_INF(vec) \
             EXPECT_TRUE(std::isinf((vec).x()) && !std::signbit((vec).x())); \
@@ -392,7 +392,7 @@ namespace testutils
     /**
      * @brief Validates that a @ref flcn::Vec4 components are negative `INFINITY`.
      *
-     * @param Vec The vector to evaluate.
+     * @param[in] Vec The vector to evaluate.
      */
     #define EXPECT_VEC4_NEG_INF(vec) \
             EXPECT_TRUE(std::isinf((vec).x()) && std::signbit((vec).x())); \
@@ -404,7 +404,7 @@ namespace testutils
     /**
      * @brief Validates that a @ref flcn::Vec3 components are positive `INFINITY`.
      *
-     * @param Vec The vector to evaluate.
+     * @param[in] Vec The vector to evaluate.
      */
     #define EXPECT_VEC3_POS_INF(vec) \
             EXPECT_TRUE(std::isinf((vec).x()) && !std::signbit((vec).x())); \
@@ -415,7 +415,7 @@ namespace testutils
     /**
      * @brief Validates that a @ref flcn::Vec3 components are negative `INFINITY`.
      *
-     * @param Vec The vector to evaluate.
+     * @param[in] Vec The vector to evaluate.
      */
     #define EXPECT_VEC3_NEG_INF(vec) \
             EXPECT_TRUE(std::isinf((vec).x()) && std::signbit((vec).x())); \
@@ -426,7 +426,7 @@ namespace testutils
     /**
      * @brief Validates that a @ref flcn::Vec2 components are positive `INFINITY`.
      *
-     * @param Vec The vector to evaluate.
+     * @param[in] Vec The vector to evaluate.
      */
     #define EXPECT_VEC2_POS_INF(vec) \
             EXPECT_TRUE(std::isinf((vec).x()) && !std::signbit((vec).x())); \
@@ -436,7 +436,7 @@ namespace testutils
     /**
      * @brief Validates that a @ref flcn::Vec2 components are negative `INFINITY`.
      *
-     * @param Vec The vector to evaluate.
+     * @param[in] Vec The vector to evaluate.
      */
     #define EXPECT_VEC2_NEG_INF(vec) \
             EXPECT_TRUE(std::isinf((vec).x()) && std::signbit((vec).x())); \

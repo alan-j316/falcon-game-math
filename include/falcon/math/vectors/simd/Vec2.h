@@ -119,7 +119,7 @@ namespace flcn::simd
 
         /**
          * @brief Initialize a @ref Vec2 with an Simd128_t register.
-         * @param reg The register to bind to this vector.
+         * @param[in] reg The register to bind to this vector.
          */
         [[nodiscard]] explicit constexpr Vec2(const Simd128_t<T, DIMENSION>& reg) noexcept;
 
@@ -134,7 +134,7 @@ namespace flcn::simd
          * @brief Convert @p vec to a scalar Vec2.
          * @note Can add unnecessary overhead when used in hot paths.
          *
-         * @param vec The SIMD-accelerated vector.
+         * @param[in] vec The SIMD-accelerated vector.
          **/
         [[nodiscard]] static constexpr flcn::Vec2<T> toVec2(const Vec2& vec) noexcept;
 
@@ -310,7 +310,7 @@ namespace flcn::simd
          * @tparam Indices The component indices used to construct the new vector.
          *                 See @ref flcn::axis, @ref flcn::colors, and @ref flcn::stp for available swizzle aliases.
          *
-         * @param vec The vector to shuffle, rearrange or isolate components.
+         * @param[in] vec The vector to shuffle, rearrange or isolate components.
          *
          * @return A new vector containing the requested components or the component if @p Indices is 1.
          *         The dimension of the returned vector perfectly matches the number of indices provided.
@@ -2108,8 +2108,8 @@ namespace flcn::simd
          * @brief Write the vector to an output stream.
          *        Format the vector as <x, y> string representation for debugging or logging.
          *
-         * @param os     The output stream to write to.
-         * @param vector The vector to be streamed.
+         * @param[in] os     The output stream to write to.
+         * @param[in] vector The vector to be streamed.
          *
          * @return A reference to the output stream @p os.
          */

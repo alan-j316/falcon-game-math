@@ -106,7 +106,7 @@ namespace flcn::simd
 
         /**
          * @brief Initialize a @ref Vec3 with its underlying register.
-         * @param reg The register to bind to this vector.
+         * @param[in] reg The register to bind to this vector.
          */
         [[nodiscard]] explicit constexpr Vec3(const internal::Vec3SimdStore<T>::Type& reg) noexcept;
 
@@ -377,7 +377,7 @@ namespace flcn::simd
          * @addtogroup Falcon_Vec3_Ptr
          * @{
          */
-
+        // TODO: Update docs
         /**
          * @brief Store the values of this vector to @p pBuffer.
          * @note  Since we cannot return a pointer to a buffer, due to lifetime limitation
@@ -389,7 +389,7 @@ namespace flcn::simd
          *
          * @warning @p pBuffer must be aligned to 16-byte boundary.
          *          If you want to store unaligned memory use @ref storeUnaligned.
-         * @warning @p pBuffer must be a pointer to an data-structure that is 4 elements wide(e.g: float[4]).
+         * @warning @p pBuffer must be a pointer to a data-structure that is 4 elements wide(e.g: float[4]).
          *
          * @code
          * // DO
@@ -422,7 +422,7 @@ namespace flcn::simd
          *
          * @warning @p pBuffer must be aligned to 16-byte boundary.
          *          If you want to store unaligned memory use @ref storeUnaligned.
-         * @warning @p pBuffer must be a pointer to an data-structure that is 4 elements wide(e.g: float[4]).
+         * @warning @p pBuffer must be a pointer to a data-structure that is 4 elements wide(e.g: float[4]).
          *
          * @code
          * // DO
@@ -454,7 +454,7 @@ namespace flcn::simd
          * @note The buffer must be of an adequate size to store the contents.
          *
          * @note No memory alignment necessary.
-         * @warning @p pBuffer must be a pointer to an data-structure that is 4 elements wide(e.g: float[4]).
+         * @warning @p pBuffer must be a pointer to a data-structure that is 4 elements wide(e.g: float[4]).
          *
          * @code
          * // DO
@@ -486,7 +486,7 @@ namespace flcn::simd
          * @note The buffer must be of an adequate size to store the contents.
          *
          * @note No memory alignment necessary.
-         * @warning @p pBuffer must be a pointer to an data-structure that is 4 elements wide(e.g: float[4]).
+         * @warning @p pBuffer must be a pointer to a data-structure that is 4 elements wide(e.g: float[4]).
          *
          * @code
          * // DO
@@ -1183,7 +1183,6 @@ namespace flcn::simd
         [[nodiscard]] static constexpr Vec3 tryDiv(const Vec3& vec, S scalar, OperationStatus& status) noexcept
             requires StrictArithmetic<T>;
 
-        // TODO: Add pairwise product(Hadamard) to Vec2, Vec2, Vec3, Vec3, Vec4
         /** @} */
 
 
@@ -2364,8 +2363,8 @@ namespace flcn::simd
         //          * @brief Write the vector to an output stream.
         //          *        Format the vector as <x, y, z> string representation for debugging or logging.
         //          *
-        //          * @param os     The output stream to write to.
-        //          * @param vector The vector to be streamed.
+        //          * @param[in] os     The output stream to write to.
+        //          * @param[in] vector The vector to be streamed.
         //          *
         //          * @return A reference to the output stream @p os.
         //          */

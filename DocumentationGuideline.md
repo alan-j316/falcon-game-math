@@ -12,7 +12,7 @@
 - **Consideration** - Use doxygen groups defined in the `DoxygenGroups.h` header of each project. If not defined, define it there.
 - **Prefixes** - Use `T_` to identify test groups (lowest level), and `B_` to to group benchmarks. Code groups can be written without prefixes.
 - **Subgroup** - Use subgroups for clarity like `Core/Mathematics/Vectors/Vec4/GeometricProducts`
-- **Formatting** - Group attributes of the same type together without line breaks. Use a single line break to separate different attribute types (e.g., separate @tparam block from @param block).
+- **Formatting** - Group attributes of the same type together without line breaks. Use a single line break to separate different attribute types (e.g., separate @tparam block from @param[in] block).
 
 ### Spacing
 

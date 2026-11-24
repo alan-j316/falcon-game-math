@@ -23,8 +23,8 @@ namespace flcn
       * @tparam DataType The data type of the Simd128 register.
       * @tparam Lane     The number of lanes of the Simd128 register.
       *
-      * @param a The first register.
-      * @param b The second register.
+      * @param[in] a The first register.
+      * @param[in] b The second register.
       *
       * @return A Simd128 register with minimum values taken from both the registers.
       */
@@ -39,8 +39,8 @@ namespace flcn
       * @tparam DataType The data type of the Simd128 register.
       * @tparam Lane     The number of lanes of the Simd128 register.
       *
-      * @param a The first register.
-      * @param b The second register.
+      * @param[in] a The first register.
+      * @param[in] b The second register.
       *
       * @return A Simd128 register with maximum values taken from both the registers.
       */
@@ -57,7 +57,7 @@ namespace flcn
       * @tparam DataType The data type of the Simd128 register.
       * @tparam Lane     The number of lanes of the Simd128 register.
       *
-      * @param reg The register.
+      * @param[in] reg The register.
       *
       * @return A Simd128 register with absolute values.
       */
@@ -74,7 +74,7 @@ namespace flcn
       * @tparam DataType The data type of the Simd128 register.
       * @tparam Lane     The number of lanes of the Simd128 register.
       *
-      * @param reg The register.
+      * @param[in] reg The register.
       *
       * @return A Simd128 register with square root of each entry.
       */
@@ -86,9 +86,9 @@ namespace flcn
       * @brief Perform a fused multiply and add (a * b + c).
       *
       * @note Register arithmetic is limited to same data types and lanes.
-      * @param a The register containing the multiplicand.
-      * @param b The register containing the multiplier.
-      * @param c The register containing the addend.
+      * @param[in] a The register containing the multiplicand.
+      * @param[in] b The register containing the multiplier.
+      * @param[in] c The register containing the addend.
       *
       * @return A new register with the fused-multiply add result.
       */
@@ -102,9 +102,9 @@ namespace flcn
       * @brief Perform a fused multiply and subtract (this * b - c).
       *
       * @note Register arithmetic is limited to same data types and lanes.
-      * @param a The register containing the multiplicand.
-      * @param b The register containing the multiplier.
-      * @param c The register containing the subtrahend.
+      * @param[in] a The register containing the multiplicand.
+      * @param[in] b The register containing the multiplier.
+      * @param[in] c The register containing the subtrahend.
       *
       * @return A new register with the fused-multiply subtraction result.
       */

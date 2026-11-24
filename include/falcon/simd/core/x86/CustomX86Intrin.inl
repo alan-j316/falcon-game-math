@@ -268,7 +268,7 @@ namespace flcn::intrin
     /**
      * @brief Extract a 128-bit integral register from a 256-bit register.
      * @tparam Lane The lane to extract from. Must be 0 or 1.
-     * @param reg The register to extract the lane from.
+     * @param[in] reg The register to extract the lane from.
      * @return The 128-bit register at the @p Lane.
      */
     template <uint8_t Lane>

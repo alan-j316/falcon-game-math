@@ -52,8 +52,8 @@ namespace flcn::utils
      *
      * @tparam T The type of operands. Must satisfy `std::floating_point` or `std::integral`.
      *
-     * @param a The first operand.
-     * @param b The second operand.
+     * @param[in] a The first operand.
+     * @param[in] b The second operand.
      *
      * @return A boolean whether the values are equal.
      */
@@ -70,8 +70,8 @@ namespace flcn::utils
      *
      * @tparam T Numeric type of the number. Must satisfy @ref StrictArithmetic.
      *
-     * @param num     The number to take the square root of.
-     * @param epsilon The precision required for the square-root.
+     * @param[in] num     The number to take the square root of.
+     * @param[in] epsilon The precision required for the square-root.
      *                Default to falcon EPSILON.
      *
      * @return The square root of a number promoted to the near floating point type.

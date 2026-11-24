@@ -178,7 +178,7 @@ namespace flcn::simd::internal
      *        cross the half-lane.
      * @tparam Lane  The lane count.
      *
-     * @param indices The permute indices.
+     * @param[in] indices The permute indices.
      * @return A packed integer bitmask with 1 indicating that the index is in-lane and 0 indicating a boundary cross.
      */
     template <size_t Lane, size_t Size>

@@ -63,10 +63,10 @@ namespace flcn::internal
 /**
  * @brief Log the assertion message and status to console.
  *
- * @param condition The condition that triggered the assertion.
- * @param message   An optional message, stating the reason behind assertion failure.
- * @param file      The name of the file that triggered the assertion.
- * @param line      The line number of hte code that triggered the assertion.
+ * @param[in] condition The condition that triggered the assertion.
+ * @param[in] message   An optional message, stating the reason behind assertion failure.
+ * @param[in] file      The name of the file that triggered the assertion.
+ * @param[in] line      The line number of hte code that triggered the assertion.
  */
 inline void logAssertion(const char* condition, const char* message, const char* file, const int line)
 {
@@ -86,8 +86,8 @@ inline void logAssertion(const char* condition, const char* message, const char*
  * @note To ensure that the macro support compile-time evaluation an exception is thrown,
  *       instead of logging during compile time.
  *
- * @param condition The boolean expression to evaluate.
- * @param message   A string literal or streamable object providing context on the failure.
+ * @param[in] condition The boolean expression to evaluate.
+ * @param[in] message   A string literal or streamable object providing context on the failure.
  */
 #ifndef NDEBUG
     #define FALCON_ASSERT_MSG(condition, message)                                                                 \
@@ -120,7 +120,7 @@ inline void logAssertion(const char* condition, const char* message, const char*
  * @note To ensure that the macro support compile-time evaluation an exception is thrown,
  *       instead of logging during compile time.
  *
- * @param condition The boolean expression to evaluate.
+ * @param[in] condition The boolean expression to evaluate.
  */
 #ifndef NDEBUG
     #define FALCON_ASSERT(condition)                                                                              \

@@ -51,8 +51,8 @@ namespace flcn::testutils
      * @tparam T Numeric type of the expected quaternion components.
      * @tparam U Numeric type of the actual quaternion components.
      *
-     * @param expected The quaternion serving as the reference for comparison.
-     * @param actual   The quaternion being evaluated.
+     * @param[in] expected The quaternion serving as the reference for comparison.
+     * @param[in] actual   The quaternion being evaluated.
      *
      * @note Uses GoogleTest macros for validation. This function will trigger a non-fatal test failure
      *       if the quaternions are not equal.
@@ -90,11 +90,11 @@ namespace flcn::testutils
      *
      * @tparam T Numeric type of the quaternion's vector and scalar components.
      *
-     * @param quat   The quaternion instance being evaluated.
-     * @param x      The expected value for the x-component.
-     * @param y      The expected value for the y-component.
-     * @param z      The expected value for the z-component.
-     * @param w      The expected value for the w-component.
+     * @param[in] quat   The quaternion instance being evaluated.
+     * @param[in] x      The expected value for the x-component.
+     * @param[in] y      The expected value for the y-component.
+     * @param[in] z      The expected value for the z-component.
+     * @param[in] w      The expected value for the w-component.
      *
      * @note Uses GoogleTest macros. Triggers a non-fatal test failure if the quaternions's
      *       internal state does not match the provided scalars.
@@ -131,7 +131,7 @@ namespace flcn::testutils
      *
      * @tparam T Numeric type of the actual quaternion components.
      *
-     * @param quat The quaternion being evaluated.
+     * @param[in] quat The quaternion being evaluated.
      *
      * @note Uses GoogleTest macros for validation. This function will trigger a non-fatal test failure
      *       if any of the quaternion components are not @ref `INFINITY` or `-INFINITY`.

@@ -68,7 +68,7 @@ namespace flcn
          * @brief Initialize a 128-bit SIMD register with @p data.
          *
          * @tparam Args The numeric type of @p data. Must match the register's datatype.
-         * @param data  The values to initialize the register with.
+         * @param[in] data  The values to initialize the register with.
          *
          * @note If only a single argument is provided then the value will be broadcasted across the entire register.
          *       The number of values provided must be less than or equal to the total register lanes. If
@@ -97,7 +97,7 @@ namespace flcn
          *
          * @note Unused lanes must be zeroed-out manually.
          *
-         * @param values The values to fill the register with.
+         * @param[in] values The values to fill the register with.
          *
          * @warning The container's storage address must be aligned to 16-byte boundary. For unaligned data,
          *          use @ref load to load data manually.
@@ -112,7 +112,7 @@ namespace flcn
          *       can cause segmentation faults.
          * @note Unused lanes must be zeroed-out manually.
          *
-         * @param pBuffer The starting address of the values to fill the register with.
+         * @param[in] pBuffer The starting address of the values to fill the register with.
          *
          * @warning @p buffer must be aligned to 16-byte boundary. For unaligned data,
          *          use @ref load to load data manually.
@@ -130,7 +130,7 @@ namespace flcn
          *
          * @tparam Args The numeric type of arguments. Must be less than the maximum lane size.
          *
-         * @param args The data to put in the register.
+         * @param[in] args The data to put in the register.
          *
          * @return A reference to this register.
          */
@@ -151,7 +151,7 @@ namespace flcn
          *       operations on them may yield undesired outcome due to the pure intrinsic casts used.
          *
          * @tparam DataType2 The data type of the incoming register.
-         * @param other      The register to conform to the current register type.
+         * @param[in] other      The register to conform to the current register type.
          */
         template <typename DataType2>
         explicit constexpr Simd128(const Simd128<SimdBackend::ARCH_UNKNOWN, DataType2, Lane>& other);
@@ -166,7 +166,7 @@ namespace flcn
          with
          *       zeroes.
          *
-         * @param pData The data to load.
+         * @param[in] pData The data to load.
          */
         constexpr void loadAligned(const DataType* pData) noexcept;
 
@@ -180,7 +180,7 @@ namespace flcn
          with
          *       zeroes.
          *
-         * @param pData The data to load.
+         * @param[in] pData The data to load.
          *
          * @relatedalso loadAligned(DataType*)
          * @relatedalso store(DataType*)
@@ -197,7 +197,7 @@ namespace flcn
          * @details
          *        Fills the entire register lane with the same value, i.e, for 32-bit floats, all the 4 lanes will
          *        contain the same @p value.
-         * @param value The value to broadcast.
+         * @param[in] value The value to broadcast.
          *
          * @relatedalso load(DataType*)
          * @relatedalso loadAligned(DataType*)
@@ -242,7 +242,7 @@ namespace flcn
          *       an array of big enough to hold 4 int32_t but the Lane is 2, then it will only fill the
          *       upper two elements, i.e [0, 1, _, _]
          *
-         * @param pBuffer The buffer to write the data to.
+         * @param[in] pBuffer The buffer to write the data to.
          *
          * @relatedalso load(DataType*)
          * @relatedalso loadAligned(DataType*)
@@ -258,7 +258,7 @@ namespace flcn
          *
          * @note The provided buffer must have enough size to hold the data.
          *
-         * @param pBuffer The buffer to write the data to.
+         * @param[in] pBuffer The buffer to write the data to.
          *
          * @relatedalso load(DataType*)
          * @relatedalso loadAligned(DataType*)
@@ -271,7 +271,7 @@ namespace flcn
         /**
          * Get the value at @p index.
          *
-         * @param index The index of the register. Must be between 0 and Lane - 1.
+         * @param[in] index The index of the register. Must be between 0 and Lane - 1.
          *
          * @note For indices known at compile-time, use get<Index>() as it is faster
          *       due to the availability of direct hardware intrinsic.
@@ -287,8 +287,8 @@ namespace flcn
         /**
          * @brief Set the value at @p index to @p value.
          *
-         * @param index The index of the register. Must be between 0 and Lane - 1.
-         * @param value The value to set.
+         * @param[in] index The index of the register. Must be between 0 and Lane - 1.
+         * @param[in] value The value to set.
          *
          * @note For indices known at compile-time, use set<Index>(value) as it is faster
          *       due to the availability of direct hardware intrinsic.
@@ -380,7 +380,7 @@ namespace flcn
          *
          * @note Register arithmetic to limited is same data types and lanes.
          *
-         * @param other The register to add.
+         * @param[in] other The register to add.
          *
          * @return A new register with the sum elements from this register and @p other.
          */
@@ -392,7 +392,7 @@ namespace flcn
          *
          * @note Register arithmetic to limited is same data types and lanes.
          *
-         * @param other The register to add.
+         * @param[in] other The register to add.
          *
          * @return A reference to this register with sum.
          */
@@ -404,7 +404,7 @@ namespace flcn
          *
          * @note Register arithmetic is limited to same data types and lanes.
          *
-         * @param other The register to subtract.
+         * @param[in] other The register to subtract.
          * @return A new register with the difference between elements of this register and @p other.
          */
         [[nodiscard]] constexpr Simd128 operator-(Simd128 other) const noexcept;
@@ -423,7 +423,7 @@ namespace flcn
          *
          * @note Register arithmetic is limited to same data types and lanes.
          *
-         * @param other The register to subtract.
+         * @param[in] other The register to subtract.
          *
          * @return A reference to this register with difference.
          */
@@ -435,7 +435,7 @@ namespace flcn
          *
          * @note Register arithmetic is limited to same data types and lanes.
          *
-         * @param other The register to multiply.
+         * @param[in] other The register to multiply.
          * @return A new register with the product of elements of this register and @p other.
          */
         [[nodiscard]] constexpr Simd128 operator*(Simd128 other) const noexcept;
@@ -446,7 +446,7 @@ namespace flcn
          *
          * @note Register arithmetic is limited to same data types and lanes.
          *
-         * @param other The register to multiply.
+         * @param[in] other The register to multiply.
          *
          * @return A reference to this register with products.
          */
@@ -466,7 +466,7 @@ namespace flcn
          * @note For division with same divisor it is faster to use operator/ or operator/= which implements division
          *       by constant from Hackers Delight. (TODO)
          *
-         * @param other The register containing the divisors.
+         * @param[in] other The register containing the divisors.
          *
          * @return A new register with the quotient.
          *
@@ -484,7 +484,7 @@ namespace flcn
          * @note For integral division with different divisors @ref divReg may be
          *       faster.
          *
-         * @param scalar The divisor.
+         * @param[in] scalar The divisor.
          *
          * @return A new register with the quotient.
          *
@@ -502,7 +502,7 @@ namespace flcn
          * @note For integral division with different divisors @ref divReg may be
          *       faster.
          *
-         * @param scalar The divisor.
+         * @param[in] scalar The divisor.
          *
          * @return A reference to this register with products.
          *
@@ -516,8 +516,8 @@ namespace flcn
          * @brief Perform a fused multiply and add (this * b + c).
          *
          * @note Register arithmetic is limited to same data types and lanes.
-         * @param b The register containing the multiplier.
-         * @param c The register containing the addend.
+         * @param[in] b The register containing the multiplier.
+         * @param[in] c The register containing the addend.
          *
          * @return A new register with the fused-multiply-add result.
          */
@@ -528,8 +528,8 @@ namespace flcn
          * @brief Perform a fused multiply and subtract (this * b - c).
          *
          * @note Register arithmetic is limited to same data types and lanes.
-         * @param b The register containing the multiplier.
-         * @param c The register containing the subtrahend.
+         * @param[in] b The register containing the multiplier.
+         * @param[in] c The register containing the subtrahend.
          *
          * @return A new register with the fused-multiply-subtract result.
          */
@@ -752,8 +752,8 @@ namespace flcn
          * ret   -> 0x 32 23 ed 81
          * @endcode
          *
-         * @param other The register whose values are selected when mask is 0b11..11 or 0xf..f.
-         * @param mask  The mask to use for blending.
+         * @param[in] other The register whose values are selected when mask is 0b11..11 or 0xf..f.
+         * @param[in] mask  The mask to use for blending.
          *
          * @return Return a new register with blended values.
          */
@@ -782,7 +782,7 @@ namespace flcn
          * const auto blended = reg1.template blend<mask>(reg2); // {8.0f, 2.0f, 3.0f, 11.0f}
          * @endcode
          *
-         * @param other The register whose values are selected when mask is 0b11..11 or 0xf..f.
+         * @param[in] other The register whose values are selected when mask is 0b11..11 or 0xf..f.
          *
          * @return Return a new register with blended values.
          */

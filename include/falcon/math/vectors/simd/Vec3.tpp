@@ -529,6 +529,21 @@ namespace flcn::simd
     }
 
 
+    template <Arithmetic T>
+    FALCON_INLINE constexpr Vec3<T> Vec3<T>::operator*(const Vec3& rhs) const noexcept
+        requires StrictArithmetic<T>
+    { return Vec3{ _data * rhs._data }; }
+
+
+    template <Arithmetic T>
+    FALCON_INLINE constexpr Vec3<T>& Vec3<T>::operator*=(const Vec3& rhs) noexcept
+        requires StrictArithmetic<T>
+    {
+        *this = *this * rhs;
+        return *this;
+    }
+
+
 
     /*************************************
      *             DIVISION              *
@@ -973,4 +988,4 @@ namespace flcn::simd
     FALCON_INLINE constexpr bool Vec3<T>::hasNaN(const Vec3& vec) noexcept
     { return vec.hasNaN(); }
 
-} // namespace flcn
+} // namespace flcn::simd

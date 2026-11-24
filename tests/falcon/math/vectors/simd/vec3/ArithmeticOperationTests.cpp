@@ -96,6 +96,30 @@ namespace
 
 
     /**
+     * @brief Test fixture for @ref flcn::simd::Vec3 vector multiplication.
+     * @tparam T The scalar type (int, float, double...) of the vector components.
+     */
+    template <typename T>
+    class SimdVec3VectorMultiplicationTests: public testing::Test
+    {
+    protected:
+        flcn::simd::Vec3<T> _vecA, _vecB;
+        flcn::simd::Vec3<T> _expectedFloatingVec;
+        flcn::simd::Vec3<T> _expectedIntegralVec;
+
+        void SetUp() override
+        {
+            _vecA                = { T(5.238923), T(2.394328), T(55.12384) };
+            _vecB                = { T(12.2380123), T(45.38912), T(1.3284234) };
+            _expectedFloatingVec = { T(64.1140041127529), T(108.67644091135999), T(73.227798953856) };
+            _expectedIntegralVec = { T(60), T(90), T(55) };
+        }
+    };
+    TYPED_TEST_SUITE(SimdVec3VectorMultiplicationTests, SupportedArithmeticTypes);
+
+
+
+    /**
      * @brief Test fixture for @ref Vec3 scalar division.
      * @tparam T The scalar type (int, float, double...) of the vector components.
      */
@@ -284,6 +308,39 @@ TYPED_TEST(SimdVec3ScalarMultiplicationTests, VectorTimesEqualScalarReturnsTheSa
     }
 }
 
+
+/**************************************
+ *     VECTOR MULTIPLICATION TESTS    *
+ **************************************/
+
+TYPED_TEST(SimdVec3VectorMultiplicationTests, TimesOperator_ReturnVectorComponentwiseProduct)
+{
+    const auto result = this->_vecA * this->_vecB;
+
+    if (std::is_floating_point_v<TypeParam>)
+    {
+        EXPECT_VEC_EQ(this->_expectedFloatingVec, result);
+    }
+    else
+    {
+        EXPECT_VEC_EQ(this->_expectedIntegralVec, result);
+    }
+}
+
+
+TYPED_TEST(SimdVec3VectorMultiplicationTests, TimesEqualsOperator_PerformComponentwiseProductInPlace)
+{
+    this->_vecA *= this->_vecB;
+
+    if (std::is_floating_point_v<TypeParam>)
+    {
+        EXPECT_VEC_EQ(this->_expectedFloatingVec, this->_vecA);
+    }
+    else
+    {
+        EXPECT_VEC_EQ(this->_expectedIntegralVec, this->_vecA);
+    }
+}
 
 
 /**************************************

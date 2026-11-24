@@ -64,7 +64,7 @@ namespace flcn::simd
         /// ForwardDeclarations
         template <size_t Index>
         class ConstIndexableProxy; // NOLINT
-        class IndexableProxy; // NOLINT
+        class IndexableProxy;      // NOLINT
 
 
     public:
@@ -1026,6 +1026,29 @@ namespace flcn::simd
         template <StrictArithmetic S>
         constexpr Vec3& operator*=(S scalar) noexcept
             requires StrictArithmetic<T>;
+
+
+        /**
+         * @brief Multiply the components of this vector with @p rhs.
+         *
+         * @param[in] rhs The multiplier vector.
+         *
+         * @return A new type-promoted vector with component-wise product.
+         */
+        [[nodiscard]] constexpr Vec3 operator*(const Vec3& rhs) const noexcept
+            requires StrictArithmetic<T>;
+
+
+        /**
+         * @brief Multiply the components of this vector with @p rhs in place.
+         *
+         * @param[in] rhs The multiplier vector.
+         *
+         * @return A reference to this vector post-multiplication.
+         */
+        constexpr Vec3& operator*=(const Vec3& rhs) noexcept
+            requires StrictArithmetic<T>;
+
 
         /**
          * @brief Compute the component-wise division of this vector by @p scalar and return a new vector.

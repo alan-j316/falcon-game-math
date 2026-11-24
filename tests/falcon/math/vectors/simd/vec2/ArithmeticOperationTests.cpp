@@ -103,9 +103,9 @@ namespace
     class SimdVec2VectorMultiplicationTests: public testing::Test
     {
     protected:
-        flcn::Vec2<T> _vecA, _vecB;
-        flcn::Vec2<T> _expectedFloatingVec;
-        flcn::Vec2<T> _expectedIntegralVec;
+        flcn::simd::Vec2<T> _vecA, _vecB;
+        flcn::simd::Vec2<T> _expectedFloatingVec;
+        flcn::simd::Vec2<T> _expectedIntegralVec;
 
         void SetUp() override
         {
@@ -295,7 +295,7 @@ TYPED_TEST(SimdVec2ScalarMultiplicationTests, TimesEqualsOperator_ByScalarReturn
 
 TYPED_TEST(SimdVec2VectorMultiplicationTests, TimesOperator_ReturnVectorComponentwiseProduct)
 {
-    const flcn::Vec2 result = this->_vecA * this->_vecB;
+    const auto result = this->_vecA * this->_vecB;
 
     if (std::is_floating_point_v<TypeParam>)
     {

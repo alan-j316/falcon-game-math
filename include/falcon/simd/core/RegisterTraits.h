@@ -141,6 +141,9 @@ namespace flcn
 
 #elif defined(FALCON_PLATFORM_ARM)
         // TODO: Add Neon Intrinsics here
+
+#else
+        // TODO: Add scalar intrinsics
 #endif
     } // namespace simd::internal
 

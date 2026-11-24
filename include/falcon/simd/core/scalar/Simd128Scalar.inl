@@ -31,11 +31,11 @@ namespace flcn
         // If 1 argument broadcast, else load into the array.
         if constexpr (sizeof...(Args) == 1)
         {
-            broadcast(data...);
+            broadcast(static_cast<DataType>(data)...);
         }
         else
         {
-            set(data...);
+            set(static_cast<DataType>(data)...);
         }
     }
 

@@ -60,7 +60,7 @@ CheckOptions:
   - { key: readability-identifier-naming.MacroDefinitionCase, value: UPPER_CASE }
   - { key: readability-identifier-naming.LocalConstantCase, value: camelBack }
 
-  - { key: readability-identifier-naming.FunctionIgnoredRegexp, value: "^(TEST|TEST_F|TYPED_TEST|TEST_P|TYPED_TEST_SUITE|SetUp|TearDown)$" }
+  - { key: readability-identifier-naming.FunctionIgnoredRegexp, value: "^(TEST|TEST_F|TYPED_TEST|TEST_P|TYPED_TEST_SUITE|SetUp|TearDown|TEST_)$" }
 
   - { key: readability-identifier-naming.TypeTemplateParameterCase, value: CamelCase }
   - { key: readability-identifier-naming.ValueTemplateParameterCase, value: CamelCase }

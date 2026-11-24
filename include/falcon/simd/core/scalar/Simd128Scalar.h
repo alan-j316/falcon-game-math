@@ -48,6 +48,7 @@ namespace flcn
     template <typename DataType, size_t Lane>
     struct alignas(16) Simd128<SimdBackend::ARCH_UNKNOWN, DataType, Lane>
     {
+        using Internal128RegisterType = std::array<DataType, Lane>;
 
         static constexpr size_t BUFFER_WIDTH = 128;      ///< Width of the register in bits.
         using ValueType                      = DataType; ///< The internal data type of this Register.
@@ -802,14 +803,12 @@ namespace flcn
         [[nodiscard]] constexpr Simd128 permute() const noexcept;
 
 
-        // /// @brief Get the internal register used by Simd128.
-        // [[nodiscard]] FALCON_INLINE constexpr simd::internal::Simd128Register_t<DataType> naive() const noexcept
-        // { return _register; }
-        //
-        //
-        // /// @brief Get the internal register used by Simd128.
-        // [[nodiscard]] FALCON_INLINE constexpr simd::internal::Simd128Register_t<DataType> operator*() const noexcept
-        // { return _register; }
+        /// @brief Get the internal register used by Simd128.
+        [[nodiscard]] FALCON_INLINE constexpr Internal128RegisterType naive() const noexcept { return _reg; }
+
+
+        /// @brief Get the internal register used by Simd128.
+        [[nodiscard]] FALCON_INLINE constexpr Internal128RegisterType operator*() const noexcept { return _reg; }
 
 
 
@@ -856,7 +855,7 @@ namespace flcn
 
 
     private:
-        std::array<DataType, Lane> _reg{};
+        Internal128RegisterType _reg{};
 
         /// +---------------------------------------------------------------------------------------+
         /// |                              FRIEND FUNCTIONS                                         |

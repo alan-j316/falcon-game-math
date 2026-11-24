@@ -207,6 +207,11 @@ namespace
         static_assert(SCALAR_MUL_VEC.y() == 4);
         static_assert(SCALAR_MUL_VEC.z() == 6);
 
+        /// @test Verify that vector-vector(Hadamard) product returns a valid vector at compile time.
+        constexpr auto HADAMARD_MUL_VEC = VEC_A * VEC_B;
+        static_assert(HADAMARD_MUL_VEC.x() == 3);
+        static_assert(HADAMARD_MUL_VEC.y() == 10);
+        static_assert(HADAMARD_MUL_VEC.z() == 18);
 
         /// @test Verify that vector scalar division(operator/) returns a valid vector at compile time.
         constexpr auto DIV_VEC = VEC_B / 2;
@@ -478,6 +483,7 @@ TEST(Vec3ScalarMultiplication, MixedTypeScalarMultiplicationAssignmentEnsuresMin
 
     EXPECT_VEC_EQ(expected, vec);
 }
+
 
 
 /**************************************

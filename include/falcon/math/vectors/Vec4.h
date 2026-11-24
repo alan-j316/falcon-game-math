@@ -983,6 +983,33 @@ namespace flcn
 
 
         /**
+         * @brief Multiply the components of this vector with @p rhs.
+         * @note Promotes the result to the wider type using @ref PromotedVec4<T, U>.
+         * @tparam U  The numeric type of multiplier.
+         *
+         * @param[in] rhs The multiplier vector.
+         *
+         * @return A new type-promoted vector with component-wise product.
+         */
+        template <StrictArithmetic U>
+        [[nodiscard]] constexpr PromotedVec4<T, U> operator*(const Vec4<U>& rhs) const noexcept
+            requires StrictArithmetic<T>;
+
+
+        /**
+         * @brief Multiply the components of this vector with @p rhs in place.
+         * @tparam U  The numeric type of multiplier.
+         *
+         * @param[in] rhs The multiplier vector.
+         *
+         * @return A reference to this vector post-multiplication.
+         */
+        template <StrictArithmetic U>
+        constexpr Vec4& operator*=(const Vec4<U>& rhs) noexcept
+            requires StrictArithmetic<T>;
+
+
+        /**
          * @brief Compute the component-wise division of this vector by @p scalar and return a new vector.
          *
          * @note Promotes the result to the wider type using @ref PromotedVec4<T, S>.
@@ -1424,8 +1451,7 @@ namespace flcn
          */
         template <StrictArithmetic U>
             requires StrictSignedness<T, U>
-        [[nodiscard]] static constexpr PromotedValue_t<T, U> manhattanDist(const Vec4& lhs,
-                                                                           const Vec4<U>& rhs) noexcept
+        [[nodiscard]] static constexpr PromotedValue_t<T, U> manhattanDist(const Vec4& lhs, const Vec4<U>& rhs) noexcept
             requires StrictArithmetic<T>;
 
 
@@ -1464,8 +1490,7 @@ namespace flcn
          */
         template <StrictArithmetic U>
             requires StrictSignedness<T, U>
-        [[nodiscard]] static constexpr PromotedValue_t<T, U> chebyshevDist(const Vec4& lhs,
-                                                                           const Vec4<U>& rhs) noexcept
+        [[nodiscard]] static constexpr PromotedValue_t<T, U> chebyshevDist(const Vec4& lhs, const Vec4<U>& rhs) noexcept
             requires StrictArithmetic<T>;
 
         /** @} */

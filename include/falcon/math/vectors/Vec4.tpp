@@ -12,9 +12,9 @@
 
 
 
+#include "Vec3.h"
 #include "falcon/math/common/Utils.h"
 #include "falcon/math/common/Wrappers.h"
-#include "Vec3.h"
 
 #include <algorithm>
 #include <cassert>
@@ -704,6 +704,30 @@ namespace flcn
     }
 
 
+    template <Arithmetic T>
+    template <StrictArithmetic U>
+    FALCON_INLINE constexpr PromotedVec4<T, U> Vec4<T>::operator*(const Vec4<U>& rhs) const noexcept
+        requires StrictArithmetic<T>
+    {
+        using R = PromotedValue_t<T, U>;
+        return Vec4<R>{ static_cast<R>(_data[0] * rhs[0]), static_cast<R>(_data[1] * rhs[1]),
+                        static_cast<R>(_data[2] * rhs[2]), static_cast<R>(_data[3] * rhs[3]) };
+    }
+
+
+    template <Arithmetic T>
+    template <StrictArithmetic U>
+    FALCON_INLINE constexpr Vec4<T>& Vec4<T>::operator*=(const Vec4<U>& rhs) noexcept
+        requires StrictArithmetic<T>
+    {
+        _data[0] = static_cast<T>(rhs[0] * _data[0]);
+        _data[1] = static_cast<T>(rhs[1] * _data[1]);
+        _data[2] = static_cast<T>(rhs[2] * _data[2]);
+        _data[3] = static_cast<T>(rhs[3] * _data[3]);
+        return *this;
+    }
+
+
     /*************************************
      *                                   *
      *             DIVISION              *
@@ -718,7 +742,8 @@ namespace flcn
         using R = PromotedValue_t<T, S>;
         if constexpr (std::is_floating_point_v<R>)
         {
-            FALCON_ASSERT_MSG(flcn::abs(scalar) >= flcn::Config::EPSILON<R>, flcn::messages::assertion::VEC_DIV_BY_ZERO);
+            FALCON_ASSERT_MSG(flcn::abs(scalar) >= flcn::Config::EPSILON<R>,
+                              flcn::messages::assertion::VEC_DIV_BY_ZERO);
 
             R factor = R(1) / static_cast<R>(scalar);
             return Vec4<R>(_data[0] * factor, _data[1] * factor, _data[2] * factor, _data[3] * factor);
@@ -832,7 +857,8 @@ namespace flcn
 
     template <Arithmetic T>
     template <StrictArithmetic S>
-    FALCON_INLINE constexpr PromotedVec4<T, S> Vec4<T>::tryDiv(const Vec4& vec, S scalar, OperationStatus& status) noexcept
+    FALCON_INLINE constexpr PromotedVec4<T, S> Vec4<T>::tryDiv(const Vec4& vec, S scalar,
+                                                               OperationStatus& status) noexcept
         requires StrictArithmetic<T>
     { return vec.tryDiv(scalar, status); }
 
@@ -1092,7 +1118,7 @@ namespace flcn
     {
         const auto magnitude = mag();
         FALCON_ASSERT_MSG(magnitude >= flcn::Config::EPSILON<decltype(magnitude)>,
-                       flcn::messages::assertion::VEC_NORMALIZE_DIV_BY_ZERO);
+                          flcn::messages::assertion::VEC_NORMALIZE_DIV_BY_ZERO);
         return *this / magnitude;
     }
 
@@ -1172,7 +1198,7 @@ namespace flcn
         /** @note Static cast ensures integral type dots don't lose much precision */
         const auto b2 = static_cast<Magnitude<R>>(onto.dot(onto));
         FALCON_ASSERT_MSG(b2 >= flcn::Config::EPSILON_SQUARE<Magnitude<R>>,
-                       flcn::messages::assertion::VEC_PROJECT_DIV_BY_ZERO);
+                          flcn::messages::assertion::VEC_PROJECT_DIV_BY_ZERO);
 
         return this->dot(onto) / b2 * onto; // a.dot(b) / b.dot(b) * b
     }
@@ -1266,7 +1292,7 @@ namespace flcn
     template <StrictArithmetic U>
         requires StrictSignedness<T, U>
     FALCON_INLINE constexpr PromotedFloatVec4<T, U> Vec4<T>::tryProject(const Vec4<U>& onto,
-                                                                     OperationStatus& status) const noexcept
+                                                                        OperationStatus& status) const noexcept
         requires StrictArithmetic<T>
     {
         using R       = PromotedValue_t<T, U>;
@@ -1296,7 +1322,7 @@ namespace flcn
     template <StrictArithmetic U>
         requires StrictSignedness<T, U>
     FALCON_INLINE constexpr PromotedVec4<T, U> Vec4<T>::tryProjectNorm(const Vec4<U>& onto,
-                                                                    OperationStatus& status) const noexcept
+                                                                       OperationStatus& status) const noexcept
         requires StrictArithmetic<T>
     {
         using R = PromotedValue_t<T, U>;
@@ -1316,7 +1342,7 @@ namespace flcn
     template <StrictArithmetic U>
         requires StrictSignedness<T, U>
     FALCON_INLINE constexpr PromotedFloatVec4<T, U> Vec4<T>::tryProject(const Vec4& vec, const Vec4<U>& onto,
-                                                                     OperationStatus& status) noexcept
+                                                                        OperationStatus& status) noexcept
         requires StrictArithmetic<T>
     { return vec.tryProject(onto, status); }
 
@@ -1325,7 +1351,7 @@ namespace flcn
     template <StrictArithmetic U>
         requires StrictSignedness<T, U>
     FALCON_INLINE constexpr PromotedVec4<T, U> Vec4<T>::tryProjectNorm(const Vec4& vec, const Vec4<U>& onto,
-                                                                    OperationStatus& status) noexcept
+                                                                       OperationStatus& status) noexcept
         requires StrictArithmetic<T>
     { return vec.tryProjectNorm(onto, status); }
 
@@ -1418,7 +1444,7 @@ namespace flcn
     template <StrictArithmetic U>
         requires StrictSignedness<T, U>
     FALCON_INLINE constexpr PromotedFloatVec4<T, U> Vec4<T>::tryReject(const Vec4<U>& from,
-                                                                    OperationStatus& status) const noexcept
+                                                                       OperationStatus& status) const noexcept
         requires StrictArithmetic<T>
     {
         if (hasNaN() || from.hasNaN())
@@ -1435,7 +1461,7 @@ namespace flcn
     template <StrictArithmetic U>
         requires StrictSignedness<T, U>
     FALCON_INLINE constexpr PromotedVec4<T, U> Vec4<T>::tryRejectNorm(const Vec4<U>& from,
-                                                                   OperationStatus& status) const noexcept
+                                                                      OperationStatus& status) const noexcept
         requires StrictArithmetic<T>
     {
         if (hasNaN() || from.hasNaN())
@@ -1452,7 +1478,7 @@ namespace flcn
     template <StrictArithmetic U>
         requires StrictSignedness<T, U>
     FALCON_INLINE constexpr PromotedFloatVec4<T, U> Vec4<T>::tryReject(const Vec4& vec, const Vec4<U>& from,
-                                                                    OperationStatus& status) noexcept
+                                                                       OperationStatus& status) noexcept
         requires StrictArithmetic<T>
     { return vec.tryReject(from, status); }
 
@@ -1461,7 +1487,7 @@ namespace flcn
     template <StrictArithmetic U>
         requires StrictSignedness<T, U>
     FALCON_INLINE constexpr PromotedVec4<T, U> Vec4<T>::tryRejectNorm(const Vec4& vec, const Vec4<U>& from,
-                                                                   OperationStatus& status) noexcept
+                                                                      OperationStatus& status) noexcept
         requires StrictArithmetic<T>
     { return vec.tryRejectNorm(from, status); }
 

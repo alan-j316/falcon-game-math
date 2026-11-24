@@ -96,6 +96,28 @@ namespace
     TYPED_TEST_SUITE(Vec4ScalarMultiplicationTests, SupportedArithmeticTypes);
 
 
+    /**
+     * @brief Test fixture for @ref Vec4 vector multiplication.
+     * @tparam T The scalar type (int, float, double...) of the vector components.
+     */
+    template <typename T>
+    class Vec4VectorMultiplicationTests: public testing::Test
+    {
+    protected:
+        flcn::Vec4<T> _vecA, _vecB;
+        flcn::Vec4<T> _expectedFloatingVec;
+        flcn::Vec4<T> _expectedIntegralVec;
+
+        void SetUp() override
+        {
+            _vecA                = { T(5.238923), T(2.394328), T(55.12384), T(12.32894) };
+            _vecB                = { T(12.2380123), T(45.38912), T(1.3284234), T(4.219353) };
+            _expectedFloatingVec = { T(64.1140041127529), T(108.67644091135999), T(73.227798953856),
+                                     T(52.02014997582) };
+            _expectedIntegralVec = { T(60), T(90), T(55), T(48) };
+        }
+    };
+    TYPED_TEST_SUITE(Vec4VectorMultiplicationTests, SupportedArithmeticTypes);
 
     /**
      * @brief Test fixture for @ref Vec4 scalar division.
@@ -151,7 +173,7 @@ namespace
                                                flcn::Vec4<float>(3.0f, 3.0f, flcn::constants::NaN, 3.0f),
                                                flcn::Vec4<float>(3.0f, 3.0f, 3.0f, flcn::constants::NaN),
                                                flcn::Vec4<float>(flcn::constants::NaN, flcn::constants::NaN,
-                                                                flcn::constants::NaN, flcn::constants::NaN)));
+                                                                 flcn::constants::NaN, flcn::constants::NaN)));
 
 
 
@@ -194,6 +216,13 @@ namespace
         static_assert(SCALAR_MUL_VEC.y() == 4);
         static_assert(SCALAR_MUL_VEC.z() == 6);
         static_assert(SCALAR_MUL_VEC.w() == 8);
+
+        /// @test Verify that vector-vector(Hadamard) product returns a valid vector at compile time.
+        constexpr auto HADAMARD_MUL_VEC = VEC_A * VEC_B;
+        static_assert(HADAMARD_MUL_VEC.x() == 3);
+        static_assert(HADAMARD_MUL_VEC.y() == 10);
+        static_assert(HADAMARD_MUL_VEC.z() == 18);
+        static_assert(HADAMARD_MUL_VEC.w() == 28);
 
 
         /// @test Verify that vector scalar division(operator/) returns a valid vector at compile time.
@@ -574,6 +603,72 @@ TEST(Vec4ScalarDivision, DoubleVectorDivisionByZeroReturnsInfinityVector)
 }
 
 #endif
+
+
+
+/**************************************
+ *     VECTOR MULTIPLICATION TESTS    *
+ **************************************/
+
+TYPED_TEST(Vec4VectorMultiplicationTests, TimesOperator_ReturnVectorComponentwiseProduct)
+{
+    const flcn::Vec4 result = this->_vecA * this->_vecB;
+
+    if (std::is_floating_point_v<TypeParam>)
+    {
+        EXPECT_VEC_EQ(this->_expectedFloatingVec, result);
+    }
+    else
+    {
+        EXPECT_VEC_EQ(this->_expectedIntegralVec, result);
+    }
+}
+
+TYPED_TEST(Vec4VectorMultiplicationTests, TimesOperator_MixedType_PromotesType)
+{
+    const flcn::Vec4<double> vecB{ 2.123456789123456, 2.123456789123456, 2.123456789123456, 2.123456789123456 };
+
+    [[maybe_unused]] const flcn::Vec4 result = this->_vecA * vecB;
+
+    static_assert(std::is_same_v<typename decltype(result)::value_type, double>);
+}
+
+
+TYPED_TEST(Vec4VectorMultiplicationTests, TimesEqualsOperator_PerformComponentwiseProductInPlace)
+{
+    this->_vecA *= this->_vecB;
+
+    if (std::is_floating_point_v<TypeParam>)
+    {
+        EXPECT_VEC_EQ(this->_expectedFloatingVec, this->_vecA);
+    }
+    else
+    {
+        EXPECT_VEC_EQ(this->_expectedIntegralVec, this->_vecA);
+    }
+}
+
+
+TEST(Vec4VectorMultiplicationTests, TimesEqualsOperator_MixedType_DoesNotPromoteType)
+{
+    flcn::Vec4 vecA(3.0f, -1.0f, 2.0f, 11.0f);
+    const flcn::Vec4<double> vecB{ 2.123456789123456, 2.123456789123456, 2.123456789123456, 2.123456789123456 };
+    vecA *= vecB;
+
+    static_assert(std::is_same_v<decltype(vecA)::value_type, float>);
+}
+
+
+TEST(Vec4VectorMultiplicationTests, TimesEqualsOperator_MixedType_EnsuresMinimalPrecisionLoss)
+{
+    flcn::Vec4 vecA(3, -1, 10, 50);
+    const flcn::Vec4<double> vecB{ 2.5, 9.9, 31.6, -2.12 };
+    const flcn::Vec4 expected(7, -9, 316, -106);
+
+    vecA *= vecB;
+
+    EXPECT_VEC_EQ(expected, vecA);
+}
 
 
 

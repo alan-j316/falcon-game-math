@@ -209,7 +209,6 @@ namespace
         static_assert(HADAMARD_MUL_VEC.x() == 3);
         static_assert(HADAMARD_MUL_VEC.y() == 10);
 
-
         /// @test Verify that vector scalar division(operator/) returns a valid vector at compile time.
         constexpr auto DIV_VEC = VEC_B / 2;
         static_assert(DIV_VEC.x() == 1);

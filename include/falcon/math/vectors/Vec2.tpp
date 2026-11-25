@@ -1431,11 +1431,10 @@ namespace flcn
     { return vec.tryRejectNorm(from, status); }
 
 
-    /**************************************
-     *                                    *
-     *             UTILITIES              *
-     *                                    *
-     **************************************/
+
+    /// +---------------------------------------------------------------------------------------+
+    /// |                                  UTILITIES                                            |
+    /// +---------------------------------------------------------------------------------------+
 
     template <Arithmetic T>
     FALCON_INLINE constexpr bool Vec2<T>::hasInf() const noexcept
@@ -1493,6 +1492,31 @@ namespace flcn
     template <Arithmetic T>
     FALCON_INLINE constexpr Vec2<T> Vec2<T>::max(const Vec2& vecA, const Vec2& vecB) noexcept
     { return vecA.max(vecB); }
+
+
+    template <Arithmetic T>
+    template <std::floating_point F>
+    FALCON_INLINE constexpr Vec2<T> Vec2<T>::mix(const Vec2& vec, F factor) const noexcept
+    {
+        return Vec2{ static_cast<T>(std::lerp(_data[0], vec[0], factor)),
+                     static_cast<T>(std::lerp(_data[1], vec[1], factor)) };
+
+        // NOTE: Unsigned integers will overflow when subtracted if the minuend(RHS) is less than subtrahend(LHS).
+        // if constexpr (std::is_signed_v<T>)
+        // {
+        //     return *this + static_cast<Vec2>(factor * (vec - *this));
+        // }
+        // else
+        // {
+        //     return static_cast<Vec2>((1 - factor) * *this + factor * vec);
+        // }
+    }
+
+
+    template <Arithmetic T>
+    template <std::floating_point F>
+    FALCON_INLINE constexpr Vec2<T> Vec2<T>::mix(const Vec2& vecA, const Vec2& vecB, F factor) noexcept
+    { return vecA.mix(vecB, factor); }
 
 
 } // namespace flcn

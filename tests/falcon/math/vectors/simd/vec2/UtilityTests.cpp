@@ -90,28 +90,27 @@ namespace
     TYPED_TEST_SUITE(SimdVec2MinTests, SupportedArithmeticTypes);
 
 
-    //
-    // /**
-    //  * @brief Test fixture for @ref flcn::simd::Vec2 max function.
-    //  * @tparam T The numeric type of vector components.
-    //  */
-    // template <typename T>
-    // class SimdVec2MaxTests: public testing::Test
-    // {
-    // public:
-    //     flcn::simd::Vec2<T> a, b, expectedMax;
-    //
-    // protected:
-    //     void SetUp() override
-    //     {
-    //         a           = { T(5.3923283), T(0.5383293) };
-    //         b           = { T(3.239823), T(9.932803) };
-    //         expectedMax = { T(5.3923283), T(9.932803) };
-    //     }
-    // };
-    // TYPED_TEST_SUITE(SimdVec2MaxTests, SupportedArithmeticTypes);
-    //
-    //
+    /**
+     * @brief Test fixture for @ref flcn::simd::Vec2 max function.
+     * @tparam T The numeric type of vector components.
+     */
+    template <typename T>
+    class SimdVec2MaxTests: public testing::Test
+    {
+    public:
+        flcn::simd::Vec2<T> a, b, expectedMax;
+
+    protected:
+        void SetUp() override
+        {
+            a           = { T(5.3923283), T(0.5383293) };
+            b           = { T(3.239823), T(9.932803) };
+            expectedMax = { T(5.3923283), T(9.932803) };
+        }
+    };
+    TYPED_TEST_SUITE(SimdVec2MaxTests, SupportedArithmeticTypes);
+
+
     // /**
     //  * @brief Test fixture for @ref flcn::simd::Vec2 mix function.
     //  * @tparam T The numeric type of vector components.
@@ -279,39 +278,37 @@ TEST(SimdVec2MinTests, StaticWrapper_InfVector_ReturnsMinimumComponent)
 }
 
 
+/**************************************
+ *             MAX TESTS              *
+ **************************************/
 
-// /**************************************
-//  *             MAX TESTS              *
-//  **************************************/
-//
-// TYPED_TEST(SimdVec2MaxTests, ReturnsMinimumComponentVector) { EXPECT_VEC_EQ(this->expectedMax, this->a.max(this->b));
-// }
-//
-//
-// TEST(SimdVec2MaxTests, InfVector_ReturnsMinimumComponent)
-// {
-//     const flcn::simd::Vec2F vecA(1.0f, flcn::constants::INFINITY_F);
-//     const flcn::simd::Vec2F vecB(flcn::constants::INFINITY_F, -flcn::constants::INFINITY_F);
-//
-//     EXPECT_VEC_CONTAINS(vecA.max(vecB), flcn::constants::INFINITY_F, flcn::constants::INFINITY_F);
-// }
-//
-//
-// TYPED_TEST(SimdVec2MaxTests, StaticWrapper_ReturnsMinimumComponentVector)
-// { EXPECT_VEC_EQ(this->expectedMax, flcn::simd::Vec2<TypeParam>::max(this->a, this->b)); }
-//
-//
-// TEST(SimdVec2MaxTests, StaticWrapper_InfVector_ReturnsMinimumComponent)
-// {
-//     const flcn::simd::Vec2F vecA(1.0f, flcn::constants::INFINITY_F);
-//     const flcn::simd::Vec2F vecB(flcn::constants::INFINITY_F, -flcn::constants::INFINITY_F);
-//
-//     EXPECT_VEC_CONTAINS(flcn::simd::Vec2F::max(vecA, vecB), flcn::constants::INFINITY_F,
-//     flcn::constants::INFINITY_F);
-// }
-//
-//
-//
+TYPED_TEST(SimdVec2MaxTests, ReturnsMinimumComponentVector) { EXPECT_VEC_EQ(this->expectedMax, this->a.max(this->b));
+}
+
+
+TEST(SimdVec2MaxTests, InfVector_ReturnsMinimumComponent)
+{
+    const flcn::simd::Vec2F vecA(1.0f, flcn::constants::INFINITY_F);
+    const flcn::simd::Vec2F vecB(flcn::constants::INFINITY_F, -flcn::constants::INFINITY_F);
+
+    EXPECT_VEC_CONTAINS(vecA.max(vecB), flcn::constants::INFINITY_F, flcn::constants::INFINITY_F);
+}
+
+
+TYPED_TEST(SimdVec2MaxTests, StaticWrapper_ReturnsMinimumComponentVector)
+{ EXPECT_VEC_EQ(this->expectedMax, flcn::simd::Vec2<TypeParam>::max(this->a, this->b)); }
+
+
+TEST(SimdVec2MaxTests, StaticWrapper_InfVector_ReturnsMinimumComponent)
+{
+    const flcn::simd::Vec2F vecA(1.0f, flcn::constants::INFINITY_F);
+    const flcn::simd::Vec2F vecB(flcn::constants::INFINITY_F, -flcn::constants::INFINITY_F);
+
+    EXPECT_VEC_CONTAINS(flcn::simd::Vec2F::max(vecA, vecB), flcn::constants::INFINITY_F,
+    flcn::constants::INFINITY_F);
+}
+
+
 // /**************************************
 //  *             MIX TESTS              *
 //  **************************************/

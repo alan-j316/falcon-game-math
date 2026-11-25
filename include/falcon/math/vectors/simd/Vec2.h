@@ -2131,6 +2131,40 @@ namespace flcn::simd
         [[nodiscard]] static constexpr Vec2 max(const Vec2& vecA, const Vec2& vecB) noexcept;
 
 
+        /**
+         * @brief Linearly interpolate between this vector and @p vec by @p factor.
+         * @details
+         *        \f[
+         *            \mathbf{mixed} = (\text{(1 - factor)} \times \mathbf{a}) - (\text{factor} \times \mathbf{b})
+         *        \f]
+         * @note Factor must be between 0.0f and 1.0f and must be a float.
+         * @note Unlike flcn::Vec2, flcn::simd::Vec2::mix is constrained to floating point types.
+         *
+         * @param vec The other vector.
+         * @param factor The mix factor.
+         * @return A 2D vector with the maximum components of the two.
+         */
+        [[nodiscard]] constexpr Vec2 mix(const Vec2& vec, T factor) const noexcept
+            requires(std::is_floating_point_v<T>);
+
+
+        /**
+         * @brief Linearly interpolate between @p vecA and @p vecB by @p factor.
+         * @details
+         *        \f[
+         *            \mathbf{mixed} = (\text{(1 - factor)} \times \mathbf{a}) - (\text{factor} \times \mathbf{b})
+         *        \f]
+         * @note Factor must be between 0.0f and 1.0f and must be a float.
+         * @note Unlike flcn::Vec2, flcn::simd::Vec2::mix is constrained to floating point types.
+         *
+         * @param vecA The first vector.
+         * @param vecB The second vector.
+         * @param factor The mix factor.
+         * @return A 2D vector with the maximum components of the two.
+         */
+        [[nodiscard]] static constexpr Vec2 mix(const Vec2& vecA, const Vec2& vecB, T factor) noexcept
+            requires(std::is_floating_point_v<T>);
+
         /** @} */
 
 

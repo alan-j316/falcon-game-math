@@ -2313,8 +2313,7 @@ namespace flcn
          *            \mathbf{mixed} = (\text{(1 - factor)} \times \mathbf{a}) - (\text{factor} \times \mathbf{b})
          *        \f]
          * @note Factor must be between 0.0f and 1.0f and must be a float.
-         *
-         * @tparam F The numeric type of factor. Must satisfy `std::floating_point_v`.
+         * @note Unlike flcn::Vec2, flcn::simd::Vec2::mix is constrained to floating point types.
          *
          * @param vec The other vector.
          * @param factor The mix factor.
@@ -2331,8 +2330,7 @@ namespace flcn
          *            \mathbf{mixed} = (\text{(1 - factor)} \times \mathbf{a}) - (\text{factor} \times \mathbf{b})
          *        \f]
          * @note Factor must be between 0.0f and 1.0f and must be a float.
-         *
-         * @tparam F The numeric type of factor. Must satisfy `std::floating_point_v`.
+         * @note Unlike flcn::Vec2, flcn::simd::Vec2::mix is constrained to floating point types.
          *
          * @param vecA The first vector.
          * @param vecB The second vector.
@@ -2341,7 +2339,6 @@ namespace flcn
          */
         template <std::floating_point F>
         [[nodiscard]] static constexpr Vec3 mix(const Vec3& vecA, const Vec3& vecB, F factor) noexcept;
-
 
         /** @} */
 

@@ -1008,4 +1008,19 @@ namespace flcn::simd
     FALCON_INLINE constexpr Vec3<T> Vec3<T>::max(const Vec3& vecA, const Vec3& vecB) noexcept
     { return vecA.max(vecB); }
 
+
+    template <Arithmetic T>
+    template <std::floating_point F>
+    FALCON_INLINE constexpr Vec3<T> Vec3<T>::mix(const Vec3& vec, F factor) const noexcept
+    {
+        // Mix = p0 + factor (p1 - p0)
+        return *this + factor * (vec - *this);
+    }
+
+
+    template <Arithmetic T>
+    template <std::floating_point F>
+    FALCON_INLINE constexpr Vec3<T> Vec3<T>::mix(const Vec3& vecA, const Vec3& vecB, F factor) noexcept
+    { return vecA.mix(vecB, factor); }
+
 } // namespace flcn::simd

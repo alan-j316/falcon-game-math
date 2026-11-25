@@ -1562,6 +1562,23 @@ namespace flcn
     FALCON_INLINE constexpr Vec4<T> Vec4<T>::max(const Vec4& vecA, const Vec4& vecB) noexcept
     { return vecA.max(vecB); }
 
+
+    template <Arithmetic T>
+    template <std::floating_point F>
+    FALCON_INLINE constexpr Vec4<T> Vec4<T>::mix(const Vec4& vec, F factor) const noexcept
+    {
+        return Vec4{ static_cast<T>(std::lerp(_data[0], vec[0], factor)),
+                     static_cast<T>(std::lerp(_data[1], vec[1], factor)),
+                     static_cast<T>(std::lerp(_data[2], vec[2], factor)),
+                     static_cast<T>(std::lerp(_data[3], vec[3], factor)) };
+    }
+
+
+    template <Arithmetic T>
+    template <std::floating_point F>
+    FALCON_INLINE constexpr Vec4<T> Vec4<T>::mix(const Vec4& vecA, const Vec4& vecB, F factor) noexcept
+    { return vecA.mix(vecB, factor); }
+
 } // namespace flcn
 
 

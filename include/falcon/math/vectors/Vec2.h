@@ -2264,7 +2264,6 @@ namespace flcn
         template <std::floating_point F>
         [[nodiscard]] static constexpr Vec2 mix(const Vec2& vecA, const Vec2& vecB, F factor) noexcept;
 
-
         /** @} */
 
 

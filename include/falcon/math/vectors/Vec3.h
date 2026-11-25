@@ -2271,6 +2271,23 @@ namespace flcn
          */
         [[nodiscard]] static constexpr bool hasNaN(const Vec3& vec) noexcept;
 
+
+        /**
+         * @brief Select the minimum components from each vector.
+         * @param vec The other vector.
+         * @return A 3D vector with the minimum components of the two.
+         */
+        [[nodiscard]] constexpr Vec3 min(const Vec3& vec) const noexcept;
+
+
+        /**
+         * @brief Select the minimum components from each vector.
+         * @param vecA The first vector.
+         * @param vecB The second vector.
+         * @return A 3D vector with the minimum components of the two.
+         */
+        [[nodiscard]] static constexpr Vec3 min(const Vec3& vecA, const Vec3& vecB) noexcept;
+
         /** @} */
 
 

@@ -1454,11 +1454,10 @@ namespace flcn
     { return vec.tryRejectNorm(from, status); }
 
 
-    /**************************************
-     *                                    *
-     *             UTILITIES              *
-     *                                    *
-     **************************************/
+
+    /// +---------------------------------------------------------------------------------------+
+    /// |                                  UTILITIES                                            |
+    /// +---------------------------------------------------------------------------------------+
 
     template <Arithmetic T>
     FALCON_INLINE constexpr bool Vec3<T>::hasInf() const noexcept
@@ -1496,6 +1495,18 @@ namespace flcn
     template <Arithmetic T>
     FALCON_INLINE constexpr bool Vec3<T>::hasNaN(const Vec3& vec) noexcept
     { return vec.hasNaN(); }
+
+
+    template <Arithmetic T>
+    FALCON_INLINE constexpr Vec3<T> Vec3<T>::min(const Vec3& vec) const noexcept
+    { return Vec3{ std::min(_data[0], vec[0]), std::min(_data[1], vec[1]), std::min(_data[2], vec[2]) }; }
+
+
+    template <Arithmetic T>
+    FALCON_INLINE constexpr Vec3<T> Vec3<T>::min(const Vec3& vecA, const Vec3& vecB) noexcept
+    { return vecA.min(vecB); }
+
+
 } // namespace flcn
 
 

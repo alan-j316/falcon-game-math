@@ -1500,16 +1500,6 @@ namespace flcn
     {
         return Vec2{ static_cast<T>(std::lerp(_data[0], vec[0], factor)),
                      static_cast<T>(std::lerp(_data[1], vec[1], factor)) };
-
-        // NOTE: Unsigned integers will overflow when subtracted if the minuend(RHS) is less than subtrahend(LHS).
-        // if constexpr (std::is_signed_v<T>)
-        // {
-        //     return *this + static_cast<Vec2>(factor * (vec - *this));
-        // }
-        // else
-        // {
-        //     return static_cast<Vec2>((1 - factor) * *this + factor * vec);
-        // }
     }
 
 

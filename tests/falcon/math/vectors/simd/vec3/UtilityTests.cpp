@@ -88,27 +88,27 @@ namespace
     TYPED_TEST_SUITE(SimdVec3MinTests, SupportedArithmeticTypes);
 
 
-    // /**
-    //  * @brief Test fixture for @ref flcn::Vec3 max function.
-    //  * @tparam T The numeric type of vector components.
-    //  */
-    // template <typename T>
-    // class SimdVec3MaxTests: public testing::Test
-    // {
-    // public:
-    //     flcn::Vec3<T> a, b, expectedMax;
-    //
-    // protected:
-    //     void SetUp() override
-    //     {
-    //         a           = { T(5.3923283), T(0.5383293), T(38.280234) };
-    //         b           = { T(3.239823), T(9.932803), T(121.2938223) };
-    //         expectedMax = { T(5.3923283), T(9.932803), T(121.2938223) };
-    //     }
-    // };
-    // TYPED_TEST_SUITE(SimdVec3MaxTests, SupportedArithmeticTypes);
-    //
-    //
+    /**
+     * @brief Test fixture for @ref flcn::Vec3 max function.
+     * @tparam T The numeric type of vector components.
+     */
+    template <typename T>
+    class SimdVec3MaxTests: public testing::Test
+    {
+    public:
+        flcn::Vec3<T> a, b, expectedMax;
+
+    protected:
+        void SetUp() override
+        {
+            a           = { T(5.3923283), T(0.5383293), T(38.280234) };
+            b           = { T(3.239823), T(9.932803), T(121.2938223) };
+            expectedMax = { T(5.3923283), T(9.932803), T(121.2938223) };
+        }
+    };
+    TYPED_TEST_SUITE(SimdVec3MaxTests, SupportedArithmeticTypes);
+
+
     // /**
     //  * @brief Test fixture for @ref flcn::Vec3 mix function.
     //  * @tparam T The numeric type of vector components.
@@ -286,38 +286,38 @@ TEST(SimdVec3MinTests, StaticWrapper_InfVector_ReturnsMinimumComponent)
 }
 
 
-// /**************************************
-//  *             MAX TESTS              *
-//  **************************************/
-//
-// TYPED_TEST(SimdVec3MaxTests, ReturnsMinimumComponentVector) { EXPECT_VEC_EQ(this->expectedMax, this->a.max(this->b)); }
-//
-//
-// TEST(SimdVec3MaxTests, InfVector_ReturnsMinimumComponent)
-// {
-//     const flcn::Vec3F vecA(1.0f, flcn::constants::INFINITY_F, flcn::constants::INFINITY_F);
-//     const flcn::Vec3F vecB(flcn::constants::INFINITY_F, -flcn::constants::INFINITY_F, flcn::constants::INFINITY_F);
-//
-//     EXPECT_VEC_CONTAINS(vecA.max(vecB), flcn::constants::INFINITY_F, flcn::constants::INFINITY_F,
-//                         flcn::constants::INFINITY_F);
-// }
-//
-//
-// TYPED_TEST(SimdVec3MaxTests, StaticWrapper_ReturnsMinimumComponentVector)
-// { EXPECT_VEC_EQ(this->expectedMax, flcn::Vec3<TypeParam>::max(this->a, this->b)); }
-//
-//
-// TEST(SimdVec3MaxTests, StaticWrapper_InfVector_ReturnsMinimumComponent)
-// {
-//     const flcn::Vec3F vecA(1.0f, flcn::constants::INFINITY_F, flcn::constants::INFINITY_F);
-//     const flcn::Vec3F vecB(flcn::constants::INFINITY_F, -flcn::constants::INFINITY_F, flcn::constants::INFINITY_F);
-//
-//     EXPECT_VEC_CONTAINS(flcn::Vec3F::max(vecA, vecB), flcn::constants::INFINITY_F, flcn::constants::INFINITY_F,
-//                         flcn::constants::INFINITY_F);
-// }
-//
-//
-//
+/**************************************
+ *             MAX TESTS              *
+ **************************************/
+
+TYPED_TEST(SimdVec3MaxTests, ReturnsMinimumComponentVector) { EXPECT_VEC_EQ(this->expectedMax, this->a.max(this->b)); }
+
+
+TEST(SimdVec3MaxTests, InfVector_ReturnsMinimumComponent)
+{
+    const flcn::Vec3F vecA(1.0f, flcn::constants::INFINITY_F, flcn::constants::INFINITY_F);
+    const flcn::Vec3F vecB(flcn::constants::INFINITY_F, -flcn::constants::INFINITY_F, flcn::constants::INFINITY_F);
+
+    EXPECT_VEC_CONTAINS(vecA.max(vecB), flcn::constants::INFINITY_F, flcn::constants::INFINITY_F,
+                        flcn::constants::INFINITY_F);
+}
+
+
+TYPED_TEST(SimdVec3MaxTests, StaticWrapper_ReturnsMinimumComponentVector)
+{ EXPECT_VEC_EQ(this->expectedMax, flcn::Vec3<TypeParam>::max(this->a, this->b)); }
+
+
+TEST(SimdVec3MaxTests, StaticWrapper_InfVector_ReturnsMinimumComponent)
+{
+    const flcn::Vec3F vecA(1.0f, flcn::constants::INFINITY_F, flcn::constants::INFINITY_F);
+    const flcn::Vec3F vecB(flcn::constants::INFINITY_F, -flcn::constants::INFINITY_F, flcn::constants::INFINITY_F);
+
+    EXPECT_VEC_CONTAINS(flcn::Vec3F::max(vecA, vecB), flcn::constants::INFINITY_F, flcn::constants::INFINITY_F,
+                        flcn::constants::INFINITY_F);
+}
+
+
+
 // /**************************************
 //  *             MIX TESTS              *
 //  **************************************/

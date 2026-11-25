@@ -89,7 +89,8 @@ immediate development priority.
 
 ### Immediate expansion
 
-- [ ] Simd128/256 scalar
+- [x] Simd128 scalar
+- [ ] Simd256 scalar
 - [ ] Matrix Projection and Translation Factories
 - [ ] Vec4, Mat2, 3, 4 refactor to Simd
 - [ ] Packing and Unpacking

@@ -2096,6 +2096,23 @@ namespace flcn::simd
          */
         [[nodiscard]] static constexpr bool hasNaN(const Vec2& vec) noexcept;
 
+
+        /**
+         * @brief Select the minimum components from each vector.
+         * @param vec The other vector.
+         * @return A 2D vector with the minimum components of the two.
+         */
+        [[nodiscard]] constexpr Vec2 min(const Vec2& vec) const noexcept;
+
+
+        /**
+         * @brief Select the minimum components from each vector.
+         * @param vecA The first vector.
+         * @param vecB The second vector.
+         * @return A 2D vector with the minimum components of the two.
+         */
+        [[nodiscard]] static constexpr Vec2 min(const Vec2& vecA, const Vec2& vecB) noexcept;
+
         /** @} */
 
 

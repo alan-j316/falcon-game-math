@@ -2292,7 +2292,7 @@ namespace flcn
         /**
          * @brief Select the maximum components from each vector.
          * @param vec The other vector.
-         * @return A 2D vector with the maximum components of the two.
+         * @return A 3D vector with the maximum components of the two.
          */
         [[nodiscard]] constexpr Vec3 max(const Vec3& vec) const noexcept;
 
@@ -2301,7 +2301,7 @@ namespace flcn
          * @brief Select the maximum components from each vector.
          * @param vecA The first vector.
          * @param vecB The second vector.
-         * @return A 2D vector with the maximum components of the two.
+         * @return A 3D vector with the maximum components of the two.
          */
         [[nodiscard]] static constexpr Vec3 max(const Vec3& vecA, const Vec3& vecB) noexcept;
 
@@ -2318,7 +2318,7 @@ namespace flcn
          *
          * @param vec The other vector.
          * @param factor The mix factor.
-         * @return A 2D vector with the maximum components of the two.
+         * @return A 3D vector with the maximum components of the two.
          */
         template <std::floating_point F>
         [[nodiscard]] constexpr Vec3 mix(const Vec3& vec, F factor) const noexcept;

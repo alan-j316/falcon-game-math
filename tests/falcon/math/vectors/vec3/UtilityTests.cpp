@@ -34,7 +34,6 @@ namespace
     };
 
 
-
     /**
      * @brief Test fixture for @ref flcn::Vec3 min function.
      * @tparam T The numeric type of vector components.
@@ -54,7 +53,6 @@ namespace
         }
     };
     TYPED_TEST_SUITE(Vec3MinTests, SupportedArithmeticTypes);
-
 
 
     /**
@@ -180,30 +178,61 @@ namespace
 
     namespace static_tests
     {
-        constexpr flcn::Vec3 NORM_VEC(1.0f, 2.0f, 3.0f);
+        constexpr flcn::Vec3 NORM_VEC_A(1.0f, 2.0f, 3.0f);
+        constexpr flcn::Vec3 NORM_VEC_B(4.0f, 0.25f, 5.0f);
         constexpr flcn::Vec3 INF_VEC(flcn::constants::INFINITY_F, flcn::constants::INFINITY_F,
                                      flcn::constants::INFINITY_F);
         constexpr flcn::Vec3 NAN_VEC(flcn::constants::NaN, flcn::constants::NaN, flcn::constants::NaN);
 
         /// @test Verify that Vec3::hasInf returns a valid boolean at compile time.
-        static_assert(NORM_VEC.hasInf() == false);
+        static_assert(NORM_VEC_A.hasInf() == false);
         static_assert(INF_VEC.hasInf() == true);
         static_assert(NAN_VEC.hasInf() == false);
 
         /// @test Verify that Vec3::hasInf(static wrapper) returns a valid boolean at compile time.
-        static_assert(flcn::Vec3<float>::hasInf(NORM_VEC) == false);
+        static_assert(flcn::Vec3<float>::hasInf(NORM_VEC_A) == false);
         static_assert(flcn::Vec3<float>::hasInf(INF_VEC) == true);
         static_assert(flcn::Vec3<float>::hasInf(NAN_VEC) == false);
 
         /// @test Verify that Vec3::hasNaN returns a valid boolean at compile time.
-        static_assert(NORM_VEC.hasNaN() == false);
+        static_assert(NORM_VEC_A.hasNaN() == false);
         static_assert(INF_VEC.hasNaN() == false);
         static_assert(NAN_VEC.hasNaN() == true);
 
         /// @test Verify that Vec3::hasNaN(static wrapper) returns a valid boolean at compile time.
-        static_assert(flcn::Vec3<float>::hasNaN(NORM_VEC) == false);
+        static_assert(flcn::Vec3<float>::hasNaN(NORM_VEC_A) == false);
         static_assert(flcn::Vec3<float>::hasNaN(INF_VEC) == false);
         static_assert(flcn::Vec3<float>::hasNaN(NAN_VEC) == true);
+        
+        /// @test Verify that Vec3::min returns a valid vector at compile time.
+        constexpr auto MIN_VEC        = NORM_VEC_A.min(NORM_VEC_B);
+        constexpr auto STATIC_MIN_VEC = flcn::Vec3F::min(NORM_VEC_A, NORM_VEC_B);
+        static_assert(MIN_VEC.x() == 1.0f);
+        static_assert(MIN_VEC.y() == 0.25f);
+        static_assert(MIN_VEC.z() == 3.0f);
+        static_assert(STATIC_MIN_VEC.x() == 1.0f);
+        static_assert(STATIC_MIN_VEC.y() == 0.25f);
+        static_assert(STATIC_MIN_VEC.z() == 3.0f);
+
+        /// @test Verify that Vec3::max returns a valid vector at compile time.
+        constexpr auto MAX_VEC        = NORM_VEC_A.max(NORM_VEC_B);
+        constexpr auto STATIC_MAX_VEC = flcn::Vec3F::max(NORM_VEC_A, NORM_VEC_B);
+        static_assert(MAX_VEC.x() == 4.0f);
+        static_assert(MAX_VEC.y() == 2.0f);
+        static_assert(MAX_VEC.z() == 5.0f);
+        static_assert(STATIC_MAX_VEC.x() == 4.0f);
+        static_assert(STATIC_MAX_VEC.y() == 2.0f);
+        static_assert(STATIC_MAX_VEC.z() == 5.0f);
+
+        /// @test Verify that Vec3::mix returns a valid vector at compile time.
+        constexpr auto MIX_VEC        = NORM_VEC_A.mix(NORM_VEC_B, 0.25f);
+        constexpr auto STATIC_MIX_VEC = flcn::Vec3F::mix(NORM_VEC_A, NORM_VEC_B, 0.25f);
+        static_assert(MIX_VEC.x() == 1.75f);
+        static_assert(MIX_VEC.y() == 1.5625f);
+        static_assert(MIX_VEC.z() == 3.5f);
+        static_assert(STATIC_MIX_VEC.x() == 1.75f);
+        static_assert(STATIC_MIX_VEC.y() == 1.5625f);
+        static_assert(STATIC_MIX_VEC.z() == 3.5f);
 
     } // namespace static_tests
 } // namespace
@@ -294,8 +323,6 @@ TYPED_TEST(Vec3UtilsIntTests, StaticWrapper_HasNaN_ReturnsFalseForIntegrals)
     const auto value = TypeParam(1);
     EXPECT_FALSE(flcn::Vec3<TypeParam>::hasNaN(flcn::Vec3(value, value, value)));
 }
-
-
 
 
 /**************************************

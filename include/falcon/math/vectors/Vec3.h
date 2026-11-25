@@ -2306,6 +2306,42 @@ namespace flcn
         [[nodiscard]] static constexpr Vec3 max(const Vec3& vecA, const Vec3& vecB) noexcept;
 
 
+        /**
+         * @brief Linearly interpolate between this vector and @p vec by @p factor.
+         * @details
+         *        \f[
+         *            \mathbf{mixed} = (\text{(1 - factor)} \times \mathbf{a}) - (\text{factor} \times \mathbf{b})
+         *        \f]
+         * @note Factor must be between 0.0f and 1.0f and must be a float.
+         *
+         * @tparam F The numeric type of factor. Must satisfy `std::floating_point_v`.
+         *
+         * @param vec The other vector.
+         * @param factor The mix factor.
+         * @return A 2D vector with the maximum components of the two.
+         */
+        template <std::floating_point F>
+        [[nodiscard]] constexpr Vec3 mix(const Vec3& vec, F factor) const noexcept;
+
+
+        /**
+         * @brief Linearly interpolate between @p vecA and @p vecB by @p factor.
+         * @details
+         *        \f[
+         *            \mathbf{mixed} = (\text{(1 - factor)} \times \mathbf{a}) - (\text{factor} \times \mathbf{b})
+         *        \f]
+         * @note Factor must be between 0.0f and 1.0f and must be a float.
+         *
+         * @tparam F The numeric type of factor. Must satisfy `std::floating_point_v`.
+         *
+         * @param vecA The first vector.
+         * @param vecB The second vector.
+         * @param factor The mix factor.
+         * @return A 3D vector with the maximum components of the two.
+         */
+        template <std::floating_point F>
+        [[nodiscard]] static constexpr Vec3 mix(const Vec3& vecA, const Vec3& vecB, F factor) noexcept;
+
 
         /** @} */
 

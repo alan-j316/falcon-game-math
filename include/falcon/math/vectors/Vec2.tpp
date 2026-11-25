@@ -1473,6 +1473,18 @@ namespace flcn
     template <Arithmetic T>
     FALCON_INLINE constexpr bool Vec2<T>::hasNaN(const Vec2& vec) noexcept
     { return vec.hasNaN(); }
+
+
+    template <Arithmetic T>
+    FALCON_INLINE constexpr Vec2<T> Vec2<T>::min(const Vec2& vec) const noexcept
+    { return Vec2{ std::min(_data[0], vec[0]), std::min(_data[1], vec[1]) }; }
+
+
+    template <Arithmetic T>
+    FALCON_INLINE constexpr Vec2<T> Vec2<T>::min(const Vec2& vecA, const Vec2& vecB) noexcept
+    { return vecA.min(vecB); }
+
+
 } // namespace flcn
 
 #if defined(__clang__)

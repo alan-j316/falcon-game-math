@@ -33,16 +33,38 @@ namespace
 
 
     /**
+     * @brief Test fixture for @ref flcn::Vec2 min function.
+     * @tparam T The numeric type of vector components.
+     */
+    template <typename T>
+    class Vec2MinTests: public testing::Test
+    {
+    public:
+        flcn::Vec2<T> a, b, expectedMin;
+
+    protected:
+        void SetUp() override
+        {
+            a           = { T(5.3923283), T(0.5383293) };
+            b           = { T(3.239823), T(9.932803) };
+            expectedMin = { T(3.239823), T(0.5383293) };
+        }
+    };
+    TYPED_TEST_SUITE(Vec2MinTests, SupportedArithmeticTypes);
+
+
+    /**
      * @brief Test fixture for @ref flcn::Vec2 Infinity Checking.
      */
     class Vec2InfCheckerTests: public testing::TestWithParam<Vec2UtilityParams<float>>
     {};
-    INSTANTIATE_TEST_SUITE_P(
-        Vec2UtilsInfVectors, Vec2InfCheckerTests,
-        ::testing::Values(Vec2UtilityParams{ flcn::Vec2(flcn::constants::INFINITY_F, 1.0f), true },
-                          Vec2UtilityParams{ flcn::Vec2(1.0f, flcn::constants::INFINITY_F), true },
-                          Vec2UtilityParams{ flcn::Vec2(flcn::constants::INFINITY_F, flcn::constants::INFINITY_F), true },
-                          Vec2UtilityParams{ flcn::Vec2(1.0f, 1.0f), false }));
+    INSTANTIATE_TEST_SUITE_P(Vec2UtilsInfVectors, Vec2InfCheckerTests,
+                             ::testing::Values(Vec2UtilityParams{ flcn::Vec2(flcn::constants::INFINITY_F, 1.0f), true },
+                                               Vec2UtilityParams{ flcn::Vec2(1.0f, flcn::constants::INFINITY_F), true },
+                                               Vec2UtilityParams{
+                                                   flcn::Vec2(flcn::constants::INFINITY_F, flcn::constants::INFINITY_F),
+                                                   true },
+                                               Vec2UtilityParams{ flcn::Vec2(1.0f, 1.0f), false }));
 
 
 
@@ -54,8 +76,8 @@ namespace
     INSTANTIATE_TEST_SUITE_P(Vec2UtilsNaNVectors, Vec2NaNCheckerTests,
                              ::testing::Values(Vec2UtilityParams{ flcn::Vec2(flcn::constants::NaN, 1.0f), true },
                                                Vec2UtilityParams{ flcn::Vec2(1.0f, flcn::constants::NaN), true },
-                                               Vec2UtilityParams{ flcn::Vec2(flcn::constants::NaN, flcn::constants::NaN),
-                                                                  true },
+                                               Vec2UtilityParams{
+                                                   flcn::Vec2(flcn::constants::NaN, flcn::constants::NaN), true },
                                                Vec2UtilityParams{ flcn::Vec2(1.0f, 1.0f), false }));
 
 
@@ -76,31 +98,40 @@ namespace
 
     namespace static_tests
     {
-        constexpr flcn::Vec2 NORM_VEC(1.0f, 2.0f);
+        constexpr flcn::Vec2 NORM_VEC_A(1.0f, 2.0f);
+        constexpr flcn::Vec2 NORM_VEC_B(4.0f, 0.25f);
         constexpr flcn::Vec2 INF_VEC(flcn::constants::INFINITY_F, flcn::constants::INFINITY_F);
         constexpr flcn::Vec2 NAN_VEC(flcn::constants::NaN, flcn::constants::NaN);
 
         /// @test Verify that Vec2::hasInf returns a valid boolean at compile time.
-        static_assert(NORM_VEC.hasInf() == false);
+        static_assert(NORM_VEC_A.hasInf() == false);
         static_assert(INF_VEC.hasInf() == true);
         static_assert(NAN_VEC.hasInf() == false);
 
         /// @test Verify that Vec2::hasInf(static wrapper) returns a valid boolean at compile time.
-        static_assert(flcn::Vec2<float>::hasInf(NORM_VEC) == false);
+        static_assert(flcn::Vec2<float>::hasInf(NORM_VEC_A) == false);
         static_assert(flcn::Vec2<float>::hasInf(INF_VEC) == true);
         static_assert(flcn::Vec2<float>::hasInf(NAN_VEC) == false);
 
         /// @test Verify that Vec2::hasNaN returns a valid boolean at compile time.
-        static_assert(NORM_VEC.hasNaN() == false);
+        static_assert(NORM_VEC_A.hasNaN() == false);
         static_assert(INF_VEC.hasNaN() == false);
         static_assert(NAN_VEC.hasNaN() == true);
 
         /// @test Verify that Vec2::hasNaN(static wrapper) returns a valid boolean at compile time.
-        static_assert(flcn::Vec2<float>::hasNaN(NORM_VEC) == false);
+        static_assert(flcn::Vec2<float>::hasNaN(NORM_VEC_A) == false);
         static_assert(flcn::Vec2<float>::hasNaN(INF_VEC) == false);
         static_assert(flcn::Vec2<float>::hasNaN(NAN_VEC) == true);
 
-    } // namespace
+        /// @test Verify that Vec2::min returns a valid vector at compile time.
+        constexpr auto MIN_VEC        = NORM_VEC_A.min(NORM_VEC_B);
+        constexpr auto STATIC_MIN_VEC = flcn::Vec2F::min(NORM_VEC_A, NORM_VEC_B);
+        static_assert(MIN_VEC.x() - 1.0f <= 1e-5);
+        static_assert(MIN_VEC.y() - 0.25f <= 1e-5);
+        static_assert(STATIC_MIN_VEC.x() - 1.0f <= 1e-5);
+        static_assert(STATIC_MIN_VEC.y() - 0.25f <= 1e-5);
+
+    } // namespace static_tests
 } // namespace
 
 
@@ -186,6 +217,36 @@ TYPED_TEST(Vec2UtilsIntTests, StaticWrapper_HasNaN_ReturnsFalseForIntegrals)
 {
     const auto value = TypeParam(1);
     EXPECT_FALSE(flcn::Vec2<TypeParam>::hasNaN(flcn::Vec2(value, value)));
+}
+
+
+
+/**************************************
+ *             MIN TESTS              *
+ **************************************/
+
+TYPED_TEST(Vec2MinTests, ReturnsMinimumComponentVector) { EXPECT_VEC_EQ(this->expectedMin, this->a.min(this->b)); }
+
+
+TEST(Vec2MinTests, InfVector_ReturnsMinimumComponent)
+{
+    const flcn::Vec2F vecA(1.0f, flcn::constants::INFINITY_F);
+    const flcn::Vec2F vecB(flcn::constants::INFINITY_F, -flcn::constants::INFINITY_F);
+
+    EXPECT_VEC_CONTAINS(vecA.min(vecB), 1.0f, -flcn::constants::INFINITY_F);
+}
+
+
+TYPED_TEST(Vec2MinTests, StaticWrapper_ReturnsMinimumComponentVector)
+{ EXPECT_VEC_EQ(this->expectedMin, flcn::Vec2<TypeParam>::min(this->a, this->b)); }
+
+
+TEST(Vec2MinTests, StaticWrapper_InfVector_ReturnsMinimumComponent)
+{
+    const flcn::Vec2F vecA(1.0f, flcn::constants::INFINITY_F);
+    const flcn::Vec2F vecB(flcn::constants::INFINITY_F, -flcn::constants::INFINITY_F);
+
+    EXPECT_VEC_CONTAINS(flcn::Vec2F::min(vecA, vecB), 1.0f, -flcn::constants::INFINITY_F);
 }
 
 /** @} */

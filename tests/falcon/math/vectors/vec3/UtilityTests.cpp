@@ -428,5 +428,4 @@ TEST_P(Vec3MixParameterizedTests, StaticWrapper_ReturnsInterpolatedVector)
     EXPECT_VEC_EQ(expected, flcn::Vec3F::mix(a, b, factor));
 }
 
-
 /** @} */

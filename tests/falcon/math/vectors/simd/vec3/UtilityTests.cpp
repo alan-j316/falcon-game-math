@@ -39,36 +39,131 @@ namespace
      */
     class SimdVec3InfCheckerTests: public testing::TestWithParam<Vec3UtilityParams<float>>
     {};
-    INSTANTIATE_TEST_SUITE_P(SimdVec3UtilsInfVectors, SimdVec3InfCheckerTests,
-                         ::testing::Values(Vec3UtilityParams{ flcn::simd::Vec3(flcn::constants::INFINITY_F, 1.0f, 1.0f), true },
-                                           Vec3UtilityParams{ flcn::simd::Vec3(1.0f, flcn::constants::INFINITY_F, 1.0f), true },
-                                           Vec3UtilityParams{ flcn::simd::Vec3(1.0f, 1.0f, flcn::constants::INFINITY_F), true },
-                                           Vec3UtilityParams{ flcn::simd::Vec3(flcn::constants::INFINITY_F,
-                                                                        flcn::constants::INFINITY_F,
-                                                                        flcn::constants::INFINITY_F),
-                                                              true },
-                                           Vec3UtilityParams{ flcn::simd::Vec3(1.0f, 1.0f, 1.0f), false }));
+    INSTANTIATE_TEST_SUITE_P(
+        SimdVec3UtilsInfVectors, SimdVec3InfCheckerTests,
+        ::testing::Values(Vec3UtilityParams{ flcn::simd::Vec3(flcn::constants::INFINITY_F, 1.0f, 1.0f), true },
+                          Vec3UtilityParams{ flcn::simd::Vec3(1.0f, flcn::constants::INFINITY_F, 1.0f), true },
+                          Vec3UtilityParams{ flcn::simd::Vec3(1.0f, 1.0f, flcn::constants::INFINITY_F), true },
+                          Vec3UtilityParams{ flcn::simd::Vec3(flcn::constants::INFINITY_F, flcn::constants::INFINITY_F,
+                                                              flcn::constants::INFINITY_F),
+                                             true },
+                          Vec3UtilityParams{ flcn::simd::Vec3(1.0f, 1.0f, 1.0f), false }));
 
 
     /**
-         * @brief Test fixture for @ref flcn::simd::Vec3 NaN Checking.
-         */
+     * @brief Test fixture for @ref flcn::simd::Vec3 NaN Checking.
+     */
     class SimdVec3NaNCheckerTests: public testing::TestWithParam<Vec3UtilityParams<float>>
     {};
-    INSTANTIATE_TEST_SUITE_P(SimdVec3UtilsNaNVectors, SimdVec3NaNCheckerTests,
-                             ::testing::Values(Vec3UtilityParams{ flcn::simd::Vec3(flcn::constants::NaN, 1.0f, 1.0f), true },
-                                               Vec3UtilityParams{ flcn::simd::Vec3(1.0f, flcn::constants::NaN, 1.0f), true },
-                                               Vec3UtilityParams{ flcn::simd::Vec3(1.0f, 1.0f, flcn::constants::NaN), true },
-                                               Vec3UtilityParams{
-                                                   flcn::simd::Vec3(flcn::constants::NaN, flcn::constants::NaN, flcn::constants::NaN),
-                                                   true },
-                                               Vec3UtilityParams{ flcn::simd::Vec3(1.0f, 1.0f, 1.0f), false }));
+    INSTANTIATE_TEST_SUITE_P(
+        SimdVec3UtilsNaNVectors, SimdVec3NaNCheckerTests,
+        ::testing::Values(Vec3UtilityParams{ flcn::simd::Vec3(flcn::constants::NaN, 1.0f, 1.0f), true },
+                          Vec3UtilityParams{ flcn::simd::Vec3(1.0f, flcn::constants::NaN, 1.0f), true },
+                          Vec3UtilityParams{ flcn::simd::Vec3(1.0f, 1.0f, flcn::constants::NaN), true },
+                          Vec3UtilityParams{
+                              flcn::simd::Vec3(flcn::constants::NaN, flcn::constants::NaN, flcn::constants::NaN),
+                              true },
+                          Vec3UtilityParams{ flcn::simd::Vec3(1.0f, 1.0f, 1.0f), false }));
 
 
 
     /**
-         * @brief Test fixture for @ref flcn::simd::Vec3 utilities, verifying across various integral types.
-         */
+     * @brief Test fixture for @ref flcn::Vec3 min function.
+     * @tparam T The numeric type of vector components.
+     */
+    template <typename T>
+    class SimdVec3MinTests: public testing::Test
+    {
+    public:
+        flcn::Vec3<T> a, b, expectedMin;
+
+    protected:
+        void SetUp() override
+        {
+            a           = { T(5.3923283), T(0.5383293), T(38.280234) };
+            b           = { T(3.239823), T(9.932803), T(121.2938223) };
+            expectedMin = { T(3.239823), T(0.5383293), T(38.280234) };
+        }
+    };
+    TYPED_TEST_SUITE(SimdVec3MinTests, SupportedArithmeticTypes);
+
+
+    // /**
+    //  * @brief Test fixture for @ref flcn::Vec3 max function.
+    //  * @tparam T The numeric type of vector components.
+    //  */
+    // template <typename T>
+    // class SimdVec3MaxTests: public testing::Test
+    // {
+    // public:
+    //     flcn::Vec3<T> a, b, expectedMax;
+    //
+    // protected:
+    //     void SetUp() override
+    //     {
+    //         a           = { T(5.3923283), T(0.5383293), T(38.280234) };
+    //         b           = { T(3.239823), T(9.932803), T(121.2938223) };
+    //         expectedMax = { T(5.3923283), T(9.932803), T(121.2938223) };
+    //     }
+    // };
+    // TYPED_TEST_SUITE(SimdVec3MaxTests, SupportedArithmeticTypes);
+    //
+    //
+    // /**
+    //  * @brief Test fixture for @ref flcn::Vec3 mix function.
+    //  * @tparam T The numeric type of vector components.
+    //  */
+    // template <typename T>
+    // class SimdVec3MixTests: public testing::Test
+    // {
+    // public:
+    //     flcn::Vec3<T> a, b, expectedFP, expectedInt;
+    //     float factor = 0.5f;
+    //
+    // protected:
+    //     void SetUp() override
+    //     {
+    //         a           = { T(30.12389399999999995), T(5.03127999999999975), T(1.01238000000000006) };
+    //         b           = { T(4.23901000000000039), T(0.10348000000000000), T(1.23893000000000009) };
+    //         expectedFP  = { T(17.18145200000000017), T(2.56738000000000000), T(1.12565500000000007) };
+    //         expectedInt = { T(17), T(2), T(1) };
+    //     }
+    // };
+    // TYPED_TEST_SUITE(SimdVec3MixTests, SupportedArithmeticTypes);
+    //
+    //
+    // struct SimdVec3MixParams
+    // {
+    //     flcn::Vec3F a;
+    //     flcn::Vec3F b;
+    //     float factor;
+    //     flcn::Vec3F expected;
+    // };
+    //
+    //
+    // /**
+    //  * @brief Test fixture for @ref flcn::Vec3 mix for testing various parameters.
+    //  */
+    // class SimdVec3MixParameterizedTests: public testing::TestWithParam<SimdVec3MixParams>
+    // {};
+    // INSTANTIATE_TEST_SUITE_P(SimdVec3MixTests, SimdVec3MixParameterizedTests,
+    //                          ::testing::Values(SimdVec3MixParams{ flcn::Vec3(30.12389f, 5.031279f, 1.01238f),
+    //                                                           flcn::Vec3(4.23901f, 0.10348f, 1.23893f), 0.5f,
+    //                                                           flcn::Vec3(17.18145f, 2.56738f, 1.125655f) },
+    //                                            SimdVec3MixParams{ flcn::Vec3(30.12389f, 5.031279f, 1.01238f),
+    //                                                           flcn::Vec3(4.23901f, 0.10348f, 1.23893f), 0.25f,
+    //                                                           flcn::Vec3(23.65267f, 3.79932f, 1.069017f) },
+    //                                            SimdVec3MixParams{ flcn::Vec3(30.12389f, 5.031279f, 1.01238f),
+    //                                                           flcn::Vec3(4.23901f, 0.10348f, 1.23893f), 1.0f,
+    //                                                           flcn::Vec3(4.23901f, 0.10348f, 1.23893f) },
+    //                                            SimdVec3MixParams{ flcn::Vec3(30.12389f, 5.031279f, 1.01238f),
+    //                                                           flcn::Vec3(4.23901f, 0.10348f, 1.23893f), 0.0f,
+    //                                                           flcn::Vec3(30.12389f, 5.031279f, 1.01238f) }));
+
+
+    /**
+     * @brief Test fixture for @ref flcn::simd::Vec3 utilities, verifying across various integral types.
+     */
     template <typename>
     class SimdVec3UtilsIntTests: public testing::Test
     {};
@@ -161,5 +256,108 @@ TYPED_TEST(SimdVec3UtilsIntTests, StaticWrapper_HasNaN_ReturnsFalseForIntegrals)
     const auto value = TypeParam(1);
     EXPECT_FALSE(flcn::simd::Vec3<TypeParam>::hasNaN(flcn::simd::Vec3(value, value, value)));
 }
+
+/**************************************
+ *             MIN TESTS              *
+ **************************************/
+
+TYPED_TEST(SimdVec3MinTests, ReturnsMinimumComponentVector) { EXPECT_VEC_EQ(this->expectedMin, this->a.min(this->b)); }
+
+
+TEST(SimdVec3MinTests, InfVector_ReturnsMinimumComponent)
+{
+    const flcn::Vec3F vecA(1.0f, flcn::constants::INFINITY_F, flcn::constants::INFINITY_F);
+    const flcn::Vec3F vecB(flcn::constants::INFINITY_F, -flcn::constants::INFINITY_F, flcn::constants::INFINITY_F);
+
+    EXPECT_VEC_CONTAINS(vecA.min(vecB), 1.0f, -flcn::constants::INFINITY_F, flcn::constants::INFINITY_F);
+}
+
+
+TYPED_TEST(SimdVec3MinTests, StaticWrapper_ReturnsMinimumComponentVector)
+{ EXPECT_VEC_EQ(this->expectedMin, flcn::Vec3<TypeParam>::min(this->a, this->b)); }
+
+
+TEST(SimdVec3MinTests, StaticWrapper_InfVector_ReturnsMinimumComponent)
+{
+    const flcn::Vec3F vecA(1.0f, flcn::constants::INFINITY_F, flcn::constants::INFINITY_F);
+    const flcn::Vec3F vecB(flcn::constants::INFINITY_F, -flcn::constants::INFINITY_F, flcn::constants::INFINITY_F);
+
+    EXPECT_VEC_CONTAINS(flcn::Vec3F::min(vecA, vecB), 1.0f, -flcn::constants::INFINITY_F, flcn::constants::INFINITY_F);
+}
+
+
+// /**************************************
+//  *             MAX TESTS              *
+//  **************************************/
+//
+// TYPED_TEST(SimdVec3MaxTests, ReturnsMinimumComponentVector) { EXPECT_VEC_EQ(this->expectedMax, this->a.max(this->b)); }
+//
+//
+// TEST(SimdVec3MaxTests, InfVector_ReturnsMinimumComponent)
+// {
+//     const flcn::Vec3F vecA(1.0f, flcn::constants::INFINITY_F, flcn::constants::INFINITY_F);
+//     const flcn::Vec3F vecB(flcn::constants::INFINITY_F, -flcn::constants::INFINITY_F, flcn::constants::INFINITY_F);
+//
+//     EXPECT_VEC_CONTAINS(vecA.max(vecB), flcn::constants::INFINITY_F, flcn::constants::INFINITY_F,
+//                         flcn::constants::INFINITY_F);
+// }
+//
+//
+// TYPED_TEST(SimdVec3MaxTests, StaticWrapper_ReturnsMinimumComponentVector)
+// { EXPECT_VEC_EQ(this->expectedMax, flcn::Vec3<TypeParam>::max(this->a, this->b)); }
+//
+//
+// TEST(SimdVec3MaxTests, StaticWrapper_InfVector_ReturnsMinimumComponent)
+// {
+//     const flcn::Vec3F vecA(1.0f, flcn::constants::INFINITY_F, flcn::constants::INFINITY_F);
+//     const flcn::Vec3F vecB(flcn::constants::INFINITY_F, -flcn::constants::INFINITY_F, flcn::constants::INFINITY_F);
+//
+//     EXPECT_VEC_CONTAINS(flcn::Vec3F::max(vecA, vecB), flcn::constants::INFINITY_F, flcn::constants::INFINITY_F,
+//                         flcn::constants::INFINITY_F);
+// }
+//
+//
+//
+// /**************************************
+//  *             MIX TESTS              *
+//  **************************************/
+//
+// TYPED_TEST(SimdVec3MixTests, ReturnsInterpolatedVector)
+// {
+//     if constexpr (std::is_floating_point_v<TypeParam>)
+//     {
+//         EXPECT_VEC_EQ(this->expectedFP, this->a.mix(this->b, this->factor));
+//     }
+//     else
+//     {
+//         EXPECT_VEC_EQ(this->expectedInt, this->a.mix(this->b, this->factor));
+//     }
+// }
+//
+//
+// TYPED_TEST(SimdVec3MixTests, StaticWrapper_ReturnsMinimumComponentVector)
+// {
+//     if constexpr (std::is_floating_point_v<TypeParam>)
+//     {
+//         EXPECT_VEC_EQ(this->expectedFP, flcn::Vec3<TypeParam>::mix(this->a, this->b, this->factor));
+//     }
+//     else
+//     {
+//         EXPECT_VEC_EQ(this->expectedInt, flcn::Vec3<TypeParam>::mix(this->a, this->b, this->factor));
+//     }
+// }
+//
+//
+// TEST_P(SimdVec3MixParameterizedTests, ReturnsInterpolatedVector)
+// {
+//     const auto& [a, b, factor, expected] = GetParam();
+//     EXPECT_VEC_EQ(expected, a.mix(b, factor));
+// }
+//
+// TEST_P(SimdVec3MixParameterizedTests, StaticWrapper_ReturnsInterpolatedVector)
+// {
+//     const auto& [a, b, factor, expected] = GetParam();
+//     EXPECT_VEC_EQ(expected, flcn::Vec3F::mix(a, b, factor));
+// }
 
 /** @} */

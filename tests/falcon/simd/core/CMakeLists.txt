@@ -23,7 +23,10 @@ add_executable(FalconSIMDCoreTests
         Simd256/PermuteTests.cpp
         Simd256/ConstructorTests.cpp
         Simd256/UtilTests.cpp
+        Simd256/ShiftLeftTests.cpp
+        Simd256/ShiftRightTests.cpp
         Simd256/BasicMathOperationTests.cpp
+        Simd256/Simd256Setup.h
 )
 
 target_compile_options(FalconSIMDCoreTests PRIVATE $<$<CXX_COMPILER_ID:MSVC>:/bigobj>)

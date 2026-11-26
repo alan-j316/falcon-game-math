@@ -84,17 +84,17 @@ configure the target architecture for the library and its consumers.
 
 Currently, supports foundational primitives (Vec2-4, Mat2-4). Advanced operations like packing, unpacking, and
 perspective projections are planned for upcoming iterations. Hardware SIMD abstractions (SSE2, AVX, AVX2) are available,
-with functional support expanding as needed. A cross-platform scalar fallback (ARCH_UNKNOWN) for SIMD types is the
-immediate development priority.
+with functional support expanding as needed.
 
 ### Immediate expansion
 
 - [x] Simd128 scalar
-- [ ] Simd256 scalar
+- [x] Simd256 scalar
 - [ ] Matrix Projection and Translation Factories
 - [ ] Vec4, Mat2, 3, 4 refactor to Simd
 - [ ] Packing and Unpacking
 - [ ] Quaternion
+- [ ] std::hash support
 
 ### Future Development
 

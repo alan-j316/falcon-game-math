@@ -15,6 +15,7 @@
  * @{
  */
 
+#include "InterpolationTestFixture.h"
 #include "Vec3TestSetup.h"
 
 

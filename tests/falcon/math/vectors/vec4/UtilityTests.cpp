@@ -15,6 +15,7 @@
  */
 
 #include "Vec4TestSetup.h"
+#include "InterpolationTestFixture.h"
 
 namespace
 {

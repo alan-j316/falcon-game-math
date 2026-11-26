@@ -11,7 +11,6 @@
 
 #define ENABLE_FALCON_SHADER_OPERATORS
 
-#include "InterpolationTestFixture.h"
 #include "BoundsTestFixture.h"
 #include "utils/VectorUtils.h"
 

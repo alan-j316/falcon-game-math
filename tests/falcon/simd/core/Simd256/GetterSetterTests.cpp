@@ -31,7 +31,7 @@ namespace
     class Simd256GetterSetterTests: public testing::Test
     {
     public:
-        using Register = flcn::Simd256_t<typename T::Type, T::VALUE>;
+        using Register = flcn::Simd256<typename T::Type, T::VALUE>;
 
         static constexpr auto max = std::numeric_limits<typename T::Type>::max();
         static constexpr auto min = std::numeric_limits<typename T::Type>::min();
@@ -105,7 +105,7 @@ TEST(Simd256GetterSetterTests, Set_CanTakeParametersLessThanLaneSize)
 {
     using Type            = uint8_t;
     constexpr size_t Lane = 32;
-    flcn::Simd256_t<Type, Lane> reg{};
+    flcn::Simd256<Type, Lane> reg{};
     reg.set(static_cast<Type>(1), static_cast<Type>(2), static_cast<Type>(3), static_cast<Type>(4),
             static_cast<Type>(5), static_cast<Type>(6), static_cast<Type>(7));
     alignas(32) std::array<Type, Lane> result;
@@ -126,7 +126,7 @@ TYPED_TEST(Simd256GetterSetterTests, SetZero_FillsTheLanesWithZeroes)
     using Type            = typename TypeParam::Type;
     constexpr size_t Lane = TypeParam::VALUE;
 
-    auto reg = flcn::Simd256_t<Type, Lane>();
+    auto reg = flcn::Simd256<Type, Lane>();
     reg.setZero();
 
     alignas(32) std::array<Type, Lane> result{};
@@ -145,7 +145,7 @@ TYPED_TEST(Simd256GetterSetterTests, SetOne_FillsTheLanesWithOnes)
     constexpr size_t Lane = TypeParam::VALUE;
     constexpr auto one    = getAllOnes<Type>();
 
-    auto reg = flcn::Simd256_t<Type, Lane>();
+    auto reg = flcn::Simd256<Type, Lane>();
     reg.setOne();
 
     alignas(32) std::array<Type, Lane> result{};
@@ -200,7 +200,7 @@ TYPED_TEST(Simd256GetterSetterTests, SetAt_SetsTheValueAtAppropriateIndex)
     using Type            = TypeParam::Type;
     constexpr size_t Lane = TypeParam::VALUE;
 
-    flcn::Simd256_t<Type, Lane> reg;
+    flcn::Simd256<Type, Lane> reg;
     reg.setZero();
 
     for (size_t i = 0; i < Lane; ++i)
@@ -213,7 +213,7 @@ TYPED_TEST(Simd256GetterSetterTests, SetAt_SetsTheValueAtAppropriateIndex)
 
 // TEST(Simd256GetterSetterTests, Integrals_Naive_ReturnsDefaultRegister)
 // {
-//     flcn::Simd256_t<int32_t, 8> reg{ 1, 2, 3, 4, 5, 6, 7, 8 };
+//     flcn::Simd256<int32_t, 8> reg{ 1, 2, 3, 4, 5, 6, 7, 8 };
 //
 //     const auto naiveReg = reg.naive();
 //
@@ -234,7 +234,7 @@ TYPED_TEST(Simd256GetterSetterTests, SetAt_SetsTheValueAtAppropriateIndex)
 //
 // TEST(Simd256GetterSetterTests, Float_Naive_ReturnsDefaultRegister)
 // {
-//     flcn::Simd256_t<float, 8> reg{ 1.0f, 2.0f, 3.0f, 4.0f, 5.0f, 6.0f, 7.0f, 8.0f };
+//     flcn::Simd256<float, 8> reg{ 1.0f, 2.0f, 3.0f, 4.0f, 5.0f, 6.0f, 7.0f, 8.0f };
 //
 //     const auto naiveReg = reg.naive();
 //
@@ -255,7 +255,7 @@ TYPED_TEST(Simd256GetterSetterTests, SetAt_SetsTheValueAtAppropriateIndex)
 //
 // TEST(Simd256GetterSetterTests, Double_Naive_ReturnsDefaultRegister)
 // {
-//     flcn::Simd256_t<double, 4> reg{ 1.0, 2.0, 3.0, 4.0 };
+//     flcn::Simd256<double, 4> reg{ 1.0, 2.0, 3.0, 4.0 };
 //
 //     const auto naiveReg = reg.naive();
 //
@@ -273,7 +273,7 @@ TYPED_TEST(Simd256GetterSetterTests, SetAt_SetsTheValueAtAppropriateIndex)
 // /// @test Verify that *reg returns the default internal register for integrals.
 // TEST(Simd256GetterSetterTests, UnaryTimesOperator_IntegralRegister_ReturnsDefaultRegister)
 // {
-//     flcn::Simd256_t<int32_t, 8> reg{ 1, 2, 3, 4, 5, 6, 7, 8 };
+//     flcn::Simd256<int32_t, 8> reg{ 1, 2, 3, 4, 5, 6, 7, 8 };
 //
 //     const auto naiveReg = *reg;
 //
@@ -295,7 +295,7 @@ TYPED_TEST(Simd256GetterSetterTests, SetAt_SetsTheValueAtAppropriateIndex)
 // /// @test Verify that *reg returns the default internal register for floats.
 // TEST(Simd256GetterSetterTests, UnaryTimesOperator_FloatRegister_ReturnsDefaultRegister)
 // {
-//     flcn::Simd256_t<float, 8> reg{ 1.0f, 2.0f, 3.0f, 4.0f, 5.0f, 6.0f, 7.0f, 8.0f };
+//     flcn::Simd256<float, 8> reg{ 1.0f, 2.0f, 3.0f, 4.0f, 5.0f, 6.0f, 7.0f, 8.0f };
 //
 //     const auto naiveReg = *reg;
 //
@@ -317,7 +317,7 @@ TYPED_TEST(Simd256GetterSetterTests, SetAt_SetsTheValueAtAppropriateIndex)
 // /// @test Verify that *reg returns the default internal register for doubles.
 // TEST(Simd256GetterSetterTests, UnaryTimesOperator_DoubleRegister_ReturnsDefaultRegister)
 // {
-//     flcn::Simd256_t<double, 4> reg{ 1.0, 2.0, 3.0, 4.0 };
+//     flcn::Simd256<double, 4> reg{ 1.0, 2.0, 3.0, 4.0 };
 //
 //     const auto naiveReg = *reg;
 //
@@ -344,7 +344,7 @@ using namespace simd::testing;
                                                                    12,  14,  3, 15, 12, max, min, 0, 3,  5, 11,        \
                                                                    15,  3,   1, 2,  5,  12,  14,  3, 15, 12 };         \
                                                                                                                        \
-            flcn::Simd256_t<Type, Lanes> reg(dataArr.data());                                                          \
+            flcn::Simd256<Type, Lanes> reg(dataArr.data());                                                          \
             EXPECT_ANY_EQ(dataArr[Index], reg.getAt<Index>());                                                         \
         }
 
@@ -501,7 +501,7 @@ TEST_SIMD256_CONST_GET_AT_RETURNS_VALUE_AT_INDEX(FP64_4Lanes_AtIndex3, FP64, 4, 
                                                                    12,  14,  3, 15, 12, max, min, 0, 3,  5, 11,        \
                                                                    15,  3,   1, 2,  5,  12,  14,  3, 15, 12 };         \
                                                                                                                        \
-            flcn::Simd256_t<Type, Lanes> reg{};                                                                        \
+            flcn::Simd256<Type, Lanes> reg{};                                                                        \
             reg.setAt<Index>(dataArr[Index]);                                                                          \
             EXPECT_ANY_EQ(dataArr[Index], reg.getAt<Index>());                                                         \
         }

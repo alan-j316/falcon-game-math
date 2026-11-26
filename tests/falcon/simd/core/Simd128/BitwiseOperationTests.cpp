@@ -53,7 +53,7 @@ TYPED_TEST(Simd128BitwiseTests, BitwiseNot_ReturnsAValidResult)
         }
     }
 
-    flcn::Simd128_t<Type, Lane> reg;
+    flcn::Simd128<Type, Lane> reg;
     reg.loadAligned(data.data());
 
     auto regRes = ~reg;
@@ -93,7 +93,7 @@ TYPED_TEST(Simd128BitwiseTests, BitwiseAnd_ReturnsAValidResult)
         }
     }
 
-    flcn::Simd128_t<Type, Lane> regA{}, regB{};
+    flcn::Simd128<Type, Lane> regA{}, regB{};
     regA.loadAligned(lhs.data());
     regB.loadAligned(rhs.data());
 
@@ -134,7 +134,7 @@ TYPED_TEST(Simd128BitwiseTests, BitwiseAndEquals_PerformsANDOperationInPlace)
         }
     }
 
-    flcn::Simd128_t<Type, Lane> regA{ lhs }, regB{ rhs };
+    flcn::Simd128<Type, Lane> regA{ lhs }, regB{ rhs };
     regA &= regB;
 
     regA.storeAligned(result.data());
@@ -172,7 +172,7 @@ TYPED_TEST(Simd128BitwiseTests, BitwiseOr_ReturnsAValidResult)
         }
     }
 
-    flcn::Simd128_t<Type, Lane> regA{}, regB{};
+    flcn::Simd128<Type, Lane> regA{}, regB{};
     regA.loadAligned(lhs.data());
     regB.loadAligned(rhs.data());
 
@@ -213,7 +213,7 @@ TYPED_TEST(Simd128BitwiseTests, BitwiseOrEquals_PerformsOROperationInPlace)
         }
     }
 
-    flcn::Simd128_t<Type, Lane> regA{ lhs }, regB{ rhs };
+    flcn::Simd128<Type, Lane> regA{ lhs }, regB{ rhs };
     regA |= regB;
 
     regA.storeAligned(result.data());
@@ -251,7 +251,7 @@ TYPED_TEST(Simd128BitwiseTests, BitwiseXor_ReturnsAValidResult)
         }
     }
 
-    flcn::Simd128_t<Type, Lane> regA{}, regB{};
+    flcn::Simd128<Type, Lane> regA{}, regB{};
     regA.loadAligned(lhs.data());
     regB.loadAligned(rhs.data());
 
@@ -292,7 +292,7 @@ TYPED_TEST(Simd128BitwiseTests, BitwiseXorEquals_PerformsXOROperationInPlace)
         }
     }
 
-    flcn::Simd128_t<Type, Lane> regA{ lhs }, regB{ rhs };
+    flcn::Simd128<Type, Lane> regA{ lhs }, regB{ rhs };
     regA ^= regB;
 
     regA.storeAligned(result.data());
@@ -331,7 +331,7 @@ TYPED_TEST(Simd128BitwiseTests, BitwiseAndNot_ReturnsAValidResult)
         }
     }
 
-    flcn::Simd128_t<Type, Lane> regA{}, regB{};
+    flcn::Simd128<Type, Lane> regA{}, regB{};
     regA.loadAligned(lhs.data());
     regB.loadAligned(rhs.data());
 
@@ -375,7 +375,7 @@ TYPED_TEST(Simd128BitwiseTests, HorizontalOR_ReturnsAValidScalar)
         }
     }
 
-    flcn::Simd128_t<Type, Lane> reg(data);
+    flcn::Simd128<Type, Lane> reg(data);
 
     auto result = reg.horizontalOr();
     EXPECT_ANY_EQ(expected, result);
@@ -412,7 +412,7 @@ TYPED_TEST(Simd128BitwiseTests, HorizontalAND_ReturnsAValidScalar)
         }
     }
 
-    flcn::Simd128_t<Type, Lane> reg(data);
+    flcn::Simd128<Type, Lane> reg(data);
 
     auto result = reg.horizontalAnd();
     EXPECT_ANY_EQ(expected, result);

@@ -118,10 +118,10 @@ namespace flcn::simd
 
 
         /**
-         * @brief Initialize a @ref Vec2 with a Simd128_t register.
+         * @brief Initialize a @ref Vec2 with a Simd128 register.
          * @param[in] reg The register to bind to this vector.
          */
-        [[nodiscard]] explicit constexpr Vec2(const Simd128_t<T, DIMENSION>& reg) noexcept;
+        [[nodiscard]] explicit constexpr Vec2(const Simd128<T, DIMENSION>& reg) noexcept;
 
         /**
          * @brief Convert this SIMD-accelerated Vec2 to scalar Vec2.
@@ -2273,7 +2273,7 @@ namespace flcn::simd
         /** @} */
 
     private:
-        flcn::Simd128_t<T, DIMENSION> _data;
+        flcn::Simd128<T, DIMENSION> _data;
 
 
         /**************************************

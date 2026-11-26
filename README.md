@@ -76,7 +76,7 @@ configure the target architecture for the library and its consumers.
     flcn::simd::Vec2F posXY{1, 2};
     
     // Simd Types
-    flcn::Simd128_t<float, 4> simd1{1, 2, 3, 4}, simd2{4, 5, 6, 7};
+    flcn::Simd128<float, 4> simd1{1, 2, 3, 4}, simd2{4, 5, 6, 7};
     const auto res = simd1 + simd2;
 ```
 

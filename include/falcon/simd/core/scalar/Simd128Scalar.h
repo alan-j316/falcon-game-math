@@ -36,7 +36,7 @@
     #pragma warning(disable : 4324) // Padded Added
 #endif
 
-namespace flcn
+namespace flcn::details
 {
     /**
      * @brief 128-bit Simd Register when SIMD-acceleration is disabled.
@@ -681,7 +681,7 @@ namespace flcn
 
 
         /**
-         * @brief Perform a arithmetic right shift on this register by a compile time constant, @p Count.
+         * @brief Perform an arithmetic right shift on this register by a compile time constant, @p Count.
          *
          * @tparam Count The shift amount.
          *
@@ -726,7 +726,7 @@ namespace flcn
          *
          * @code
          * // float x 4(lane) mask.
-         * const Simd128_t<float, 4> reg{ 1.0f, 2.0f, 3.0f, 4.0f };
+         * const Simd128<float, 4> reg{ 1.0f, 2.0f, 3.0f, 4.0f };
          * const auto mask = reg.makeBlendMask<true, false, true, false>();
          * // 0b00000000111111110000000011111111 or 0x00FF00FF
          * const auto mask = reg.makeBlendMask<true, false, true, true>();
@@ -776,8 +776,8 @@ namespace flcn
          *
          *
          * // Usage
-         * const flcn::Simd128_t<float, 4> reg1{1.0f, 2.0f, 3.0f, 4.0f};
-         * const flcn::Simd128_t<float, 4> reg2{8.0f, 9.0f, 10.0f, 11.0f};
+         * const flcn::Simd128<float, 4> reg1{1.0f, 2.0f, 3.0f, 4.0f};
+         * const flcn::Simd128<float, 4> reg2{8.0f, 9.0f, 10.0f, 11.0f};
          * constexpr auto mask = flcn::makeBlendMask32<true, false, false, true>();
          * const auto blended = reg1.template blend<mask>(reg2); // {8.0f, 2.0f, 3.0f, 11.0f}
          * @endcode
@@ -815,7 +815,6 @@ namespace flcn
         ///+=+=+=+=+=+=+=+=+=+=+=+=+=
         ///       UTILITIES
         ///+=+=+=+=+=+=+=+=+=+=+=+=+=
-
 
         /// @brief Get the minimum value from this register.
         [[nodiscard]] constexpr DataType horizontalMin() const noexcept;
@@ -860,15 +859,16 @@ namespace flcn
         /// +---------------------------------------------------------------------------------------+
         /// |                              FRIEND FUNCTIONS                                         |
         /// +---------------------------------------------------------------------------------------+
-        template <typename T, size_t L>
-        friend constexpr Simd128<SimdBackend::ARCH_UNKNOWN, T, L> min(
-            Simd128<SimdBackend::ARCH_UNKNOWN, T, L>, Simd128<SimdBackend::ARCH_UNKNOWN, T, L>) noexcept;
-        template <typename T, size_t L>
-        friend constexpr Simd128<SimdBackend::ARCH_UNKNOWN, T, L> max(
-            Simd128<SimdBackend::ARCH_UNKNOWN, T, L>, Simd128<SimdBackend::ARCH_UNKNOWN, T, L>) noexcept;
+        // template <typename T, size_t L>
+        // friend constexpr Simd256<SimdBackend::ARCH_UNKNOWN, T, L> flcn::min(
+        //     Simd256<SimdBackend::ARCH_UNKNOWN, T, L>, Simd256<SimdBackend::ARCH_SSE2, T, L>) noexcept;
+        //
+        // template <typename T, size_t L>
+        // friend constexpr Simd256<SimdBackend::ARCH_UNKNOWN, T, L> flcn::max(
+        //     Simd256<SimdBackend::ARCH_UNKNOWN, T, L>, Simd256<SimdBackend::ARCH_UNKNOWN, T, L>) noexcept;
     };
 
-} // namespace flcn
+} // namespace flcn::details
 
 #ifdef _MSC_VER
     #pragma warning(pop)

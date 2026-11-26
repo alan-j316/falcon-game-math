@@ -14,38 +14,38 @@
 namespace flcn
 {
     template <typename DataType, size_t Lane>
-    FALCON_INLINE constexpr _REG_256_SSE<DataType, Lane> min(_REG_256_SSE<DataType, Lane> a,
-                                                             _REG_256_SSE<DataType, Lane> b) noexcept
-    { return _REG_256_SSE<DataType, Lane>(min(a._lower, b._lower), min(a._upper, b._upper)); }
+    FALCON_INLINE constexpr details::Reg256SSE<DataType, Lane> min(details::Reg256SSE<DataType, Lane> a,
+                                                                   details::Reg256SSE<DataType, Lane> b) noexcept
+    { return details::Reg256SSE<DataType, Lane>(min(a._lower, b._lower), min(a._upper, b._upper)); }
 
 
     template <typename DataType, size_t Lane>
-    FALCON_INLINE constexpr _REG_256_SSE<DataType, Lane> max(_REG_256_SSE<DataType, Lane> a,
-                                                             _REG_256_SSE<DataType, Lane> b) noexcept
-    { return _REG_256_SSE<DataType, Lane>(max(a._lower, b._lower), max(a._upper, b._upper)); }
+    FALCON_INLINE constexpr details::Reg256SSE<DataType, Lane> max(details::Reg256SSE<DataType, Lane> a,
+                                                                   details::Reg256SSE<DataType, Lane> b) noexcept
+    { return details::Reg256SSE<DataType, Lane>(max(a._lower, b._lower), max(a._upper, b._upper)); }
 
 
     template <typename DataType, size_t Lane>
-    FALCON_INLINE constexpr _REG_256_SSE<DataType, Lane> abs(_REG_256_SSE<DataType, Lane> reg) noexcept
+    FALCON_INLINE constexpr details::Reg256SSE<DataType, Lane> abs(details::Reg256SSE<DataType, Lane> reg) noexcept
     { return reg.abs(); }
 
 
     template <typename DataType, size_t Lane>
-    FALCON_INLINE constexpr _REG_256_SSE<DataType, Lane> sqrt(_REG_256_SSE<DataType, Lane> reg) noexcept
+    FALCON_INLINE constexpr details::Reg256SSE<DataType, Lane> sqrt(details::Reg256SSE<DataType, Lane> reg) noexcept
     { return reg.sqrt(); }
 
 
     template <typename DataType, size_t Lane>
-    FALCON_INLINE constexpr _REG_256_SSE<DataType, Lane> fma(_REG_256_SSE<DataType, Lane> a,
-                                                             _REG_256_SSE<DataType, Lane> b,
-                                                             _REG_256_SSE<DataType, Lane> c) noexcept
+    FALCON_INLINE constexpr details::Reg256SSE<DataType, Lane> fma(details::Reg256SSE<DataType, Lane> a,
+                                                                   details::Reg256SSE<DataType, Lane> b,
+                                                                   details::Reg256SSE<DataType, Lane> c) noexcept
     { return a.fma(b, c); }
 
 
     template <typename DataType, size_t Lane>
-    FALCON_INLINE constexpr _REG_256_SSE<DataType, Lane> fmSub(_REG_256_SSE<DataType, Lane> a,
-                                                               _REG_256_SSE<DataType, Lane> b,
-                                                               _REG_256_SSE<DataType, Lane> c) noexcept
+    FALCON_INLINE constexpr details::Reg256SSE<DataType, Lane> fmSub(details::Reg256SSE<DataType, Lane> a,
+                                                                     details::Reg256SSE<DataType, Lane> b,
+                                                                     details::Reg256SSE<DataType, Lane> c) noexcept
     { return a.fmSub(b, c); }
 
 
@@ -55,25 +55,25 @@ namespace flcn
 
 
     template <typename DataType, size_t Lane>
-    FALCON_INLINE constexpr _REG_256_AVX<DataType, Lane> min(_REG_256_AVX<DataType, Lane> a,
-                                                             _REG_256_AVX<DataType, Lane> b) noexcept
+    FALCON_INLINE constexpr details::Reg256AVX<DataType, Lane> min(details::Reg256AVX<DataType, Lane> a,
+                                                                   details::Reg256AVX<DataType, Lane> b) noexcept
     {
         if constexpr (_FALCON_SIMD256_SUPPORT_NATIVE_INTRINSIC(DataType))
         {
             if constexpr (types::IsFP64<DataType>)
             {
-                return _REG_256_AVX<DataType, Lane>(_mm256_min_pd(*a, *b));
+                return details::Reg256AVX<DataType, Lane>(_mm256_min_pd(*a, *b));
             }
             else if constexpr (types::IsFP32<DataType>)
             {
-                return _REG_256_AVX<DataType, Lane>(_mm256_min_ps(*a, *b));
+                return details::Reg256AVX<DataType, Lane>(_mm256_min_ps(*a, *b));
             }
             // Signed types
             else if constexpr (types::IsQWord<DataType>)
             {
                 if constexpr (CURRENT_SIMD_BACKEND >= SimdBackend::ARCH_AVX512EX) // AVX512F + VL
                 {
-                    return _REG_256_AVX<DataType, Lane>(_mm256_min_epi64(*a, *b));
+                    return details::Reg256AVX<DataType, Lane>(_mm256_min_epi64(*a, *b));
                 }
                 else
                 {
@@ -84,22 +84,22 @@ namespace flcn
             }
             else if constexpr (types::IsDWord<DataType>)
             {
-                return _REG_256_AVX<DataType, Lane>(_mm256_min_epi32(*a, *b));
+                return details::Reg256AVX<DataType, Lane>(_mm256_min_epi32(*a, *b));
             }
             else if constexpr (types::IsWord<DataType>)
             {
-                return _REG_256_AVX<DataType, Lane>(_mm256_min_epi16(*a, *b));
+                return details::Reg256AVX<DataType, Lane>(_mm256_min_epi16(*a, *b));
             }
             else if constexpr (types::IsByte<DataType>)
             {
-                return _REG_256_AVX<DataType, Lane>(_mm256_min_epi8(*a, *b));
+                return details::Reg256AVX<DataType, Lane>(_mm256_min_epi8(*a, *b));
             }
             // Unsigned types
             else if constexpr (types::IsUQWord<DataType>)
             {
                 if constexpr (CURRENT_SIMD_BACKEND >= SimdBackend::ARCH_AVX512EX) // AVX512F + VL
                 {
-                    return _REG_256_AVX<DataType, Lane>(_mm256_min_epu64(*a, *b));
+                    return details::Reg256AVX<DataType, Lane>(_mm256_min_epu64(*a, *b));
                 }
                 else
                 {
@@ -110,45 +110,45 @@ namespace flcn
             }
             else if constexpr (types::IsUDWord<DataType>)
             {
-                return _REG_256_AVX<DataType, Lane>(_mm256_min_epu32(*a, *b));
+                return details::Reg256AVX<DataType, Lane>(_mm256_min_epu32(*a, *b));
             }
             else if constexpr (types::IsUWord<DataType>)
             {
-                return _REG_256_AVX<DataType, Lane>(_mm256_min_epu16(*a, *b));
+                return details::Reg256AVX<DataType, Lane>(_mm256_min_epu16(*a, *b));
             }
             else // if constexpr (types::IsUByte<DataType>)
             {
-                return _REG_256_AVX<DataType, Lane>(_mm256_min_epu8(*a, *b));
+                return details::Reg256AVX<DataType, Lane>(_mm256_min_epu8(*a, *b));
             }
         }
         else
         {
             // Emulated Register will `set` the correct values so we don't need to assign.
-            return _REG_256_AVX<DataType, Lane>(flcn::min(*a, *b));
+            return details::Reg256AVX<DataType, Lane>(flcn::min(*a, *b));
         }
     }
 
 
     template <typename DataType, size_t Lane>
-    FALCON_INLINE constexpr _REG_256_AVX<DataType, Lane> max(_REG_256_AVX<DataType, Lane> a,
-                                                             _REG_256_AVX<DataType, Lane> b) noexcept
+    FALCON_INLINE constexpr details::Reg256AVX<DataType, Lane> max(details::Reg256AVX<DataType, Lane> a,
+                                                                   details::Reg256AVX<DataType, Lane> b) noexcept
     {
         if constexpr (_FALCON_SIMD256_SUPPORT_NATIVE_INTRINSIC(DataType))
         {
             if constexpr (types::IsFP64<DataType>)
             {
-                return _REG_256_AVX<DataType, Lane>(_mm256_max_pd(*a, *b));
+                return details::Reg256AVX<DataType, Lane>(_mm256_max_pd(*a, *b));
             }
             else if constexpr (types::IsFP32<DataType>)
             {
-                return _REG_256_AVX<DataType, Lane>(_mm256_max_ps(*a, *b));
+                return details::Reg256AVX<DataType, Lane>(_mm256_max_ps(*a, *b));
             }
             // Signed types
             else if constexpr (types::IsQWord<DataType>)
             {
                 if constexpr (CURRENT_SIMD_BACKEND >= SimdBackend::ARCH_AVX512EX) // AVX512F + VL
                 {
-                    return _REG_256_AVX<DataType, Lane>(_mm256_max_epi64(*a, *b));
+                    return details::Reg256AVX<DataType, Lane>(_mm256_max_epi64(*a, *b));
                 }
                 else
                 {
@@ -159,22 +159,22 @@ namespace flcn
             }
             else if constexpr (types::IsDWord<DataType>)
             {
-                return _REG_256_AVX<DataType, Lane>(_mm256_max_epi32(*a, *b));
+                return details::Reg256AVX<DataType, Lane>(_mm256_max_epi32(*a, *b));
             }
             else if constexpr (types::IsWord<DataType>)
             {
-                return _REG_256_AVX<DataType, Lane>(_mm256_max_epi16(*a, *b));
+                return details::Reg256AVX<DataType, Lane>(_mm256_max_epi16(*a, *b));
             }
             else if constexpr (types::IsByte<DataType>)
             {
-                return _REG_256_AVX<DataType, Lane>(_mm256_max_epi8(*a, *b));
+                return details::Reg256AVX<DataType, Lane>(_mm256_max_epi8(*a, *b));
             }
             // Unsigned types
             else if constexpr (types::IsUQWord<DataType>)
             {
                 if constexpr (CURRENT_SIMD_BACKEND >= SimdBackend::ARCH_AVX512EX) // AVX512F + VL
                 {
-                    return _REG_256_AVX<DataType, Lane>(_mm256_max_epu64(*a, *b));
+                    return details::Reg256AVX<DataType, Lane>(_mm256_max_epu64(*a, *b));
                 }
                 else
                 {
@@ -185,46 +185,46 @@ namespace flcn
             }
             else if constexpr (types::IsUDWord<DataType>)
             {
-                return _REG_256_AVX<DataType, Lane>(_mm256_max_epu32(*a, *b));
+                return details::Reg256AVX<DataType, Lane>(_mm256_max_epu32(*a, *b));
             }
             else if constexpr (types::IsUWord<DataType>)
             {
-                return _REG_256_AVX<DataType, Lane>(_mm256_max_epu16(*a, *b));
+                return details::Reg256AVX<DataType, Lane>(_mm256_max_epu16(*a, *b));
             }
             else // if constexpr (types::IsUByte<DataType>)
             {
-                return _REG_256_AVX<DataType, Lane>(_mm256_max_epu8(*a, *b));
+                return details::Reg256AVX<DataType, Lane>(_mm256_max_epu8(*a, *b));
             }
         }
         else
         {
             // Emulated Register will `set` the correct values so we don't need to assign.
-            return _REG_256_AVX<DataType, Lane>(flcn::max(*a, *b));
+            return details::Reg256AVX<DataType, Lane>(flcn::max(*a, *b));
         }
     }
 
 
     template <typename DataType, size_t Lane>
-    FALCON_INLINE constexpr _REG_256_AVX<DataType, Lane> abs(_REG_256_AVX<DataType, Lane> reg) noexcept
+    FALCON_INLINE constexpr details::Reg256AVX<DataType, Lane> abs(details::Reg256AVX<DataType, Lane> reg) noexcept
     { return reg.abs(); }
 
 
     template <typename DataType, size_t Lane>
-    FALCON_INLINE constexpr _REG_256_AVX<DataType, Lane> sqrt(_REG_256_AVX<DataType, Lane> reg) noexcept
+    FALCON_INLINE constexpr details::Reg256AVX<DataType, Lane> sqrt(details::Reg256AVX<DataType, Lane> reg) noexcept
     { return reg.sqrt(); }
 
 
     template <typename DataType, size_t Lane>
-    FALCON_INLINE constexpr _REG_256_AVX<DataType, Lane> fma(_REG_256_AVX<DataType, Lane> a,
-                                                             _REG_256_AVX<DataType, Lane> b,
-                                                             _REG_256_AVX<DataType, Lane> c) noexcept
+    FALCON_INLINE constexpr details::Reg256AVX<DataType, Lane> fma(details::Reg256AVX<DataType, Lane> a,
+                                                                   details::Reg256AVX<DataType, Lane> b,
+                                                                   details::Reg256AVX<DataType, Lane> c) noexcept
     { return a.fma(b, c); }
 
 
     template <typename DataType, size_t Lane>
-    FALCON_INLINE constexpr _REG_256_AVX<DataType, Lane> fmSub(_REG_256_AVX<DataType, Lane> a,
-                                                               _REG_256_AVX<DataType, Lane> b,
-                                                               _REG_256_AVX<DataType, Lane> c) noexcept
+    FALCON_INLINE constexpr details::Reg256AVX<DataType, Lane> fmSub(details::Reg256AVX<DataType, Lane> a,
+                                                                     details::Reg256AVX<DataType, Lane> b,
+                                                                     details::Reg256AVX<DataType, Lane> c) noexcept
     { return a.fmSub(b, c); }
 
 

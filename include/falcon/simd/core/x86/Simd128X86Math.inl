@@ -13,14 +13,14 @@
 namespace flcn
 {
     template <typename DataType, size_t Lane>
-    FALCON_INLINE constexpr _REG_128_SSE<DataType, Lane> min(_REG_128_SSE<DataType, Lane> a,
-                                                             _REG_128_SSE<DataType, Lane> b) noexcept
+    FALCON_INLINE constexpr details::Reg128SSE<DataType, Lane> min(details::Reg128SSE<DataType, Lane> a,
+                                                             details::Reg128SSE<DataType, Lane> b) noexcept
     {
         // min function is not available for all data types and for some,
         // it was introduced with SSE4.1
         // As a workaround we use a > b ? b : a
         // with blend to get the correct min values.
-        using Reg = _REG_128_SSE<DataType, Lane>;
+        using Reg = details::Reg128SSE<DataType, Lane>;
         if constexpr (types::IsFP64<DataType>)
         {
             return Reg(_mm_min_pd(*a, *b));
@@ -72,14 +72,14 @@ namespace flcn
 
 
     template <typename DataType, size_t Lane>
-    FALCON_INLINE constexpr _REG_128_SSE<DataType, Lane> max(_REG_128_SSE<DataType, Lane> a,
-                                                             _REG_128_SSE<DataType, Lane> b) noexcept
+    FALCON_INLINE constexpr details::Reg128SSE<DataType, Lane> max(details::Reg128SSE<DataType, Lane> a,
+                                                             details::Reg128SSE<DataType, Lane> b) noexcept
     {
         // min function is not available for all data types and for some,
         // it was introduced with SSE4.1
         // As a workaround we use a > b ? a : b
         // with blend to get the correct min values.
-        using Reg = _REG_128_SSE<DataType, Lane>;
+        using Reg = details::Reg128SSE<DataType, Lane>;
         if constexpr (types::IsFP64<DataType>)
         {
             return Reg(_mm_max_pd(*a, *b));
@@ -132,25 +132,25 @@ namespace flcn
 
 
     template <typename DataType, size_t Lane>
-    FALCON_INLINE constexpr _REG_128_SSE<DataType, Lane> abs(_REG_128_SSE<DataType, Lane> reg) noexcept
+    FALCON_INLINE constexpr details::Reg128SSE<DataType, Lane> abs(details::Reg128SSE<DataType, Lane> reg) noexcept
     { return reg.abs(); }
 
 
     template <typename DataType, size_t Lane>
-    FALCON_INLINE constexpr _REG_128_SSE<DataType, Lane> sqrt(_REG_128_SSE<DataType, Lane> reg) noexcept
+    FALCON_INLINE constexpr details::Reg128SSE<DataType, Lane> sqrt(details::Reg128SSE<DataType, Lane> reg) noexcept
     { return reg.sqrt(); }
 
 
     template <typename DataType, size_t Lane>
-    FALCON_INLINE constexpr _REG_128_SSE<DataType, Lane> fma(_REG_128_SSE<DataType, Lane> a,
-                                                             _REG_128_SSE<DataType, Lane> b,
-                                                             _REG_128_SSE<DataType, Lane> c) noexcept
+    FALCON_INLINE constexpr details::Reg128SSE<DataType, Lane> fma(details::Reg128SSE<DataType, Lane> a,
+                                                             details::Reg128SSE<DataType, Lane> b,
+                                                             details::Reg128SSE<DataType, Lane> c) noexcept
     { return a.fma(b, c); }
 
 
     template <typename DataType, size_t Lane>
-    FALCON_INLINE constexpr _REG_128_SSE<DataType, Lane> fmSub(_REG_128_SSE<DataType, Lane> a,
-                                                               _REG_128_SSE<DataType, Lane> b,
-                                                               _REG_128_SSE<DataType, Lane> c) noexcept
+    FALCON_INLINE constexpr details::Reg128SSE<DataType, Lane> fmSub(details::Reg128SSE<DataType, Lane> a,
+                                                               details::Reg128SSE<DataType, Lane> b,
+                                                               details::Reg128SSE<DataType, Lane> c) noexcept
     { return a.fmSub(b, c); }
 } // namespace flcn

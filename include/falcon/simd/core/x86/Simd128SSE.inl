@@ -9,10 +9,12 @@
  * @copyright Copyright (c) 2026 Alan Abraham P Kochumon
  */
 
+#include <immintrin.h>
+#include <emmintrin.h>
 
-namespace flcn
+
+namespace flcn::details
 {
-
     /**************************************
      *         SETTERS/GETTERS            *
      **************************************/
@@ -154,8 +156,8 @@ namespace flcn
     { loadAligned(values.data()); }
 
     template <typename DataType, size_t Lane>
-    FALCON_INLINE constexpr Simd128<SimdBackend::ARCH_SSE2, DataType, Lane>::Simd128(const DataType* buffer) noexcept
-    { loadAligned(buffer); }
+    FALCON_INLINE constexpr Simd128<SimdBackend::ARCH_SSE2, DataType, Lane>::Simd128(const DataType* pBuffer) noexcept
+    { loadAligned(pBuffer); }
 
     template <typename DataType, size_t Lane>
     template <typename... Args>
@@ -164,10 +166,10 @@ namespace flcn
                                                                                      Lane>::set(Args... args)
 
     {
-        constexpr auto MaxLanes = 128 / sizeof(DataType);
+        constexpr auto maxLanes = BUFFER_WIDTH / sizeof(DataType);
         // By packing to a compile time array and adding values
-        alignas(Alignment) const DataType data[MaxLanes]{ args... };
-        loadAligned(data);
+        alignas(ALIGNMENT) const std::array<DataType, maxLanes> data{ args... };
+        loadAligned(data.data());
 
         return *this;
     }
@@ -228,27 +230,27 @@ namespace flcn
 
     template <typename DataType, size_t Lane>
     FALCON_INLINE constexpr void Simd128<SimdBackend::ARCH_SSE2, DataType, Lane>::loadAligned(
-        const DataType* data) noexcept
+        const DataType* pData) noexcept
     {
         // TODO: Add death tests
         FALCON_ASSERT_MSG(
-            (reinterpret_cast<uintptr_t>(data) & (Alignment - 1)) == 0,
+            (reinterpret_cast<uintptr_t>(pData) & (ALIGNMENT - 1)) == 0,
             "[Falcon Simd]: Loading from unaligned memory when aligned address was expected. Use load() instead.");
         // We are using sizes for loading integers since we are storing both signed and unsigned types into the
         // register as bits, with packing.
         if constexpr (types::IsFP64<DataType>)
         {
-            _register = _mm_load_pd(data);
+            _register = _mm_load_pd(pData);
         }
         else if constexpr (types::IsFP32<DataType>)
         {
             if constexpr (Lane == 2)
             {
-                _register = _mm_loadl_pi(_mm_setzero_ps(), reinterpret_cast<const __m64*>(data));
+                _register = _mm_loadl_pi(_mm_setzero_ps(), reinterpret_cast<const __m64*>(pData));
             }
             else
             {
-                _register = _mm_load_ps(data);
+                _register = _mm_load_ps(pData);
             }
         }
         else
@@ -256,42 +258,42 @@ namespace flcn
 
             if constexpr (sizeof(DataType) * Lane == 16)
             {
-                _register = _mm_load_si128(reinterpret_cast<const __m128i*>(data));
+                _register = _mm_load_si128(reinterpret_cast<const __m128i*>(pData));
             }
             else if constexpr (sizeof(DataType) * Lane == 8)
             {
-                _register = _mm_loadu_si64(data);
+                _register = _mm_loadu_si64(pData);
             }
             else if constexpr (sizeof(DataType) * Lane == 4)
             {
-                _register = _mm_loadu_si32(data);
+                _register = _mm_loadu_si32(pData);
             }
             else // Lane * Size = 2
             {
-                _register = _mm_loadu_si16(data);
+                _register = _mm_loadu_si16(pData);
             }
         }
     }
 
 
     template <typename DataType, size_t Lane>
-    FALCON_INLINE constexpr void Simd128<SimdBackend::ARCH_SSE2, DataType, Lane>::load(const DataType* data) noexcept
+    FALCON_INLINE constexpr void Simd128<SimdBackend::ARCH_SSE2, DataType, Lane>::load(const DataType* pData) noexcept
     {
         // We are using sizes for loading integers since we are storing both signed and unsigned types into the
         // register as bits, with packing.
         if constexpr (types::IsFP64<DataType>)
         {
-            _register = _mm_loadu_pd(data);
+            _register = _mm_loadu_pd(pData);
         }
         else if constexpr (types::IsFP32<DataType>)
         {
             if constexpr (Lane == 2)
             {
-                _register = _mm_loadl_pi(_mm_setzero_ps(), reinterpret_cast<const __m64*>(data));
+                _register = _mm_loadl_pi(_mm_setzero_ps(), reinterpret_cast<const __m64*>(pData));
             }
             else
             {
-                _register = _mm_loadu_ps(data);
+                _register = _mm_loadu_ps(pData);
             }
         }
         else
@@ -299,19 +301,19 @@ namespace flcn
 
             if constexpr (sizeof(DataType) * Lane == 16)
             {
-                _register = _mm_loadu_si128(reinterpret_cast<const __m128i*>(data));
+                _register = _mm_loadu_si128(reinterpret_cast<const __m128i*>(pData));
             }
             else if constexpr (sizeof(DataType) * Lane == 8)
             {
-                _register = _mm_loadu_si64(data);
+                _register = _mm_loadu_si64(pData);
             }
             else if constexpr (sizeof(DataType) * Lane == 4)
             {
-                _register = _mm_loadu_si32(data);
+                _register = _mm_loadu_si32(pData);
             }
             else // Lane * Size = 2
             {
-                _register = _mm_loadu_si16(data);
+                _register = _mm_loadu_si16(pData);
             }
         }
     }
@@ -372,22 +374,22 @@ namespace flcn
     template <typename DataType, size_t Lane>
     FALCON_INLINE constexpr void Simd128<SimdBackend::ARCH_SSE2, DataType, Lane>::setOne() noexcept
     {
-        // Since we can't direction negate zero for floating point numbers we need to negate an appropriately sized
+        // Since we can't directly negate zero for floating point numbers we need to negate an appropriately sized
         // 0 and bit cast them to respective floating point types.
         if constexpr (types::IsFP64<DataType>)
         {
-            constexpr auto ONE = std::bit_cast<double>(~static_cast<uint64_t>(0));
-            _register          = _mm_set1_pd(ONE);
+            constexpr auto one = std::bit_cast<double>(~static_cast<uint64_t>(0));
+            _register          = _mm_set1_pd(one);
         }
         else if constexpr (types::IsFP32<DataType>)
         {
-            constexpr auto ONE = std::bit_cast<float>(~static_cast<uint32_t>(0));
-            _register          = _mm_set1_ps(ONE);
+            constexpr auto one = std::bit_cast<float>(~static_cast<uint32_t>(0));
+            _register          = _mm_set1_ps(one);
         }
         else
         {
-            constexpr auto ONE = ~static_cast<int32_t>(0);
-            _register          = _mm_set1_epi32(ONE);
+            constexpr auto one = static_cast<int32_t>(~0u);
+            _register          = _mm_set1_epi32(one);
         }
     }
 
@@ -439,7 +441,7 @@ namespace flcn
     {
         // TODO: Add death tests
         FALCON_ASSERT_MSG(
-            (reinterpret_cast<uintptr_t>(pBuffer) & (Alignment - 1)) == 0,
+            (reinterpret_cast<uintptr_t>(pBuffer) & (ALIGNMENT - 1)) == 0,
             "[Falcon Simd]: Storing to unaligned memory when a aligned one was expected. Use store() instead.");
         if constexpr (types::IsFP64<DataType>)
         {
@@ -533,8 +535,8 @@ namespace flcn
         }
         else
         {
-            alignas(Alignment) DataType buffer[Lane]{};
-            store(buffer);
+            alignas(ALIGNMENT) std::array<DataType, Lane> buffer{};
+            store(buffer.data());
             return buffer[index];
         }
     }
@@ -554,10 +556,10 @@ namespace flcn
         // for compile-indexing, we can only store the data from register, update the value
         // and then load the updated value.
         // Due to stack-spilling it is not recommended to use this setter unless absolutely necessary.
-        alignas(Alignment) DataType buffer[Lane]{};
-        storeAligned(buffer);
+        alignas(ALIGNMENT) std::array<DataType, Lane> buffer{};
+        storeAligned(buffer.data());
         buffer[index] = value;
-        loadAligned(buffer);
+        loadAligned(buffer.data());
     }
 
 
@@ -936,7 +938,7 @@ namespace flcn
             // But if only two lanes are filled, we can do just 1 shift return the value from lower lane.
             const auto shifted1 = _mm_srli_si128(_mm_castps_si128(_register), 4);
             const auto orReg1   = _mm_or_ps(_register, _mm_castsi128_ps(shifted1));
-            if constexpr (LaneCount == 2)
+            if constexpr (LANE_COUNT == 2)
             {
                 return _mm_cvtss_f32(orReg1);
             }
@@ -957,7 +959,7 @@ namespace flcn
         {
             const auto shifted1 = _mm_srli_si128(_register, 4);
             const auto orReg1   = _mm_or_si128(_register, shifted1);
-            if constexpr (LaneCount == 2)
+            if constexpr (LANE_COUNT == 2)
             {
                 return _mm_cvtsi128_si32(orReg1);
             }
@@ -972,7 +974,7 @@ namespace flcn
         {
             const auto shifted1 = _mm_srli_si128(_register, 2);
             const auto orReg1   = _mm_or_si128(_register, shifted1);
-            if constexpr (LaneCount == 2)
+            if constexpr (LANE_COUNT == 2)
             {
                 return static_cast<DataType>(_mm_cvtsi128_si32(orReg1));
             }
@@ -980,7 +982,7 @@ namespace flcn
             {
                 const auto shifted2 = _mm_srli_si128(orReg1, 4);
                 const auto orReg2   = _mm_or_si128(orReg1, shifted2);
-                if constexpr (LaneCount == 4)
+                if constexpr (LANE_COUNT == 4)
                 {
                     return static_cast<DataType>(_mm_cvtsi128_si32(orReg2));
                 }
@@ -996,7 +998,7 @@ namespace flcn
         {
             const auto shifted1 = _mm_srli_si128(_register, 1);
             const auto orReg1   = _mm_or_si128(_register, shifted1);
-            if constexpr (LaneCount == 2)
+            if constexpr (LANE_COUNT == 2)
             {
                 return static_cast<DataType>(_mm_cvtsi128_si32(orReg1));
             }
@@ -1004,7 +1006,7 @@ namespace flcn
             {
                 const auto shifted2 = _mm_srli_si128(orReg1, 2);
                 const auto orReg2   = _mm_or_si128(orReg1, shifted2);
-                if constexpr (LaneCount == 4)
+                if constexpr (LANE_COUNT == 4)
                 {
                     return static_cast<DataType>(_mm_cvtsi128_si32(orReg2));
                 }
@@ -1012,7 +1014,7 @@ namespace flcn
                 {
                     const auto shifted3 = _mm_srli_si128(orReg2, 4);
                     const auto orReg3   = _mm_or_si128(orReg2, shifted3);
-                    if constexpr (LaneCount == 8)
+                    if constexpr (LANE_COUNT == 8)
                     {
                         return static_cast<DataType>(_mm_cvtsi128_si32(orReg3));
                     }
@@ -1050,7 +1052,7 @@ namespace flcn
             // But if only two lanes are filled, we can do just 1 shift return the value from lower lane.
             const auto shifted1 = _mm_srli_si128(_mm_castps_si128(_register), 4);
             const auto andReg1  = _mm_and_ps(_register, _mm_castsi128_ps(shifted1));
-            if constexpr (LaneCount == 2)
+            if constexpr (LANE_COUNT == 2)
             {
                 return _mm_cvtss_f32(andReg1);
             }
@@ -1071,7 +1073,7 @@ namespace flcn
         {
             const auto shifted1 = _mm_srli_si128(_register, 4);
             const auto andReg1  = _mm_and_si128(_register, shifted1);
-            if constexpr (LaneCount == 2)
+            if constexpr (LANE_COUNT == 2)
             {
                 return _mm_cvtsi128_si32(andReg1);
             }
@@ -1086,7 +1088,7 @@ namespace flcn
         {
             const auto shifted1 = _mm_srli_si128(_register, 2);
             const auto andReg1  = _mm_and_si128(_register, shifted1);
-            if constexpr (LaneCount == 2)
+            if constexpr (LANE_COUNT == 2)
             {
                 return static_cast<DataType>(_mm_cvtsi128_si32(andReg1));
             }
@@ -1094,7 +1096,7 @@ namespace flcn
             {
                 const auto shifted2 = _mm_srli_si128(andReg1, 4);
                 const auto andReg2  = _mm_and_si128(andReg1, shifted2);
-                if constexpr (LaneCount == 4)
+                if constexpr (LANE_COUNT == 4)
                 {
                     return static_cast<DataType>(_mm_cvtsi128_si32(andReg2));
                 }
@@ -1110,7 +1112,7 @@ namespace flcn
         {
             const auto shifted1 = _mm_srli_si128(_register, 1);
             const auto andReg1  = _mm_and_si128(_register, shifted1);
-            if constexpr (LaneCount == 2)
+            if constexpr (LANE_COUNT == 2)
             {
                 return static_cast<DataType>(_mm_cvtsi128_si32(andReg1));
             }
@@ -1118,7 +1120,7 @@ namespace flcn
             {
                 const auto shifted2 = _mm_srli_si128(andReg1, 2);
                 const auto andReg2  = _mm_and_si128(andReg1, shifted2);
-                if constexpr (LaneCount == 4)
+                if constexpr (LANE_COUNT == 4)
                 {
                     return static_cast<DataType>(_mm_cvtsi128_si32(andReg2));
                 }
@@ -1126,7 +1128,7 @@ namespace flcn
                 {
                     const auto shifted3 = _mm_srli_si128(andReg2, 4);
                     const auto andReg3  = _mm_and_si128(andReg2, shifted3);
-                    if constexpr (LaneCount == 8)
+                    if constexpr (LANE_COUNT == 8)
                     {
                         return static_cast<DataType>(_mm_cvtsi128_si32(andReg3));
                     }
@@ -1464,14 +1466,14 @@ namespace flcn
             {
                 // The only possible combination for b lane is 2.
                 // so we can manually calculate the division for 2 integers without loops
-                alignas(Alignment) DataType a[Lane]{}, b[Lane]{};
-                store(a);
-                other.store(b);
+                alignas(ALIGNMENT) std::array<DataType, Lane> a{}, b{};
+                store(a.data());
+                other.store(b.data());
 
                 a[0] /= b[0];
                 a[1] /= b[1];
 
-                return Simd128(a);
+                return Simd128(a.data());
             }
             else if constexpr (types::IsDWord<DataType>)
             {
@@ -1528,7 +1530,7 @@ namespace flcn
                 }
                 else
                 {
-                    alignas(Alignment) DataType a[Lane]{}, b[Lane]{};
+                    alignas(ALIGNMENT) DataType a[Lane]{}, b[Lane]{};
                     store(a);
                     other.store(b);
                     for (size_t i = 0; i < Lane; ++i)
@@ -1596,15 +1598,15 @@ namespace flcn
                 else
                 {
                     // TODO: Add Simd if possible
-                    DataType a[Lane]{}, b[Lane]{};
-                    store(a);
-                    other.store(b);
+                    std::array<DataType, Lane> a{}, b{};
+                    store(a.data());
+                    other.store(b.data());
                     for (size_t i = 0; i < Lane; ++i)
                     {
                         a[i] /= b[i];
                     }
                     Simd128 reg;
-                    reg.load(a);
+                    reg.load(a.data());
                     return reg;
                 }
             }
@@ -1817,8 +1819,8 @@ namespace flcn
 
 
     template <typename DataType, size_t Lane>
-    FALCON_INLINE constexpr Simd128<SimdBackend::ARCH_SSE2, DataType, Lane> Simd128<SimdBackend::ARCH_SSE2, DataType, Lane>::fmSub(
-        Simd128 b, Simd128 c) const noexcept
+    FALCON_INLINE constexpr Simd128<SimdBackend::ARCH_SSE2, DataType, Lane> Simd128<
+        SimdBackend::ARCH_SSE2, DataType, Lane>::fmSub(Simd128 b, Simd128 c) const noexcept
     {
         if constexpr (FALCON_FMA_ENABLED && types::IsFP64<DataType>)
         {
@@ -1865,7 +1867,7 @@ namespace flcn
                 // [_, _, a + b, c + d]
                 const auto firstSum = _mm_hadd_ps(_register, _register);
                 // If there are only 2 lanes we can return from here
-                if constexpr (LaneCount == 2)
+                if constexpr (LANE_COUNT == 2)
                 {
                     return _mm_cvtss_f32(firstSum);
                 }
@@ -1909,7 +1911,7 @@ namespace flcn
                 // [_, _, a + b, c + d]
                 const auto firstSum = _mm_hadd_epi32(_register, _register);
                 // If there are only 2 lanes we can return from here
-                if constexpr (LaneCount == 2)
+                if constexpr (LANE_COUNT == 2)
                 {
                     return static_cast<DataType>(_mm_cvtsi128_si32(firstSum));
                 }
@@ -1929,7 +1931,7 @@ namespace flcn
                 const auto firstSum   = _mm_add_epi32(_register, firstShift);
 
                 // If there are only two lanes we can return from here
-                if constexpr (LaneCount == 2)
+                if constexpr (LANE_COUNT == 2)
                 {
                     return static_cast<DataType>(_mm_cvtsi128_si32(firstSum));
                 }
@@ -1958,7 +1960,7 @@ namespace flcn
                 // [_, _, _, _, a + b, c + d, e + f, g + h]
                 const auto firstSum = _mm_hadd_epi16(_register, _register);
                 // If there are only 2 lanes we can return from here
-                if constexpr (LaneCount == 2)
+                if constexpr (LANE_COUNT == 2)
                 {
                     return static_cast<DataType>(_mm_cvtsi128_si32(firstSum));
                 }
@@ -1968,7 +1970,7 @@ namespace flcn
                     const auto secondSum = _mm_hadd_epi16(firstSum, firstSum);
                     // If there are only 4 lanes we can return from here
                     // If there are only 2 lanes we can return from here
-                    if constexpr (LaneCount == 4)
+                    if constexpr (LANE_COUNT == 4)
                     {
                         return static_cast<DataType>(_mm_cvtsi128_si32(secondSum));
                     }
@@ -1990,7 +1992,7 @@ namespace flcn
 
                 // For 2 lanes the sum will be already computed in the lower lane,
                 // so we can return from here.
-                if constexpr (LaneCount == 2)
+                if constexpr (LANE_COUNT == 2)
                 {
                     return static_cast<DataType>(_mm_cvtsi128_si32(firstSum));
                 }
@@ -2005,7 +2007,7 @@ namespace flcn
                     const auto secondSum   = _mm_add_epi16(firstSum, secondShift);
 
                     // For 4 lanes we can return second sum
-                    if constexpr (LaneCount == 4)
+                    if constexpr (LANE_COUNT == 4)
                     {
                         return static_cast<DataType>(_mm_cvtsi128_si32(secondSum));
                     }
@@ -2033,7 +2035,7 @@ namespace flcn
             // [sum1, sum1] // Shifted
             // [2sum1, sum0 + sum1]
             const auto firstSum = _mm_sad_epu8(_register, _mm_setzero_si128());
-            if constexpr (LaneCount <= 8)
+            if constexpr (LANE_COUNT <= 8)
             {
                 // If the lane count is less than 8 then all the sum will be in the lower lanes.
                 return static_cast<DataType>(_mm_cvtsi128_si32(firstSum));
@@ -2850,17 +2852,17 @@ namespace flcn
                 // two categories for SSE, anything below SSE4.2 will use the SSE2 fallback.
                 if constexpr (CURRENT_SIMD_BACKEND >= SimdBackend::ARCH_SSE4)
                 {
-                    alignas(Alignment) constexpr DataType mask[Lane]{ ShuffleIdx... };
+                    alignas(ALIGNMENT) constexpr DataType mask[Lane]{ ShuffleIdx... };
                     const Simd128 maskReg{ mask };
                     return Simd128(_mm_shuffle_epi8(_register, *maskReg));
                 }
                 else
                 {
-                    // Store the data into an stack-array
-                    alignas(Alignment) DataType stored[Lane]{};
+                    // Store the data into a stack-array
+                    alignas(ALIGNMENT) DataType stored[Lane]{};
                     store(stored);
                     // Create a new array using shuffleIdx and parameter unpacking
-                    alignas(Alignment) const DataType res[Lane]{ stored[ShuffleIdx]... };
+                    alignas(ALIGNMENT) const DataType res[Lane]{ stored[ShuffleIdx]... };
                     // Loading it into a new register and return it.
                     return Simd128(res);
                 }
@@ -2891,7 +2893,7 @@ namespace flcn
             // But if only two lanes are filled, we can do just 1 shift return the value from lower lane.
             const auto shifted1 = _mm_srli_si128(_mm_castps_si128(_register), 4);
             const auto minReg1  = *flcn::min(*this, Simd128(_mm_castsi128_ps(shifted1)));
-            if constexpr (LaneCount == 2)
+            if constexpr (LANE_COUNT == 2)
             {
                 return _mm_cvtss_f32(minReg1);
             }
@@ -2912,7 +2914,7 @@ namespace flcn
         {
             const auto shifted1 = _mm_srli_si128(_register, 4);
             const auto minReg1  = *flcn::min(*this, Simd128(shifted1));
-            if constexpr (LaneCount == 2)
+            if constexpr (LANE_COUNT == 2)
             {
                 return _mm_cvtsi128_si32(minReg1);
             }
@@ -2927,7 +2929,7 @@ namespace flcn
         {
             const auto shifted1 = _mm_srli_si128(_register, 2);
             const auto minReg1  = *flcn::min(*this, Simd128(shifted1));
-            if constexpr (LaneCount == 2)
+            if constexpr (LANE_COUNT == 2)
             {
                 return static_cast<DataType>(_mm_cvtsi128_si32(minReg1));
             }
@@ -2935,7 +2937,7 @@ namespace flcn
             {
                 const auto shifted2 = _mm_srli_si128(minReg1, 4);
                 const auto minReg2  = *flcn::min(Simd128(minReg1), Simd128(shifted2));
-                if constexpr (LaneCount == 4)
+                if constexpr (LANE_COUNT == 4)
                 {
                     return static_cast<DataType>(_mm_cvtsi128_si32(minReg2));
                 }
@@ -2951,7 +2953,7 @@ namespace flcn
         {
             const auto shifted1 = _mm_srli_si128(_register, 1);
             const auto minReg1  = *flcn::min(*this, Simd128(shifted1));
-            if constexpr (LaneCount == 2)
+            if constexpr (LANE_COUNT == 2)
             {
                 return static_cast<DataType>(_mm_cvtsi128_si32(minReg1));
             }
@@ -2959,7 +2961,7 @@ namespace flcn
             {
                 const auto shifted2 = _mm_srli_si128(minReg1, 2);
                 const auto minReg2  = *flcn::min(Simd128(minReg1), Simd128(shifted2));
-                if constexpr (LaneCount == 4)
+                if constexpr (LANE_COUNT == 4)
                 {
                     return static_cast<DataType>(_mm_cvtsi128_si32(minReg2));
                 }
@@ -2967,7 +2969,7 @@ namespace flcn
                 {
                     const auto shifted3 = _mm_srli_si128(minReg2, 4);
                     const auto minReg3  = *flcn::min(Simd128(minReg2), Simd128(shifted3));
-                    if constexpr (LaneCount == 8)
+                    if constexpr (LANE_COUNT == 8)
                     {
                         return static_cast<DataType>(_mm_cvtsi128_si32(minReg3));
                     }
@@ -3005,7 +3007,7 @@ namespace flcn
             // But if only two lanes are filled, we can do just 1 shift return the value from lower lane.
             const auto shifted1 = _mm_srli_si128(_mm_castps_si128(_register), 4);
             const auto maxReg1  = *flcn::max(*this, Simd128(_mm_castsi128_ps(shifted1)));
-            if constexpr (LaneCount == 2)
+            if constexpr (LANE_COUNT == 2)
             {
                 return _mm_cvtss_f32(maxReg1);
             }
@@ -3026,7 +3028,7 @@ namespace flcn
         {
             const auto shifted1 = _mm_srli_si128(_register, 4);
             const auto maxReg1  = *flcn::max(*this, Simd128(shifted1));
-            if constexpr (LaneCount == 2)
+            if constexpr (LANE_COUNT == 2)
             {
                 return _mm_cvtsi128_si32(maxReg1);
             }
@@ -3041,7 +3043,7 @@ namespace flcn
         {
             const auto shifted1 = _mm_srli_si128(_register, 2);
             const auto maxReg1  = *flcn::max(*this, Simd128(shifted1));
-            if constexpr (LaneCount == 2)
+            if constexpr (LANE_COUNT == 2)
             {
                 return static_cast<DataType>(_mm_cvtsi128_si32(maxReg1));
             }
@@ -3049,7 +3051,7 @@ namespace flcn
             {
                 const auto shifted2 = _mm_srli_si128(maxReg1, 4);
                 const auto maxReg2  = *flcn::max(Simd128(maxReg1), Simd128(shifted2));
-                if constexpr (LaneCount == 4)
+                if constexpr (LANE_COUNT == 4)
                 {
                     return static_cast<DataType>(_mm_cvtsi128_si32(maxReg2));
                 }
@@ -3065,7 +3067,7 @@ namespace flcn
         {
             const auto shifted1 = _mm_srli_si128(_register, 1);
             const auto maxReg1  = *flcn::max(*this, Simd128(shifted1));
-            if constexpr (LaneCount == 2)
+            if constexpr (LANE_COUNT == 2)
             {
                 return static_cast<DataType>(_mm_cvtsi128_si32(maxReg1));
             }
@@ -3073,7 +3075,7 @@ namespace flcn
             {
                 const auto shifted2 = _mm_srli_si128(maxReg1, 2);
                 const auto maxReg2  = *flcn::max(Simd128(maxReg1), Simd128(shifted2));
-                if constexpr (LaneCount == 4)
+                if constexpr (LANE_COUNT == 4)
                 {
                     return static_cast<DataType>(_mm_cvtsi128_si32(maxReg2));
                 }
@@ -3081,7 +3083,7 @@ namespace flcn
                 {
                     const auto shifted3 = _mm_srli_si128(maxReg2, 4);
                     const auto maxReg3  = *flcn::max(Simd128(maxReg2), Simd128(shifted3));
-                    if constexpr (LaneCount == 8)
+                    if constexpr (LANE_COUNT == 8)
                     {
                         return static_cast<DataType>(_mm_cvtsi128_si32(maxReg3));
                     }
@@ -3210,7 +3212,7 @@ namespace flcn
         else if constexpr (sizeof(DataType) == 8)
         {
             // There must only 2 lanes for 64-bit integrals
-            alignas(Alignment) DataType array[2]{};
+            alignas(ALIGNMENT) DataType array[2]{};
             if constexpr (std::is_signed_v<DataType>)
             {
                 // For signed integrals we must clamp to zero to prevent negative integral square roots
@@ -3467,4 +3469,4 @@ namespace flcn
         }
     }
 
-} // namespace flcn
+} // namespace flcn::details

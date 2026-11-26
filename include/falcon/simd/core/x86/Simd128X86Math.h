@@ -14,8 +14,11 @@
 
 namespace flcn
 {
-    template <typename DataType, size_t Lane>
-    using _REG_128_SSE = Simd128<SimdBackend::ARCH_SSE2, DataType, Lane>;
+    namespace details
+    {
+        template <typename DataType, size_t Lane>
+        using Reg128SSE = details::Simd128<SimdBackend::ARCH_SSE2, DataType, Lane>;
+    }
 
     /**
      * @brief Get the minimum values from both the registers, packed into a single register.
@@ -29,8 +32,8 @@ namespace flcn
      * @return A Simd128 register with minimum values taken from both the registers.
      */
     template <typename DataType, size_t Lane>
-    [[nodiscard]] constexpr _REG_128_SSE<DataType, Lane> min(_REG_128_SSE<DataType, Lane> a,
-                                                             _REG_128_SSE<DataType, Lane> b) noexcept;
+    [[nodiscard]] constexpr details::Reg128SSE<DataType, Lane> min(details::Reg128SSE<DataType, Lane> a,
+                                                             details::Reg128SSE<DataType, Lane> b) noexcept;
 
 
     /**
@@ -45,8 +48,8 @@ namespace flcn
      * @return A Simd128 register with maximum values taken from both the registers.
      */
     template <typename DataType, size_t Lane>
-    [[nodiscard]] constexpr _REG_128_SSE<DataType, Lane> max(_REG_128_SSE<DataType, Lane> a,
-                                                             _REG_128_SSE<DataType, Lane> b) noexcept;
+    [[nodiscard]] constexpr details::Reg128SSE<DataType, Lane> max(details::Reg128SSE<DataType, Lane> a,
+                                                             details::Reg128SSE<DataType, Lane> b) noexcept;
 
 
     /**
@@ -62,7 +65,7 @@ namespace flcn
      * @return A Simd128 register with absolute values.
      */
     template <typename DataType, size_t Lane>
-    [[nodiscard]] constexpr _REG_128_SSE<DataType, Lane> abs(_REG_128_SSE<DataType, Lane> reg) noexcept;
+    [[nodiscard]] constexpr details::Reg128SSE<DataType, Lane> abs(details::Reg128SSE<DataType, Lane> reg) noexcept;
 
 
     /**
@@ -79,7 +82,7 @@ namespace flcn
      * @return A Simd128 register with square root of each entry.
      */
     template <typename DataType, size_t Lane>
-    [[nodiscard]] constexpr _REG_128_SSE<DataType, Lane> sqrt(_REG_128_SSE<DataType, Lane> reg) noexcept;
+    [[nodiscard]] constexpr details::Reg128SSE<DataType, Lane> sqrt(details::Reg128SSE<DataType, Lane> reg) noexcept;
 
 
     /**
@@ -93,9 +96,9 @@ namespace flcn
      * @return A new register with the fused-multiply add result.
      */
     template <typename DataType, size_t Lane>
-    [[nodiscard]] constexpr _REG_128_SSE<DataType, Lane> fma(_REG_128_SSE<DataType, Lane> a,
-                                                             _REG_128_SSE<DataType, Lane> b,
-                                                             _REG_128_SSE<DataType, Lane> c) noexcept;
+    [[nodiscard]] constexpr details::Reg128SSE<DataType, Lane> fma(details::Reg128SSE<DataType, Lane> a,
+                                                             details::Reg128SSE<DataType, Lane> b,
+                                                             details::Reg128SSE<DataType, Lane> c) noexcept;
 
 
     /**
@@ -109,9 +112,9 @@ namespace flcn
      * @return A new register with the fused-multiply subtraction result.
      */
     template <typename DataType, size_t Lane>
-    [[nodiscard]] constexpr _REG_128_SSE<DataType, Lane> fmSub(_REG_128_SSE<DataType, Lane> a,
-                                                             _REG_128_SSE<DataType, Lane> b,
-                                                             _REG_128_SSE<DataType, Lane> c) noexcept;
+    [[nodiscard]] constexpr details::Reg128SSE<DataType, Lane> fmSub(details::Reg128SSE<DataType, Lane> a,
+                                                               details::Reg128SSE<DataType, Lane> b,
+                                                               details::Reg128SSE<DataType, Lane> c) noexcept;
 
 } // namespace flcn
 

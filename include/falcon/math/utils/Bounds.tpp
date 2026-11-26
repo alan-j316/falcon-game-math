@@ -62,4 +62,6 @@ namespace flcn
     template <Arithmetic T>
     FALCON_INLINE constexpr simd::Vec3<T> max(const simd::Vec3<T>& vecA, const simd::Vec3<T>& vecB) noexcept
     { return vecA.max(vecB); }
+
+
 } // namespace flcn

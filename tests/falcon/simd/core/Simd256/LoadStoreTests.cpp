@@ -47,7 +47,7 @@ TYPED_TEST(Simd256LoadStoreTests, LoadAligned_LoadsAndStoresDataWithoutCorruptio
         data[i] = static_cast<Type>(i + 11);
     }
 
-    flcn::Simd256_t<Type, Lane> reg;
+    flcn::Simd256<Type, Lane> reg;
     reg.loadAligned(data.data());
 
     alignas(32) std::array<Type, Lane> result{};
@@ -72,7 +72,7 @@ TYPED_TEST(Simd256LoadStoreTests, Load_LoadsDataFromUnalignedMemory)
         data[i] = static_cast<Type>(i + 11);
     }
 
-    flcn::Simd256_t<Type, Lane> reg;
+    flcn::Simd256<Type, Lane> reg;
     reg.load(data.data());
 
     alignas(32) std::array<Type, Lane> result{};
@@ -97,7 +97,7 @@ TYPED_TEST(Simd256LoadStoreTests, Store_StoresDataIntoUnalignedMemory)
         data[i] = static_cast<Type>(i + 11);
     }
 
-    flcn::Simd256_t<Type, Lane> reg;
+    flcn::Simd256<Type, Lane> reg;
     reg.loadAligned(data.data());
 
     alignas(8) std::array<Type, Lane> result{};
@@ -117,7 +117,7 @@ TYPED_TEST(Simd256LoadStoreTests, Broadcast_StoresASingleValueIntoTheRegister)
     constexpr size_t Lane = TypeParam::VALUE;
 
     Type data = Type(7);
-    flcn::Simd256_t<Type, Lane> reg;
+    flcn::Simd256<Type, Lane> reg;
     reg.broadcast(data);
 
     alignas(32) std::array<Type, Lane> result{};
@@ -135,7 +135,7 @@ TYPED_TEST(Simd256LoadStoreTests, SetZero_ZeroesOutTheRegister)
     using Type            = TypeParam::Type;
     constexpr size_t Lane = TypeParam::VALUE;
 
-    flcn::Simd256_t<Type, Lane> reg;
+    flcn::Simd256<Type, Lane> reg;
     reg.setZero();
 
     alignas(32) std::array<Type, Lane> result{};

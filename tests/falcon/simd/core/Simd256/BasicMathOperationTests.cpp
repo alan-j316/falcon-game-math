@@ -72,7 +72,7 @@ TYPED_TEST(Simd256BasicMathTests, Min_ReturnsARegisterWithMinimumValuesFromEithe
         expected[i] = std::min(lhs[i], rhs[i]);
     }
 
-    flcn::Simd256_t<Type, Lane> regA, regB;
+    flcn::Simd256<Type, Lane> regA, regB;
     regA.loadAligned(lhs.data());
     regB.loadAligned(rhs.data());
 
@@ -100,7 +100,7 @@ TYPED_TEST(Simd256BasicMathTests, Max_ReturnsARegisterWithMaximumValuesFromEithe
         expected[i] = std::max(lhs[i], rhs[i]);
     }
 
-    flcn::Simd256_t<Type, Lane> regA, regB;
+    flcn::Simd256<Type, Lane> regA, regB;
     regA.loadAligned(lhs.data());
     regB.loadAligned(rhs.data());
 
@@ -135,7 +135,7 @@ TYPED_TEST(Simd256BasicMathTests, MemberAbsFunction_ReturnsARegisterWithAbsolute
         }
     }
 
-    flcn::Simd256_t<Type, Lane> reg;
+    flcn::Simd256<Type, Lane> reg;
     reg.loadAligned(data.data());
 
     auto regRes = reg.abs();
@@ -171,7 +171,7 @@ TYPED_TEST(Simd256BasicMathTests, Abs_ReturnsARegisterWithAbsoluteValues)
         }
     }
 
-    flcn::Simd256_t<Type, Lane> reg;
+    flcn::Simd256<Type, Lane> reg;
     reg.loadAligned(data.data());
 
     auto regRes = flcn::abs(reg);
@@ -203,7 +203,7 @@ TYPED_TEST(Simd256BasicMathTests, MemberSqrtFunction_ReturnsARegisterWithSquareR
         expected[i] = static_cast<Type>(std::sqrt(clampedVal));
     }
 
-    flcn::Simd256_t<Type, Lane> reg;
+    flcn::Simd256<Type, Lane> reg;
     reg.loadAligned(data.data());
 
     auto regRes = reg.sqrt();
@@ -235,7 +235,7 @@ TYPED_TEST(Simd256BasicMathTests, Sqrt_ReturnsARegisterWithSquareRootValues)
         expected[i] = static_cast<Type>(std::sqrt(clampedVal));
     }
 
-    flcn::Simd256_t<Type, Lane> reg;
+    flcn::Simd256<Type, Lane> reg;
     reg.loadAligned(data.data());
 
     auto regRes = flcn::sqrt(reg);
@@ -262,7 +262,7 @@ TYPED_TEST(Simd256BasicMathTests, HorizontalMax_ReturnsTheMaxValueFromTheRegiste
         max     = std::max(max, data[i]);
     }
 
-    flcn::Simd256_t<Type, Lane> reg{ data };
+    flcn::Simd256<Type, Lane> reg{ data };
 
     auto res = reg.horizontalMax();
 
@@ -284,7 +284,7 @@ TYPED_TEST(Simd256BasicMathTests, HorizontalMin_ReturnsTheMaxValueFromTheRegiste
         min     = std::min(min, data[i]);
     }
 
-    flcn::Simd256_t<Type, Lane> reg{ data };
+    flcn::Simd256<Type, Lane> reg{ data };
 
     auto res = reg.horizontalMin();
 

@@ -11,7 +11,7 @@
 
 /// Library Includes
 #include "falcon/simd/core/RegisterTraits.h"
-#include "falcon/simd/core/Simd128.h"
+#include "falcon/simd/core/SimdCore.h"
 #include "falcon/simd/utils/SIMDUtils.h"
 #include "falcon/simd/utils/SimdTraits.h"
 #include "falcon/simd/utils/TypeTraits.h"

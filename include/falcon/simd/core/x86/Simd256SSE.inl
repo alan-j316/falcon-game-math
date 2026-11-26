@@ -12,7 +12,7 @@
 
 #include "falcon/simd/utils/SIMDUtils.h"
 
-namespace flcn
+namespace flcn::details
 {
     template <typename DataType, size_t Lane>
     template <typename... Args>
@@ -94,22 +94,22 @@ namespace flcn
 
     template <typename DataType, size_t Lane>
     FALCON_INLINE constexpr void Simd256<SimdBackend::ARCH_SSE2, DataType, Lane>::loadAligned(
-        const DataType* data) noexcept
+        const DataType* pData) noexcept
     {
         // TODO: Add death tests
         FALCON_ASSERT_MSG(
-            (reinterpret_cast<uintptr_t>(data) & (Alignment - 1)) == 0,
+            (reinterpret_cast<uintptr_t>(pData) & (ALIGNMENT - 1)) == 0,
             "[Falcon Simd]: Loading from unaligned memory when aligned address was expected. Use load() instead.");
-        _lower.loadAligned(data);
-        _upper.loadAligned(data + LOWER_LANE_COUNT);
+        _lower.loadAligned(pData);
+        _upper.loadAligned(pData + LOWER_LANE_COUNT);
     }
 
 
     template <typename DataType, size_t Lane>
-    FALCON_INLINE constexpr void Simd256<SimdBackend::ARCH_SSE2, DataType, Lane>::load(const DataType* data) noexcept
+    FALCON_INLINE constexpr void Simd256<SimdBackend::ARCH_SSE2, DataType, Lane>::load(const DataType* pData) noexcept
     {
-        _lower.load(data);
-        _upper.load(data + LOWER_LANE_COUNT);
+        _lower.load(pData);
+        _upper.load(pData + LOWER_LANE_COUNT);
     }
 
     template <typename DataType, size_t Lane>
@@ -151,7 +151,7 @@ namespace flcn
     {
         // TODO: Add death tests
         FALCON_ASSERT_MSG(
-            (reinterpret_cast<uintptr_t>(pBuffer) & (Alignment - 1)) == 0,
+            (reinterpret_cast<uintptr_t>(pBuffer) & (ALIGNMENT - 1)) == 0,
             "[Falcon Simd]: Storing to unaligned memory when a aligned one was expected. Use store() instead.");
         _lower.storeAligned(pBuffer);
         _upper.storeAligned(pBuffer + LOWER_LANE_COUNT);
@@ -539,8 +539,8 @@ namespace flcn
         // consteval BlendMask32_t _Simd256SSE_Permute_makeIndex(size_t offset, size_t numIterations, const uint8_t
         // (&indices)[Size]) noexcept
         // {
-        //     return simd::makeBlendMask32<Max128BitLaneCount,
-        //                                  (ShuffleIndices[Offset + Index] >= Max128BitLaneCount)...>();
+        //     return simd::makeBlendMask32<MAX128_BIT_LANE_COUNT,
+        //                                  (ShuffleIndices[Offset + Index] >= MAX128_BIT_LANE_COUNT)...>();
         //     BlendMask32_t mask;
         //     for (size_t i =0; i < numIterations; ++i)
         //     {
@@ -587,15 +587,15 @@ namespace flcn
 
             // Masks for selecting values for the upper and lower 128-bit lanes.
             const auto makeMask = []<size_t Offset, size_t... Index>(std::index_sequence<Index...>) {
-                constexpr uint8_t ShuffleIndices[MaxLaneCount]{ PermuteIndex... };
-                return simd::makeBlendMask32<Max128BitLaneCount,
-                                             (ShuffleIndices[Offset + Index] >= Max128BitLaneCount)...>();
+                constexpr uint8_t ShuffleIndices[MAX_LANE_COUNT]{ PermuteIndex... };
+                return simd::makeBlendMask32<MAX128_BIT_LANE_COUNT,
+                                             (ShuffleIndices[Offset + Index] >= MAX128_BIT_LANE_COUNT)...>();
             };
             // [up_mask1, up_mask0, lo_mask1, lo_mask0]
             constexpr BlendMask32_t upperMask =
-                makeMask.template operator()<Max128BitLaneCount>(std::make_index_sequence<Max128BitLaneCount>{});
+                makeMask.template operator()<MAX128_BIT_LANE_COUNT>(std::make_index_sequence<MAX128_BIT_LANE_COUNT>{});
             constexpr BlendMask32_t lowerMask =
-                makeMask.template operator()<0>(std::make_index_sequence<Max128BitLaneCount>{});
+                makeMask.template operator()<0>(std::make_index_sequence<MAX128_BIT_LANE_COUNT>{});
 
             // low          hi
             // | a1 | b1 | | c1 | d1 |
@@ -612,21 +612,23 @@ namespace flcn
 
             // Upper part of the register with lower and upper indices(hilo, lohi)
             const auto shuffleUpper = [&]<size_t Offset, size_t... Index>(std::index_sequence<Index...>) {
-                constexpr uint8_t idx[MaxLaneCount]{ (static_cast<uint8_t>(PermuteIndex % Max128BitLaneCount))... };
+                constexpr uint8_t idx[MAX_LANE_COUNT]{ (
+                    static_cast<uint8_t>(PermuteIndex % MAX128_BIT_LANE_COUNT))... };
                 return _upper.template permute<idx[Index + Offset]...>();
             };
             const auto upperShuffledWithUpperIndices =
-                shuffleUpper.template operator()<Max128BitLaneCount>(std::make_index_sequence<UPPER_LANE_COUNT>{});
+                shuffleUpper.template operator()<MAX128_BIT_LANE_COUNT>(std::make_index_sequence<UPPER_LANE_COUNT>{});
             const auto upperShuffledWithLowerIndices =
                 shuffleUpper.template operator()<0>(std::make_index_sequence<UPPER_LANE_COUNT>{});
 
             // Lower part of register with lower and upper indices (lolo, lohi)
             const auto shuffleLower = [&]<size_t Offset, size_t... Index>(std::index_sequence<Index...>) {
-                constexpr uint8_t idx[MaxLaneCount]{ (static_cast<uint8_t>(PermuteIndex % Max128BitLaneCount))... };
+                constexpr uint8_t idx[MAX_LANE_COUNT]{ (
+                    static_cast<uint8_t>(PermuteIndex % MAX128_BIT_LANE_COUNT))... };
                 return _lower.template permute<idx[Index + Offset]...>();
             };
             const auto lowerShuffledWithUpperIndices =
-                shuffleLower.template operator()<Max128BitLaneCount>(std::make_index_sequence<LOWER_LANE_COUNT>{});
+                shuffleLower.template operator()<MAX128_BIT_LANE_COUNT>(std::make_index_sequence<LOWER_LANE_COUNT>{});
             const auto lowerShuffledWithLowerIndices =
                 shuffleLower.template operator()<0>(std::make_index_sequence<LOWER_LANE_COUNT>{});
 
@@ -671,4 +673,4 @@ namespace flcn
     { return Simd256(_lower.hasInf(), _upper.hasInf()); }
 
 
-} // namespace flcn
+} // namespace flcn::details

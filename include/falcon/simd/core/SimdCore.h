@@ -4,7 +4,7 @@
  * @author Alan Abraham P Kochumon
  * @date Created on: August 13, 2026
  *
- * @brief Platform and Type agnostic 128-Bit Register.
+ * @brief Platform and Type agnostic SIMD Registers.
  *
  * @copyright Copyright (c) 2026 Alan Abraham P Kochumon
  */
@@ -22,27 +22,30 @@
 namespace flcn
 {
     template <typename SIMDReg, typename T>
-    concept IsSIMDLoadable = requires(SIMDReg reg, T* buffer) {
+    concept IsSIMDLoadable = requires(SIMDReg reg, T* pBuffer) {
         // { reg.load(buffer) };
         // { reg.store() } -> std::same_as<T*>;
-        { SIMDReg(buffer) };
+        { SIMDReg(pBuffer) };
     };
 
 
-    /// Primary Template for Simd128
-    template <SimdBackend, typename, size_t>
-    struct Simd128;
+    namespace details
+    {
+        /// Primary Template for Simd128
+        template <SimdBackend, typename, size_t>
+        struct Simd128; // NOLINT
 
-    /// Primary Template for Simd256
-    template <SimdBackend, typename, size_t>
-    struct Simd256;
+        /// Primary Template for Simd256
+        template <SimdBackend, typename, size_t>
+        struct Simd256; // NOLINT
 
-    /// Primary Template for Simd256 Emulated Intrinsic Holder
-    /// Each specialization will have a lower and upper 128-bit register.
-    template <SimdBackend Backend, typename DataType>
-    struct Emulated256;
+        /// Primary Template for Simd256 Emulated Intrinsic Holder
+        /// Each specialization will have a lower and upper 128-bit register.
+        template <SimdBackend Backend, typename DataType>
+        struct Emulated256; // NOLINT
+    } // namespace details
 
-    // static_assert(IsSIMDLoadable<Simd128_t<float>, float> == true);
+    // static_assert(IsSIMDLoadable<Simd128<float>, float> == true);
 } // namespace flcn
 
 
@@ -61,21 +64,21 @@ namespace flcn
     // Simd128
 #if defined(FALCON_PLATFORM_X86)
     template <typename DataType, size_t Lane>
-    using Simd128_t = Simd128<SimdBackend::ARCH_SSE2, DataType, Lane>;
+    using Simd128 = details::Simd128<SimdBackend::ARCH_SSE2, DataType, Lane>;
 // TODO: Separate Neon OUT
 #else
     template <typename DataType, size_t Lane>
-    using Simd128_t = Simd128<SimdBackend::ARCH_UNKNOWN, DataType, Lane>;
+    using Simd128 = details::Simd128<SimdBackend::ARCH_UNKNOWN, DataType, Lane>;
 #endif
 
 // Simd256
 #if defined(FALCON_ENABLE_AVX) || defined(FALCON_ENABLE_AVX2) || defined(FALCON_ENABLE_AVX512F) ||                     \
     defined(FALCON_ENABLE_AVX10) || defined(FALCON_ENABLE_AVX512EX)
     template <typename DataType, size_t Lane>
-    using Simd256_t = Simd256<SimdBackend::ARCH_AVX, DataType, Lane>;
+    using Simd256 = details::Simd256<SimdBackend::ARCH_AVX, DataType, Lane>;
 #elif defined(FALCON_PLATFORM_X86)
     template <typename DataType, size_t Lane>
-    using Simd256_t = Simd256<SimdBackend::ARCH_SSE2, DataType, Lane>;
+    using Simd256 = details::Simd256<SimdBackend::ARCH_SSE2, DataType, Lane>;
 #else
     // TODO: Neon and scalar
 #endif

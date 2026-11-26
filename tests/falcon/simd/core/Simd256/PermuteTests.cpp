@@ -557,7 +557,7 @@ TYPED_TEST(Simd256PermuteTests, ReturnsRegisterWithCorrectValues)
     // Since we can't directly access the parameter pack
     // we need to use call it using a lambda nad integer_sequence
     auto execPermute = [data]<uint8_t... I>(std::integer_sequence<uint8_t, I...>) {
-        flcn::Simd256_t<Type, Lanes> reg{};
+        flcn::Simd256<Type, Lanes> reg{};
         reg.load(data.data());
         return reg.template permute<I...>();
     };

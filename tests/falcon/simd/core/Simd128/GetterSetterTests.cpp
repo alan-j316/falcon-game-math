@@ -12,7 +12,7 @@
 #include "SIMDTestSetup.h"
 
 #include <array>
-#include <falcon/simd/core/Simd128.h>
+#include <falcon/simd/core/SimdCore.h>
 
 
 /**
@@ -32,7 +32,7 @@ namespace
     class Simd128GetterSetterTests: public testing::Test
     {
     public:
-        using Register = flcn::Simd128_t<typename T::Type, T::VALUE>;
+        using Register = flcn::Simd128<typename T::Type, T::VALUE>;
 
         static constexpr auto max = std::numeric_limits<typename T::Type>::max();
         static constexpr auto min = std::numeric_limits<typename T::Type>::min();
@@ -104,7 +104,7 @@ TEST(Simd128GetterSetterTests, Set_CanTakeParametersLessThanLaneSize)
 {
     using Type            = uint8_t;
     constexpr size_t Lane = 8;
-    flcn::Simd128_t<Type, Lane> reg{};
+    flcn::Simd128<Type, Lane> reg{};
 
     reg.set(static_cast<Type>(1), static_cast<Type>(2), static_cast<Type>(3), static_cast<Type>(4),
             static_cast<Type>(5), static_cast<Type>(6), static_cast<Type>(7));
@@ -127,7 +127,7 @@ TYPED_TEST(Simd128GetterSetterTests, SetZero_FillsTheLanesWithZeroes)
     using Type            = typename TypeParam::Type;
     constexpr size_t Lane = TypeParam::VALUE;
 
-    auto reg = flcn::Simd128_t<Type, Lane>();
+    auto reg = flcn::Simd128<Type, Lane>();
     reg.setZero();
 
     alignas(16) std::array<Type, Lane> result{};
@@ -146,7 +146,7 @@ TYPED_TEST(Simd128GetterSetterTests, SetOne_FillsTheLanesWithOnes)
     constexpr size_t Lane = TypeParam::VALUE;
     constexpr auto one    = getAllOnes<Type>();
 
-    auto reg = flcn::Simd128_t<Type, Lane>();
+    auto reg = flcn::Simd128<Type, Lane>();
     reg.setOne();
 
     alignas(16) std::array<Type, Lane> result{};
@@ -201,7 +201,7 @@ TYPED_TEST(Simd128GetterSetterTests, SetAt_SetsTheValueAtAppropriateIndex)
     using Type            = TypeParam::Type;
     constexpr size_t Lane = TypeParam::VALUE;
 
-    flcn::Simd128_t<Type, Lane> reg;
+    flcn::Simd128<Type, Lane> reg;
     reg.setZero();
 
     for (size_t i = 0; i < Lane; ++i)
@@ -217,7 +217,7 @@ TYPED_TEST(Simd128GetterSetterTests, SetAt_SetsTheValueAtAppropriateIndex)
 
 TEST(Simd128GetterSetterTests, Integrals_Naive_ReturnsDefaultRegister)
 {
-    flcn::Simd128_t<int32_t, 4> reg{ 1, 2, 3, 4 };
+    flcn::Simd128<int32_t, 4> reg{ 1, 2, 3, 4 };
 
     const auto naiveReg = reg.naive();
 
@@ -233,7 +233,7 @@ TEST(Simd128GetterSetterTests, Integrals_Naive_ReturnsDefaultRegister)
 
 TEST(Simd128GetterSetterTests, Float_Naive_ReturnsDefaultRegister)
 {
-    flcn::Simd128_t<float, 4> reg{ 1, 2, 3, 4 };
+    flcn::Simd128<float, 4> reg{ 1, 2, 3, 4 };
 
     const auto naiveReg = reg.naive();
 
@@ -249,7 +249,7 @@ TEST(Simd128GetterSetterTests, Float_Naive_ReturnsDefaultRegister)
 
 TEST(Simd128GetterSetterTests, Double_Naive_ReturnsDefaultRegister)
 {
-    flcn::Simd128_t<double, 2> reg{ 1, 2 };
+    flcn::Simd128<double, 2> reg{ 1, 2 };
 
     const auto naiveReg = reg.naive();
 
@@ -264,7 +264,7 @@ TEST(Simd128GetterSetterTests, Double_Naive_ReturnsDefaultRegister)
 /// @test Verify that *reg returns the default internal register for integrals.
 TEST(Simd128GetterSetterTests, UnaryTimesOperator_IntegralRegister_ReturnsDefaultRegister)
 {
-    flcn::Simd128_t<int32_t, 4> reg{ 1, 2, 3, 4 };
+    flcn::Simd128<int32_t, 4> reg{ 1, 2, 3, 4 };
 
     const auto naiveReg = *reg;
 
@@ -281,7 +281,7 @@ TEST(Simd128GetterSetterTests, UnaryTimesOperator_IntegralRegister_ReturnsDefaul
 /// @test Verify that *reg returns the default internal register for floats.
 TEST(Simd128GetterSetterTests, UnaryTimesOperator_FloatRegister_ReturnsDefaultRegister)
 {
-    flcn::Simd128_t<float, 4> reg{ 1, 2, 3, 4 };
+    flcn::Simd128<float, 4> reg{ 1, 2, 3, 4 };
 
     const auto naiveReg = *reg;
 
@@ -297,7 +297,7 @@ TEST(Simd128GetterSetterTests, UnaryTimesOperator_FloatRegister_ReturnsDefaultRe
 /// @test Verify that *reg returns the default internal register for doubles.
 TEST(Simd128GetterSetterTests, UnaryTimesOperator_DoubleRegister_ReturnsDefaultRegister)
 {
-    flcn::Simd128_t<double, 2> reg{ 1, 2 };
+    flcn::Simd128<double, 2> reg{ 1, 2 };
 
     const auto naiveReg = *reg;
 
@@ -314,7 +314,7 @@ TEST(Simd128GetterSetterTests, UnaryTimesOperator_DoubleRegister_ReturnsDefaultR
 
 TEST(Simd128GetterSetterTests, Integrals_Naive_ReturnsDefaultRegister)
 {
-    const flcn::Simd128_t<int32_t, 4> reg{ 1, 2, 3, 4 };
+    const flcn::Simd128<int32_t, 4> reg{ 1, 2, 3, 4 };
 
     const auto naiveReg = reg.naive();
 
@@ -327,7 +327,7 @@ TEST(Simd128GetterSetterTests, Integrals_Naive_ReturnsDefaultRegister)
 
 TEST(Simd128GetterSetterTests, Float_Naive_ReturnsDefaultRegister)
 {
-    const flcn::Simd128_t<float, 4> reg{ 1, 2, 3, 4 };
+    const flcn::Simd128<float, 4> reg{ 1, 2, 3, 4 };
 
     const auto naiveReg = reg.naive();
 
@@ -340,7 +340,7 @@ TEST(Simd128GetterSetterTests, Float_Naive_ReturnsDefaultRegister)
 
 TEST(Simd128GetterSetterTests, Double_Naive_ReturnsDefaultRegister)
 {
-    const flcn::Simd128_t<double, 2> reg{ 1, 2 };
+    const flcn::Simd128<double, 2> reg{ 1, 2 };
 
     const auto naiveReg = reg.naive();
 
@@ -352,7 +352,7 @@ TEST(Simd128GetterSetterTests, Double_Naive_ReturnsDefaultRegister)
 /// @test Verify that *reg returns the default internal register for integrals.
 TEST(Simd128GetterSetterTests, UnaryTimesOperator_IntegralRegister_ReturnsDefaultRegister)
 {
-    const flcn::Simd128_t<int32_t, 4> reg{ 1, 2, 3, 4 };
+    const flcn::Simd128<int32_t, 4> reg{ 1, 2, 3, 4 };
 
     const auto naiveReg = *reg;
 
@@ -366,7 +366,7 @@ TEST(Simd128GetterSetterTests, UnaryTimesOperator_IntegralRegister_ReturnsDefaul
 /// @test Verify that *reg returns the default internal register for floats.
 TEST(Simd128GetterSetterTests, UnaryTimesOperator_FloatRegister_ReturnsDefaultRegister)
 {
-    const flcn::Simd128_t<float, 4> reg{ 1, 2, 3, 4 };
+    const flcn::Simd128<float, 4> reg{ 1, 2, 3, 4 };
 
     const auto naiveReg = *reg;
 
@@ -379,7 +379,7 @@ TEST(Simd128GetterSetterTests, UnaryTimesOperator_FloatRegister_ReturnsDefaultRe
 /// @test Verify that *reg returns the default internal register for doubles.
 TEST(Simd128GetterSetterTests, UnaryTimesOperator_DoubleRegister_ReturnsDefaultRegister)
 {
-    const flcn::Simd128_t<double, 2> reg{ 1, 2 };
+    const flcn::Simd128<double, 2> reg{ 1, 2 };
 
     const auto naiveReg = *reg;
 
@@ -404,7 +404,7 @@ using namespace simd::testing;
             alignas(16) constexpr std::array<Type, 16> dataArr = { max, min, 0, 3,  5,  11, 15, 3,                     \
                                                                    1,   2,   5, 12, 14, 3,  15, 12 };                  \
                                                                                                                        \
-            flcn::Simd128_t<Type, Lanes> reg(dataArr.data());                                                          \
+            flcn::Simd128<Type, Lanes> reg(dataArr.data());                                                          \
             EXPECT_ANY_EQ(dataArr[Index], reg.getAt<Index>());                                                         \
         }
 
@@ -537,7 +537,7 @@ TEST_SIMD128_CONST_GET_AT_RETURNS_VALUE_AT_INDEX(FP64_2Lanes_AtIndex1, FP64, 2, 
             alignas(16) constexpr std::array<Type, 16> dataArr = { max, min, 0, 3,  5,  11, 15, 3,                     \
                                                                    1,   2,   5, 12, 14, 3,  15, 12 };                  \
                                                                                                                        \
-            flcn::Simd128_t<Type, Lanes> reg{};                                                                        \
+            flcn::Simd128<Type, Lanes> reg{};                                                                        \
             reg.setAt<Index>(dataArr[Index]);                                                                          \
             EXPECT_ANY_EQ(dataArr[Index], reg.getAt<Index>());                                                         \
         }

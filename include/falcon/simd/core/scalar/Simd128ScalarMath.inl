@@ -13,52 +13,54 @@
 namespace flcn
 {
     template <typename DataType, size_t Lane>
-    FALCON_INLINE constexpr _REG_128_SCALAR<DataType, Lane> min(_REG_128_SCALAR<DataType, Lane> a,
-                                                             _REG_128_SCALAR<DataType, Lane> b) noexcept
+    FALCON_INLINE constexpr details::Reg128Scalar<DataType, Lane> min(details::Reg128Scalar<DataType, Lane> a,
+                                                                      details::Reg128Scalar<DataType, Lane> b) noexcept
     {
-        _REG_128_SCALAR<DataType, Lane> retReg{};
+        details::Reg128Scalar<DataType, Lane> retReg{};
         for (size_t i = 0; i < Lane; ++i)
         {
-            retReg._reg[i] = std::min(a._reg[i], b._reg[i]);
+            retReg.setAt(i, std::min((*a)[i], (*b)[i]));
         }
         return retReg;
     }
 
 
     template <typename DataType, size_t Lane>
-    FALCON_INLINE constexpr _REG_128_SCALAR<DataType, Lane> max(_REG_128_SCALAR<DataType, Lane> a,
-                                                             _REG_128_SCALAR<DataType, Lane> b) noexcept
+    FALCON_INLINE constexpr details::Reg128Scalar<DataType, Lane> max(details::Reg128Scalar<DataType, Lane> a,
+                                                                      details::Reg128Scalar<DataType, Lane> b) noexcept
     {
-        _REG_128_SCALAR<DataType, Lane> retReg{};
+        details::Reg128Scalar<DataType, Lane> retReg{};
         for (size_t i = 0; i < Lane; ++i)
         {
-            retReg._reg[i] = std::max(a._reg[i], b._reg[i]);
+            retReg.setAt(i, std::max((*a)[i], (*b)[i]));
         }
         return retReg;
     }
 
 
     template <typename DataType, size_t Lane>
-    FALCON_INLINE constexpr _REG_128_SCALAR<DataType, Lane> abs(_REG_128_SCALAR<DataType, Lane> reg) noexcept
+    FALCON_INLINE constexpr details::Reg128Scalar<DataType, Lane> abs(
+        details::Reg128Scalar<DataType, Lane> reg) noexcept
     { return reg.abs(); }
 
 
     template <typename DataType, size_t Lane>
-    FALCON_INLINE constexpr _REG_128_SCALAR<DataType, Lane> sqrt(_REG_128_SCALAR<DataType, Lane> reg) noexcept
+    FALCON_INLINE constexpr details::Reg128Scalar<DataType, Lane> sqrt(
+        details::Reg128Scalar<DataType, Lane> reg) noexcept
     { return reg.sqrt(); }
 
 
     template <typename DataType, size_t Lane>
-    FALCON_INLINE constexpr _REG_128_SCALAR<DataType, Lane> fma(_REG_128_SCALAR<DataType, Lane> a,
-                                                                _REG_128_SCALAR<DataType, Lane> b,
-                                                                _REG_128_SCALAR<DataType, Lane> c) noexcept
+    FALCON_INLINE constexpr details::Reg128Scalar<DataType, Lane> fma(details::Reg128Scalar<DataType, Lane> a,
+                                                                      details::Reg128Scalar<DataType, Lane> b,
+                                                                      details::Reg128Scalar<DataType, Lane> c) noexcept
     { return a.fma(b, c); }
 
 
     template <typename DataType, size_t Lane>
-    FALCON_INLINE constexpr _REG_128_SCALAR<DataType, Lane> fmSub(_REG_128_SCALAR<DataType, Lane> a,
-                                                                  _REG_128_SCALAR<DataType, Lane> b,
-                                                                  _REG_128_SCALAR<DataType, Lane> c) noexcept
+    FALCON_INLINE constexpr details::Reg128Scalar<DataType, Lane> fmSub(
+        details::Reg128Scalar<DataType, Lane> a, details::Reg128Scalar<DataType, Lane> b,
+        details::Reg128Scalar<DataType, Lane> c) noexcept
     { return a.fmSub(b, c); }
 
 } // namespace flcn

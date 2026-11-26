@@ -18,8 +18,12 @@ namespace flcn
     /// |                                             SSE(EMULATED)                                                   |
     /// +=============================================================================================================+
 
-    template <typename DataType, size_t Lane>
-    using _REG_256_SSE = Simd256<SimdBackend::ARCH_SSE2, DataType, Lane>;
+    namespace details
+    {
+        
+        template <typename DataType, size_t Lane>
+        using Reg256SSE = details::Simd256<SimdBackend::ARCH_SSE2, DataType, Lane>;
+    }
 
     /**
      * @brief Get the minimum values from both the registers, packed into a single register.
@@ -33,8 +37,8 @@ namespace flcn
      * @return A Simd256 register with minimum values taken from both the registers.
      */
     template <typename DataType, size_t Lane>
-    [[nodiscard]] constexpr _REG_256_SSE<DataType, Lane> min(_REG_256_SSE<DataType, Lane> a,
-                                                             _REG_256_SSE<DataType, Lane> b) noexcept;
+    [[nodiscard]] constexpr details::Reg256SSE<DataType, Lane> min(details::Reg256SSE<DataType, Lane> a,
+                                                             details::Reg256SSE<DataType, Lane> b) noexcept;
 
 
     /**
@@ -49,8 +53,8 @@ namespace flcn
      * @return A Simd256 register with maximum values taken from both the registers.
      */
     template <typename DataType, size_t Lane>
-    [[nodiscard]] constexpr _REG_256_SSE<DataType, Lane> max(_REG_256_SSE<DataType, Lane> a,
-                                                             _REG_256_SSE<DataType, Lane> b) noexcept;
+    [[nodiscard]] constexpr details::Reg256SSE<DataType, Lane> max(details::Reg256SSE<DataType, Lane> a,
+                                                             details::Reg256SSE<DataType, Lane> b) noexcept;
 
 
     /**
@@ -66,7 +70,7 @@ namespace flcn
      * @return A Simd256 register with absolute values.
      */
     template <typename DataType, size_t Lane>
-    [[nodiscard]] constexpr _REG_256_SSE<DataType, Lane> abs(_REG_256_SSE<DataType, Lane> reg) noexcept;
+    [[nodiscard]] constexpr details::Reg256SSE<DataType, Lane> abs(details::Reg256SSE<DataType, Lane> reg) noexcept;
 
 
     /**
@@ -83,7 +87,7 @@ namespace flcn
      * @return A Simd256 register with square root of each entry.
      */
     template <typename DataType, size_t Lane>
-    [[nodiscard]] constexpr _REG_256_SSE<DataType, Lane> sqrt(_REG_256_SSE<DataType, Lane> reg) noexcept;
+    [[nodiscard]] constexpr details::Reg256SSE<DataType, Lane> sqrt(details::Reg256SSE<DataType, Lane> reg) noexcept;
 
 
     /**
@@ -97,9 +101,9 @@ namespace flcn
      * @return A new register with the fused-multiply add result.
      */
     template <typename DataType, size_t Lane>
-    [[nodiscard]] constexpr _REG_256_SSE<DataType, Lane> fma(_REG_256_SSE<DataType, Lane> a,
-                                                             _REG_256_SSE<DataType, Lane> b,
-                                                             _REG_256_SSE<DataType, Lane> c) noexcept;
+    [[nodiscard]] constexpr details::Reg256SSE<DataType, Lane> fma(details::Reg256SSE<DataType, Lane> a,
+                                                             details::Reg256SSE<DataType, Lane> b,
+                                                             details::Reg256SSE<DataType, Lane> c) noexcept;
 
 
     /**
@@ -113,9 +117,9 @@ namespace flcn
      * @return A new register with the fused-multiply subtraction result.
      */
     template <typename DataType, size_t Lane>
-    [[nodiscard]] constexpr _REG_256_SSE<DataType, Lane> fmSub(_REG_256_SSE<DataType, Lane> a,
-                                                               _REG_256_SSE<DataType, Lane> b,
-                                                               _REG_256_SSE<DataType, Lane> c) noexcept;
+    [[nodiscard]] constexpr details::Reg256SSE<DataType, Lane> fmSub(details::Reg256SSE<DataType, Lane> a,
+                                                               details::Reg256SSE<DataType, Lane> b,
+                                                               details::Reg256SSE<DataType, Lane> c) noexcept;
 
 
 
@@ -123,8 +127,11 @@ namespace flcn
     /// |                                                 AVX                                                         |
     /// +=============================================================================================================+
 
-    template <typename DataType, size_t Lane>
-    using _REG_256_AVX = Simd256<SimdBackend::ARCH_AVX, DataType, Lane>;
+    namespace details
+    {
+        template <typename DataType, size_t Lane>
+        using Reg256AVX = details::Simd256<SimdBackend::ARCH_AVX, DataType, Lane>;
+    }
 
     /**
      * @brief Get the minimum values from both the registers, packed into a single register.
@@ -138,8 +145,8 @@ namespace flcn
      * @return A Simd256 register with minimum values taken from both the registers.
      */
     template <typename DataType, size_t Lane>
-    [[nodiscard]] constexpr _REG_256_AVX<DataType, Lane> min(_REG_256_AVX<DataType, Lane> a,
-                                                             _REG_256_AVX<DataType, Lane> b) noexcept;
+    [[nodiscard]] constexpr details::Reg256AVX<DataType, Lane> min(details::Reg256AVX<DataType, Lane> a,
+                                                             details::Reg256AVX<DataType, Lane> b) noexcept;
 
 
     /**
@@ -154,8 +161,8 @@ namespace flcn
      * @return A Simd256 register with maximum values taken from both the registers.
      */
     template <typename DataType, size_t Lane>
-    [[nodiscard]] constexpr _REG_256_AVX<DataType, Lane> max(_REG_256_AVX<DataType, Lane> a,
-                                                             _REG_256_AVX<DataType, Lane> b) noexcept;
+    [[nodiscard]] constexpr details::Reg256AVX<DataType, Lane> max(details::Reg256AVX<DataType, Lane> a,
+                                                             details::Reg256AVX<DataType, Lane> b) noexcept;
 
 
     /**
@@ -171,7 +178,7 @@ namespace flcn
      * @return A Simd256 register with absolute values.
      */
     template <typename DataType, size_t Lane>
-    [[nodiscard]] constexpr _REG_256_AVX<DataType, Lane> abs(_REG_256_AVX<DataType, Lane> reg) noexcept;
+    [[nodiscard]] constexpr details::Reg256AVX<DataType, Lane> abs(details::Reg256AVX<DataType, Lane> reg) noexcept;
 
 
     /**
@@ -188,7 +195,7 @@ namespace flcn
      * @return A Simd256 register with square root of each entry.
      */
     template <typename DataType, size_t Lane>
-    [[nodiscard]] constexpr _REG_256_AVX<DataType, Lane> sqrt(_REG_256_AVX<DataType, Lane> reg) noexcept;
+    [[nodiscard]] constexpr details::Reg256AVX<DataType, Lane> sqrt(details::Reg256AVX<DataType, Lane> reg) noexcept;
 
 
 
@@ -203,9 +210,9 @@ namespace flcn
      * @return A new register with the fused-multiply add result.
      */
     template <typename DataType, size_t Lane>
-    [[nodiscard]] constexpr _REG_256_AVX<DataType, Lane> fma(_REG_256_AVX<DataType, Lane> a,
-                                                             _REG_256_AVX<DataType, Lane> b,
-                                                             _REG_256_AVX<DataType, Lane> c) noexcept;
+    [[nodiscard]] constexpr details::Reg256AVX<DataType, Lane> fma(details::Reg256AVX<DataType, Lane> a,
+                                                             details::Reg256AVX<DataType, Lane> b,
+                                                             details::Reg256AVX<DataType, Lane> c) noexcept;
 
 
     /**
@@ -219,9 +226,9 @@ namespace flcn
      * @return A new register with the fused-multiply subtraction result.
      */
     template <typename DataType, size_t Lane>
-    [[nodiscard]] constexpr _REG_256_AVX<DataType, Lane> fmSub(_REG_256_AVX<DataType, Lane> a,
-                                                               _REG_256_AVX<DataType, Lane> b,
-                                                               _REG_256_AVX<DataType, Lane> c) noexcept;
+    [[nodiscard]] constexpr details::Reg256AVX<DataType, Lane> fmSub(details::Reg256AVX<DataType, Lane> a,
+                                                               details::Reg256AVX<DataType, Lane> b,
+                                                               details::Reg256AVX<DataType, Lane> c) noexcept;
 
 } // namespace flcn
 

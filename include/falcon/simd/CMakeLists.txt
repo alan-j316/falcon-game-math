@@ -1,6 +1,6 @@
 set(FALCON_SIMD_TARGET_NAME FalconSIMD${FLCN_INTERNAL_TARGET_SUFFIX})
 add_library(${FALCON_SIMD_TARGET_NAME} INTERFACE
-        core/Simd128.h
+        core/SimdCore.h
         core/RegisterTraits.h
         core/x86/Simd128SSE.h
         core/x86/Simd128SSE.inl

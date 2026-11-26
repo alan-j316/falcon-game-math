@@ -44,7 +44,7 @@ namespace flcn::simd
             requires(sizeof(T) <= 4)
         struct Vec3SimdStore<T>
         {
-            using Type = Simd128_t<T, 4>;
+            using Type = Simd128<T, 4>;
         };
 
         // Simd type for Vec3 that can only fit in a 256-bit register(8-byte integrals and floats)
@@ -52,7 +52,7 @@ namespace flcn::simd
             requires(sizeof(T) > 4)
         struct Vec3SimdStore<T>
         {
-            using Type = Simd256_t<T, 4>;
+            using Type = Simd256<T, 4>;
         };
     } // namespace internal
 

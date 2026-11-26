@@ -16,7 +16,7 @@
 #include <bit>
 #include <cmath>
 
-namespace flcn
+namespace flcn::details
 {
 
     /// +---------------------------------------------------------------------------------------+

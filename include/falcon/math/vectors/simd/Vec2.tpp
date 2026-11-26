@@ -68,7 +68,7 @@ namespace flcn::simd
 
     // TODO: Add
     template <Arithmetic T>
-    FALCON_INLINE constexpr Vec2<T>::Vec2(const Simd128_t<T, DIMENSION>& reg) noexcept: _data{ reg }
+    FALCON_INLINE constexpr Vec2<T>::Vec2(const Simd128<T, DIMENSION>& reg) noexcept: _data{ reg }
     {}
 
     // TODO: add a aligned toVec2 variant
@@ -525,7 +525,7 @@ namespace flcn::simd
     template <StrictArithmetic S>
     FALCON_INLINE constexpr Vec2<T> Vec2<T>::operator*(S scalar) const noexcept
         requires StrictArithmetic<T>
-    { return Vec2(_data * flcn::Simd128_t<T, DIMENSION>(static_cast<T>(scalar))); }
+    { return Vec2(_data * flcn::Simd128<T, DIMENSION>(static_cast<T>(scalar))); }
 
 
     template <StrictArithmetic T, StrictArithmetic S>

@@ -23,13 +23,13 @@
 #include <bit>
 
 
-namespace flcn
+namespace flcn::details
 {
 
     template <typename DataType>
     struct alignas(32) Emulated256<SimdBackend::ARCH_SSE2, DataType>
     {
-        using EmulatedRegType = simd::internal::Simd128Register_t<DataType>;
+        using EmulatedRegType = simd::internal::Simd128RegisterT<DataType>;
         EmulatedRegType lower;
         EmulatedRegType upper;
     };
@@ -47,24 +47,27 @@ namespace flcn
     {
 
     private:
-        static constexpr auto Max128BitLaneCount = 128 / (sizeof(DataType) * 8);
-        static_assert(Lane > Max128BitLaneCount, "Payload fits in 128-bits. Use Simd128 to directly prevent emulation");
+        static constexpr auto MAX128_BIT_LANE_COUNT = 128 / (sizeof(DataType) * 8);
+        static_assert(Lane > MAX128_BIT_LANE_COUNT,
+                      "Payload fits in 128-bits. Use Simd128 to directly prevent emulation");
 
-        static constexpr auto LOWER_LANE_COUNT = Max128BitLaneCount;
-        static constexpr auto UPPER_LANE_COUNT = (Lane - Max128BitLaneCount > 0) ? (Lane - Max128BitLaneCount) : 0;
+        static constexpr auto LOWER_LANE_COUNT = MAX128_BIT_LANE_COUNT;
+        static constexpr auto UPPER_LANE_COUNT =
+            (Lane - MAX128_BIT_LANE_COUNT > 0) ? (Lane - MAX128_BIT_LANE_COUNT) : 0;
 
         /// [Upper][Lower]
         Simd128<SimdBackend::ARCH_SSE2, DataType, UPPER_LANE_COUNT> _upper;
         Simd128<SimdBackend::ARCH_SSE2, DataType, LOWER_LANE_COUNT> _lower;
 
     public:
-        static constexpr size_t BufferWidth  = 256;      ///< Width of the register in bits.
+        static constexpr size_t BUFFER_WIDTH = 256;      ///< Width of the register in bits.
         using ValueType                      = DataType; ///< The internal data type of this Register.
-        static constexpr size_t LaneCount    = Lane;     ///< Number of Lanes of current SIMD256 Register
-        static constexpr size_t MaxLaneCount = BufferWidth / (sizeof(DataType) * 8); /// Maximum Lanes in this register.
-        static constexpr size_t Alignment    = 32;                                   ///< Required alignment.
+        static constexpr size_t LANE_COUNT   = Lane;     ///< Number of Lanes of current SIMD256 Register
+        static constexpr size_t MAX_LANE_COUNT =
+            BUFFER_WIDTH / (sizeof(DataType) * 8); /// Maximum Lanes in this register.
+        static constexpr size_t ALIGNMENT = 32;    ///< Required alignment.
 
-        static_assert(sizeof(DataType) * Lane * 8 <= BufferWidth && "Invalid size.");
+        static_assert(sizeof(DataType) * Lane * 8 <= BUFFER_WIDTH && "Invalid size.");
         static_assert(std::has_single_bit(Lane) && Lane > 1 &&
                       "Invalid Number of Lanes. Must be a power of 2(2, 4, 8, 16...)");
 
@@ -166,9 +169,9 @@ namespace flcn
          *       Example: loadAligned<2>(uint8_t*) will only load the lower 16-bit with the data and fill the rest with
          *       zeroes.
          *
-         * @param[in] data The data to load.
+         * @param[in] pData The data to load.
          */
-        constexpr void loadAligned(const DataType* data) noexcept;
+        constexpr void loadAligned(const DataType* pData) noexcept;
 
 
         /**
@@ -179,7 +182,7 @@ namespace flcn
          *       Example: loadAligned<2>(uint8_t*) will only load the lower 16-bit with the data and fill the rest with
          *       zeroes.
          *
-         * @param[in] data The data to load.
+         * @param[in] pData The data to load.
          *
          * @relatedalso loadAligned(DataType*)
          * @relatedalso store(DataType*)
@@ -187,7 +190,7 @@ namespace flcn
          * @relatedalso broadcast(DataType)
          * @relatedalso setZero()
          */
-        constexpr void load(const DataType* data) noexcept;
+        constexpr void load(const DataType* pData) noexcept;
 
 
         /**
@@ -727,7 +730,7 @@ namespace flcn
          *
          * @code
          * // float x 8(lane) mask.
-         * const Simd256_t<float, 8> reg{ 1.0f, 2.0f, 3.0f, 4.0f, 5.0f, 6.0f, 7.0f, 8.0f };
+         * const Simd256<float, 8> reg{ 1.0f, 2.0f, 3.0f, 4.0f, 5.0f, 6.0f, 7.0f, 8.0f };
          * const auto mask = reg.makeBlendMask<true, false, true, false>();
          * // 0b00000000111111110000000011111111 or 0x00FF00FF
          * const auto mask = reg.makeBlendMask<true, false, true, true>();
@@ -739,7 +742,7 @@ namespace flcn
         template <bool... Mask>
             requires(std::has_single_bit(sizeof...(Mask)) && sizeof...(Mask) >= 2 && sizeof...(Mask) <= Lane)
         static constexpr BlendMask32_t makeBlendMask() noexcept
-        { return simd::makeBlendMask32<MaxLaneCount, Mask...>(); }
+        { return simd::makeBlendMask32<MAX_LANE_COUNT, Mask...>(); }
 
 
         /**
@@ -776,8 +779,8 @@ namespace flcn
          * ret   -> 0x 32 23 ed 81
          *
          * // Usage
-         * const flcn::Simd256_t<float, 8> reg1{1.0f, 2.0f, 3.0f, 4.0f, 12.0f, 13.0f, 14.0f, 15.0f};
-         * const flcn::Simd256_t<float, 8> reg2{8.0f, 9.0f, 10.0f, 11.0f, 5.0f, 6.0f, 7.0f, 8.0f};
+         * const flcn::Simd256<float, 8> reg1{1.0f, 2.0f, 3.0f, 4.0f, 12.0f, 13.0f, 14.0f, 15.0f};
+         * const flcn::Simd256<float, 8> reg2{8.0f, 9.0f, 10.0f, 11.0f, 5.0f, 6.0f, 7.0f, 8.0f};
          * constexpr auto mask = flcn::makeBlendMask32<true, false, false, true, true, true, false, false>();
          * const auto blended = reg1.template blend<mask>(reg2); // {8.0f, 2.0f, 3.0f, 11.0f, 5.0f, 6.0f, 14.0f, 15.0f}
          * @endcode
@@ -861,21 +864,20 @@ namespace flcn
 
     private:
         /**************************************
-         *         FRIEND FUNCTION            *
+         *        FRIEND FUNCTIONS            *
          **************************************/
 
         template <typename T, size_t L>
-        using __REG_256_SSE = Simd256<SimdBackend::ARCH_SSE2, T, L>;
+        friend constexpr Simd256<SimdBackend::ARCH_SSE2, T, L> flcn::min(
+            Simd256<SimdBackend::ARCH_SSE2, T, L> a, Simd256<SimdBackend::ARCH_SSE2, T, L> b) noexcept;
 
         template <typename T, size_t L>
-        friend constexpr __REG_256_SSE<T, L> min(__REG_256_SSE<T, L> a, __REG_256_SSE<T, L> b) noexcept;
-
-        template <typename T, size_t L>
-        friend constexpr __REG_256_SSE<T, L> max(__REG_256_SSE<T, L> a, __REG_256_SSE<T, L> b) noexcept;
+        friend constexpr Simd256<SimdBackend::ARCH_SSE2, T, L> flcn::max(
+            Simd256<SimdBackend::ARCH_SSE2, T, L> a, Simd256<SimdBackend::ARCH_SSE2, T, L> b) noexcept;
     };
 
 
-} // namespace flcn
+} // namespace flcn::details
 
 
 // --- THIS SHOULD BE INCLUDED FIRST as the .inl files use functions declared in this header.

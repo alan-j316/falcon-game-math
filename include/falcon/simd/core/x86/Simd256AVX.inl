@@ -17,7 +17,7 @@
 
 #include <immintrin.h>
 
-namespace flcn
+namespace flcn::details
 {
 /// Macro for differentiating SIMD256 pathways based on architectural support.
 #define _FALCON_SIMD256_SUPPORT_NATIVE_INTRINSIC(DataType)                                                             \
@@ -304,7 +304,7 @@ namespace flcn
     {
         if constexpr (_FALCON_SIMD256_SUPPORT_NATIVE_INTRINSIC(DataType))
         {
-            alignas(Alignment) DataType _data[MaxLaneCount]{ std::forward<Args>(args)... };
+            alignas(ALIGNMENT) DataType _data[MAX_LANE_COUNT]{ std::forward<Args>(args)... };
             if constexpr (types::IsFP64<DataType>)
             {
                 _reg = _mm256_load_pd(_data);
@@ -327,58 +327,58 @@ namespace flcn
         return *this;
     }
 
-    // FIXME : Alignment and assert alignment in load aligned
+    // FIXME : ALIGNMENT and assert alignment in load aligned
     template <typename DataType, size_t Lane>
     FALCON_INLINE constexpr void Simd256<SimdBackend::ARCH_AVX, DataType, Lane>::loadAligned(
-        const DataType* data) noexcept
+        const DataType* pData) noexcept
     {
         // TODO: Add death tests
         FALCON_ASSERT_MSG(
-            (reinterpret_cast<uintptr_t>(data) & (Alignment - 1)) == 0,
+            (reinterpret_cast<uintptr_t>(pData) & (ALIGNMENT - 1)) == 0,
             "[Falcon Simd]: Loading from unaligned memory when aligned address was expected. Use load() instead.");
         if constexpr (_FALCON_SIMD256_SUPPORT_NATIVE_INTRINSIC(DataType))
         {
             if constexpr (types::IsFP64<DataType>)
             {
-                _reg = _mm256_load_pd(data);
+                _reg = _mm256_load_pd(pData);
             }
             else if constexpr (types::IsFP32<DataType>)
             {
-                _reg = _mm256_load_ps(data);
+                _reg = _mm256_load_ps(pData);
             }
             else
             {
-                _reg = _mm256_load_si256(reinterpret_cast<const __m256i*>(data));
+                _reg = _mm256_load_si256(reinterpret_cast<const __m256i*>(pData));
             }
         }
         else
         {
-            _reg.loadAligned(data);
+            _reg.loadAligned(pData);
         }
     }
 
 
     template <typename DataType, size_t Lane>
-    FALCON_INLINE constexpr void Simd256<SimdBackend::ARCH_AVX, DataType, Lane>::load(const DataType* data) noexcept
+    FALCON_INLINE constexpr void Simd256<SimdBackend::ARCH_AVX, DataType, Lane>::load(const DataType* pData) noexcept
     {
         if constexpr (_FALCON_SIMD256_SUPPORT_NATIVE_INTRINSIC(DataType))
         {
             if constexpr (types::IsFP64<DataType>)
             {
-                _reg = _mm256_loadu_pd(data);
+                _reg = _mm256_loadu_pd(pData);
             }
             else if constexpr (types::IsFP32<DataType>)
             {
-                _reg = _mm256_loadu_ps(data);
+                _reg = _mm256_loadu_ps(pData);
             }
             else
             {
-                _reg = _mm256_loadu_si256(reinterpret_cast<const __m256i*>(data));
+                _reg = _mm256_loadu_si256(reinterpret_cast<const __m256i*>(pData));
             }
         }
         else
         {
-            _reg.load(data);
+            _reg.load(pData);
         }
     }
 
@@ -480,7 +480,7 @@ namespace flcn
     {
         // TODO: Add death tests
         FALCON_ASSERT_MSG(
-            (reinterpret_cast<uintptr_t>(pBuffer) & (Alignment - 1)) == 0,
+            (reinterpret_cast<uintptr_t>(pBuffer) & (ALIGNMENT - 1)) == 0,
             "[Falcon Simd]: Storing to unaligned memory when a aligned one was expected. Use store() instead.");
         if constexpr (_FALCON_SIMD256_SUPPORT_NATIVE_INTRINSIC(DataType))
         {
@@ -566,7 +566,7 @@ namespace flcn
             }
             else
             {
-                alignas(Alignment) DataType buffer[Lane]{};
+                alignas(ALIGNMENT) DataType buffer[Lane]{};
                 store(buffer);
                 return buffer[index];
             }
@@ -585,7 +585,7 @@ namespace flcn
         if constexpr (_FALCON_SIMD256_SUPPORT_NATIVE_INTRINSIC(DataType))
         {
             // Stack spill and insert
-            alignas(Alignment) DataType data[Lane]{};
+            alignas(ALIGNMENT) DataType data[Lane]{};
             storeAligned(data);
             data[index] = value;
             loadAligned(data);
@@ -1381,7 +1381,7 @@ namespace flcn
             {
                 // The only possible combination lane count is 4(since we forbids initializing a 64x4 Simd256).
                 // so we can manually calculate the division for 4 integers without loops
-                alignas(Alignment) DataType a[Lane]{}, b[Lane]{};
+                alignas(ALIGNMENT) DataType a[Lane]{}, b[Lane]{};
                 storeAligned(a);
                 other.storeAligned(b);
                 a[0] /= b[0];
@@ -1439,7 +1439,7 @@ namespace flcn
                 else
                 {
                     // Use stack spill and perform division
-                    alignas(Alignment) DataType a[Lane]{}, b[Lane]{};
+                    alignas(ALIGNMENT) DataType a[Lane]{}, b[Lane]{};
                     storeAligned(a);
                     other.storeAligned(b);
                     a[0] /= b[0];
@@ -1488,7 +1488,7 @@ namespace flcn
             // else if constexpr (types::IsUWord<DataType>)
             else
             {
-                using Simd16 = Simd128<SimdBackend::ARCH_SSE2, DataType, LaneCount / 2>;
+                using Simd16 = Simd128<SimdBackend::ARCH_SSE2, DataType, LANE_COUNT / 2>;
                 // TODO: Update with lower/upper
                 Simd16 loA(_mm256_castsi256_si128(_reg));
                 Simd16 loB(_mm256_castsi256_si128(*other));
@@ -3064,7 +3064,7 @@ namespace flcn
                 if constexpr (sizeof(DataType) == 8)
                 {
                     // There must only 4 lanes for 64-bit integrals
-                    alignas(Alignment) DataType array[Lane]{};
+                    alignas(ALIGNMENT) DataType array[Lane]{};
                     if constexpr (std::is_signed_v<DataType>)
                     {
                         // For signed integrals we must clamp to zero to prevent negative integral square roots
@@ -3278,4 +3278,4 @@ namespace flcn
 
 #undef _FALCON_SIMD256_SUPPORT_NATIVE_INTRINSIC
 
-} // namespace flcn
+} // namespace flcn::details

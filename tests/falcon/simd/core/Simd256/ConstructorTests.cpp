@@ -51,7 +51,7 @@ using namespace simd::testing;
  *         data[i] = static_cast<Type>(i + 11);
  *     }
  *
- *     flcn::Simd256_t<Type, Lane> reg{ data };
+ *     flcn::Simd256<Type, Lane> reg{ data };
  *
  *     alignas(32) std::array<Type, Lane> result{};
  *     reg.storeAligned(result.data());
@@ -76,7 +76,7 @@ TYPED_TEST(Simd256CtorTests, Simd256_CanBeInitializedWithAStdArray)
         data[i] = static_cast<Type>(i + 11);
     }
 
-    flcn::Simd256_t<Type, Lane> reg{ data };
+    flcn::Simd256<Type, Lane> reg{ data };
 
     alignas(32) std::array<Type, Lane> result{};
     reg.storeAligned(result.data());
@@ -100,7 +100,7 @@ TYPED_TEST(Simd256CtorTests, Simd256_CanBeInitializedWithACStyleArray)
         data[i] = static_cast<Type>(i + 11);
     }
 
-    flcn::Simd256_t<Type, Lane> reg{ data };
+    flcn::Simd256<Type, Lane> reg{ data };
 
     alignas(32) std::array<Type, Lane> result{};
     reg.storeAligned(result.data());
@@ -128,9 +128,9 @@ TYPED_TEST(Simd256CtorTests, Simd256_CanBeInitializedWithACStyleArray)
             constexpr size_t size = sizeof(inputData) / sizeof(DataType);                                              \
             DataType outputData[Lanes]{};                                                                              \
             auto getSimd = [](auto... args) {                                                                          \
-                return flcn::Simd256_t<DataType, Lanes>{ static_cast<DataType>(args)... };                             \
+                return flcn::Simd256<DataType, Lanes>{ static_cast<DataType>(args)... };                             \
             };                                                                                                         \
-            flcn::Simd256_t<DataType, Lanes> reg = getSimd(__VA_ARGS__);                                               \
+            flcn::Simd256<DataType, Lanes> reg = getSimd(__VA_ARGS__);                                               \
             reg.store(outputData);                                                                                     \
                                                                                                                        \
             for (size_t i = 0; i < size; ++i)                                                                          \
@@ -330,7 +330,7 @@ TEST_SIMD256_VARG_CTOR(FP64_4Lanes_4Arguments, FP64, 4, max<FP64>, min<FP64>, 3.
         TEST(Simd256SingleArgCtorTests, InitializesWith_##TestNameSuffix)                                              \
         {                                                                                                              \
             DataType outputData[Lanes]{};                                                                              \
-            flcn::Simd256_t<DataType, Lanes> reg{ Data };                                                              \
+            flcn::Simd256<DataType, Lanes> reg{ Data };                                                              \
             reg.store(outputData);                                                                                     \
                                                                                                                        \
             for (size_t i = 0; i < Lanes; ++i)                                                                         \

@@ -44,7 +44,7 @@ namespace flcn::simd
 
     // TODO: Add
     // template <Arithmetic T>
-    // FALCON_INLINE constexpr Vec2<T>::Vec2(const Simd128_t<T, DIMENSION>& reg) noexcept: _data{ reg }
+    // FALCON_INLINE constexpr Vec2<T>::Vec2(const Simd128<T, DIMENSION>& reg) noexcept: _data{ reg }
     // {}
     //
     //     template <Arithmetic T>

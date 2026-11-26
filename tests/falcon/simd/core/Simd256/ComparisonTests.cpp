@@ -117,7 +117,7 @@ namespace
 TYPED_TEST(Simd256ComparisonTests, GreaterThanOperator_ReturnsAValidMask)
 {
     using Type = typename TypeParam::Type;
-    flcn::Simd256_t<Type, TypeParam::VALUE> a{}, b{};
+    flcn::Simd256<Type, TypeParam::VALUE> a{}, b{};
     a.load(this->lhsData.data());
     b.load(this->rhsData.data());
 
@@ -136,7 +136,7 @@ TYPED_TEST(Simd256ComparisonTests, GreaterThanOperator_ReturnsAValidMask)
 TYPED_TEST(Simd256ComparisonTests, GreaterThanOrEqualsOperator_ReturnsAValidMask)
 {
     using Type = typename TypeParam::Type;
-    flcn::Simd256_t<Type, TypeParam::VALUE> a{}, b{};
+    flcn::Simd256<Type, TypeParam::VALUE> a{}, b{};
     a.load(this->lhsData.data());
     b.load(this->rhsData.data());
 
@@ -155,7 +155,7 @@ TYPED_TEST(Simd256ComparisonTests, GreaterThanOrEqualsOperator_ReturnsAValidMask
 TYPED_TEST(Simd256ComparisonTests, LessThanOperator_ReturnsAValidMask)
 {
     using Type = typename TypeParam::Type;
-    flcn::Simd256_t<Type, TypeParam::VALUE> a{}, b{};
+    flcn::Simd256<Type, TypeParam::VALUE> a{}, b{};
     a.load(this->lhsData.data());
     b.load(this->rhsData.data());
 
@@ -174,7 +174,7 @@ TYPED_TEST(Simd256ComparisonTests, LessThanOperator_ReturnsAValidMask)
 TYPED_TEST(Simd256ComparisonTests, LessThanOrEqualsOperator_ReturnsAValidMask)
 {
     using Type = typename TypeParam::Type;
-    flcn::Simd256_t<Type, TypeParam::VALUE> a{}, b{};
+    flcn::Simd256<Type, TypeParam::VALUE> a{}, b{};
     a.load(this->lhsData.data());
     b.load(this->rhsData.data());
 
@@ -193,7 +193,7 @@ TYPED_TEST(Simd256ComparisonTests, LessThanOrEqualsOperator_ReturnsAValidMask)
 TYPED_TEST(Simd256ComparisonTests, DoubleEqualsOperator_ReturnsAValidMask)
 {
     using Type = typename TypeParam::Type;
-    flcn::Simd256_t<Type, TypeParam::VALUE> a{}, b{};
+    flcn::Simd256<Type, TypeParam::VALUE> a{}, b{};
     a.load(this->lhsData.data());
     b.load(this->rhsData.data());
 
@@ -212,7 +212,7 @@ TYPED_TEST(Simd256ComparisonTests, DoubleEqualsOperator_ReturnsAValidMask)
 TYPED_TEST(Simd256ComparisonTests, NotEqualsOperator_ReturnsAValidMask)
 {
     using Type = typename TypeParam::Type;
-    flcn::Simd256_t<Type, TypeParam::VALUE> a{}, b{};
+    flcn::Simd256<Type, TypeParam::VALUE> a{}, b{};
     a.load(this->lhsData.data());
     b.load(this->rhsData.data());
 
@@ -243,7 +243,7 @@ TEST(Simd256ComparisonTests, GreaterThanOperator_ReturnFalseForNaNComparisons)
 {
     constexpr std::array<float, 8> lhsData{ NaN, 1.0f, NaN, 3.0f, 4.0f, NaN, 5.0f, 4.0f };
     constexpr std::array<float, 8> rhsData{ 1.0f, NaN, NaN, 1.0f, 1.0f, 2.0f, 3.0f, NaN };
-    flcn::Simd256_t<float, 8> a{}, b{};
+    flcn::Simd256<float, 8> a{}, b{};
     a.load(lhsData.data());
     b.load(rhsData.data());
 
@@ -266,7 +266,7 @@ TEST(Simd256ComparisonTests, GreaterThanOrEqualsOperator_ReturnFalseForNaNCompar
 {
     constexpr std::array<float, 8> lhsData{ NaN, 1.0f, NaN, 1.0f, 1.0f, NaN, 3.0f, 4.0f };
     constexpr std::array<float, 8> rhsData{ 1.0f, NaN, NaN, 1.0f, 1.0f, 2.0f, 3.0f, NaN };
-    flcn::Simd256_t<float, 8> a{}, b{};
+    flcn::Simd256<float, 8> a{}, b{};
     a.load(lhsData.data());
     b.load(rhsData.data());
 
@@ -289,7 +289,7 @@ TEST(Simd256ComparisonTests, LessThanOperator_ReturnFalseForNaNComparisons)
 {
     constexpr std::array<float, 8> lhsData{ NaN, 1.0f, NaN, 1.0f, 1.0f, NaN, 3.0f, 4.0f };
     constexpr std::array<float, 8> rhsData{ 1.0f, NaN, NaN, 3.0f, 7.0f, 2.0f, 6.0f, NaN };
-    flcn::Simd256_t<float, 8> a{}, b{};
+    flcn::Simd256<float, 8> a{}, b{};
     a.load(lhsData.data());
     b.load(rhsData.data());
 
@@ -313,7 +313,7 @@ TEST(Simd256ComparisonTests, LessThanOrEqualsOperator_ReturnFalseForNaNCompariso
 {
     constexpr std::array<float, 8> lhsData{ NaN, 1.0f, NaN, 1.0f, 1.0f, NaN, 3.0f, 4.0f };
     constexpr std::array<float, 8> rhsData{ 1.0f, NaN, NaN, 1.0f, 1.0f, 2.0f, 3.0f, NaN };
-    flcn::Simd256_t<float, 8> a{}, b{};
+    flcn::Simd256<float, 8> a{}, b{};
     a.load(lhsData.data());
     b.load(rhsData.data());
 
@@ -337,7 +337,7 @@ TEST(Simd256ComparisonTests, NotEqualsOperator_ReturnTrueForNaNComparisons)
 {
     constexpr std::array<float, 8> lhsData{ NaN, 1.0f, NaN, 1.0f, 1.0f, NaN, 3.0f, 4.0f };
     constexpr std::array<float, 8> rhsData{ 1.0f, NaN, NaN, 1.0f, 1.0f, 2.0f, 3.0f, NaN };
-    flcn::Simd256_t<float, 8> a{}, b{};
+    flcn::Simd256<float, 8> a{}, b{};
     a.load(lhsData.data());
     b.load(rhsData.data());
 
@@ -361,7 +361,7 @@ TEST(Simd256ComparisonTests, DoubleEqualsOperator_ReturnFalseForNaNComparisons)
 {
     constexpr std::array<float, 8> lhsData{ NaN, 1.0f, NaN, 1.0f, 1.0f, NaN, 3.0f, 4.0f };
     constexpr std::array<float, 8> rhsData{ 1.0f, NaN, NaN, 1.0f, 1.0f, 2.0f, 3.0f, NaN };
-    flcn::Simd256_t<float, 8> a{}, b{};
+    flcn::Simd256<float, 8> a{}, b{};
     a.load(lhsData.data());
     b.load(rhsData.data());
 

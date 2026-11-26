@@ -40,8 +40,8 @@ TYPED_TEST(Simd128ConversionCtorTests, PromotesRegisterType)
     constexpr size_t Lane = TypeParam::VALUE;
     using PromotedType    = double;
 
-    flcn::Simd128_t<Type, Lane> regA{};
-    [[maybe_unused]] flcn::Simd128_t<PromotedType, Lane> regB(regA);
+    flcn::Simd128<Type, Lane> regA{};
+    [[maybe_unused]] flcn::Simd128<PromotedType, Lane> regB(regA);
 
     #if defined(__GNUC__) || defined(__clang__)
         #pragma GCC diagnostic push
@@ -66,8 +66,8 @@ TYPED_TEST(Simd128ConversionCtorTests, DemotesRegisterType)
     constexpr size_t Lane = TypeParam::VALUE;
     using PromotedType    = uint8_t;
 
-    flcn::Simd128_t<Type, Lane> regA{};
-    [[maybe_unused]] flcn::Simd128_t<PromotedType, Lane> regB(regA);
+    flcn::Simd128<Type, Lane> regA{};
+    [[maybe_unused]] flcn::Simd128<PromotedType, Lane> regB(regA);
 
     #if defined(__GNUC__) || defined(__clang__)
         #pragma GCC diagnostic push

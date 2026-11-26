@@ -446,7 +446,7 @@ TYPED_TEST(Simd256BlendTests, BlendingWithMaskReturnsRegisterWithCorrectValues)
     // Create the register and load them
     // Note: While const cast is not recommended in such a situation since the underlying buffer
     //       non-const, we can cast this as internally the load function doesn't mutate the parameters.
-    flcn::Simd256_t<Type, Lanes> regA{}, regB{}, mask{};
+    flcn::Simd256<Type, Lanes> regA{}, regB{}, mask{};
     regA.load(const_cast<Type*>(First.data()));
     regB.load(const_cast<Type*>(Second.data()));
     mask.load(const_cast<Type*>(Mask.data()));
@@ -469,7 +469,7 @@ TYPED_TEST(Simd256BlendTests, BlendingWithMaskReturnsRegisterWithCorrectValues)
     #define SIMD256_COMPILE_TIME_BLEND_TESTS(TestSuffix, Type, Lanes, First, Second, Expected, ...)                    \
         TEST(Simd256BlendTests, CompileTimeBlendingWithMask_ReturnsValidRegister_For##TestSuffix)                      \
         {                                                                                                              \
-            flcn::Simd256_t<Type, Lanes> regA{}, regB{};                                                               \
+            flcn::Simd256<Type, Lanes> regA{}, regB{};                                                               \
             constexpr auto mask = regA.makeBlendMask<__VA_ARGS__>();                                                   \
             regA.load(First.data());                                                                                   \
             regB.load(Second.data());                                                                                  \

@@ -33,7 +33,7 @@
 #include <span>
 #include <xmmintrin.h>
 
-namespace flcn
+namespace flcn::details
 {
     /**
      * @brief 128-bit Simd Register specialized for SSE2/4.1 architecture.
@@ -46,13 +46,14 @@ namespace flcn
     struct alignas(16) Simd128<SimdBackend::ARCH_SSE2, DataType, Lane>
     {
 
-        static constexpr size_t BufferWidth  = 128;      ///< Width of the register in bits.
+        static constexpr size_t BUFFER_WIDTH = 128;      ///< Width of the register in bits.
         using ValueType                      = DataType; ///< The internal data type of this Register.
-        static constexpr size_t LaneCount    = Lane;     ///< Number of Lanes of current SIMD128 Register
-        static constexpr size_t MaxLaneCount = BufferWidth / (sizeof(DataType) * 8); /// Maximum Lanes in this register.
-        static constexpr size_t Alignment    = 16;                                   ///< Required alignment.
+        static constexpr size_t LANE_COUNT   = Lane;     ///< Number of Lanes of current SIMD128 Register
+        static constexpr size_t MAX_LANE_COUNT =
+            BUFFER_WIDTH / (sizeof(DataType) * 8); /// Maximum Lanes in this register.
+        static constexpr size_t ALIGNMENT = 16;    ///< Required alignment.
 
-        static_assert(sizeof(DataType) * 8 * Lane <= BufferWidth && "Invalid size.");
+        static_assert(sizeof(DataType) * 8 * Lane <= BUFFER_WIDTH && "Invalid size.");
         static_assert(std::has_single_bit(Lane) && Lane > 1 &&
                       "Invalid Number of Lanes. Must be a power of 2(2, 4, 8, 16...)");
 
@@ -107,12 +108,12 @@ namespace flcn
          *       can cause segmentation faults.
          * @note Unused lanes must be zeroed-out manually.
          *
-         * @param[in] buffer The starting address of the values to fill the register with.
+         * @param[in] pBuffer The starting address of the values to fill the register with.
          *
          * @warning @p buffer must be aligned to 16-byte boundary. For unaligned data,
          *          use @ref load to load data manually.
          */
-        constexpr explicit Simd128(const DataType* buffer) noexcept;
+        constexpr explicit Simd128(const DataType* pBuffer) noexcept;
 
 
         /**
@@ -135,7 +136,7 @@ namespace flcn
 
 
         /// @brief Initialize a Simd128 with the supplied register.
-        explicit constexpr Simd128(simd::internal::Simd128Register_t<DataType> reg): _register(reg) {}
+        explicit constexpr Simd128(simd::internal::Simd128RegisterT<DataType> reg): _register(reg) {}
 
 
         /**
@@ -160,9 +161,9 @@ namespace flcn
          *       Example: loadAligned<2>(uint8_t*) will only load the lower 16-bit with the data and fill the rest with
          *       zeroes.
          *
-         * @param[in] data The data to load.
+         * @param[in] pData The data to load.
          */
-        constexpr void loadAligned(const DataType* data) noexcept;
+        constexpr void loadAligned(const DataType* pData) noexcept;
 
 
         /**
@@ -173,7 +174,7 @@ namespace flcn
          *       Example: loadAligned<2>(uint8_t*) will only load the lower 16-bit with the data and fill the rest with
          *       zeroes.
          *
-         * @param[in] data The data to load.
+         * @param[in] pData The data to load.
          *
          * @relatedalso loadAligned(DataType*)
          * @relatedalso store(DataType*)
@@ -181,7 +182,7 @@ namespace flcn
          * @relatedalso broadcast(DataType)
          * @relatedalso setZero()
          */
-        constexpr void load(const DataType* data) noexcept;
+        constexpr void load(const DataType* pData) noexcept;
 
 
         /**
@@ -451,7 +452,7 @@ namespace flcn
          *
          * @note Register arithmetic is limited to same data types and lanes.
          * @note Direct SIMD operations are limited to floating-point numbers only.
-         *       Therefore the operations for integrals are emulated by converting them to floating points, but some
+         *       Therefore, the operations for integrals are emulated by converting them to floating points, but some
          *       integrals like for `uint64_t` and `int64_t` are fully scalar since converting them to floating point
          *       can lead to precision loss due to the 53-bit maximum precision of double precision float point numbers.
          *
@@ -718,7 +719,7 @@ namespace flcn
          *
          * @code
          * // float x 4(lane) mask.
-         * const Simd128_t<float, 4> reg{ 1.0f, 2.0f, 3.0f, 4.0f };
+         * const Simd128<float, 4> reg{ 1.0f, 2.0f, 3.0f, 4.0f };
          * const auto mask = reg.makeBlendMask<true, false, true, false>();
          * // 0b00000000111111110000000011111111 or 0x00FF00FF
          * const auto mask = reg.makeBlendMask<true, false, true, true>();
@@ -730,7 +731,7 @@ namespace flcn
         template <bool... Mask>
             requires(std::has_single_bit(sizeof...(Mask)) && sizeof...(Mask) >= 2 && sizeof...(Mask) <= Lane)
         static constexpr BlendMask32_t makeBlendMask() noexcept
-        { return simd::makeBlendMask32<MaxLaneCount, Mask...>(); }
+        { return simd::makeBlendMask32<MAX_LANE_COUNT, Mask...>(); }
 
 
         /**
@@ -768,8 +769,8 @@ namespace flcn
          *
          *
          * // Usage
-         * const flcn::Simd128_t<float, 4> reg1{1.0f, 2.0f, 3.0f, 4.0f};
-         * const flcn::Simd128_t<float, 4> reg2{8.0f, 9.0f, 10.0f, 11.0f};
+         * const flcn::Simd128<float, 4> reg1{1.0f, 2.0f, 3.0f, 4.0f};
+         * const flcn::Simd128<float, 4> reg2{8.0f, 9.0f, 10.0f, 11.0f};
          * constexpr auto mask = flcn::makeBlendMask32<true, false, false, true>();
          * const auto blended = reg1.template blend<mask>(reg2); // {8.0f, 2.0f, 3.0f, 11.0f}
          * @endcode
@@ -796,12 +797,12 @@ namespace flcn
 
 
         /// @brief Get the internal register used by Simd128.
-        [[nodiscard]] FALCON_INLINE constexpr simd::internal::Simd128Register_t<DataType> naive() const noexcept
+        [[nodiscard]] FALCON_INLINE constexpr simd::internal::Simd128RegisterT<DataType> naive() const noexcept
         { return _register; }
 
 
         /// @brief Get the internal register used by Simd128.
-        [[nodiscard]] FALCON_INLINE constexpr simd::internal::Simd128Register_t<DataType> operator*() const noexcept
+        [[nodiscard]] FALCON_INLINE constexpr simd::internal::Simd128RegisterT<DataType> operator*() const noexcept
         { return _register; }
 
 
@@ -849,10 +850,10 @@ namespace flcn
 
 
     private:
-        simd::internal::Simd128Register_t<DataType> _register;
+        simd::internal::Simd128RegisterT<DataType> _register;
     };
 
-} // namespace flcn
+} // namespace flcn::details
 
 
 // --- THESE SHOULD BE INCLUDED FIRST as the .inl files use functions declared in this header.

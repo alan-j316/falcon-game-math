@@ -53,7 +53,7 @@
             }                                                                                                          \
         }                                                                                                              \
                                                                                                                        \
-        flcn::Simd128_t<Type, Lane> reg{ data };                                                                       \
+        flcn::Simd128<Type, Lane> reg{ data };                                                                       \
                                                                                                                        \
         auto regRes = reg >> ShiftAmount;                                                                              \
         regRes.storeAligned(result.data());                                                                            \
@@ -102,7 +102,7 @@ TEST_SIMD128_SHIFT_RIGHT_ARITHMETIC_WITH_DIFFERENT_SHIFT_SIZES(31)
             }                                                                                                          \
         }                                                                                                              \
                                                                                                                        \
-        flcn::Simd128_t<Type, Lane> reg{ data };                                                                       \
+        flcn::Simd128<Type, Lane> reg{ data };                                                                       \
                                                                                                                        \
         reg >>= ShiftAmount;                                                                                           \
         reg.storeAligned(result.data());                                                                               \
@@ -155,7 +155,7 @@ TEST_SIMD128_SHIFT_RIGHT_EQUALS_ARITHMETIC_WITH_DIFFERENT_SHIFT_SIZES(31)
             }                                                                                                          \
         }                                                                                                              \
                                                                                                                        \
-        flcn::Simd128_t<Type, Lane> reg{ data };                                                                       \
+        flcn::Simd128<Type, Lane> reg{ data };                                                                       \
                                                                                                                        \
         auto resultReg = reg.shiftRightLogical(ShiftAmount);                                                           \
         resultReg.storeAligned(result.data());                                                                         \
@@ -204,7 +204,7 @@ TEST_SIMD128_SHIFT_RIGHT_LOGICAL_WITH_DIFFERENT_SHIFT_SIZES(31)
             }                                                                                                          \
         }                                                                                                              \
                                                                                                                        \
-        flcn::Simd128_t<Type, Lane> reg{ data };                                                                       \
+        flcn::Simd128<Type, Lane> reg{ data };                                                                       \
                                                                                                                        \
         auto regRes = reg.template shiftRightArithmetic<ShiftAmount>();                                                \
         regRes.storeAligned(result.data());                                                                            \
@@ -257,7 +257,7 @@ TEST_SIMD128_CONST_SHIFT_RIGHT_ARITHMETIC_WITH_DIFFERENT_SHIFT_SIZES(31)
             }                                                                                                          \
         }                                                                                                              \
                                                                                                                        \
-        flcn::Simd128_t<Type, Lane> reg{ data };                                                                       \
+        flcn::Simd128<Type, Lane> reg{ data };                                                                       \
                                                                                                                        \
         auto resultReg = reg.template shiftRightLogical<ShiftAmount>();                                                \
         resultReg.storeAligned(result.data());                                                                         \

@@ -31,9 +31,12 @@
  */
 namespace flcn
 {
-    /// Forward Declaration
-    template <SimdBackend Backend, typename T, size_t Lane>
-    struct Simd256;
+    namespace details
+    {
+        /// Forward Declaration
+        template <SimdBackend Backend, typename T, size_t Lane>
+        struct Simd256; // NOLINT
+    } // namespace details
 
 
     namespace simd::internal
@@ -43,7 +46,7 @@ namespace flcn
          *        @note Use @ref AVXRegister_t<type> for a shorter syntax.
          */
         template <SimdBackend, typename, size_t>
-        struct Simd256Register;
+        struct Simd256Register; // NOLINT
 
 #if defined(FALCON_PLATFORM_X86)
         // TODO: Update to have a backend type parameter
@@ -66,7 +69,7 @@ namespace flcn
         };
 
         template <typename T>
-        using Simd128Register_t = Simd128Register<T>::Type;
+        using Simd128RegisterT = Simd128Register<T>::Type;
 
 
 
@@ -81,7 +84,7 @@ namespace flcn
                      (Backend < SimdBackend::ARCH_AVX || (Backend < SimdBackend::ARCH_AVX2 && std::is_integral_v<T>) ))
         struct Simd256Register<Backend, T, Lane>
         {
-            using Type = Simd256<SimdBackend::ARCH_SSE2, T, Lane>;
+            using Type = details::Simd256<SimdBackend::ARCH_SSE2, T, Lane>;
         };
 
         /// AVX2 Integral Specialization
@@ -110,7 +113,7 @@ namespace flcn
 
         /// Simd256Register type alias
         template <SimdBackend Backend, typename T, size_t Lane>
-        using Simd256Register_t = Simd256Register<Backend, T, Lane>::Type;
+        using Simd256RegisterT = Simd256Register<Backend, T, Lane>::Type;
 
 
         /**
@@ -136,7 +139,7 @@ namespace flcn
         };
 
         template <typename T>
-        using AVX512Register_t = AVX512Register<T>::Type;
+        using AVX512RegisterT = AVX512Register<T>::Type;
 
 
 #elif defined(FALCON_PLATFORM_ARM)

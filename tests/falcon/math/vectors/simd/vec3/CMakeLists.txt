@@ -18,7 +18,7 @@ target_sources(
         ProjectionTests.cpp
         RawPointerTests.cpp
         #        RejectionTests.cpp
-        #        StringRepresentationTests.cpp
+        StringRepresentationTests.cpp
         SwizzlingTests.cpp
         TypeConversionTests.cpp
         UtilityTests.cpp

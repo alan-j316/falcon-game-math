@@ -2386,41 +2386,40 @@ namespace flcn::simd
 
         /** @} */
 
-        //
-        //
-        //         /**
-        //          * @addtogroup Falcon_Vec3_Log
-        //          * @{
-        //          */
-        //
-        //         /**
-        //          * @brief Write the vector to an output stream.
-        //          *        Format the vector as <x, y, z> string representation for debugging or logging.
-        //          *
-        //          * @param[in] os     The output stream to write to.
-        //          * @param[in] vector The vector to be streamed.
-        //          *
-        //          * @return A reference to the output stream @p os.
-        //          */
-        //         friend std::ostream& operator<<(std::ostream& os, const Vec3& vector)
-        //         {
-        //             const std::streamsize oldPrecision     = os.precision();
-        //             const std::ios_base::fmtflags oldFlags = os.flags();
-        //
-        //             auto precision = Config::useFullPrecision
-        //                 ? std::is_same_v<T, double> ? Config::DOUBLE_PRECISION : Config::FLOAT_PRECISION
-        //                 : Config::LOG_PRECISION;
-        //             os << std::setprecision(precision) << std::fixed;
-        //             os << "<" << vector[0] << ", " << vector[1] << ", " << vector[2] << ">\n";
-        //
-        //             os.precision(oldPrecision);
-        //             os.flags(oldFlags);
-        //
-        //             return os;
-        //         }
-        //
-        //         /** @} */
-        //
+
+        /**
+         * @addtogroup Falcon_Vec3_Log
+         * @{
+         */
+
+        /**
+         * @brief Write the vector to an output stream.
+         *        Format the vector as <x, y, z> string representation for debugging or logging.
+         *
+         * @param[in] os     The output stream to write to.
+         * @param[in] vector The vector to be streamed.
+         *
+         * @return A reference to the output stream @p os.
+         */
+        friend std::ostream& operator<<(std::ostream& os, const Vec3& vector)
+        {
+            const std::streamsize oldPrecision     = os.precision();
+            const std::ios_base::fmtflags oldFlags = os.flags();
+
+            auto precision = Config::useFullPrecision
+                ? std::is_same_v<T, double> ? Config::DOUBLE_PRECISION : Config::FLOAT_PRECISION
+                : Config::LOG_PRECISION;
+            os << std::setprecision(precision) << std::fixed;
+            os << "<" << vector[0] << ", " << vector[1] << ", " << vector[2] << ">\n";
+
+            os.precision(oldPrecision);
+            os.flags(oldFlags);
+
+            return os;
+        }
+
+        /** @} */
+
 
 
         /**

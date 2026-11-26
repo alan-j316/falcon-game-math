@@ -170,13 +170,9 @@ namespace
 
         /// @test Verify that Vec3::mix returns a valid vector at compile time.
         constexpr auto MIX_VEC        = NORM_VEC_A.mix(NORM_VEC_B, 0.25f);
-        constexpr auto STATIC_MIX_VEC = flcn::Vec3F::mix(NORM_VEC_A, NORM_VEC_B, 0.25f);
         static_assert(MIX_VEC.x() == 1.75f);
         static_assert(MIX_VEC.y() == 1.5625f);
         static_assert(MIX_VEC.z() == 3.5f);
-        static_assert(STATIC_MIX_VEC.x() == 1.75f);
-        static_assert(STATIC_MIX_VEC.y() == 1.5625f);
-        static_assert(STATIC_MIX_VEC.z() == 3.5f);
 
     } // namespace static_tests
 } // namespace

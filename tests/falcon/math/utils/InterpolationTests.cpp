@@ -17,61 +17,38 @@
 
 #include "VecUtilsSetup.h"
 
-// namespace
-// {
-//     namespace static_tests
-//     {
-//         constexpr flcn::Vec2 NORM_VEC_A(1.0f, 2.0f);
-//         constexpr flcn::Vec2 NORM_VEC_B(4.0f, 0.25f);
-//         constexpr flcn::Vec2 INF_VEC(flcn::constants::INFINITY_F, flcn::constants::INFINITY_F);
-//         constexpr flcn::Vec2 NAN_VEC(flcn::constants::NaN, flcn::constants::NaN);
-//
-//         /// @test Verify that Vec2::hasInf returns a valid boolean at compile time.
-//         static_assert(NORM_VEC_A.hasInf() == false);
-//         static_assert(INF_VEC.hasInf() == true);
-//         static_assert(NAN_VEC.hasInf() == false);
-//
-//         /// @test Verify that Vec2::hasInf(static wrapper) returns a valid boolean at compile time.
-//         static_assert(flcn::Vec2<float>::hasInf(NORM_VEC_A) == false);
-//         static_assert(flcn::Vec2<float>::hasInf(INF_VEC) == true);
-//         static_assert(flcn::Vec2<float>::hasInf(NAN_VEC) == false);
-//
-//         /// @test Verify that Vec2::hasNaN returns a valid boolean at compile time.
-//         static_assert(NORM_VEC_A.hasNaN() == false);
-//         static_assert(INF_VEC.hasNaN() == false);
-//         static_assert(NAN_VEC.hasNaN() == true);
-//
-//         /// @test Verify that Vec2::hasNaN(static wrapper) returns a valid boolean at compile time.
-//         static_assert(flcn::Vec2<float>::hasNaN(NORM_VEC_A) == false);
-//         static_assert(flcn::Vec2<float>::hasNaN(INF_VEC) == false);
-//         static_assert(flcn::Vec2<float>::hasNaN(NAN_VEC) == true);
-//
-//         /// @test Verify that Vec2::min returns a valid vector at compile time.
-//         constexpr auto MIN_VEC        = NORM_VEC_A.min(NORM_VEC_B);
-//         constexpr auto STATIC_MIN_VEC = flcn::Vec2F::min(NORM_VEC_A, NORM_VEC_B);
-//         static_assert(MIN_VEC.x() == 1.0f);
-//         static_assert(MIN_VEC.y() == 0.25f);
-//         static_assert(STATIC_MIN_VEC.x() == 1.0f);
-//         static_assert(STATIC_MIN_VEC.y() == 0.25f);
-//
-//         /// @test Verify that Vec2::max returns a valid vector at compile time.
-//         constexpr auto MAX_VEC        = NORM_VEC_A.max(NORM_VEC_B);
-//         constexpr auto STATIC_MAX_VEC = flcn::Vec2F::max(NORM_VEC_A, NORM_VEC_B);
-//         static_assert(MAX_VEC.x() == 4.0f);
-//         static_assert(MAX_VEC.y() == 2.0f);
-//         static_assert(STATIC_MAX_VEC.x() == 4.0f);
-//         static_assert(STATIC_MAX_VEC.y() == 2.0f);
-//
-//         /// @test Verify that Vec2::mix returns a valid vector at compile time.
-//         constexpr auto MIX_VEC        = NORM_VEC_A.mix(NORM_VEC_B, 0.25f);
-//         constexpr auto STATIC_MIX_VEC = flcn::Vec2F::mix(NORM_VEC_A, NORM_VEC_B, 0.25f);
-//         static_assert(MIX_VEC.x() == 1.75f);
-//         static_assert(MIX_VEC.y() == 1.5625f);
-//         static_assert(STATIC_MIX_VEC.x() == 1.75f);
-//         static_assert(STATIC_MIX_VEC.y() == 1.5625f);
-//
-//     } // namespace static_tests
-// } // namespace
+namespace
+{
+    namespace static_tests
+    {
+        constexpr flcn::Vec2 VEC_A2(1.0f, 2.0f);
+        constexpr flcn::Vec2 VEC_B2(4.0f, 0.25f);
+        constexpr flcn::Vec3 VEC_A3(1.0f, 2.0f, 3.0f);
+        constexpr flcn::Vec3 VEC_B3(4.0f, 0.25f, 5.0f);
+        constexpr flcn::Vec4 VEC_A4(1.0f, 2.0f, 3.0f, 4.0f);
+        constexpr flcn::Vec4 VEC_B4(4.0f, 0.25f, 5.0f, -5.0f);
+
+        /// @test Verify that flcn::mix returns a valid 2D-vector at compile time.
+        constexpr auto STATIC_MIX_VEC2 = flcn::mix(VEC_A2, VEC_B2, 0.25f);
+        static_assert(STATIC_MIX_VEC2.x() == 1.75f);
+        static_assert(STATIC_MIX_VEC2.y() == 1.5625f);
+
+        /// @test Verify that flcn::mix returns a valid 3D-vector at compile time.
+        constexpr auto STATIC_MIX_VEC3 = flcn::mix(VEC_A3, VEC_B3, 0.25f);
+        static_assert(STATIC_MIX_VEC3.x() == 1.75f);
+        static_assert(STATIC_MIX_VEC3.y() == 1.5625f);
+        static_assert(STATIC_MIX_VEC3.z() == 3.5f);
+
+        /// @test Verify that flcn::mix returns a valid 4D-vector at compile time.
+        constexpr auto STATIC_MIX_VEC4 = flcn::mix(VEC_A4, VEC_B4, 0.25f);
+        static_assert(STATIC_MIX_VEC4.x() == 1.75f);
+        static_assert(STATIC_MIX_VEC4.y() == 1.5625f);
+        static_assert(STATIC_MIX_VEC4.z() == 3.5f);
+        static_assert(STATIC_MIX_VEC4.w() == 1.75f);
+
+    } // namespace static_tests
+} // namespace
+
 
 /// +---------------------------------------------------------------------------------------+
 /// |                             SCALAR VEC<n> TESTS                                       |

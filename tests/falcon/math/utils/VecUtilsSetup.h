@@ -1,8 +1,8 @@
 #pragma once
 /**
- * @file Vec2TestSetup.h
+ * @file VecUtilsSetup.h
  * @author Alan Abraham P Kochumon
- * @date Created on: April 03, 2026
+ * @date Created on: November 26, 2026
  *
  * @brief Define test setups common to all @ref Vec3 tests.
  *
@@ -12,10 +12,11 @@
 #define FORCE_SCALAR
 #define ENABLE_FALCON_SHADER_OPERATORS
 
-#include "math/vectors/CommonVectorSetup.h"
+#include "InterpolationTestFixture.h"
+#include "utils/VectorUtils.h"
 
 #include <falcon/math/common/MathTraits.h>
-#include <falcon/math/vectors/utils/Interpolation>
+#include <falcon/math/utils/Interpolation.h>
 #include <gtest/gtest.h>
 
 using namespace testutils;

@@ -276,22 +276,10 @@ TYPED_TEST(SimdVec3MixTests, ReturnsInterpolatedVector)
 }
 
 
-TYPED_TEST(SimdVec3MixTests, StaticWrapper_ReturnsMinimumComponentVector)
-{
-    EXPECT_VEC_EQ(this->expected, flcn::simd::Vec3<TypeParam>::mix(this->a, this->b, this->factor));
-}
-
-
 TEST_P(SimdVec3MixParameterizedTests, ReturnsInterpolatedVector)
 {
     const auto& [a, b, factor, expected] = GetParam();
     EXPECT_VEC_EQ(expected, a.mix(b, factor));
-}
-
-TEST_P(SimdVec3MixParameterizedTests, StaticWrapper_ReturnsInterpolatedVector)
-{
-    const auto& [a, b, factor, expected] = GetParam();
-    EXPECT_VEC_EQ(expected, flcn::simd::Vec3F::mix(a, b, factor));
 }
 
 /** @} */

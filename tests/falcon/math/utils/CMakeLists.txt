@@ -1,19 +1,26 @@
-add_library(VecUtilsTests OBJECT)
+add_executable(
+        FalconMathUtilsTests
 
-target_sources(
-        VecUtilsTests PRIVATE
         InterpolationTests.cpp
-
         VecUtilsSetup.h
 )
 
+
 target_include_directories(
-        VecUtilsTests PRIVATE
+        FalconMathUtilsTests PRIVATE
         ${FALCON_TEST_ROOT_DIR}/include
 )
 
 
 target_link_libraries(
-        VecUtilsTests PRIVATE
+        FalconMathUtilsTests PRIVATE
         FalconMathTestSetup
 )
+
+include(GoogleTest)
+# Runs the test binary as a single test
+if (FALCON_COMBINED_TEST_RUN)
+    add_test(NAME FalconMathUtilsTestSuite COMMAND FalconMathUtilsTests)
+else ()
+    gtest_discover_tests(FalconMathUtilsTests DISCOVERY_MODE POST_BUILD DISCOVERY_TIMEOUT 180)
+endif ()

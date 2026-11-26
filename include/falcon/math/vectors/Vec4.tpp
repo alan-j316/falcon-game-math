@@ -1573,12 +1573,6 @@ namespace flcn
                      static_cast<T>(std::lerp(_data[3], vec[3], factor)) };
     }
 
-
-    template <Arithmetic T>
-    template <std::floating_point F>
-    FALCON_INLINE constexpr Vec4<T> Vec4<T>::mix(const Vec4& vecA, const Vec4& vecB, F factor) noexcept
-    { return vecA.mix(vecB, factor); }
-
 } // namespace flcn
 
 

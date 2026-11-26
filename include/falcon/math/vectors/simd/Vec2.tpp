@@ -1313,12 +1313,6 @@ namespace flcn::simd
         return *this + factor * (vec - *this);
     }
 
-
-    template <Arithmetic T>
-    FALCON_INLINE constexpr Vec2<T> Vec2<T>::mix(const Vec2& vecA, const Vec2& vecB, T factor) noexcept
-        requires(std::is_floating_point_v<T>)
-    { return vecA.mix(vecB, factor); }
-
 } // namespace flcn::simd
 
 #if defined(__clang__)

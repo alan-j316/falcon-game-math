@@ -1503,12 +1503,6 @@ namespace flcn
     }
 
 
-    template <Arithmetic T>
-    template <std::floating_point F>
-    FALCON_INLINE constexpr Vec2<T> Vec2<T>::mix(const Vec2& vecA, const Vec2& vecB, F factor) noexcept
-    { return vecA.mix(vecB, factor); }
-
-
 } // namespace flcn
 
 #if defined(__clang__)

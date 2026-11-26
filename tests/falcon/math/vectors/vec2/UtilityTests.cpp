@@ -336,29 +336,11 @@ TYPED_TEST(Vec2MixTests, ReturnsInterpolatedVector)
 }
 
 
-TYPED_TEST(Vec2MixTests, StaticWrapper_ReturnsMinimumComponentVector)
-{
-    if constexpr (std::is_floating_point_v<TypeParam>)
-    {
-        EXPECT_VEC_EQ(this->expectedFP, flcn::Vec2<TypeParam>::mix(this->a, this->b, this->factor));
-    }
-    else
-    {
-        EXPECT_VEC_EQ(this->expectedInt, flcn::Vec2<TypeParam>::mix(this->a, this->b, this->factor));
-    }
-}
-
-
 TEST_P(Vec2MixParameterizedTests, ReturnsInterpolatedVector)
 {
     const auto& [a, b, factor, expected] = GetParam();
     EXPECT_VEC_EQ(expected, a.mix(b, factor));
 }
 
-TEST_P(Vec2MixParameterizedTests, StaticWrapper_ReturnsInterpolatedVector)
-{
-    const auto& [a, b, factor, expected] = GetParam();
-    EXPECT_VEC_EQ(expected, flcn::Vec2F::mix(a, b, factor));
-}
 
 /** @} */

@@ -220,7 +220,7 @@ template <typename T>
 class SimdVec2MixTests: public testing::Test
 {
 public:
-    flcn::simd::Vec2<T> a, b, expectedFP, expectedInt;
+    flcn::simd::Vec2<T> a, b, expected;
     float factor = 0.5f;
 
 protected:
@@ -228,8 +228,7 @@ protected:
     {
         a           = { T(30.12389399999999995), T(5.03127999999999975) };
         b           = { T(4.23901000000000039), T(0.10348000000000000) };
-        expectedFP  = { T(17.18145200000000017), T(2.56738000000000000) };
-        expectedInt = { T(17), T(2) };
+        expected  = { T(17.18145200000000017), T(2.56738000000000000) };
     }
 };
 TYPED_TEST_SUITE(SimdVec2MixTests, SupportedFloatingPointTypes);

@@ -25,7 +25,6 @@
 
 namespace flcn::details
 {
-
     template <typename DataType>
     struct alignas(32) Emulated256<SimdBackend::ARCH_SSE2, DataType>
     {
@@ -718,6 +717,7 @@ namespace flcn::details
         [[nodiscard]] constexpr Simd256 shiftRightLogical() const noexcept;
 
 
+
         ///+=+=+=+=+=+=+=+=+=+=+=+=+=
         ///   MASKING/BLENDING
         ///+=+=+=+=+=+=+=+=+=+=+=+=+=
@@ -822,7 +822,6 @@ namespace flcn::details
         ///+=+=+=+=+=+=+=+=+=+=+=+=+=
         ///       UTILITIES
         ///+=+=+=+=+=+=+=+=+=+=+=+=+=
-
 
         /// @brief Get the minimum value from this register.
         [[nodiscard]] constexpr DataType horizontalMin() const noexcept;

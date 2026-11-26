@@ -42,7 +42,7 @@ namespace flcn
     namespace simd::internal
     {
         /**
-         * @brief Defines the internal register type of a 256-bit register, given ISA and the data-type.
+         * @brief Defines the internal register type of 256-bit register, given ISA and the data-type.
          *        @note Use @ref AVXRegister_t<type> for a shorter syntax.
          */
         template <SimdBackend, typename, size_t>

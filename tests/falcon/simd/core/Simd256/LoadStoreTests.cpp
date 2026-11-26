@@ -3,7 +3,7 @@
  * @author Alan Abraham P Kochumon
  * @date Created on: August 16, 2026
  *
- * @brief Verify @ref flcn::Simd256 register loading and storing in a platform agnostic manner.
+ * @brief Verify @ref flcn::Simd256 register loading and storing in a platform-agnostic manner.
  *
  * @copyright Copyright (c) 2026 Alan Abraham P Kochumon
  */

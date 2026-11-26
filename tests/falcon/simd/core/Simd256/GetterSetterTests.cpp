@@ -333,8 +333,7 @@ TYPED_TEST(Simd256GetterSetterTests, SetAt_SetsTheValueAtAppropriateIndex)
     //         EXPECT_ANY_EQ(4.0, dataUpper[1]);
     //     }
 
-    #elif defined(FALCON_ENABLE_AVX) || defined(FALCON_ENABLE_SSE4) || defined(FALCON_ENABLE_SSE2)
-
+    #elif defined(FALCON_ENABLE_SSE4) || defined(FALCON_ENABLE_SSE2)
 
 TEST(Simd256GetterSetterTests, Integrals_Naive_ReturnsDefaultRegister)
 {

@@ -9,14 +9,12 @@
  */
 
 
-#include "Vec4TestSetup.h"
-
-
-
 /**
  * @addtogroup T_Falcon_Vec4_Utils
  * @{
  */
+
+#include "Vec4TestSetup.h"
 
 namespace
 {
@@ -119,57 +117,6 @@ namespace
     };
     TYPED_TEST_SUITE(Vec4MaxTests, SupportedArithmeticTypes);
 
-    /**
-     * @brief Test fixture for @ref flcn::Vec4 mix function.
-     * @tparam T The numeric type of vector components.
-     */
-    template <typename T>
-    class Vec4MixTests: public testing::Test
-    {
-    public:
-        flcn::Vec4<T> a, b, expectedFP, expectedInt;
-        float factor = 0.5f;
-
-    protected:
-        void SetUp() override
-        {
-            a = { T(30.12389399999999995), T(5.03127999999999975), T(1.01238000000000006), T(1.90300000000000002) };
-            b = { T(4.23901000000000039), T(0.10348000000000000), T(1.23893000000000009), T(5.03892000000000007) };
-            expectedFP  = { T(17.18145200000000017), T(2.56738000000000000), T(1.12565500000000007),
-                            T(3.47095999999999982) };
-            expectedInt = { T(17), T(2), T(1), T(3) };
-        }
-    };
-    TYPED_TEST_SUITE(Vec4MixTests, SupportedArithmeticTypes);
-
-
-    struct Vec4MixParams
-    {
-        flcn::Vec4F a;
-        flcn::Vec4F b;
-        float factor;
-        flcn::Vec4F expected;
-    };
-
-    /**
-     * @brief Test fixture for @ref flcn::Vec4 mix for testing various parameters.
-     */
-    class Vec4MixParameterizedTests: public testing::TestWithParam<Vec4MixParams>
-    {};
-    INSTANTIATE_TEST_SUITE_P(Vec4MixTests, Vec4MixParameterizedTests,
-                             ::testing::Values(Vec4MixParams{ flcn::Vec4(30.12389f, 5.031279f, 1.01238f, 1.903000f),
-                                                              flcn::Vec4(4.23901f, 0.10348f, 1.23893f, 5.038920f), 0.5f,
-                                                              flcn::Vec4(17.18145f, 2.56738f, 1.125655f, 3.470959f) },
-                                               Vec4MixParams{ flcn::Vec4(30.12389f, 5.031279f, 1.01238f, 1.903000f),
-                                                              flcn::Vec4(4.23901f, 0.10348f, 1.23893f, 5.038920f),
-                                                              0.25f,
-                                                              flcn::Vec4(23.65267f, 3.79932f, 1.069017f, 2.68698f) },
-                                               Vec4MixParams{ flcn::Vec4(30.12389f, 5.031279f, 1.01238f, 1.903000f),
-                                                              flcn::Vec4(4.23901f, 0.10348f, 1.23893f, 5.038920f), 1.0f,
-                                                              flcn::Vec4(4.23901f, 0.10348f, 1.23893f, 5.038920f) },
-                                               Vec4MixParams{ flcn::Vec4(30.12389f, 5.031279f, 1.01238f, 1.903000f),
-                                                              flcn::Vec4(4.23901f, 0.10348f, 1.23893f, 5.038920f), 0.0f,
-                                                              flcn::Vec4(30.12389f, 5.031279f, 1.01238f, 1.903000f) }));
 
     /**************************************
      *            STATIC TESTS            *

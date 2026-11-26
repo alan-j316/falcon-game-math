@@ -10,14 +10,12 @@
 
 
 
-#include "Vec3TestSetup.h"
-
-
-
 /**
  * @addtogroup T_Falcon_Vec3_Utils
  * @{
  */
+
+#include "Vec3TestSetup.h"
 
 namespace
 {
@@ -74,60 +72,6 @@ namespace
         }
     };
     TYPED_TEST_SUITE(Vec3MaxTests, SupportedArithmeticTypes);
-
-
-    /**
-     * @brief Test fixture for @ref flcn::Vec3 mix function.
-     * @tparam T The numeric type of vector components.
-     */
-    template <typename T>
-    class Vec3MixTests: public testing::Test
-    {
-    public:
-        flcn::Vec3<T> a, b, expectedFP, expectedInt;
-        float factor = 0.5f;
-
-    protected:
-        void SetUp() override
-        {
-            a           = { T(30.12389399999999995), T(5.03127999999999975), T(1.01238000000000006) };
-            b           = { T(4.23901000000000039), T(0.10348000000000000), T(1.23893000000000009) };
-            expectedFP  = { T(17.18145200000000017), T(2.56738000000000000), T(1.12565500000000007) };
-            expectedInt = { T(17), T(2), T(1) };
-        }
-    };
-    TYPED_TEST_SUITE(Vec3MixTests, SupportedArithmeticTypes);
-
-
-    struct Vec3MixParams
-    {
-        flcn::Vec3F a;
-        flcn::Vec3F b;
-        float factor;
-        flcn::Vec3F expected;
-    };
-
-
-    /**
-     * @brief Test fixture for @ref flcn::Vec3 mix for testing various parameters.
-     */
-    class Vec3MixParameterizedTests: public testing::TestWithParam<Vec3MixParams>
-    {};
-    INSTANTIATE_TEST_SUITE_P(Vec3MixTests, Vec3MixParameterizedTests,
-                             ::testing::Values(Vec3MixParams{ flcn::Vec3(30.12389f, 5.031279f, 1.01238f),
-                                                              flcn::Vec3(4.23901f, 0.10348f, 1.23893f), 0.5f,
-                                                              flcn::Vec3(17.18145f, 2.56738f, 1.125655f) },
-                                               Vec3MixParams{ flcn::Vec3(30.12389f, 5.031279f, 1.01238f),
-                                                              flcn::Vec3(4.23901f, 0.10348f, 1.23893f), 0.25f,
-                                                              flcn::Vec3(23.65267f, 3.79932f, 1.069017f) },
-                                               Vec3MixParams{ flcn::Vec3(30.12389f, 5.031279f, 1.01238f),
-                                                              flcn::Vec3(4.23901f, 0.10348f, 1.23893f), 1.0f,
-                                                              flcn::Vec3(4.23901f, 0.10348f, 1.23893f) },
-                                               Vec3MixParams{ flcn::Vec3(30.12389f, 5.031279f, 1.01238f),
-                                                              flcn::Vec3(4.23901f, 0.10348f, 1.23893f), 0.0f,
-                                                              flcn::Vec3(30.12389f, 5.031279f, 1.01238f) }));
-
-
 
 
     /**

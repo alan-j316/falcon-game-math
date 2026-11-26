@@ -12,13 +12,11 @@
 #define FORCE_SCALAR
 #define ENABLE_FALCON_SHADER_OPERATORS
 
-#include "../../../CommonSetup.h"
+#include "InterpolationTestFixture.h"
 #include "utils/VectorUtils.h"
 
 #include <falcon/math/common/MathTraits.h>
 #include <falcon/math/vectors/Vec3.h>
 #include <gtest/gtest.h>
-
-
 
 using namespace testutils;

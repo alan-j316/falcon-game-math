@@ -9,13 +9,13 @@
  */
 
 
-#include "Vec2TestSetup.h"
-
 
 /**
  * @addtogroup T_Falcon_Vec2_Utils
  * @{
  */
+
+#include "Vec2TestSetup.h"
 
 namespace
 {
@@ -73,55 +73,6 @@ namespace
         }
     };
     TYPED_TEST_SUITE(Vec2MaxTests, SupportedArithmeticTypes);
-
-
-    /**
-     * @brief Test fixture for @ref flcn::Vec2 mix function.
-     * @tparam T The numeric type of vector components.
-     */
-    template <typename T>
-    class Vec2MixTests: public testing::Test
-    {
-    public:
-        flcn::Vec2<T> a, b, expectedFP, expectedInt;
-        float factor = 0.5f;
-
-    protected:
-        void SetUp() override
-        {
-            a           = { T(30.12389399999999995), T(5.03127999999999975) };
-            b           = { T(4.23901000000000039), T(0.10348000000000000) };
-            expectedFP  = { T(17.18145200000000017), T(2.56738000000000000) };
-            expectedInt = { T(17), T(2) };
-        }
-    };
-    TYPED_TEST_SUITE(Vec2MixTests, SupportedArithmeticTypes);
-
-
-    struct Vec2MixParams
-    {
-        flcn::Vec2F a;
-        flcn::Vec2F b;
-        float factor;
-        flcn::Vec2F expected;
-    };
-
-
-    /**
-     * @brief Test fixture for @ref flcn::Vec2 mix for testing various parameters.
-     */
-    class Vec2MixParameterizedTests: public testing::TestWithParam<Vec2MixParams>
-    {};
-    INSTANTIATE_TEST_SUITE_P(
-        Vec2MixTests, Vec2MixParameterizedTests,
-        ::testing::Values(Vec2MixParams{ flcn::Vec2(30.12389f, 5.031279f), flcn::Vec2(4.23901f, 0.10348f), 0.5f,
-                                         flcn::Vec2(17.18145f, 2.56738f) },
-                          Vec2MixParams{ flcn::Vec2(30.12389f, 5.031279f), flcn::Vec2(4.23901f, 0.10348f), 0.25f,
-                                         flcn::Vec2(23.65267f, 3.79932f) },
-                          Vec2MixParams{ flcn::Vec2(30.12389f, 5.031279f), flcn::Vec2(4.23901f, 0.10348f), 1.0f,
-                                         flcn::Vec2(4.23901f, 0.10348f) },
-                          Vec2MixParams{ flcn::Vec2(30.12389f, 5.031279f), flcn::Vec2(4.23901f, 0.10348f), 0.0f,
-                                         flcn::Vec2(30.12389f, 5.031279f) }));
 
 
     /**

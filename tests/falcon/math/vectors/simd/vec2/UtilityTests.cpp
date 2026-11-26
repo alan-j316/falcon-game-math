@@ -9,13 +9,14 @@
  */
 
 
-#include "Vec2TestSetup.h"
 
 
 /**
  * @addtogroup T_Falcon_Vec2_Utils
  * @{
  */
+
+#include "Vec2TestSetup.h"
 
 namespace
 {
@@ -111,56 +112,7 @@ namespace
     TYPED_TEST_SUITE(SimdVec2MaxTests, SupportedArithmeticTypes);
 
 
-    /**
-     * @brief Test fixture for @ref flcn::simd::Vec2 mix function.
-     * @tparam T The numeric type of vector components.
-     */
-    template <typename T>
-    class SimdVec2MixTests: public testing::Test
-    {
-    public:
-        flcn::simd::Vec2<T> a, b, expectedFP, expectedInt;
-        float factor = 0.5f;
 
-    protected:
-        void SetUp() override
-        {
-            a           = { T(30.12389399999999995), T(5.03127999999999975) };
-            b           = { T(4.23901000000000039), T(0.10348000000000000) };
-            expectedFP  = { T(17.18145200000000017), T(2.56738000000000000) };
-            expectedInt = { T(17), T(2) };
-        }
-    };
-    TYPED_TEST_SUITE(SimdVec2MixTests, SupportedFloatingPointTypes);
-
-
-    struct SimdVec2MixParams
-    {
-        flcn::simd::Vec2F a;
-        flcn::simd::Vec2F b;
-        float factor;
-        flcn::simd::Vec2F expected;
-    };
-
-
-    /**
-     * @brief Test fixture for @ref flcn::simd::Vec2 mix for testing various parameters.
-     */
-    class SimdVec2MixParameterizedTests: public testing::TestWithParam<SimdVec2MixParams>
-    {};
-    INSTANTIATE_TEST_SUITE_P(SimdVec2MixTests, SimdVec2MixParameterizedTests,
-                             ::testing::Values(SimdVec2MixParams{ flcn::simd::Vec2(30.12389f, 5.031279f),
-                                                                  flcn::simd::Vec2(4.23901f, 0.10348f), 0.5f,
-                                                                  flcn::simd::Vec2(17.18145f, 2.56738f) },
-                                               SimdVec2MixParams{ flcn::simd::Vec2(30.12389f, 5.031279f),
-                                                                  flcn::simd::Vec2(4.23901f, 0.10348f), 0.25f,
-                                                                  flcn::simd::Vec2(23.65267f, 3.79932f) },
-                                               SimdVec2MixParams{ flcn::simd::Vec2(30.12389f, 5.031279f),
-                                                                  flcn::simd::Vec2(4.23901f, 0.10348f), 1.0f,
-                                                                  flcn::simd::Vec2(4.23901f, 0.10348f) },
-                                               SimdVec2MixParams{ flcn::simd::Vec2(30.12389f, 5.031279f),
-                                                                  flcn::simd::Vec2(4.23901f, 0.10348f), 0.0f,
-                                                                  flcn::simd::Vec2(30.12389f, 5.031279f) }));
 
 } // namespace
 

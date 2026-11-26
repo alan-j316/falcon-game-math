@@ -11,7 +11,7 @@
 
 #define ENABLE_FALCON_SHADER_OPERATORS
 
-#include "../../../../CommonSetup.h"
+#include "InterpolationTestFixture.h"
 #include "utils/VectorUtils.h"
 
 #include <falcon/math/common/MathTraits.h>

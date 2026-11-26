@@ -48,6 +48,9 @@ add_library(${FALCON_MATH_TARGET_NAME} INTERFACE
         vectors/Vec4.h
         vectors/Vec4.tpp
 
+        utils/Interpolation.h
+        utils/Interpolation.tpp
+
         # SIMD-ACCELERATED WRAPPER
         vectors/simd/Vec2.h
         vectors/simd/Vec2.tpp
@@ -56,7 +59,7 @@ add_library(${FALCON_MATH_TARGET_NAME} INTERFACE
 )
 # TODO: REMOVE
 target_compile_options(${FALCON_MATH_TARGET_NAME} INTERFACE $<$<CXX_COMPILER_ID:MSVC>:/fp:strict>)
-target_compile_features(${FALCON_MATH_TARGET_NAME}  INTERFACE cxx_std_20)
+target_compile_features(${FALCON_MATH_TARGET_NAME} INTERFACE cxx_std_20)
 
 # TODO: Remove internal target linkages(as this can fail on builds not running in strict mode)
 # TODO: Remove for all targets

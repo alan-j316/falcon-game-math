@@ -11,8 +11,6 @@
 
 #include "Vec4TestSetup.h"
 
-
-
 /**
  * @addtogroup T_Falcon_Vec4_Access
  * @{

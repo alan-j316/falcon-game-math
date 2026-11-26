@@ -1,6 +1,7 @@
 add_executable(
         FalconMathUtilsTests
 
+        BoundsTests.cpp
         InterpolationTests.cpp
         VecUtilsSetup.h
 )

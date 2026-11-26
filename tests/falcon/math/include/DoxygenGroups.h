@@ -527,6 +527,12 @@
      * @brief Static tests verifying trivial behavior of classes and structs.
      */
 
+
+    /**
+     * @defgroup T_Falcon_Interpolation Interpolation Tests
+     * @brief Tests verifying unified interface for interpolation(mix/slerp).
+     */
+
     /**
      * @defgroup T_Falcon_Utils Utility Tests
      * @brief Validates logic of all fgm utility functions.

@@ -33,48 +33,6 @@ namespace
 
 
     /**
-     * @brief Test fixture for @ref flcn::Vec3 min function.
-     * @tparam T The numeric type of vector components.
-     */
-    template <typename T>
-    class Vec3MinTests: public testing::Test
-    {
-    public:
-        flcn::Vec3<T> a, b, expectedMin;
-
-    protected:
-        void SetUp() override
-        {
-            a           = { T(5.3923283), T(0.5383293), T(38.280234) };
-            b           = { T(3.239823), T(9.932803), T(121.2938223) };
-            expectedMin = { T(3.239823), T(0.5383293), T(38.280234) };
-        }
-    };
-    TYPED_TEST_SUITE(Vec3MinTests, SupportedArithmeticTypes);
-
-
-    /**
-     * @brief Test fixture for @ref flcn::Vec3 max function.
-     * @tparam T The numeric type of vector components.
-     */
-    template <typename T>
-    class Vec3MaxTests: public testing::Test
-    {
-    public:
-        flcn::Vec3<T> a, b, expectedMax;
-
-    protected:
-        void SetUp() override
-        {
-            a           = { T(5.3923283), T(0.5383293), T(38.280234) };
-            b           = { T(3.239823), T(9.932803), T(121.2938223) };
-            expectedMax = { T(5.3923283), T(9.932803), T(121.2938223) };
-        }
-    };
-    TYPED_TEST_SUITE(Vec3MaxTests, SupportedArithmeticTypes);
-
-
-    /**
      * @brief Test fixture for @ref flcn::Vec3 Infinity Checking.
      */
     class Vec3InfCheckerTests: public testing::TestWithParam<Vec3UtilityParams<float>>
@@ -150,23 +108,15 @@ namespace
         
         /// @test Verify that Vec3::min returns a valid vector at compile time.
         constexpr auto MIN_VEC        = NORM_VEC_A.min(NORM_VEC_B);
-        constexpr auto STATIC_MIN_VEC = flcn::Vec3F::min(NORM_VEC_A, NORM_VEC_B);
         static_assert(MIN_VEC.x() == 1.0f);
         static_assert(MIN_VEC.y() == 0.25f);
         static_assert(MIN_VEC.z() == 3.0f);
-        static_assert(STATIC_MIN_VEC.x() == 1.0f);
-        static_assert(STATIC_MIN_VEC.y() == 0.25f);
-        static_assert(STATIC_MIN_VEC.z() == 3.0f);
 
         /// @test Verify that Vec3::max returns a valid vector at compile time.
         constexpr auto MAX_VEC        = NORM_VEC_A.max(NORM_VEC_B);
-        constexpr auto STATIC_MAX_VEC = flcn::Vec3F::max(NORM_VEC_A, NORM_VEC_B);
         static_assert(MAX_VEC.x() == 4.0f);
         static_assert(MAX_VEC.y() == 2.0f);
         static_assert(MAX_VEC.z() == 5.0f);
-        static_assert(STATIC_MAX_VEC.x() == 4.0f);
-        static_assert(STATIC_MAX_VEC.y() == 2.0f);
-        static_assert(STATIC_MAX_VEC.z() == 5.0f);
 
         /// @test Verify that Vec3::mix returns a valid vector at compile time.
         constexpr auto MIX_VEC        = NORM_VEC_A.mix(NORM_VEC_B, 0.25f);
@@ -281,19 +231,6 @@ TEST(Vec3MinTests, InfVector_ReturnsMinimumComponent)
 }
 
 
-TYPED_TEST(Vec3MinTests, StaticWrapper_ReturnsMinimumComponentVector)
-{ EXPECT_VEC_EQ(this->expectedMin, flcn::Vec3<TypeParam>::min(this->a, this->b)); }
-
-
-TEST(Vec3MinTests, StaticWrapper_InfVector_ReturnsMinimumComponent)
-{
-    const flcn::Vec3F vecA(1.0f, flcn::constants::INFINITY_F, flcn::constants::INFINITY_F);
-    const flcn::Vec3F vecB(flcn::constants::INFINITY_F, -flcn::constants::INFINITY_F, flcn::constants::INFINITY_F);
-
-    EXPECT_VEC_CONTAINS(flcn::Vec3F::min(vecA, vecB), 1.0f, -flcn::constants::INFINITY_F, flcn::constants::INFINITY_F);
-}
-
-
 /**************************************
  *             MAX TESTS              *
  **************************************/
@@ -309,21 +246,6 @@ TEST(Vec3MaxTests, InfVector_ReturnsMinimumComponent)
     EXPECT_VEC_CONTAINS(vecA.max(vecB), flcn::constants::INFINITY_F, flcn::constants::INFINITY_F,
                         flcn::constants::INFINITY_F);
 }
-
-
-TYPED_TEST(Vec3MaxTests, StaticWrapper_ReturnsMinimumComponentVector)
-{ EXPECT_VEC_EQ(this->expectedMax, flcn::Vec3<TypeParam>::max(this->a, this->b)); }
-
-
-TEST(Vec3MaxTests, StaticWrapper_InfVector_ReturnsMinimumComponent)
-{
-    const flcn::Vec3F vecA(1.0f, flcn::constants::INFINITY_F, flcn::constants::INFINITY_F);
-    const flcn::Vec3F vecB(flcn::constants::INFINITY_F, -flcn::constants::INFINITY_F, flcn::constants::INFINITY_F);
-
-    EXPECT_VEC_CONTAINS(flcn::Vec3F::max(vecA, vecB), flcn::constants::INFINITY_F, flcn::constants::INFINITY_F,
-                        flcn::constants::INFINITY_F);
-}
-
 
 
 /**************************************

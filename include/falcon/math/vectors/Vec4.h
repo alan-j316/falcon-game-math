@@ -2256,29 +2256,11 @@ namespace flcn
 
 
         /**
-         * @brief Select the minimum components from each vector.
-         * @param vecA The first vector.
-         * @param vecB The second vector.
-         * @return A 4D vector with the minimum components of the two.
-         */
-        [[nodiscard]] static constexpr Vec4 min(const Vec4& vecA, const Vec4& vecB) noexcept;
-
-
-        /**
          * @brief Select the maximum components from each vector.
          * @param vec The other vector.
          * @return A 4D vector with the maximum components of the two.
          */
         [[nodiscard]] constexpr Vec4 max(const Vec4& vec) const noexcept;
-
-
-        /**
-         * @brief Select the maximum components from each vector.
-         * @param vecA The first vector.
-         * @param vecB The second vector.
-         * @return A 4D vector with the maximum components of the two.
-         */
-        [[nodiscard]] static constexpr Vec4 max(const Vec4& vecA, const Vec4& vecB) noexcept;
 
 
         /**

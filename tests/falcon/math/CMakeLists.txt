@@ -5,6 +5,7 @@ add_library(FalconMathTestSetup INTERFACE
         include/utils/TypeUtils.h
         include/utils/VectorUtils.h
         include/InterpolationTestFixture.h
+        include/BoundsTestFixture.h
 )
 
 target_include_directories(FalconMathTestSetup INTERFACE ${CMAKE_CURRENT_SOURCE_DIR}/include)

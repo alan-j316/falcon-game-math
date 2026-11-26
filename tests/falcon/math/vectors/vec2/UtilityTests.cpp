@@ -33,49 +33,6 @@ namespace
 
 
     /**
-     * @brief Test fixture for @ref flcn::Vec2 min function.
-     * @tparam T The numeric type of vector components.
-     */
-    template <typename T>
-    class Vec2MinTests: public testing::Test
-    {
-    public:
-        flcn::Vec2<T> a, b, expectedMin;
-
-    protected:
-        void SetUp() override
-        {
-            a           = { T(5.3923283), T(0.5383293) };
-            b           = { T(3.239823), T(9.932803) };
-            expectedMin = { T(3.239823), T(0.5383293) };
-        }
-    };
-    TYPED_TEST_SUITE(Vec2MinTests, SupportedArithmeticTypes);
-
-
-
-    /**
-     * @brief Test fixture for @ref flcn::Vec2 max function.
-     * @tparam T The numeric type of vector components.
-     */
-    template <typename T>
-    class Vec2MaxTests: public testing::Test
-    {
-    public:
-        flcn::Vec2<T> a, b, expectedMax;
-
-    protected:
-        void SetUp() override
-        {
-            a           = { T(5.3923283), T(0.5383293) };
-            b           = { T(3.239823), T(9.932803) };
-            expectedMax = { T(5.3923283), T(9.932803) };
-        }
-    };
-    TYPED_TEST_SUITE(Vec2MaxTests, SupportedArithmeticTypes);
-
-
-    /**
      * @brief Test fixture for @ref flcn::Vec2 Infinity Checking.
      */
     class Vec2InfCheckerTests: public testing::TestWithParam<Vec2UtilityParams<float>>
@@ -147,19 +104,13 @@ namespace
 
         /// @test Verify that Vec2::min returns a valid vector at compile time.
         constexpr auto MIN_VEC        = NORM_VEC_A.min(NORM_VEC_B);
-        constexpr auto STATIC_MIN_VEC = flcn::Vec2F::min(NORM_VEC_A, NORM_VEC_B);
         static_assert(MIN_VEC.x() == 1.0f);
         static_assert(MIN_VEC.y() == 0.25f);
-        static_assert(STATIC_MIN_VEC.x() == 1.0f);
-        static_assert(STATIC_MIN_VEC.y() == 0.25f);
 
         /// @test Verify that Vec2::max returns a valid vector at compile time.
         constexpr auto MAX_VEC        = NORM_VEC_A.max(NORM_VEC_B);
-        constexpr auto STATIC_MAX_VEC = flcn::Vec2F::max(NORM_VEC_A, NORM_VEC_B);
         static_assert(MAX_VEC.x() == 4.0f);
         static_assert(MAX_VEC.y() == 2.0f);
-        static_assert(STATIC_MAX_VEC.x() == 4.0f);
-        static_assert(STATIC_MAX_VEC.y() == 2.0f);
 
         /// @test Verify that Vec2::mix returns a valid vector at compile time.
         constexpr auto MIX_VEC        = NORM_VEC_A.mix(NORM_VEC_B, 0.25f);
@@ -272,19 +223,6 @@ TEST(Vec2MinTests, InfVector_ReturnsMinimumComponent)
 }
 
 
-TYPED_TEST(Vec2MinTests, StaticWrapper_ReturnsMinimumComponentVector)
-{ EXPECT_VEC_EQ(this->expectedMin, flcn::Vec2<TypeParam>::min(this->a, this->b)); }
-
-
-TEST(Vec2MinTests, StaticWrapper_InfVector_ReturnsMinimumComponent)
-{
-    const flcn::Vec2F vecA(1.0f, flcn::constants::INFINITY_F);
-    const flcn::Vec2F vecB(flcn::constants::INFINITY_F, -flcn::constants::INFINITY_F);
-
-    EXPECT_VEC_CONTAINS(flcn::Vec2F::min(vecA, vecB), 1.0f, -flcn::constants::INFINITY_F);
-}
-
-
 
 /**************************************
  *             MAX TESTS              *
@@ -299,19 +237,6 @@ TEST(Vec2MaxTests, InfVector_ReturnsMinimumComponent)
     const flcn::Vec2F vecB(flcn::constants::INFINITY_F, -flcn::constants::INFINITY_F);
 
     EXPECT_VEC_CONTAINS(vecA.max(vecB), flcn::constants::INFINITY_F, flcn::constants::INFINITY_F);
-}
-
-
-TYPED_TEST(Vec2MaxTests, StaticWrapper_ReturnsMinimumComponentVector)
-{ EXPECT_VEC_EQ(this->expectedMax, flcn::Vec2<TypeParam>::max(this->a, this->b)); }
-
-
-TEST(Vec2MaxTests, StaticWrapper_InfVector_ReturnsMinimumComponent)
-{
-    const flcn::Vec2F vecA(1.0f, flcn::constants::INFINITY_F);
-    const flcn::Vec2F vecB(flcn::constants::INFINITY_F, -flcn::constants::INFINITY_F);
-
-    EXPECT_VEC_CONTAINS(flcn::Vec2F::max(vecA, vecB), flcn::constants::INFINITY_F, flcn::constants::INFINITY_F);
 }
 
 

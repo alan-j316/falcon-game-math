@@ -10,6 +10,12 @@
  */
 
 
+#include "falcon/math/vectors/Vec2.h"
+#include "falcon/math/vectors/Vec3.h"
+#include "falcon/math/vectors/Vec4.h"
+#include "falcon/math/vectors/simd/Vec2.h"
+#include "falcon/math/vectors/simd/Vec3.h"
+
 namespace flcn
 {
 
@@ -34,7 +40,7 @@ namespace flcn
      * @return A 2D vector with interpolated values between @p vecA and @p vecB.
      */
     template <Arithmetic T, std::floating_point F>
-    [[nodiscard]] static constexpr Vec2<T> mix(const Vec2<T>& vecA, const Vec2<T>& vecB, F factor) noexcept;
+    [[nodiscard]] constexpr Vec2<T> mix(const Vec2<T>& vecA, const Vec2<T>& vecB, F factor) noexcept;
 
 
     /**
@@ -54,7 +60,7 @@ namespace flcn
      * @return A 3D vector with interpolated values between @p vecA and @p vecB.
      */
     template <Arithmetic T, std::floating_point F>
-    [[nodiscard]] static constexpr Vec3<T> mix(const Vec3<T>& vecA, const Vec3<T>& vecB, F factor) noexcept;
+    [[nodiscard]] constexpr Vec3<T> mix(const Vec3<T>& vecA, const Vec3<T>& vecB, F factor) noexcept;
 
 
     /**
@@ -74,7 +80,7 @@ namespace flcn
      * @return A 4D vector with interpolated values between @p vecA and @p vecB.
      */
     template <Arithmetic T, std::floating_point F>
-    [[nodiscard]] static constexpr Vec4<T> mix(const Vec4<T>& vecA, const Vec4<T>& vecB, F factor) noexcept;
+    [[nodiscard]] constexpr Vec4<T> mix(const Vec4<T>& vecA, const Vec4<T>& vecB, F factor) noexcept;
 
 
 
@@ -99,7 +105,7 @@ namespace flcn
      * @return A 2D vector (SIMD) with interpolated values between @p vecA and @p vecB.
      */
     template <std::floating_point T, std::floating_point F>
-    [[nodiscard]] static constexpr simd::Vec2<T> mix(const simd::Vec2<T>& vecA, const simd::Vec2<T>& vecB,
+    [[nodiscard]] constexpr simd::Vec2<T> mix(const simd::Vec2<T>& vecA, const simd::Vec2<T>& vecB,
                                                      F factor) noexcept;
 
 
@@ -120,7 +126,7 @@ namespace flcn
      * @return A 3D vector (SIMD) with interpolated values between @p vecA and @p vecB.
      */
     template <std::floating_point T, std::floating_point F>
-    [[nodiscard]] static constexpr simd::Vec3<T> mix(const simd::Vec3<T>& vecA, const simd::Vec3<T>& vecB,
+    [[nodiscard]] constexpr simd::Vec3<T> mix(const simd::Vec3<T>& vecA, const simd::Vec3<T>& vecB,
                                                      F factor) noexcept;
 
 

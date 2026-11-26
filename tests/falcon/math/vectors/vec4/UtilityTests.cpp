@@ -76,48 +76,6 @@ namespace
     TYPED_TEST_SUITE(Vec4UtilsIntTests, SupportedIntegralTypes);
 
 
-    /**
-     * @brief Test fixture for @ref flcn::Vec4 min function.
-     * @tparam T The numeric type of vector components.
-     */
-    template <typename T>
-    class Vec4MinTests: public testing::Test
-    {
-    public:
-        flcn::Vec4<T> a, b, expectedMin;
-
-    protected:
-        void SetUp() override
-        {
-            a           = { T(5.3923283), T(0.5383293), T(38.280234), T(15.93283) };
-            b           = { T(3.239823), T(9.932803), T(121.2938223), T(102.39823) };
-            expectedMin = { T(3.239823), T(0.5383293), T(38.280234), T(15.93283) };
-        }
-    };
-    TYPED_TEST_SUITE(Vec4MinTests, SupportedArithmeticTypes);
-
-
-    /**
-     * @brief Test fixture for @ref flcn::Vec4 max function.
-     * @tparam T The numeric type of vector components.
-     */
-    template <typename T>
-    class Vec4MaxTests: public testing::Test
-    {
-    public:
-        flcn::Vec4<T> a, b, expectedMax;
-
-    protected:
-        void SetUp() override
-        {
-            a           = { T(5.3923283), T(0.5383293), T(38.280234), T(15.93283) };
-            b           = { T(3.239823), T(9.932803), T(121.2938223), T(102.39823) };
-            expectedMax = { T(5.3923283), T(9.932803), T(121.2938223), T(102.39823) };
-        }
-    };
-    TYPED_TEST_SUITE(Vec4MaxTests, SupportedArithmeticTypes);
-
-
     /**************************************
      *            STATIC TESTS            *
      **************************************/
@@ -154,27 +112,17 @@ namespace
 
         /// @test Verify that Vec4::min returns a valid vector at compile time.
         constexpr auto MIN_VEC        = NORM_VEC_A.min(NORM_VEC_B);
-        constexpr auto STATIC_MIN_VEC = flcn::Vec4F::min(NORM_VEC_A, NORM_VEC_B);
         static_assert(MIN_VEC.x() == 1.0f);
         static_assert(MIN_VEC.y() == 0.25f);
         static_assert(MIN_VEC.z() == 3.0f);
         static_assert(MIN_VEC.w() == -5.0f);
-        static_assert(STATIC_MIN_VEC.x() == 1.0f);
-        static_assert(STATIC_MIN_VEC.y() == 0.25f);
-        static_assert(STATIC_MIN_VEC.z() == 3.0f);
-        static_assert(STATIC_MIN_VEC.w() == -5.0f);
 
         /// @test Verify that Vec4::max returns a valid vector at compile time.
         constexpr auto MAX_VEC        = NORM_VEC_A.max(NORM_VEC_B);
-        constexpr auto STATIC_MAX_VEC = flcn::Vec4F::max(NORM_VEC_A, NORM_VEC_B);
         static_assert(MAX_VEC.x() == 4.0f);
         static_assert(MAX_VEC.y() == 2.0f);
         static_assert(MAX_VEC.z() == 5.0f);
         static_assert(MAX_VEC.w() == 4.0f);
-        static_assert(STATIC_MAX_VEC.x() == 4.0f);
-        static_assert(STATIC_MAX_VEC.y() == 2.0f);
-        static_assert(STATIC_MAX_VEC.z() == 5.0f);
-        static_assert(STATIC_MAX_VEC.w() == 4.0f);
 
         /// @test Verify that Vec4::mix returns a valid vector at compile time.
         constexpr auto MIX_VEC        = NORM_VEC_A.mix(NORM_VEC_B, 0.25f);
@@ -291,21 +239,6 @@ TEST(Vec4MinTests, InfVector_ReturnsMinimumComponent)
 }
 
 
-TYPED_TEST(Vec4MinTests, StaticWrapper_ReturnsMinimumComponentVector)
-{ EXPECT_VEC_EQ(this->expectedMin, flcn::Vec4<TypeParam>::min(this->a, this->b)); }
-
-
-TEST(Vec4MinTests, StaticWrapper_InfVector_ReturnsMinimumComponent)
-{
-    const flcn::Vec4F vecA(1.0f, flcn::constants::INFINITY_F, flcn::constants::INFINITY_F, flcn::constants::INFINITY_F);
-    const flcn::Vec4F vecB(flcn::constants::INFINITY_F, -flcn::constants::INFINITY_F, flcn::constants::INFINITY_F,
-                           -4.0f);
-
-    EXPECT_VEC_CONTAINS(flcn::Vec4F::min(vecA, vecB), 1.0f, -flcn::constants::INFINITY_F, flcn::constants::INFINITY_F,
-                        -4.0f);
-}
-
-
 /**************************************
  *             MAX TESTS              *
  **************************************/
@@ -322,23 +255,6 @@ TEST(Vec4MaxTests, InfVector_ReturnsMinimumComponent)
     EXPECT_VEC_CONTAINS(vecA.max(vecB), flcn::constants::INFINITY_F, flcn::constants::INFINITY_F,
                         flcn::constants::INFINITY_F, flcn::constants::INFINITY_F);
 }
-
-
-TYPED_TEST(Vec4MaxTests, StaticWrapper_ReturnsMinimumComponentVector)
-{ EXPECT_VEC_EQ(this->expectedMax, flcn::Vec4<TypeParam>::max(this->a, this->b)); }
-
-
-TEST(Vec4MaxTests, StaticWrapper_InfVector_ReturnsMinimumComponent)
-{
-    const flcn::Vec4F vecA(1.0f, flcn::constants::INFINITY_F, flcn::constants::INFINITY_F, flcn::constants::INFINITY_F);
-    const flcn::Vec4F vecB(flcn::constants::INFINITY_F, -flcn::constants::INFINITY_F, flcn::constants::INFINITY_F,
-                           -4.0f);
-
-    EXPECT_VEC_CONTAINS(flcn::Vec4F::max(vecA, vecB), flcn::constants::INFINITY_F, flcn::constants::INFINITY_F,
-                        flcn::constants::INFINITY_F, flcn::constants::INFINITY_F);
-}
-
-
 
 /**************************************
  *             MIX TESTS              *

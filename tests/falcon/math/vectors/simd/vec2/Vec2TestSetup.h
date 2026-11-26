@@ -13,6 +13,7 @@
 
 
 #include "InterpolationTestFixture.h"
+#include "BoundsTestFixture.h"
 #include "utils/VectorUtils.h"
 
 #include <falcon/math/common/MathTraits.h>

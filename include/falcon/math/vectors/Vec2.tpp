@@ -1480,18 +1480,8 @@ namespace flcn
 
 
     template <Arithmetic T>
-    FALCON_INLINE constexpr Vec2<T> Vec2<T>::min(const Vec2& vecA, const Vec2& vecB) noexcept
-    { return vecA.min(vecB); }
-
-
-    template <Arithmetic T>
     FALCON_INLINE constexpr Vec2<T> Vec2<T>::max(const Vec2& vec) const noexcept
     { return Vec2{ std::max(_data[0], vec[0]), std::max(_data[1], vec[1]) }; }
-
-
-    template <Arithmetic T>
-    FALCON_INLINE constexpr Vec2<T> Vec2<T>::max(const Vec2& vecA, const Vec2& vecB) noexcept
-    { return vecA.max(vecB); }
 
 
     template <Arithmetic T>

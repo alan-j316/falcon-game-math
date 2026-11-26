@@ -817,6 +817,16 @@ namespace flcn::details
         [[nodiscard]] FALCON_INLINE constexpr Emulated256<SimdBackend::ARCH_SSE2, DataType> operator*() const noexcept
         { return { .lower = *_lower, .upper = *_upper }; }
 
+        // TODO: Add upper lower to other registers
+        // TODO: Add tests
+        /// @brief Get the upper 128-bit lane as intrinsic register.
+        [[nodiscard]] FALCON_INLINE constexpr simd::internal::Simd128RegisterT<DataType> upper() const noexcept
+        { return _upper; }
+
+        /// @brief Get the lower 128-bit lane as intrinsic register.
+        [[nodiscard]] FALCON_INLINE constexpr simd::internal::Simd128RegisterT<DataType> lower() const noexcept
+        { return _lower; }
+
 
 
         ///+=+=+=+=+=+=+=+=+=+=+=+=+=

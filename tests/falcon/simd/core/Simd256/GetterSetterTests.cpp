@@ -214,6 +214,52 @@ TYPED_TEST(Simd256GetterSetterTests, SetAt_SetsTheValueAtAppropriateIndex)
 
     #if defined(FALCON_ENABLE_AVX512EX) || defined(FALCON_ENABLE_AVX512) || defined(FALCON_ENABLE_AVX2) ||             \
         defined(FALCON_ENABLE_AVX)
+        // NOTE: AVX doesn't fully support __m256i so we have to separate the tests as well
+        #if defined(FALCON_ENABLE_AVX)
+
+TEST(Simd256GetterSetterTests, Integrals_Naive_ReturnsDefaultRegister)
+{
+    flcn::Simd256<int32_t, 8> reg{ 1, 2, 3, 4, 5, 6, 7, 8 };
+
+    const auto naiveReg = reg.naive();
+
+    alignas(32) std::array<int, 4> dataLower{}, dataUpper{};
+    _mm_store_si128(reinterpret_cast<__m128i*>(dataLower.data()), *(naiveReg.lower()));
+    _mm_store_si128(reinterpret_cast<__m128i*>(dataUpper.data()), *(naiveReg.upper()));
+
+    EXPECT_ANY_EQ(1, dataLower[0]);
+    EXPECT_ANY_EQ(2, dataLower[1]);
+    EXPECT_ANY_EQ(3, dataLower[2]);
+    EXPECT_ANY_EQ(4, dataLower[3]);
+    EXPECT_ANY_EQ(5, dataUpper[0]);
+    EXPECT_ANY_EQ(6, dataUpper[1]);
+    EXPECT_ANY_EQ(7, dataUpper[2]);
+    EXPECT_ANY_EQ(8, dataUpper[3]);
+}
+
+
+/// @test Verify that *reg returns the default internal register for integrals.
+TEST(Simd256GetterSetterTests, UnaryTimesOperator_IntegralRegister_ReturnsDefaultRegister)
+{
+    flcn::Simd256<int32_t, 8> reg{ 1, 2, 3, 4, 5, 6, 7, 8 };
+
+    const auto naiveReg = *reg;
+
+    alignas(32) std::array<int, 4> dataLower{}, dataUpper{};
+    _mm_store_si128(reinterpret_cast<__m128i*>(dataLower.data()), *(naiveReg.lower()));
+    _mm_store_si128(reinterpret_cast<__m128i*>(dataUpper.data()), *(naiveReg.upper()));
+
+    EXPECT_ANY_EQ(1, dataLower[0]);
+    EXPECT_ANY_EQ(2, dataLower[1]);
+    EXPECT_ANY_EQ(3, dataLower[2]);
+    EXPECT_ANY_EQ(4, dataLower[3]);
+    EXPECT_ANY_EQ(5, dataUpper[0]);
+    EXPECT_ANY_EQ(6, dataUpper[1]);
+    EXPECT_ANY_EQ(7, dataUpper[2]);
+    EXPECT_ANY_EQ(8, dataUpper[3]);
+}
+
+        #else
 TEST(Simd256GetterSetterTests, Integrals_Naive_ReturnsDefaultRegister)
 {
     flcn::Simd256<int32_t, 8> reg{ 1, 2, 3, 4, 5, 6, 7, 8 };
@@ -232,6 +278,30 @@ TEST(Simd256GetterSetterTests, Integrals_Naive_ReturnsDefaultRegister)
     EXPECT_ANY_EQ(7, data[6]);
     EXPECT_ANY_EQ(8, data[7]);
 }
+
+
+/// @test Verify that *reg returns the default internal register for integrals.
+TEST(Simd256GetterSetterTests, UnaryTimesOperator_IntegralRegister_ReturnsDefaultRegister)
+{
+    flcn::Simd256<int32_t, 8> reg{ 1, 2, 3, 4, 5, 6, 7, 8 };
+
+    const auto naiveReg = *reg;
+
+    alignas(32) std::array<int, 8> data{};
+    _mm256_store_si256(reinterpret_cast<__m256i*>(data.data()), naiveReg);
+
+    EXPECT_ANY_EQ(1, data[0]);
+    EXPECT_ANY_EQ(2, data[1]);
+    EXPECT_ANY_EQ(3, data[2]);
+    EXPECT_ANY_EQ(4, data[3]);
+    EXPECT_ANY_EQ(5, data[4]);
+    EXPECT_ANY_EQ(6, data[5]);
+    EXPECT_ANY_EQ(7, data[6]);
+    EXPECT_ANY_EQ(8, data[7]);
+}
+        #endif
+
+
 
 
 TEST(Simd256GetterSetterTests, Float_Naive_ReturnsDefaultRegister)
@@ -267,27 +337,6 @@ TEST(Simd256GetterSetterTests, Double_Naive_ReturnsDefaultRegister)
     EXPECT_ANY_EQ(2.0, data[1]);
     EXPECT_ANY_EQ(3.0, data[2]);
     EXPECT_ANY_EQ(4.0, data[3]);
-}
-
-
-/// @test Verify that *reg returns the default internal register for integrals.
-TEST(Simd256GetterSetterTests, UnaryTimesOperator_IntegralRegister_ReturnsDefaultRegister)
-{
-    flcn::Simd256<int32_t, 8> reg{ 1, 2, 3, 4, 5, 6, 7, 8 };
-
-    const auto naiveReg = *reg;
-
-    alignas(32) std::array<int, 8> data{};
-    _mm256_store_si256(reinterpret_cast<__m256i*>(data.data()), naiveReg);
-
-    EXPECT_ANY_EQ(1, data[0]);
-    EXPECT_ANY_EQ(2, data[1]);
-    EXPECT_ANY_EQ(3, data[2]);
-    EXPECT_ANY_EQ(4, data[3]);
-    EXPECT_ANY_EQ(5, data[4]);
-    EXPECT_ANY_EQ(6, data[5]);
-    EXPECT_ANY_EQ(7, data[6]);
-    EXPECT_ANY_EQ(8, data[7]);
 }
 
 

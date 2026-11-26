@@ -819,12 +819,14 @@ namespace flcn::details
 
         // TODO: Add upper lower to other registers
         // TODO: Add tests
-        /// @brief Get the upper 128-bit lane as intrinsic register.
-        [[nodiscard]] FALCON_INLINE constexpr simd::internal::Simd128RegisterT<DataType> upper() const noexcept
+        /// @brief Get the upper 128-bit lane.
+        [[nodiscard]] FALCON_INLINE constexpr Simd128<SimdBackend::ARCH_SSE2, DataType, UPPER_LANE_COUNT> upper()
+            const noexcept
         { return _upper; }
 
-        /// @brief Get the lower 128-bit lane as intrinsic register.
-        [[nodiscard]] FALCON_INLINE constexpr simd::internal::Simd128RegisterT<DataType> lower() const noexcept
+        /// @brief Get the lower 128-bit lane.
+        [[nodiscard]] FALCON_INLINE constexpr Simd128<SimdBackend::ARCH_SSE2, DataType, LOWER_LANE_COUNT> lower()
+            const noexcept
         { return _lower; }
 
 

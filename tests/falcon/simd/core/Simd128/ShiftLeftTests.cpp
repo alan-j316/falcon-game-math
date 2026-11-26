@@ -14,8 +14,9 @@
  */
 
 // TODO: Remove Preprocessor after implementing individual simd paths
-#if defined(FALCON_ENABLE_AVX512) || defined(FALCON_ENABLE_AVX2) || defined(FALCON_ENABLE_AVX) ||                      \
-    defined(FALCON_ENABLE_SSE4) || defined(FALCON_ENABLE_SSE2) || defined(FALCON_DISABLE_SIMD)
+#if defined(FALCON_ENABLE_AVX512EX) || defined(FALCON_ENABLE_AVX512) || defined(FALCON_ENABLE_AVX2) ||                 \
+    defined(FALCON_ENABLE_AVX) || defined(FALCON_ENABLE_SSE4) || defined(FALCON_ENABLE_SSE2) ||                        \
+    defined(FALCON_DISABLE_SIMD)
 
     #include "Simd128Setup.h"
 
@@ -33,7 +34,7 @@
 
 /// @test Verify that bitwise operator<< returns a valid vector(register).
     #define TEST_SIMD128_SHIFT_LEFT_WITH_DIFFERENT_SHIFT_SIZES(ShiftAmount)                                            \
-        TYPED_TEST(Simd128BitwiseTests, ShiftLeft_ReturnsAValidResult_WhenShiftedBy##ShiftAmount)             \
+        TYPED_TEST(Simd128BitwiseTests, ShiftLeft_ReturnsAValidResult_WhenShiftedBy##ShiftAmount)                      \
         {                                                                                                              \
             using Type            = TypeParam::Type;                                                                   \
             constexpr size_t Lane = TypeParam::VALUE;                                                                  \
@@ -58,7 +59,7 @@
                 }                                                                                                      \
             }                                                                                                          \
                                                                                                                        \
-            flcn::Simd128<Type, Lane> reg{ data };                                                                   \
+            flcn::Simd128<Type, Lane> reg{ data };                                                                     \
                                                                                                                        \
             auto regRes = reg << ShiftAmount;                                                                          \
             regRes.storeAligned(result.data());                                                                        \
@@ -83,7 +84,7 @@ TEST_SIMD128_SHIFT_LEFT_WITH_DIFFERENT_SHIFT_SIZES(31)
 
 /// @test Verify that bitwise operator<<= returns a valid vector(register).
     #define TEST_SIMD128_SHIFT_LEFT_EQUALS_WITH_DIFFERENT_SHIFT_SIZES(ShiftAmount)                                     \
-        TYPED_TEST(Simd128BitwiseTests, ShiftLeftEquals_ReturnsAValidResult_WhenShiftedBy##ShiftAmount)       \
+        TYPED_TEST(Simd128BitwiseTests, ShiftLeftEquals_ReturnsAValidResult_WhenShiftedBy##ShiftAmount)                \
         {                                                                                                              \
             using Type            = TypeParam::Type;                                                                   \
             constexpr size_t Lane = TypeParam::VALUE;                                                                  \
@@ -108,7 +109,7 @@ TEST_SIMD128_SHIFT_LEFT_WITH_DIFFERENT_SHIFT_SIZES(31)
                 }                                                                                                      \
             }                                                                                                          \
                                                                                                                        \
-            flcn::Simd128<Type, Lane> reg{ data };                                                                   \
+            flcn::Simd128<Type, Lane> reg{ data };                                                                     \
                                                                                                                        \
             reg <<= ShiftAmount;                                                                                       \
             reg.storeAligned(result.data());                                                                           \
@@ -132,7 +133,7 @@ TEST_SIMD128_SHIFT_LEFT_EQUALS_WITH_DIFFERENT_SHIFT_SIZES(31)
 
 /// @test Verify that left shift operation with a compile time count returns a valid vector(register).
     #define TEST_SIMD128_CONST_SHIFT_LEFT_WITH_DIFFERENT_SHIFT_SIZES(ShiftAmount)                                      \
-        TYPED_TEST(Simd128BitwiseTests, ConstShiftLeft_ReturnsAValidResult_WhenShiftedBy##ShiftAmount)        \
+        TYPED_TEST(Simd128BitwiseTests, ConstShiftLeft_ReturnsAValidResult_WhenShiftedBy##ShiftAmount)                 \
         {                                                                                                              \
             using Type            = TypeParam::Type;                                                                   \
             constexpr size_t Lane = TypeParam::VALUE;                                                                  \
@@ -157,7 +158,7 @@ TEST_SIMD128_SHIFT_LEFT_EQUALS_WITH_DIFFERENT_SHIFT_SIZES(31)
                 }                                                                                                      \
             }                                                                                                          \
                                                                                                                        \
-            flcn::Simd128<Type, Lane> reg{ data };                                                                   \
+            flcn::Simd128<Type, Lane> reg{ data };                                                                     \
                                                                                                                        \
             auto regRes = reg.template shiftLeft<ShiftAmount>();                                                       \
             regRes.storeAligned(result.data());                                                                        \

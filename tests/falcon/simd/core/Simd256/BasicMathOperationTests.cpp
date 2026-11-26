@@ -17,8 +17,9 @@
  */
 
 // TODO: Remove Preprocessor after implementing individual simd paths
-#if defined(FALCON_ENABLE_AVX512) || defined(FALCON_ENABLE_AVX2) || defined(FALCON_ENABLE_AVX) ||                      \
-    defined(FALCON_ENABLE_SSE4) || defined(FALCON_ENABLE_SSE2)
+#if defined(FALCON_ENABLE_AVX512EX) || defined(FALCON_ENABLE_AVX512) || defined(FALCON_ENABLE_AVX2) ||                 \
+    defined(FALCON_ENABLE_AVX) || defined(FALCON_ENABLE_SSE4) || defined(FALCON_ENABLE_SSE2) ||                        \
+    defined(FALCON_DISABLE_SIMD)
 namespace
 {
     /**
@@ -48,8 +49,8 @@ namespace
             }
             else
             {
-                absData     = { max, min, max, min, -5, 11, -15, 0, -1, 2, -5, 12, -14, 3, -15, 12,
-                                max, min, max, min, -5, 11, -15, 0, -1, 2, -5, 12, -14, 3, -15, 12 };
+                absData = { max, min, max, min, -5, 11, -15, 0, -1, 2, -5, 12, -14, 3, -15, 12,
+                            max, min, max, min, -5, 11, -15, 0, -1, 2, -5, 12, -14, 3, -15, 12 };
             }
         }
     };

@@ -16,9 +16,9 @@
 #include <falcon/simd/FalconSimd.h>
 
 // TODO: Remove Preprocessor after implementing individual simd paths
-#if defined(FALCON_ENABLE_AVX512) || defined(FALCON_ENABLE_AVX2) || defined(FALCON_ENABLE_AVX) ||                      \
-    defined(FALCON_ENABLE_SSE4) || defined(FALCON_ENABLE_SSE2) || defined(FALCON_DISABLE_SIMD)
-
+#if defined(FALCON_ENABLE_AVX512EX) || defined(FALCON_ENABLE_AVX512) || defined(FALCON_ENABLE_AVX2) ||                 \
+    defined(FALCON_ENABLE_AVX) || defined(FALCON_ENABLE_SSE4) || defined(FALCON_ENABLE_SSE2) ||                        \
+    defined(FALCON_DISABLE_SIMD)
 
 /**
  * @addtogroup T_SIMD128_Permute
@@ -259,7 +259,7 @@ TYPED_TEST(Simd128PermuteTests, ReturnsRegisterWithCorrectValues)
     // Get all the parameters from the types
     using Type                            = TypeParam::Type;
     constexpr size_t Lanes                = TypeParam::LaneCount;
-    alignas(16) Array<Type, Lanes> data     = TypeParam::data;
+    alignas(16) Array<Type, Lanes> data   = TypeParam::data;
     constexpr Array<Type, Lanes> expected = TypeParam::expected;
 
     // Create the register and load them

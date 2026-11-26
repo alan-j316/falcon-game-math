@@ -4,14 +4,7 @@
  * @author Alan Abraham P Kochumon
  * @date Created on: November 18, 2026
  *
- * @brief SSE2 implementation for Simd128.
- *
- * @details 128-bit SIMD register wrapper for x64-based systems.
- *          Support for faster instruction in higher instruction sets like AVX2 or AVX512
- *          is checked inside implementation, and this only common interface for 128-bit
- *          register for the x86-64 ISA. Note, there is no distinction made between SSE3,
- *          SSE4.1, SSE4.2, and the library expects a baseline of SSE4.2 but provides
- *          SSE2 implementation for backwards-compatibility.
+ * @brief Scalar implementation for Simd128.
  *
  * @copyright Copyright (c) 2026 Alan Abraham P Kochumon
  */
@@ -33,7 +26,7 @@
 
 #ifdef _MSC_VER
     #pragma warning(push)
-    #pragma warning(disable : 4324) // Padded Added
+    #pragma warning(disable : 4324) // Padding Added
 #endif
 
 namespace flcn::details
@@ -855,17 +848,6 @@ namespace flcn::details
 
     private:
         Internal128RegisterType _reg{};
-
-        /// +---------------------------------------------------------------------------------------+
-        /// |                              FRIEND FUNCTIONS                                         |
-        /// +---------------------------------------------------------------------------------------+
-        // template <typename T, size_t L>
-        // friend constexpr Simd256<SimdBackend::ARCH_UNKNOWN, T, L> flcn::min(
-        //     Simd256<SimdBackend::ARCH_UNKNOWN, T, L>, Simd256<SimdBackend::ARCH_SSE2, T, L>) noexcept;
-        //
-        // template <typename T, size_t L>
-        // friend constexpr Simd256<SimdBackend::ARCH_UNKNOWN, T, L> flcn::max(
-        //     Simd256<SimdBackend::ARCH_UNKNOWN, T, L>, Simd256<SimdBackend::ARCH_UNKNOWN, T, L>) noexcept;
     };
 
 } // namespace flcn::details

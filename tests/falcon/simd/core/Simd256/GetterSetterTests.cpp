@@ -21,7 +21,7 @@
 
 // TODO: Remove Preprocessor after implementing individual simd paths
 #if defined(FALCON_ENABLE_AVX512) || defined(FALCON_ENABLE_AVX2) || defined(FALCON_ENABLE_AVX) ||                      \
-    defined(FALCON_ENABLE_SSE4) || defined(FALCON_ENABLE_SSE2)
+    defined(FALCON_ENABLE_SSE4) || defined(FALCON_ENABLE_SSE2) || defined(FALCON_DISABLE_SIMD)
 namespace
 {
     /**
@@ -210,7 +210,7 @@ TYPED_TEST(Simd256GetterSetterTests, SetAt_SetsTheValueAtAppropriateIndex)
     }
 }
 
-
+// TODO: Add back
 // TEST(Simd256GetterSetterTests, Integrals_Naive_ReturnsDefaultRegister)
 // {
 //     flcn::Simd256<int32_t, 8> reg{ 1, 2, 3, 4, 5, 6, 7, 8 };
@@ -344,7 +344,7 @@ using namespace simd::testing;
                                                                    12,  14,  3, 15, 12, max, min, 0, 3,  5, 11,        \
                                                                    15,  3,   1, 2,  5,  12,  14,  3, 15, 12 };         \
                                                                                                                        \
-            flcn::Simd256<Type, Lanes> reg(dataArr.data());                                                          \
+            flcn::Simd256<Type, Lanes> reg(dataArr.data());                                                            \
             EXPECT_ANY_EQ(dataArr[Index], reg.getAt<Index>());                                                         \
         }
 
@@ -501,7 +501,7 @@ TEST_SIMD256_CONST_GET_AT_RETURNS_VALUE_AT_INDEX(FP64_4Lanes_AtIndex3, FP64, 4, 
                                                                    12,  14,  3, 15, 12, max, min, 0, 3,  5, 11,        \
                                                                    15,  3,   1, 2,  5,  12,  14,  3, 15, 12 };         \
                                                                                                                        \
-            flcn::Simd256<Type, Lanes> reg{};                                                                        \
+            flcn::Simd256<Type, Lanes> reg{};                                                                          \
             reg.setAt<Index>(dataArr[Index]);                                                                          \
             EXPECT_ANY_EQ(dataArr[Index], reg.getAt<Index>());                                                         \
         }

@@ -56,6 +56,7 @@ namespace flcn
 // TODO: Separate Neon out
 #else
     #include "scalar/Simd128Scalar.h"
+    #include "scalar/Simd256Scalar.h"
 #endif
 
 
@@ -80,7 +81,9 @@ namespace flcn
     template <typename DataType, size_t Lane>
     using Simd256 = details::Simd256<SimdBackend::ARCH_SSE2, DataType, Lane>;
 #else
-    // TODO: Neon and scalar
+    // TODO: Add Neon separately
+    template <typename DataType, size_t Lane>
+    using Simd256 = details::Simd256<SimdBackend::ARCH_UNKNOWN, DataType, Lane>;
 #endif
 } // namespace flcn
 

@@ -16,7 +16,7 @@
 
 // TODO: Remove Preprocessor after implementing individual simd paths
 #if defined(FALCON_ENABLE_AVX512) || defined(FALCON_ENABLE_AVX2) || defined(FALCON_ENABLE_AVX) ||                      \
-    defined(FALCON_ENABLE_SSE4) || defined(FALCON_ENABLE_SSE2)
+    defined(FALCON_ENABLE_SSE4) || defined(FALCON_ENABLE_SSE2) || defined(FALCON_DISABLE_SIMD)
 
 /**
  * @addtogroup T_SIMD256_Ctor
@@ -128,9 +128,9 @@ TYPED_TEST(Simd256CtorTests, Simd256_CanBeInitializedWithACStyleArray)
             constexpr size_t size = sizeof(inputData) / sizeof(DataType);                                              \
             DataType outputData[Lanes]{};                                                                              \
             auto getSimd = [](auto... args) {                                                                          \
-                return flcn::Simd256<DataType, Lanes>{ static_cast<DataType>(args)... };                             \
+                return flcn::Simd256<DataType, Lanes>{ static_cast<DataType>(args)... };                               \
             };                                                                                                         \
-            flcn::Simd256<DataType, Lanes> reg = getSimd(__VA_ARGS__);                                               \
+            flcn::Simd256<DataType, Lanes> reg = getSimd(__VA_ARGS__);                                                 \
             reg.store(outputData);                                                                                     \
                                                                                                                        \
             for (size_t i = 0; i < size; ++i)                                                                          \
@@ -330,7 +330,7 @@ TEST_SIMD256_VARG_CTOR(FP64_4Lanes_4Arguments, FP64, 4, max<FP64>, min<FP64>, 3.
         TEST(Simd256SingleArgCtorTests, InitializesWith_##TestNameSuffix)                                              \
         {                                                                                                              \
             DataType outputData[Lanes]{};                                                                              \
-            flcn::Simd256<DataType, Lanes> reg{ Data };                                                              \
+            flcn::Simd256<DataType, Lanes> reg{ Data };                                                                \
             reg.store(outputData);                                                                                     \
                                                                                                                        \
             for (size_t i = 0; i < Lanes; ++i)                                                                         \

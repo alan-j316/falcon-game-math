@@ -17,7 +17,7 @@
 
 
 /**
- * @addtogroup T_Falcon_Utils
+ * @addtogroup TFalcon_Core_Math
  * @{
  */
 

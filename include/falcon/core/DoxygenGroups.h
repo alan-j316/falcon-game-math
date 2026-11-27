@@ -27,6 +27,12 @@
      * @brief Shared preprocessor directives.
      */
 
+
+    /**
+     * @defgroup Falcon_Core_Math Falcon Core Math
+     * @brief Core Math functions.
+     */
+
 /** @} */ // End of FALCON_SIMD
 
 // clang-format on

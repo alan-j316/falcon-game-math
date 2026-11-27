@@ -11,12 +11,17 @@
 
 
 #include "traits/MathTraits.h"
+
 #include <concepts>
 
+/**
+ *  @addtogroup Falcon_Core_Math
+ *  @{
+ */
 
 namespace flcn
 {
-    // ABS, MIN, MAX, ISNAN, ISINF, SQRT, RSQRT, EXP, EXP2, LOG, LOG2, LOG10, SIN, COS, TAN, ASIN, ACOS, ATAN, ATAN2
+    // MIN, MAX, SQRT, RSQRT, EXP, EXP2, LOG, LOG2, LOG10, SIN, COS, TAN, ASIN, ACOS, ATAN, ATAN2
     // CEIL, FLOOR, TRUNCATE, SIGNBIT, CLAMP,
     // template<Arithmetic
 
@@ -103,20 +108,24 @@ namespace flcn
     constexpr bool compareEq(T a, T b) noexcept;
 
     /**
- * @brief Compute the square root of a number.
- *
- * @note Wrapper around the `std::sqrt` function with Newton-Raphson approximation for compile time evaluation.
- *
- * @tparam T Numeric type of the number. Must satisfy @ref StrictArithmetic.
- *
- * @param[in] num     The number to take the square root of.
- * @param[in] epsilon The precision required for the square-root.
- *                Default to falcon EPSILON.
- *
- * @return The square root of a number promoted to the near floating point type.
- */
+     * @brief Compute the square root of a number.
+     *
+     * @note Wrapper around the `std::sqrt` function with Newton-Raphson approximation for compile time evaluation.
+     *
+     * @tparam T Numeric type of the number. Must satisfy @ref StrictArithmetic.
+     *
+     * @param[in] num     The number to take the square root of.
+     * @param[in] epsilon The precision required for the square-root.
+     *                Default to falcon EPSILON.
+     *
+     * @return The square root of a number promoted to the near floating point type.
+     */
     // template <Arithmetic T>
     // constexpr Magnitude<T> sqrt(T num, double epsilon = Config::EPSILON<Magnitude<T>>) noexcept;
+
+
 } // namespace flcn
+
+/** @} */
 
 #include "Math.tpp"

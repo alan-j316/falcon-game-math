@@ -29,5 +29,11 @@
      * @ingroup Falcon_Core_Tests
      */
 
+    /**
+     * @defgroup TFalcon_Core_Math Falcon Core Math
+     * @brief Verifies falcon core math operations.
+     * @ingroup Falcon_Core_Tests
+     */
+
 /** @} */ // End of Falcon_Core_Tests
 // clang-format on

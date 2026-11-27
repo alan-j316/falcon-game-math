@@ -358,7 +358,7 @@ namespace flcn
         if constexpr (std::is_floating_point_v<R>)
         {
             FALCON_ASSERT_MSG(flcn::abs(scalar) >= flcn::Config::EPSILON<R>, flcn::messages::assertion::QUAT_DIV_BY_ZERO);
-            FALCON_ASSERT_MSG(!flcn::isnan(scalar) && !hasNaN(), flcn::messages::assertion::QUAT_HAS_NAN);
+            FALCON_ASSERT_MSG(!flcn::isNaN(scalar) && !hasNaN(), flcn::messages::assertion::QUAT_HAS_NAN);
 
             R factor = R(1) / static_cast<R>(scalar);
             return Quaternion<R>(_data[0] * factor, _data[1] * factor, _data[2] * factor, _data[3] * factor);
@@ -383,7 +383,7 @@ namespace flcn
         if constexpr (std::is_floating_point_v<R>)
         {
             FALCON_ASSERT_MSG(flcn::abs(scalar) > flcn::Config::EPSILON<S>, flcn::messages::assertion::QUAT_DIV_BY_ZERO);
-            FALCON_ASSERT_MSG(!flcn::isnan(scalar) && !hasNaN(), flcn::messages::assertion::QUAT_HAS_NAN);
+            FALCON_ASSERT_MSG(!flcn::isNaN(scalar) && !hasNaN(), flcn::messages::assertion::QUAT_HAS_NAN);
 
             R factor = R(1) / static_cast<R>(scalar);
 
@@ -632,7 +632,7 @@ namespace flcn
     {
         if constexpr (std::is_floating_point_v<T>)
         {
-            return flcn::isinf(_data[0]) || flcn::isinf(_data[1]) || flcn::isinf(_data[2]) || flcn::isinf(_data[3]);
+            return flcn::isInf(_data[0]) || flcn::isInf(_data[1]) || flcn::isInf(_data[2]) || flcn::isInf(_data[3]);
         }
         else
         {
@@ -651,7 +651,7 @@ namespace flcn
     {
         if constexpr (std::is_floating_point_v<T>)
         {
-            return flcn::isnan(_data[0]) || flcn::isnan(_data[1]) || flcn::isnan(_data[2]) || flcn::isnan(_data[3]);
+            return flcn::isNaN(_data[0]) || flcn::isNaN(_data[1]) || flcn::isNaN(_data[2]) || flcn::isNaN(_data[3]);
         }
         else
         {

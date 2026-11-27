@@ -13,8 +13,7 @@
 
 #include "falcon/math/common/Messages.h"
 #include "falcon/math/common/Types.h"
-#include "falcon/math/common/Utils.h"
-#include "falcon/math/common/Wrappers.h"
+#include <falcon/core/Math.h>
 
 #include <algorithm>
 #include <cmath>
@@ -719,7 +718,7 @@ namespace flcn
 
         if constexpr (std::is_floating_point_v<R>)
         {
-            if (hasNaN() | flcn::isnan(scalar) | (flcn::abs(scalar) <= std::numeric_limits<S>::epsilon()))
+            if (hasNaN() | flcn::isNaN(scalar) | (flcn::abs(scalar) <= std::numeric_limits<S>::epsilon()))
             {
                 return Vec2<R>::zero();
             }
@@ -752,7 +751,7 @@ namespace flcn
 
         if constexpr (std::is_floating_point_v<R>)
         {
-            if (hasNaN() | flcn::isnan(scalar))
+            if (hasNaN() | flcn::isNaN(scalar))
             {
                 status = OperationStatus::NANOPERAND;
                 return Vec2<R>::zero();
@@ -961,8 +960,8 @@ namespace flcn
         requires StrictArithmetic<T>
     {
         using R       = Magnitude<PromotedValue_t<T, U>>;
-        const auto dx = utils::diffAbs(_data[0], rhs[0]);
-        const auto dy = utils::diffAbs(_data[1], rhs[1]);
+        const auto dx = flcn::diffAbs(_data[0], rhs[0]);
+        const auto dy = flcn::diffAbs(_data[1], rhs[1]);
         return static_cast<R>(std::sqrt(dx * dx + dy * dy));
     }
 
@@ -981,8 +980,8 @@ namespace flcn
     FALCON_INLINE constexpr PromotedValue_t<T, U> Vec2<T>::distSq(const Vec2<U>& rhs) const noexcept
         requires StrictArithmetic<T>
     {
-        const auto dx = utils::diffAbs(_data[0], rhs[0]);
-        const auto dy = utils::diffAbs(_data[1], rhs[1]);
+        const auto dx = flcn::diffAbs(_data[0], rhs[0]);
+        const auto dy = flcn::diffAbs(_data[1], rhs[1]);
 
         return dx * dx + dy * dy;
     }
@@ -1008,7 +1007,7 @@ namespace flcn
         requires StrictSignedness<T, U>
     FALCON_INLINE constexpr PromotedValue_t<T, U> Vec2<T>::manhattanDist(const Vec2<U>& rhs) const noexcept
         requires StrictArithmetic<T>
-    { return utils::diffAbs(_data[0], rhs[0]) + utils::diffAbs(_data[1], rhs[1]); }
+    { return flcn::diffAbs(_data[0], rhs[0]) + flcn::diffAbs(_data[1], rhs[1]); }
 
 
     template <Arithmetic T>
@@ -1031,7 +1030,7 @@ namespace flcn
         requires StrictSignedness<T, U>
     FALCON_INLINE constexpr PromotedValue_t<T, U> Vec2<T>::chebyshevDist(const Vec2<U>& rhs) const noexcept
         requires StrictArithmetic<T>
-    { return std::max(utils::diffAbs(_data[0], rhs[0]), utils::diffAbs(_data[1], rhs[1])); }
+    { return std::max(flcn::diffAbs(_data[0], rhs[0]), flcn::diffAbs(_data[1], rhs[1])); }
 
 
     template <Arithmetic T>
@@ -1072,7 +1071,7 @@ namespace flcn
     {
         using R     = Magnitude<T>;
         R magnitude = mag();
-        if (flcn::isnan(magnitude))
+        if (flcn::isNaN(magnitude))
         {
             return Vec2<R>::zero();
         }
@@ -1097,7 +1096,7 @@ namespace flcn
     {
         using R     = Magnitude<T>;
         R magnitude = mag();
-        if (flcn::isnan(magnitude))
+        if (flcn::isNaN(magnitude))
         {
             status = OperationStatus::NANOPERAND;
             return Vec2<R>::zero();
@@ -1179,7 +1178,7 @@ namespace flcn
         /** @note Static cast ensures integral type dots don't lose much precision */
         const auto ontoSquared = static_cast<MagType>(onto.dot(onto));
 
-        if (hasNaN() | flcn::isnan(ontoSquared))
+        if (hasNaN() | flcn::isNaN(ontoSquared))
         {
             return Vec2<MagType>::zero();
         }
@@ -1239,7 +1238,7 @@ namespace flcn
         /** @note Static cast ensures integral type dots don't lose too much precision. */
         const auto ontoSquared = static_cast<MagType>(onto.dot(onto));
 
-        if (hasNaN() | flcn::isnan(ontoSquared))
+        if (hasNaN() | flcn::isNaN(ontoSquared))
         {
             status = OperationStatus::NANOPERAND;
             return Vec2<MagType>::zero();
@@ -1441,7 +1440,7 @@ namespace flcn
     {
         if constexpr (std::is_floating_point_v<T>)
         {
-            return flcn::isinf(_data[0]) | flcn::isinf(_data[1]);
+            return flcn::isInf(_data[0]) | flcn::isInf(_data[1]);
         }
         else
         {
@@ -1460,7 +1459,7 @@ namespace flcn
     {
         if constexpr (std::is_floating_point_v<T>)
         {
-            return flcn::isnan(_data[0]) | flcn::isnan(_data[1]);
+            return flcn::isNaN(_data[0]) | flcn::isNaN(_data[1]);
         }
         else
         {

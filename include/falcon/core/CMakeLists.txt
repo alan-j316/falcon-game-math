@@ -8,6 +8,8 @@ add_library(${FALCON_CORE_TARGET_NAME} INTERFACE
         Preprocessors.h
         DoxygenGroups.h
         Bitwise.h
+        Math.h
+        Math.tpp
 )
 target_compile_features(${FALCON_CORE_TARGET_NAME} INTERFACE cxx_std_20)
 

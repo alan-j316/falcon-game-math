@@ -9,6 +9,7 @@ target_sources(
         traits/TypeHelpersTests.cpp
         traits/MathTraitTests.cpp
         Bitwise.cpp
+        MathTests.cpp
 )
 
 target_compile_options(FalconCoreTests INTERFACE $<$<CXX_COMPILER_ID:MSVC>:/fp:strict;>)

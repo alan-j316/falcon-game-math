@@ -952,9 +952,9 @@ namespace flcn
         //requires StrictArithmetic<T>
     {
         //using R       = Magnitude<PromotedValue_t<T, U>>;
-        //const auto dx = utils::diffAbs(_data[0], rhs[0]);
-        //const auto dy = utils::diffAbs(_data[1], rhs[1]);
-        //const auto dz = utils::diffAbs(_data[2], rhs[2]);
+        //const auto dx = flcn::diffAbs(_data[0], rhs[0]);
+        //const auto dy = flcn::diffAbs(_data[1], rhs[1]);
+        //const auto dz = flcn::diffAbs(_data[2], rhs[2]);
         //return static_cast<R>(std::sqrt(dx * dx + dy * dy + dz * dz));
     }
 
@@ -973,9 +973,9 @@ namespace flcn
 //    FALCON_INLINE constexpr PromotedValue_t<T, U> Vec3<T>::distSq(const Vec3<U>& rhs) const noexcept
         //requires StrictArithmetic<T>
     {
-        //const auto dx = utils::diffAbs(_data[0], rhs[0]);
-        //const auto dy = utils::diffAbs(_data[1], rhs[1]);
-        //const auto dz = utils::diffAbs(_data[2], rhs[2]);
+        //const auto dx = flcn::diffAbs(_data[0], rhs[0]);
+        //const auto dy = flcn::diffAbs(_data[1], rhs[1]);
+        //const auto dz = flcn::diffAbs(_data[2], rhs[2]);
 
         //return dx * dx + dy * dy + dz * dz;
     }
@@ -1001,7 +1001,7 @@ namespace flcn
         //requires StrictSignedness<T, U>
 //    FALCON_INLINE constexpr PromotedValue_t<T, U> Vec3<T>::manhattanDist(const Vec3<U>& rhs) const noexcept
         //requires StrictArithmetic<T>
-//    { return utils::diffAbs(_data[0], rhs[0]) + utils::diffAbs(_data[1], rhs[1]) + utils::diffAbs(_data[2], rhs[2]); }
+//    { return flcn::diffAbs(_data[0], rhs[0]) + flcn::diffAbs(_data[1], rhs[1]) + flcn::diffAbs(_data[2], rhs[2]); }
 
 
 //    template <Arithmetic T>
@@ -1025,8 +1025,8 @@ namespace flcn
 //    FALCON_INLINE constexpr PromotedValue_t<T, U> Vec3<T>::chebyshevDist(const Vec3<U>& rhs) const noexcept
         //requires StrictArithmetic<T>
     {
-        //return std::max(utils::diffAbs(_data[0], rhs[0]),
-                        //std::max(utils::diffAbs(_data[1], rhs[1]), utils::diffAbs(_data[2], rhs[2])));
+        //return std::max(flcn::diffAbs(_data[0], rhs[0]),
+                        //std::max(flcn::diffAbs(_data[1], rhs[1]), flcn::diffAbs(_data[2], rhs[2])));
     }
 
 

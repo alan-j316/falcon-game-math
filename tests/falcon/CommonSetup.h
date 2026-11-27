@@ -11,6 +11,7 @@
 
 
 #include <concepts>
+#include <falcon/core/traits/MathTraits.h>
 #include <gtest/gtest.h>
 #include <limits>
 #include <type_traits>
@@ -52,3 +53,37 @@ using SupportedSignedArithmeticFloatingTypePair =
                      std::pair<double, int16_t>, std::pair<double, int32_t>, std::pair<double, int64_t>,
                      std::pair<double, double>, std::pair<double, float>>;
 #endif
+
+
+// TODO: Move to separate test utils file
+namespace testutils
+{
+    /**
+     * @brief Validates that two scalar values are equal within a defined numerical tolerance.
+     *
+     * @tparam T Numeric type of the values being compared.
+     *
+     * @param[in] expected The ground-truth reference value.
+     * @param[in] actual   The value being evaluated.
+     *
+     * @note Uses GoogleTest macros. Triggers a non-fatal failure if the absolute difference
+     *       between expected and actual exceeds the library's standard epsilon.
+     */
+    template <flcn::StrictArithmetic T>
+    void EXPECT_MAG_EQ(T expected, T actual) // NOLINT
+    {
+        if constexpr (std::is_same_v<T, float>)
+        {
+            EXPECT_FLOAT_EQ(expected, actual);
+        }
+        else if constexpr (std::is_floating_point_v<T>)
+        {
+            EXPECT_DOUBLE_EQ(expected, actual);
+        }
+        else
+        {
+            EXPECT_EQ(expected, actual);
+        }
+    }
+
+} // namespace testutils

@@ -13,7 +13,7 @@
 
 #include "falcon/math/common/Config.h"
 #include "falcon/math/common/Messages.h"
-#include "falcon/math/common/Wrappers.h"
+#include <falcon/core/Math.h>
 
 #include <algorithm>
 #include <cmath>
@@ -598,7 +598,7 @@ namespace flcn::simd
     {
         if constexpr (std::is_floating_point_v<T> || std::is_floating_point_v<S>)
         {
-            if (hasNaN() || flcn::isnan(scalar) || (flcn::abs(scalar) <= std::numeric_limits<S>::epsilon()))
+            if (hasNaN() || flcn::isNaN(scalar) || (flcn::abs(scalar) <= std::numeric_limits<S>::epsilon()))
             {
                 return Vec2<T>::zero();
             }
@@ -606,7 +606,7 @@ namespace flcn::simd
         if constexpr (std::is_integral_v<T>)
         {
             // Since the division will cast operand to T, casting inf to integral is UB(Undefined Behaviour)
-            if (scalar == 0 || flcn::isinf(scalar))
+            if (scalar == 0 || flcn::isInf(scalar))
             {
                 return Vec2<T>::zero();
             }
@@ -630,7 +630,7 @@ namespace flcn::simd
     {
         if constexpr (std::is_floating_point_v<T> || std::is_floating_point_v<S>)
         {
-            if (hasNaN() || flcn::isnan(scalar))
+            if (hasNaN() || flcn::isNaN(scalar))
             {
                 status = OperationStatus::NANOPERAND;
                 return Vec2<T>::zero();
@@ -961,7 +961,7 @@ namespace flcn::simd
         requires FPArithmetic<T>
     {
         T magnitude = mag();
-        if (flcn::isnan(magnitude))
+        if (flcn::isNaN(magnitude))
         {
             return Vec2<T>::zero();
         }
@@ -985,7 +985,7 @@ namespace flcn::simd
         requires FPArithmetic<T>
     {
         T magnitude = mag();
-        if (flcn::isnan(magnitude))
+        if (flcn::isNaN(magnitude))
         {
             status = OperationStatus::NANOPERAND;
             return Vec2<T>::zero();
@@ -1048,7 +1048,7 @@ namespace flcn::simd
         requires FPArithmetic<T>
     {
         const auto ontoSquared = onto.dot(onto);
-        if (hasNaN() || flcn::isnan(ontoSquared) || ontoSquared <= Config::EPSILON_SQUARE<T>)
+        if (hasNaN() || flcn::isNaN(ontoSquared) || ontoSquared <= Config::EPSILON_SQUARE<T>)
         {
             return Vec2<T>::zero();
         }
@@ -1087,7 +1087,7 @@ namespace flcn::simd
         requires FPArithmetic<T>
     {
         const auto ontoSquared = onto.dot(onto);
-        if (hasNaN() || flcn::isnan(ontoSquared))
+        if (hasNaN() || flcn::isNaN(ontoSquared))
         {
             status = OperationStatus::NANOPERAND;
             return Vec2<T>::zero();

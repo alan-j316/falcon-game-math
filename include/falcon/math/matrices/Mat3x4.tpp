@@ -14,7 +14,7 @@
 
 
 #include "falcon/math/common/Types.h"
-#include "falcon/math/common/Wrappers.h"
+#include <falcon/core/Math.h>
 
 #include <type_traits>
 
@@ -348,7 +348,7 @@ namespace flcn
 
         if constexpr (std::is_floating_point_v<R>)
         {
-            if (flcn::abs(scalar) <= std::numeric_limits<R>::epsilon() || flcn::isnan(scalar) || hasNaN())
+            if (flcn::abs(scalar) <= std::numeric_limits<R>::epsilon() || flcn::isNaN(scalar) || hasNaN())
             {
                 return static_cast<Mat3x4<R>>(fallback);
             }
@@ -383,7 +383,7 @@ namespace flcn
 
         if constexpr (std::is_floating_point_v<R>)
         { // TODO: Check || vs | with benchmarks
-            if (static_cast<int>(hasNaN()) | static_cast<int>(flcn::isnan(scalar)))
+            if (static_cast<int>(hasNaN()) | static_cast<int>(flcn::isNaN(scalar)))
             {
                 status = OperationStatus::NANOPERAND;
                 return static_cast<Mat3x4<R>>(fallback);

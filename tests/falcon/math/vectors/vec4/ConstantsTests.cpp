@@ -57,22 +57,22 @@ namespace
         static_assert(flcn::Vec4<int>::zero().w() == 0);
 
         /// @test Verify that @ref Vec4::inf() returns a infinity vector at compile time.
-        static_assert(flcn::isinf(flcn::Vec4<float>::inf().x()));
-        static_assert(flcn::isinf(flcn::Vec4<float>::inf().y()));
-        static_assert(flcn::isinf(flcn::Vec4<float>::inf().z()));
-        static_assert(flcn::isinf(flcn::Vec4<float>::inf().w()));
+        static_assert(flcn::isInf(flcn::Vec4<float>::inf().x()));
+        static_assert(flcn::isInf(flcn::Vec4<float>::inf().y()));
+        static_assert(flcn::isInf(flcn::Vec4<float>::inf().z()));
+        static_assert(flcn::isInf(flcn::Vec4<float>::inf().w()));
 
         /// @test Verify that @ref Vec4::infNeg() returns a negative infinity vector at compile time.
-        static_assert(flcn::isinf(flcn::Vec4<float>::infNeg().x()));
-        static_assert(flcn::isinf(flcn::Vec4<float>::infNeg().y()));
-        static_assert(flcn::isinf(flcn::Vec4<float>::infNeg().z()));
-        static_assert(flcn::isinf(flcn::Vec4<float>::infNeg().w()));
+        static_assert(flcn::isInf(flcn::Vec4<float>::infNeg().x()));
+        static_assert(flcn::isInf(flcn::Vec4<float>::infNeg().y()));
+        static_assert(flcn::isInf(flcn::Vec4<float>::infNeg().z()));
+        static_assert(flcn::isInf(flcn::Vec4<float>::infNeg().w()));
 
         /// @test Verify that @ref Vec4::qnan() returns a qnan vector at compile time.
-        static_assert(flcn::isnan(flcn::Vec4<float>::qnan().x()));
-        static_assert(flcn::isnan(flcn::Vec4<float>::qnan().y()));
-        static_assert(flcn::isnan(flcn::Vec4<float>::qnan().z()));
-        static_assert(flcn::isnan(flcn::Vec4<float>::qnan().w()));
+        static_assert(flcn::isNaN(flcn::Vec4<float>::qnan().x()));
+        static_assert(flcn::isNaN(flcn::Vec4<float>::qnan().y()));
+        static_assert(flcn::isNaN(flcn::Vec4<float>::qnan().z()));
+        static_assert(flcn::isNaN(flcn::Vec4<float>::qnan().w()));
 
         /// @test Verify that @ref Vec4::left() returns a valid vector at compile time.
         static_assert(flcn::Vec4<int>::left().x() == -1);

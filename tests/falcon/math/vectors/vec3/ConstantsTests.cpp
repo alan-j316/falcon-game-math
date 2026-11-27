@@ -56,21 +56,21 @@ namespace
 
 
         /// @test Verify that @ref Vec3::inf() returns a infinity vector at compile time.
-        static_assert(flcn::isinf(flcn::Vec3<float>::inf().x()));
-        static_assert(flcn::isinf(flcn::Vec3<float>::inf().y()));
-        static_assert(flcn::isinf(flcn::Vec3<float>::inf().z()));
+        static_assert(flcn::isInf(flcn::Vec3<float>::inf().x()));
+        static_assert(flcn::isInf(flcn::Vec3<float>::inf().y()));
+        static_assert(flcn::isInf(flcn::Vec3<float>::inf().z()));
 
 
         /// @test Verify that @ref Vec3::infNeg() returns a negative infinity vector at compile time.
-        static_assert(flcn::isinf(flcn::Vec3<float>::infNeg().x()));
-        static_assert(flcn::isinf(flcn::Vec3<float>::infNeg().y()));
-        static_assert(flcn::isinf(flcn::Vec3<float>::infNeg().z()));
+        static_assert(flcn::isInf(flcn::Vec3<float>::infNeg().x()));
+        static_assert(flcn::isInf(flcn::Vec3<float>::infNeg().y()));
+        static_assert(flcn::isInf(flcn::Vec3<float>::infNeg().z()));
 
 
         /// @test Verify that @ref Vec3::qnan() returns a qnan vector at compile time.
-        static_assert(flcn::isnan(flcn::Vec3<float>::qnan().x()));
-        static_assert(flcn::isnan(flcn::Vec3<float>::qnan().y()));
-        static_assert(flcn::isnan(flcn::Vec3<float>::qnan().z()));
+        static_assert(flcn::isNaN(flcn::Vec3<float>::qnan().x()));
+        static_assert(flcn::isNaN(flcn::Vec3<float>::qnan().y()));
+        static_assert(flcn::isNaN(flcn::Vec3<float>::qnan().z()));
 
 
         /// @test Verify that @ref Vec3::left() returns a valid vector at compile time.

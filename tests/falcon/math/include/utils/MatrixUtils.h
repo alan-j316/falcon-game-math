@@ -17,7 +17,7 @@
 
 #include <cassert>
 #include <cmath>
-#include <falcon/math/common/Utils.h>
+#include <falcon/core/Math.h>
 #include <gtest/gtest.h>
 #include <vector>
 
@@ -47,7 +47,8 @@ namespace testutils
      * @note Triggers an assertion failure if matrix dimensions are mismatched.
      */
     template <flcn::Matrix T, flcn::Matrix U>
-    void EXPECT_MAT_EQ(const T& expected, const U& actual, const double epsilon = std::is_same_v<T, double> ? 1e-14 : 1e-5)
+    void EXPECT_MAT_EQ(const T& expected, const U& actual,
+                       const double epsilon = std::is_same_v<T, double> ? 1e-14 : 1e-5)
     {
         using ValueType = T::value_type;
 
@@ -88,7 +89,8 @@ namespace testutils
      * @note Triggers an assertion failure if matrix dimension doesn't match the size of data elements.
      */
     template <flcn::Arithmetic T, flcn::Matrix U>
-    void EXPECT_MAT_CONTAINS(const std::vector<T>& expectedElements, const U& actual, const double epsilon = std::is_same_v<T, double> ? 1e-14 : 1e-5)
+    void EXPECT_MAT_CONTAINS(const std::vector<T>& expectedElements, const U& actual,
+                             const double epsilon = std::is_same_v<T, double> ? 1e-14 : 1e-5)
     {
         assert(expectedElements.size() == U::ROWS * U::COLUMNS &&
                "Size of data elements must match the matrix dimension, e.g: 9 to 3x3");

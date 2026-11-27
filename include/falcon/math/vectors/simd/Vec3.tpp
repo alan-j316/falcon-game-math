@@ -586,7 +586,7 @@ namespace flcn::simd
     {
         if constexpr (std::is_floating_point_v<T> || std::is_floating_point_v<S>)
         {
-            if (hasNaN() || flcn::isnan(scalar) || (flcn::abs(scalar) <= std::numeric_limits<S>::epsilon()))
+            if (hasNaN() || flcn::isNaN(scalar) || (flcn::abs(scalar) <= std::numeric_limits<S>::epsilon()))
             {
                 return Vec3<T>::zero();
             }
@@ -594,7 +594,7 @@ namespace flcn::simd
         else if constexpr (std::is_integral_v<T>)
         {
             // Since the division will cast operand to T, casting inf to integral is UB(Undefined Behaviour)
-            if (scalar == 0 || flcn::isinf(scalar))
+            if (scalar == 0 || flcn::isInf(scalar))
             {
                 return Vec3<T>::zero();
             }
@@ -618,7 +618,7 @@ namespace flcn::simd
     {
         if constexpr (std::is_floating_point_v<T> || std::is_floating_point_v<S>)
         {
-            if (hasNaN() || flcn::isnan(scalar))
+            if (hasNaN() || flcn::isNaN(scalar))
             {
                 status = OperationStatus::NANOPERAND;
                 return Vec3<T>::zero();

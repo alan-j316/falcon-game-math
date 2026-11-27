@@ -54,16 +54,16 @@ namespace
         static_assert(flcn::Vec2<int>::zero().y() == 0);
 
         /// @test Verify that @ref Vec2::inf() returns a infinity vector at compile time.
-        static_assert(flcn::isinf(flcn::Vec2<float>::inf().x()));
-        static_assert(flcn::isinf(flcn::Vec2<float>::inf().y()));
+        static_assert(flcn::isInf(flcn::Vec2<float>::inf().x()));
+        static_assert(flcn::isInf(flcn::Vec2<float>::inf().y()));
 
         /// @test Verify that @ref Vec2::infNeg() returns a negative infinity vector at compile time.
-        static_assert(flcn::isinf(flcn::Vec2<float>::infNeg().x()));
-        static_assert(flcn::isinf(flcn::Vec2<float>::infNeg().y()));
+        static_assert(flcn::isInf(flcn::Vec2<float>::infNeg().x()));
+        static_assert(flcn::isInf(flcn::Vec2<float>::infNeg().y()));
 
         /// @test Verify that @ref Vec2::qnan() returns a qnan vector at compile time.
-        static_assert(flcn::isnan(flcn::Vec2<float>::qnan().x()));
-        static_assert(flcn::isnan(flcn::Vec2<float>::qnan().y()));
+        static_assert(flcn::isNaN(flcn::Vec2<float>::qnan().x()));
+        static_assert(flcn::isNaN(flcn::Vec2<float>::qnan().y()));
 
         /// @test Verify that @ref Vec2::left() returns a valid vector at compile time.
         static_assert(flcn::Vec2<int>::left().x() == -1);

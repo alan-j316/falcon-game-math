@@ -4,10 +4,6 @@ add_library(${FALCON_MATH_TARGET_NAME} INTERFACE
         common/Messages.h
         common/OperationStatus.h
         common/Types.h
-        common/Utils.h
-        common/Utils.tpp
-        common/Wrappers.h
-        common/Wrappers.tpp
 
         matrices/Mat2.h
         matrices/Mat2.tpp

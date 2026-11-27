@@ -8,8 +8,6 @@ target_sources(
         FalconMathCommonTests PRIVATE
         OperationStatusTests.cpp
         TrivialTypeTests.cpp
-        UtilsTests.cpp
-        WrapperTests.cpp
 )
 
 target_link_libraries(FalconMathCommonTests PRIVATE FalconMathTestSetup)

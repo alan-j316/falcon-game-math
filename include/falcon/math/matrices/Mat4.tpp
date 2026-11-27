@@ -554,7 +554,7 @@ namespace flcn
 
         if constexpr (std::is_floating_point_v<R>)
         {
-            if (flcn::abs(scalar) <= std::numeric_limits<R>::epsilon() || flcn::isnan(scalar) || hasNaN())
+            if (flcn::abs(scalar) <= std::numeric_limits<R>::epsilon() || flcn::isNaN(scalar) || hasNaN())
             {
                 return static_cast<Mat4<R>>(fallback);
             }
@@ -590,7 +590,7 @@ namespace flcn
         {
             // TODO: Check || vs | with benchmarks
             // Theoretically the slowest method since NaN checks are performed before division by zero
-            if (static_cast<int>(hasNaN()) | static_cast<int>(flcn::isnan(scalar)))
+            if (static_cast<int>(hasNaN()) | static_cast<int>(flcn::isNaN(scalar)))
             {
                 status = OperationStatus::NANOPERAND;
                 return static_cast<Mat4<R>>(fallback);

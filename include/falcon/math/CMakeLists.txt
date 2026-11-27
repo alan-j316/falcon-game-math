@@ -2,7 +2,6 @@ set(FALCON_MATH_TARGET_NAME FalconGameMath${FALCON_INTERNAL_TARGET_SUFFIX})
 add_library(${FALCON_MATH_TARGET_NAME} INTERFACE
         common/Config.h
         common/Constants.h
-        common/MathTraits.h
         common/Messages.h
         common/OperationStatus.h
         common/Types.h

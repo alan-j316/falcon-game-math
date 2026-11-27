@@ -14,7 +14,7 @@
 #include "utils/MatrixUtils.h"
 #include "utils/VectorUtils.h"
 
-#include <falcon/math/common/MathTraits.h>
+#include <falcon/core/traits/MathTraits.h>
 #include <falcon/math/matrices/Mat2x4.h>
 #include <falcon/math/vectors/Vec2.h>
 

@@ -23,8 +23,8 @@
 
 
 
+#include <falcon/core/traits/MathTraits.h>
 #include "Quaternion.h"
-#include "common/MathTraits.h"
 #include "vectors/Vec3.h"
 
 #include <array>

@@ -13,8 +13,8 @@
  */
 
 
+#include <falcon/core/traits/MathTraits.h>
 #include <cmath>
-#include <falcon/math/common/MathTraits.h>
 #include <falcon/math/vectors/Vec3.h>
 #include <falcon/math/vectors/Vec4.h>
 #include <falcon/math/vectors/simd/Vec2.h>

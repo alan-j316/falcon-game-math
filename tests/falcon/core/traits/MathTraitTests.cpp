@@ -9,9 +9,9 @@
  */
 
 
+#include <falcon/core/traits/MathTraits.h>
 #include <array>
 #include <cstdint>
-#include <falcon/math/common/MathTraits.h>
 #include <vector>
 
 

@@ -15,7 +15,7 @@
 #include "BoundsTestFixture.h"
 #include "utils/VectorUtils.h"
 
-#include <falcon/math/common/MathTraits.h>
+#include <falcon/core/traits/MathTraits.h>
 #include <falcon/math/vectors/Vec3.h>
 
 

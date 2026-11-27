@@ -10,8 +10,8 @@
  */
 
 
+#include <falcon/core/traits/MathTraits.h>
 #include "Config.h"
-#include "MathTraits.h"
 
 namespace flcn::utils
 {

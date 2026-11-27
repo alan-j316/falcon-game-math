@@ -7,6 +7,7 @@ target_sources(
         FalconCoreTests
         PRIVATE
         traits/TypeHelpersTests.cpp
+        traits/MathTraitTests.cpp
         Bitwise.cpp
 )
 

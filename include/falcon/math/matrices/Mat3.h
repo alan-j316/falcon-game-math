@@ -24,8 +24,8 @@
  */
 
 
+#include <falcon/core/traits/MathTraits.h>
 #include "falcon/math/common/Config.h"
-#include "falcon/math/common/MathTraits.h"
 #include "falcon/math/common/Types.h"
 #include "falcon/math/vectors/Vec3.h"
 

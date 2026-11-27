@@ -6,7 +6,6 @@ set_target_properties(FalconMathCommonTests PROPERTIES CXX_EXTENSIONS OFF)
 
 target_sources(
         FalconMathCommonTests PRIVATE
-        MathTraitTests.cpp
         OperationStatusTests.cpp
         TrivialTypeTests.cpp
         UtilsTests.cpp

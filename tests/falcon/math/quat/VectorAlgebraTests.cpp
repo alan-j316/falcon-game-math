@@ -38,7 +38,7 @@ namespace
     class QuaternionDotProduct: public testing::Test
     {
     protected:
-        flcn::Quaternion<T> _quatA, _quatB;
+        flcn::Quat<T> _quatA, _quatB;
         T _expectedDotProduct;
 
         void SetUp() override
@@ -58,8 +58,8 @@ namespace
 
     namespace static_tests
     {
-        constexpr flcn::Quaternion QUAT_A(1, 2, 3, 4);
-        constexpr flcn::Quaternion QUAT_B(5, 6, 7, 8);
+        constexpr flcn::Quat QUAT_A(1, 2, 3, 4);
+        constexpr flcn::Quat QUAT_B(5, 6, 7, 8);
 
         /// @test Verify that dot product of two quaternions return a valid scalar at compile time.
         constexpr auto DOT_PROD = QUAT_A.dot(QUAT_B);
@@ -67,7 +67,7 @@ namespace
 
         /// @test Verify that dot product of two quaternions using static variant
         ///       return a valid scalar at compile time.
-        constexpr auto DOT_PROD_STATIC = flcn::Quaternion<int>::dot(QUAT_A, QUAT_B);
+        constexpr auto DOT_PROD_STATIC = flcn::Quat<int>::dot(QUAT_A, QUAT_B);
         static_assert(DOT_PROD_STATIC == 70);
 
     } // namespace static_tests
@@ -98,8 +98,8 @@ TYPED_TEST(QuaternionDotProduct, DotProductIsCommutative)
 
 TEST(QuaternionDotProduct, Dot_MixedType_PromotesType)
 {
-    const flcn::Quaternion quatA(7, 13, 29, 41);
-    const flcn::Quaternion quatB(1.123456789, 2.123456789, 3.123456789, 4.123456789);
+    const flcn::Quat quatA(7, 13, 29, 41);
+    const flcn::Quat quatB(1.123456789, 2.123456789, 3.123456789, 4.123456789);
 
     [[maybe_unused]] const auto dotProduct = quatA.dot(quatB);
 
@@ -110,7 +110,7 @@ TEST(QuaternionDotProduct, Dot_MixedType_PromotesType)
 
 TYPED_TEST(QuaternionDotProduct, StaticWrapper_DotProductReturnsNonZeroScalar)
 {
-    const TypeParam dotProduct = flcn::Quaternion<TypeParam>::dot(this->_quatA, this->_quatB);
+    const TypeParam dotProduct = flcn::Quat<TypeParam>::dot(this->_quatA, this->_quatB);
 
     testutils::EXPECT_MAG_EQ(this->_expectedDotProduct, dotProduct);
 }
@@ -118,18 +118,18 @@ TYPED_TEST(QuaternionDotProduct, StaticWrapper_DotProductReturnsNonZeroScalar)
 
 TYPED_TEST(QuaternionDotProduct, StaticWrapper_DotProductIsCommutative)
 {
-    const auto aDotB = flcn::Quaternion<TypeParam>::dot(this->_quatA, this->_quatB);
-    const auto bDotA = flcn::Quaternion<TypeParam>::dot(this->_quatB, this->_quatA);
+    const auto aDotB = flcn::Quat<TypeParam>::dot(this->_quatA, this->_quatB);
+    const auto bDotA = flcn::Quat<TypeParam>::dot(this->_quatB, this->_quatA);
 
     testutils::EXPECT_MAG_EQ(aDotB, bDotA);
 }
 
 TEST(QuaternionDotProduct, StaticWrapper_Dot_MixedType_PromotesType)
 {
-    const flcn::Quaternion quatA(7, 13, 29, 41);
-    const flcn::Quaternion quatB(1.123456789, 2.123456789, 3.123456789, 4.123456789);
+    const flcn::Quat quatA(7, 13, 29, 41);
+    const flcn::Quat quatB(1.123456789, 2.123456789, 3.123456789, 4.123456789);
 
-    [[maybe_unused]] const auto dotProduct = flcn::Quaternion<int>::dot(quatA, quatB);
+    [[maybe_unused]] const auto dotProduct = flcn::Quat<int>::dot(quatA, quatB);
 
     static_assert(std::is_same_v<decltype(dotProduct), const double>);
 }

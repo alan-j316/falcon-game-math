@@ -13,6 +13,6 @@ target_link_libraries(FalconMathTestSetup INTERFACE FalconTestSetup)
 
 add_subdirectory(common)
 add_subdirectory(vectors)
-add_subdirectory(quaternions)
+add_subdirectory(quat)
 add_subdirectory(matrices)
 add_subdirectory(utils)

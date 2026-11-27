@@ -33,9 +33,9 @@ namespace
     class QuaternionAddition: public testing::Test
     {
     protected:
-        flcn::Quaternion<T> _quatA;
-        flcn::Quaternion<T> _quatB;
-        flcn::Quaternion<T> _expectedSum;
+        flcn::Quat<T> _quatA;
+        flcn::Quat<T> _quatB;
+        flcn::Quat<T> _expectedSum;
 
         void SetUp() override
         {
@@ -56,9 +56,9 @@ namespace
     class QuaternionSubtraction: public testing::Test
     {
     protected:
-        flcn::Quaternion<T> _quatA;
-        flcn::Quaternion<T> _quatB;
-        flcn::Quaternion<T> _expectedDifference;
+        flcn::Quat<T> _quatA;
+        flcn::Quat<T> _quatB;
+        flcn::Quat<T> _expectedDifference;
 
         void SetUp() override
         {
@@ -79,10 +79,10 @@ namespace
     class QuaternionScalarMultiplication: public testing::Test
     {
     protected:
-        flcn::Quaternion<T> _quat;
+        flcn::Quat<T> _quat;
         T _scalar;
-        flcn::Quaternion<T> _expectedFPQuat;
-        flcn::Quaternion<T> _expectedIntQuat;
+        flcn::Quat<T> _expectedFPQuat;
+        flcn::Quat<T> _expectedIntQuat;
 
         void SetUp() override
         {
@@ -106,13 +106,13 @@ namespace
     class QuaternionQuaternionMultiplication: public testing::Test
     {
     protected:
-        flcn::Quaternion<T> _quatA, _quatB, _expectedFPQuat, _expectedIntQuat;
+        flcn::Quat<T> _quatA, _quatB, _expectedFPQuat, _expectedIntQuat;
 
         void SetUp() override
         {
             _quatA           = { T(1.2343241213), T(2.12343214423), T(3.2134324), T(4.123423414) };
             _quatB           = { T(4.29012340), T(2.012384023), T(5.75012034), T(2.41012384023) };
-            _expectedFPQuat  = flcn::Quaternion{ T(26.40819961022155127), T(20.10415512983554720),
+            _expectedFPQuat  = flcn::Quat{ T(26.40819961022155127), T(20.10415512983554720),
                                                T(24.82909909011548422), T(-18.10822564795768841) };
             _expectedIntQuat = { T(22), T(19), T(20), T(-15) };
         }
@@ -129,9 +129,9 @@ namespace
     class QuaternionScalarDivision: public testing::Test
     {
     protected:
-        flcn::Quaternion<T> _quat;
+        flcn::Quat<T> _quat;
         T _scalar;
-        flcn::Quaternion<T> _expectedScaledVec;
+        flcn::Quat<T> _expectedScaledVec;
 
         void SetUp() override
         {
@@ -153,12 +153,12 @@ namespace
     class QuaternionNegation: public testing::Test
     {
     protected:
-        flcn::Quaternion<T> _quat, _expectedQuat;
+        flcn::Quat<T> _quat, _expectedQuat;
 
         void SetUp() override
         {
-            _quat         = flcn::Quaternion<T>{ T(-8), T(0), T(-2), T(5) };
-            _expectedQuat = flcn::Quaternion<T>{ T(8), T(0), T(2), T(-5) };
+            _quat         = flcn::Quat<T>{ T(-8), T(0), T(-2), T(5) };
+            _expectedQuat = flcn::Quat<T>{ T(8), T(0), T(2), T(-5) };
         }
     };
     TYPED_TEST_SUITE(QuaternionNegation, SupportedSignedArithmeticTypes);
@@ -170,8 +170,8 @@ namespace
 
     namespace static_tests
     {
-        constexpr flcn::Quaternion QUAT_A(-1, 12, 3, 4);
-        constexpr flcn::Quaternion QUAT_B(5, 12, -5, 3);
+        constexpr flcn::Quat QUAT_A(-1, 12, 3, 4);
+        constexpr flcn::Quat QUAT_B(5, 12, -5, 3);
 
         /// @test Verify that quaterion addition returns a valid quaternion at compile-time.
         constexpr auto QUAT_SUM = QUAT_A + QUAT_B;
@@ -231,7 +231,7 @@ namespace
 
 TYPED_TEST(QuaternionAddition, PlusOperator_ReturnsQuaternionSum)
 {
-    const flcn::Quaternion result = this->_quatA + this->_quatB;
+    const flcn::Quat result = this->_quatA + this->_quatB;
 
     EXPECT_QUAT_EQ(this->_expectedSum, result);
 }
@@ -247,10 +247,10 @@ TYPED_TEST(QuaternionAddition, PlusEqualsOperator_ReturnsSameQuaternionWithSum)
 
 TEST(QuaternionAddition, PlusOperator_MixedType_PromotesType)
 {
-    const flcn::Quaternion quat1(3.0f, 0.0f, -1.0f, 2.0f);
-    const flcn::Quaternion quat2(9.0, -5.0, 10.0, 3.0);
+    const flcn::Quat quat1(3.0f, 0.0f, -1.0f, 2.0f);
+    const flcn::Quat quat2(9.0, -5.0, 10.0, 3.0);
 
-    [[maybe_unused]] const flcn::Quaternion result = quat1 + quat2;
+    [[maybe_unused]] const flcn::Quat result = quat1 + quat2;
 
     static_assert(std::is_same_v<decltype(result)::value_type, double>);
 }
@@ -259,8 +259,8 @@ TEST(QuaternionAddition, PlusOperator_MixedType_PromotesType)
 
 TEST(QuaternionAddition, PlusEqualsOperator_MixedType_DoesNotPromoteType)
 {
-    flcn::Quaternion quat1(3.0f, 0.0f, -1.0f, 2.0f);
-    [[maybe_unused]] const flcn::Quaternion quat2(9.0, -5.0, 10.0, 3.0);
+    flcn::Quat quat1(3.0f, 0.0f, -1.0f, 2.0f);
+    [[maybe_unused]] const flcn::Quat quat2(9.0, -5.0, 10.0, 3.0);
 
     static_cast<void>(quat1 += quat2);
 
@@ -270,7 +270,7 @@ TEST(QuaternionAddition, PlusEqualsOperator_MixedType_DoesNotPromoteType)
 
 TYPED_TEST(QuaternionSubtraction, MinusOperator_ReturnsQuaternionDifference)
 {
-    const flcn::Quaternion result = this->_quatA - this->_quatB;
+    const flcn::Quat result = this->_quatA - this->_quatB;
 
     EXPECT_QUAT_EQ(this->_expectedDifference, result);
 }
@@ -286,10 +286,10 @@ TYPED_TEST(QuaternionSubtraction, MinusEqualsOperator_ReturnsSameQuaternionWithD
 
 TEST(QuaternionSubtraction, MinusOperator_MixedType_PromotesType)
 {
-    const flcn::Quaternion quat1(3.0f, 0.0f, -1.0f, 2.0f);
-    const flcn::Quaternion quat2(9.0, -5.0, 10.0, 3.0);
+    const flcn::Quat quat1(3.0f, 0.0f, -1.0f, 2.0f);
+    const flcn::Quat quat2(9.0, -5.0, 10.0, 3.0);
 
-    [[maybe_unused]] const flcn::Quaternion result = quat1 - quat2;
+    [[maybe_unused]] const flcn::Quat result = quat1 - quat2;
 
     static_assert(std::is_same_v<decltype(result)::value_type, double>);
 }
@@ -297,8 +297,8 @@ TEST(QuaternionSubtraction, MinusOperator_MixedType_PromotesType)
 
 TEST(QuaternionSubtraction, MinusEqualsOperator_MixedType_DoesNotPromoteType)
 {
-    flcn::Quaternion quat1(3.0f, 0.0f, -1.0f, 2.0f);
-    [[maybe_unused]] const flcn::Quaternion quat2(9.0, -5.0, 10.0, 3.0);
+    flcn::Quat quat1(3.0f, 0.0f, -1.0f, 2.0f);
+    [[maybe_unused]] const flcn::Quat quat2(9.0, -5.0, 10.0, 3.0);
 
     static_cast<void>(quat1 -= quat2);
 
@@ -308,9 +308,9 @@ TEST(QuaternionSubtraction, MinusEqualsOperator_MixedType_DoesNotPromoteType)
 
 TEST(QuaternionScalarMultiplication, QuaternionTimesZeroReturnsZeroQuaternion)
 {
-    const flcn::Quaternion quat(3.0f, 1.0f, 6.0f, 2.0f);
+    const flcn::Quat quat(3.0f, 1.0f, 6.0f, 2.0f);
 
-    const flcn::Quaternion result = quat * 0;
+    const flcn::Quat result = quat * 0;
 
     EXPECT_QUAT_CONTAINS(result, 0.0f, 0.0f, 0.0f, 0.0f);
 }
@@ -318,9 +318,9 @@ TEST(QuaternionScalarMultiplication, QuaternionTimesZeroReturnsZeroQuaternion)
 
 TEST(QuaternionScalarMultiplication, QuaternionTimesOneReturnsOriginalQuaternion)
 {
-    const flcn::Quaternion quat(3.0f, 1.0f, 6.0f, 2.0f);
+    const flcn::Quat quat(3.0f, 1.0f, 6.0f, 2.0f);
 
-    const flcn::Quaternion result = quat * 1;
+    const flcn::Quat result = quat * 1;
 
     EXPECT_QUAT_CONTAINS(result, 3.0f, 1.0f, 6.0f, 2.0f);
 }
@@ -328,7 +328,7 @@ TEST(QuaternionScalarMultiplication, QuaternionTimesOneReturnsOriginalQuaternion
 
 TYPED_TEST(QuaternionScalarMultiplication, QuaternionTimesScalarReturnsScaledQuaternion)
 {
-    const flcn::Quaternion result = this->_quat * this->_scalar;
+    const flcn::Quat result = this->_quat * this->_scalar;
 
     if (std::is_floating_point_v<TypeParam>)
     {
@@ -343,7 +343,7 @@ TYPED_TEST(QuaternionScalarMultiplication, QuaternionTimesScalarReturnsScaledQua
 
 TYPED_TEST(QuaternionScalarMultiplication, ScalarTimesAQuaternionReturnsScaledQuaternion)
 {
-    const flcn::Quaternion result = this->_scalar * this->_quat;
+    const flcn::Quat result = this->_scalar * this->_quat;
 
     if (std::is_floating_point_v<TypeParam>)
     {
@@ -376,7 +376,7 @@ TEST(QuaternionScalarMultiplication, MixedTypeScalarMultiplication_PromotesType)
 {
     const double scalar = 2.123456789123456;
 
-    flcn::Quaternion quat(3.0f, 0.0f, -1.0f, 2.0f);
+    flcn::Quat quat(3.0f, 0.0f, -1.0f, 2.0f);
     [[maybe_unused]] const auto result = quat * scalar;
 
     static_assert(std::is_same_v<typename decltype(result)::value_type, double>);
@@ -385,7 +385,7 @@ TEST(QuaternionScalarMultiplication, MixedTypeScalarMultiplication_PromotesType)
 
 TEST(QuaternionScalarMultiplication, MixedTypeScalarMultiplicationAssignment_DoesNotPromoteType)
 {
-    flcn::Quaternion quat(3.0f, 0.0f, -1.0f, 2.0f);
+    flcn::Quat quat(3.0f, 0.0f, -1.0f, 2.0f);
     const double scalar = 5.0;
     quat *= scalar;
 
@@ -395,9 +395,9 @@ TEST(QuaternionScalarMultiplication, MixedTypeScalarMultiplicationAssignment_Doe
 
 TEST(QuaternionScalarMultiplication, MixedTypeScalarMultiplicationAssignment_EnsuresMinimalPrecisionLoss)
 {
-    flcn::Quaternion quat(3, 0, -1, 8);
+    flcn::Quat quat(3, 0, -1, 8);
     const double scalar = 2.5;
-    const flcn::Quaternion expected(7, 0, -2, 20);
+    const flcn::Quat expected(7, 0, -2, 20);
 
     quat *= scalar;
 
@@ -407,7 +407,7 @@ TEST(QuaternionScalarMultiplication, MixedTypeScalarMultiplicationAssignment_Ens
 
 TYPED_TEST(QuaternionQuaternionMultiplication, TimesOperator_ReturnsAValidQuaternion)
 {
-    const flcn::Quaternion result = this->_quatA * this->_quatB;
+    const flcn::Quat result = this->_quatA * this->_quatB;
 
     if (std::is_floating_point_v<TypeParam>)
     {
@@ -438,8 +438,8 @@ TYPED_TEST(QuaternionQuaternionMultiplication, TimesEqualsOperator_ReturnsTheSam
 
 TEST(QuaternionQuaternionMultiplication, TimesOperator_MixedType_PromotesType)
 {
-    flcn::Quaternion quatA(3.0f, 0.0f, -1.0f, 2.0f);
-    const flcn::Quaternion quatB(1.0, 2.0, 3.0, 4.0);
+    flcn::Quat quatA(3.0f, 0.0f, -1.0f, 2.0f);
+    const flcn::Quat quatB(1.0, 2.0, 3.0, 4.0);
 
     [[maybe_unused]] const auto result = quatA * quatB;
 
@@ -449,8 +449,8 @@ TEST(QuaternionQuaternionMultiplication, TimesOperator_MixedType_PromotesType)
 
 TEST(QuaternionQuaternionMultiplication, TimesEqualsOperator_MixedType_DoesNotPromoteType)
 {
-    flcn::Quaternion quatA(3.0f, 0.0f, -1.0f, 2.0f);
-    const flcn::Quaternion quatB(1.0, 2.0, 3.0, 4.0);
+    flcn::Quat quatA(3.0f, 0.0f, -1.0f, 2.0f);
+    const flcn::Quat quatB(1.0, 2.0, 3.0, 4.0);
     quatA *= quatB;
 
     static_assert(std::is_same_v<decltype(quatA)::value_type, float>);
@@ -459,7 +459,7 @@ TEST(QuaternionQuaternionMultiplication, TimesEqualsOperator_MixedType_DoesNotPr
 
 TYPED_TEST(QuaternionScalarDivision, ByOneReturnsOriginalQuaternion)
 {
-    const flcn::Quaternion result = this->_quat / TypeParam(1);
+    const flcn::Quat result = this->_quat / TypeParam(1);
 
     EXPECT_QUAT_EQ(result, this->_quat);
 }
@@ -467,7 +467,7 @@ TYPED_TEST(QuaternionScalarDivision, ByOneReturnsOriginalQuaternion)
 
 TYPED_TEST(QuaternionScalarDivision, DivideOperator_ReturnsAValidQuaternion)
 {
-    const flcn::Quaternion result = this->_quat / this->_scalar;
+    const flcn::Quat result = this->_quat / this->_scalar;
 
     EXPECT_QUAT_EQ(this->_expectedScaledVec, result);
 }
@@ -483,7 +483,7 @@ TYPED_TEST(QuaternionScalarDivision, DivideEqualsOperator_ReturnsSameQuaternionI
 
 TEST(QuaternionScalarDivision, DivideOperator_MixedType_PromotesType)
 {
-    const flcn::Quaternion quat(15.0, 0.0, -5.0, 10.0);
+    const flcn::Quat quat(15.0, 0.0, -5.0, 10.0);
     const double scalar = 5.0;
 
     [[maybe_unused]] const auto result = quat / scalar;
@@ -494,7 +494,7 @@ TEST(QuaternionScalarDivision, DivideOperator_MixedType_PromotesType)
 
 TEST(QuaternionScalarDivision, DivideEqualsOperator_MixedType_DoesNotPromoteType)
 {
-    flcn::Quaternion quat(15.0f, 0.0f, -5.0f, 10.0f);
+    flcn::Quat quat(15.0f, 0.0f, -5.0f, 10.0f);
     const double scalar = 5.0;
 
     quat /= scalar;
@@ -505,9 +505,9 @@ TEST(QuaternionScalarDivision, DivideEqualsOperator_MixedType_DoesNotPromoteType
 
 TEST(QuaternionScalarDivision, DivideEqualsOperator_MixedType_ReturnsResultWithMinimalPrecisionLoss)
 {
-    flcn::Quaternion quat(10, 25, -30, 2);
+    flcn::Quat quat(10, 25, -30, 2);
     const double scalar = 2.5;
-    const flcn::Quaternion expected(4, 10, -12, 0);
+    const flcn::Quat expected(4, 10, -12, 0);
 
     quat /= scalar;
 
@@ -517,27 +517,27 @@ TEST(QuaternionScalarDivision, DivideEqualsOperator_MixedType_ReturnsResultWithM
 
 TYPED_TEST(QuaternionNegation, InvertsTheSignOfEachComponents)
 {
-    const flcn::Quaternion inverted = -this->_quat;
+    const flcn::Quat inverted = -this->_quat;
     EXPECT_QUAT_EQ(this->_expectedQuat, inverted);
 }
 
 
 TEST(QuaternionNegation, InvertsSignOfInfinity)
 {
-    const flcn::Quaternion infQuat = {
+    const flcn::Quat infQuat = {
         flcn::constants::INFINITY_F,
         -flcn::constants::INFINITY_F,
         flcn::constants::INFINITY_F,
         -flcn::constants::INFINITY_F,
     };
-    const flcn::Quaternion expected = {
+    const flcn::Quat expected = {
         -flcn::constants::INFINITY_F,
         flcn::constants::INFINITY_F,
         -flcn::constants::INFINITY_F,
         flcn::constants::INFINITY_F,
     };
 
-    const flcn::Quaternion<float> inverted = -infQuat;
+    const flcn::Quat<float> inverted = -infQuat;
 
     EXPECT_QUAT_EQ(expected, inverted);
 }
@@ -545,14 +545,14 @@ TEST(QuaternionNegation, InvertsSignOfInfinity)
 
 TEST(QuaternionNegation, NoOpOnNaNQuaternions)
 {
-    const flcn::Quaternion nanQuat = {
+    const flcn::Quat nanQuat = {
         flcn::constants::NaN,
         flcn::constants::NaN,
         flcn::constants::NaN,
         flcn::constants::NaN,
     };
 
-    const flcn::Quaternion<float> inverted = -nanQuat;
+    const flcn::Quat<float> inverted = -nanQuat;
 
     EXPECT_TRUE(std::isnan(inverted.x()));
     EXPECT_TRUE(std::isnan(inverted.y()));

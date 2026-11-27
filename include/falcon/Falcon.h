@@ -10,6 +10,6 @@
  */
 
 #include "math/Mat"
-#include "math/Quaternion.h"
+#include "math/Quat.h"
 #include "math/Vec"
 #include "simd/FalconSimd.h"

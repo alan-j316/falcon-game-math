@@ -30,7 +30,7 @@ namespace
 
     namespace static_tests
     {
-        constexpr flcn::Quaternion QUATERNION(1, 2, 3, 4);
+        constexpr flcn::Quat QUATERNION(1, 2, 3, 4);
 
         /// @test Verify that quaternions can be accessed as <x, y, z, w> at compile time.
         static_assert(QUATERNION.x() == 1);
@@ -65,7 +65,7 @@ namespace
 
 TEST(QuaternionAccess, ComponentsAreAccessibleAsXYZW)
 {
-    const flcn::Quaternion quat{ 1.0f, 2.0f, 3.0f, 4.0f };
+    const flcn::Quat quat{ 1.0f, 2.0f, 3.0f, 4.0f };
 
     EXPECT_FLOAT_EQ(1.0f, quat.x());
     EXPECT_FLOAT_EQ(2.0f, quat.y());
@@ -76,7 +76,7 @@ TEST(QuaternionAccess, ComponentsAreAccessibleAsXYZW)
 
 TEST(QuaternionAccess, ComponentsAreAccessibleAsIJKS)
 {
-    const flcn::Quaternion quat{ 1.0f, 2.0f, 3.0f, 4.0f };
+    const flcn::Quat quat{ 1.0f, 2.0f, 3.0f, 4.0f };
 
     EXPECT_FLOAT_EQ(1.0f, quat.i());
     EXPECT_FLOAT_EQ(2.0f, quat.j());
@@ -87,7 +87,7 @@ TEST(QuaternionAccess, ComponentsAreAccessibleAsIJKS)
 
 TEST(QuaternionAccess, GetVectorPart_ReturnsAValid3DVector)
 {
-    const flcn::Quaternion quat{ 1.0f, 2.0f, 3.0f, 4.0f };
+    const flcn::Quat quat{ 1.0f, 2.0f, 3.0f, 4.0f };
     const auto vectorPart = quat.getVectorPart();
     EXPECT_FLOAT_EQ(1.0f, vectorPart.x());
     EXPECT_FLOAT_EQ(2.0f, vectorPart.y());
@@ -97,14 +97,14 @@ TEST(QuaternionAccess, GetVectorPart_ReturnsAValid3DVector)
 
 TEST(QuaternionAccess, GetScalarPart_ReturnsAScalarComponent)
 {
-    const flcn::Quaternion quat{ 1.0f, 2.0f, 3.0f, 4.0f };
+    const flcn::Quat quat{ 1.0f, 2.0f, 3.0f, 4.0f };
     EXPECT_FLOAT_EQ(4.0f, quat.getScalarPart());
 }
 
 
 TEST(QuaternionMutation, ComponentsCanBeMutatedUsingXYZW)
 {
-    flcn::Quaternion<float> quat{};
+    flcn::Quat<float> quat{};
 
     quat.x() = 1.0f;
     quat.y() = 2.0f;
@@ -120,7 +120,7 @@ TEST(QuaternionMutation, ComponentsCanBeMutatedUsingXYZW)
 
 TEST(QuaternionMutation, ComponentsCanBeMutatedUsingIJKS)
 {
-    flcn::Quaternion<float> quat;
+    flcn::Quat<float> quat;
 
     quat.i() = 1.0f;
     quat.j() = 2.0f;

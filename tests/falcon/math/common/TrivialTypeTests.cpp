@@ -11,7 +11,7 @@
 
 #include "utils/TypeUtils.h"
 
-#include <falcon/math/Quaternion.h>
+#include <falcon/math/Quat.h>
 #include <falcon/math/matrices/Mat2.h>
 #include <falcon/math/matrices/Mat2x3.h>
 #include <falcon/math/matrices/Mat2x4.h>
@@ -49,6 +49,6 @@ ASSERT_TRIVIAL_TYPE(flcn::Mat4x3<float>);
 
 
 /** @test Verify that @ref fgm Quaternions are trivial types. */
-ASSERT_TRIVIAL_TYPE(flcn::Quaternion<float>);
+ASSERT_TRIVIAL_TYPE(flcn::Quat<float>);
 
 /** @} */

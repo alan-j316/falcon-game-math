@@ -21,7 +21,7 @@
 
 TEST(QuaternionInverseTests, ZeroQuaternionTriggersAssertInDebugMode)
 {
-    const auto zeroQuat = flcn::Quaternion(0.0f, 0.0f, 0.0f, 0.0f);
+    const auto zeroQuat = flcn::Quat(0.0f, 0.0f, 0.0f, 0.0f);
     EXPECT_DEATH(static_cast<void>(zeroQuat.inverse()), "");
 }
 

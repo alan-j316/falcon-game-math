@@ -93,7 +93,7 @@ namespace flcn
     struct Transform4;
 
     template <Arithmetic T>
-    struct Quaternion;
+    struct Quat;
 
 
 
@@ -246,7 +246,7 @@ namespace flcn
     /** @brief Alias for @ref Quaternion with promoted value type. */
     template <Arithmetic T, Arithmetic U>
         requires Arithmetic<PromotedValue_t<T, U>>
-    using PromotedQuaternion = Quaternion<PromotedValue_t<T, U>>;
+    using PromotedQuaternion = Quat<PromotedValue_t<T, U>>;
 
 
     /** @brief Alias for @ref Transform4 with promoted value type. */

@@ -35,13 +35,13 @@ namespace
     class QuaternionConjugateTests: public testing::Test
     {
     protected:
-        flcn::Quaternion<T> _quat;
-        flcn::Quaternion<T> _expectedConjugate;
+        flcn::Quat<T> _quat;
+        flcn::Quat<T> _expectedConjugate;
 
         void SetUp() override
         {
-            _quat              = flcn::Quaternion<T>{ T(8), T(-4), T(7), T(5) };
-            _expectedConjugate = flcn::Quaternion<T>{ T(-8), T(4), T(-7), T(5) };
+            _quat              = flcn::Quat<T>{ T(8), T(-4), T(7), T(5) };
+            _expectedConjugate = flcn::Quat<T>{ T(-8), T(4), T(-7), T(5) };
         }
     };
     TYPED_TEST_SUITE(QuaternionConjugateTests, SupportedSignedArithmeticTypes);
@@ -56,7 +56,7 @@ namespace
     class QuaternionMagnitudeTests: public testing::Test
     {
     protected:
-        flcn::Quaternion<T> _quat;
+        flcn::Quat<T> _quat;
         flcn::Magnitude<T> _expectedMagnitude;
 
         void SetUp() override
@@ -78,13 +78,13 @@ namespace
     {
     protected:
         using M = flcn::Magnitude<T>;
-        flcn::Quaternion<T> _quat;
-        flcn::Quaternion<M> _expectedInverse;
+        flcn::Quat<T> _quat;
+        flcn::Quat<M> _expectedInverse;
 
         void SetUp() override
         {
             _quat            = { T(3), T(1), T(6), T(4) };
-            _expectedInverse = flcn::Quaternion<M>{ M(-0.04838709677419355), M(-0.01612903225806452),
+            _expectedInverse = flcn::Quat<M>{ M(-0.04838709677419355), M(-0.01612903225806452),
                                                    M(-0.09677419354838709), M(0.06451612903225806) };
         }
     };
@@ -98,7 +98,7 @@ namespace
 
     namespace static_tests
     {
-        constexpr flcn::Quaternion QUAT_A(-1, 12, 3, 4);
+        constexpr flcn::Quat QUAT_A(-1, 12, 3, 4);
         // constexpr flcn::Quaternion QUAT_B(5, 12, -5, 3);
 
         /// @test Verify that quaterion conjugate returns a valid quaternion at compile-time.
@@ -109,7 +109,7 @@ namespace
         static_assert(QUAT_CONJUGATE.s() == 4);
 
         /// @test Verify that quaterion conjugate(static wrapper) returns a valid quaternion at compile-time.
-        constexpr auto QUAT_CONJUGATE_STATIC = flcn::Quaternion<int>::conjugate(QUAT_A);
+        constexpr auto QUAT_CONJUGATE_STATIC = flcn::Quat<int>::conjugate(QUAT_A);
         static_assert(QUAT_CONJUGATE_STATIC.i() == 1);
         static_assert(QUAT_CONJUGATE_STATIC.j() == -12);
         static_assert(QUAT_CONJUGATE_STATIC.k() == -3);
@@ -127,7 +127,7 @@ namespace
 
 
         /// @test Verify that quaterion inverse(static wrapper) returns a valid quaternion at compile-time.
-        constexpr auto QUAT_INVERSE_STATIC = flcn::Quaternion<int>::inverse(QUAT_A);
+        constexpr auto QUAT_INVERSE_STATIC = flcn::Quat<int>::inverse(QUAT_A);
         static_assert(QUAT_INVERSE_STATIC.i() - 0.005882 < flcn::Config::FLOAT_EPSILON);
         static_assert(QUAT_INVERSE_STATIC.j() - -0.07058 < flcn::Config::FLOAT_EPSILON);
         static_assert(QUAT_INVERSE_STATIC.k() - -0.01764 < flcn::Config::FLOAT_EPSILON);
@@ -148,7 +148,7 @@ TYPED_TEST(QuaternionConjugateTests, ReturnsAQuaternionWithInvertedVectorPart)
 
 
 TYPED_TEST(QuaternionConjugateTests, StaticWrapper_ReturnsAQuaternionWithInvertedVectorPart)
-{ EXPECT_QUAT_EQ(this->_expectedConjugate, flcn::Quaternion<TypeParam>::conjugate(this->_quat)); }
+{ EXPECT_QUAT_EQ(this->_expectedConjugate, flcn::Quat<TypeParam>::conjugate(this->_quat)); }
 
 
 
@@ -174,7 +174,7 @@ TYPED_TEST(QuaternionMagnitudeTests, MagnitudeIsAlwaysTypedPromotedToFloatingPoi
 
 TYPED_TEST(QuaternionMagnitudeTests, StaticWrapper_NonUnitVectorReturnsCorrectMagnitude)
 {
-    const auto magnitude = flcn::Quaternion<TypeParam>::mag(this->_quat);
+    const auto magnitude = flcn::Quat<TypeParam>::mag(this->_quat);
 
     static_assert(std::is_floating_point_v<decltype(magnitude)>);
     testutils::EXPECT_MAG_EQ(this->_expectedMagnitude, magnitude);
@@ -183,7 +183,7 @@ TYPED_TEST(QuaternionMagnitudeTests, StaticWrapper_NonUnitVectorReturnsCorrectMa
 
 TYPED_TEST(QuaternionMagnitudeTests, StaticWrapper_MagnitudeIsAlwaysTypedPromotedToFloatingPointType)
 {
-    [[maybe_unused]] const auto magnitude = flcn::Quaternion<TypeParam>::mag(this->_quat);
+    [[maybe_unused]] const auto magnitude = flcn::Quat<TypeParam>::mag(this->_quat);
     static_assert(std::is_floating_point_v<decltype(magnitude)>);
 }
 
@@ -202,13 +202,13 @@ TYPED_TEST(QuaternionInverseTests, AlwaysReturnFloatingPointQuaternion)
 
 
 TYPED_TEST(QuaternionInverseTests, StaticWrapper_ReturnsValidQuaternion)
-{ EXPECT_QUAT_EQ(this->_expectedInverse, flcn::Quaternion<TypeParam>::inverse(this->_quat)); }
+{ EXPECT_QUAT_EQ(this->_expectedInverse, flcn::Quat<TypeParam>::inverse(this->_quat)); }
 
 
 TYPED_TEST(QuaternionInverseTests, StaticWrapper_AlwaysReturnFloatingPointQuaternion)
 {
     static_assert(
-        std::is_floating_point_v<typename decltype(flcn::Quaternion<TypeParam>::inverse(this->_quat))::value_type> ==
+        std::is_floating_point_v<typename decltype(flcn::Quat<TypeParam>::inverse(this->_quat))::value_type> ==
         true);
 }
 

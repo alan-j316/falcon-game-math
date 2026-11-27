@@ -1,6 +1,6 @@
 #pragma once
 /**
- * @file Quaternion.h
+ * @file Quat.h
  * @author Alan Abraham P Kochumon
  * @date Created on: August 01, 2026
  *
@@ -23,11 +23,11 @@
 
 
 
-#include <falcon/core/traits/MathTraits.h>
-#include "Quaternion.h"
+#include "Quat.h"
 #include "vectors/Vec3.h"
 
 #include <array>
+#include <falcon/core/traits/MathTraits.h>
 
 
 namespace flcn
@@ -43,7 +43,7 @@ namespace flcn
      *
      */
     template <Arithmetic T>
-    struct Quaternion
+    struct Quat
     {
 
         using value_type = T; /// The numeric type of member variables.
@@ -62,7 +62,7 @@ namespace flcn
          *
          * @note Use value-initialization (`{}`) to guarantee a zeroed quaternion.
          */
-        Quaternion() = default;
+        Quat() = default;
 
 
         /**
@@ -73,7 +73,7 @@ namespace flcn
          * @param[in] z The third vector component.
          * @param[in] w The scalar component.
          */
-        [[nodiscard]] constexpr Quaternion(T x, T y, T z, T w) noexcept;
+        [[nodiscard]] constexpr Quat(T x, T y, T z, T w) noexcept;
 
 
         /**
@@ -82,7 +82,7 @@ namespace flcn
          * @param[in] complex The complex/vector component.
          * @param[in] real The real/scalar component.
          */
-        [[nodiscard]] constexpr Quaternion(const Vec3<T>& complex, T real) noexcept;
+        [[nodiscard]] constexpr Quat(const Vec3<T>& complex, T real) noexcept;
 
 
         /**
@@ -91,7 +91,7 @@ namespace flcn
          * @param[in] complex The complex/vector component.
          * @param[in] real The real/scalar component.
          */
-        [[nodiscard]] constexpr Quaternion(T real, const Vec3<T>& complex) noexcept;
+        [[nodiscard]] constexpr Quat(T real, const Vec3<T>& complex) noexcept;
 
 
         /**
@@ -102,7 +102,7 @@ namespace flcn
          * @param[in] other The source quaternion to be converted.
          */
         template <Arithmetic U>
-        [[nodiscard]] explicit constexpr Quaternion(const Quaternion<U>& other) noexcept;
+        [[nodiscard]] explicit constexpr Quat(const Quat<U>& other) noexcept;
 
         /** @} */
 
@@ -241,7 +241,7 @@ namespace flcn
          */
         template <StrictArithmetic U>
             requires StrictSignedness<T, U>
-        constexpr PromotedQuaternion<T, U> operator+(const Quaternion<U>& rhs) const noexcept
+        constexpr PromotedQuaternion<T, U> operator+(const Quat<U>& rhs) const noexcept
             requires StrictArithmetic<T>;
 
 
@@ -256,7 +256,7 @@ namespace flcn
          */
         template <StrictArithmetic U>
             requires StrictSignedness<T, U>
-        constexpr Quaternion& operator+=(const Quaternion<U>& rhs) noexcept
+        constexpr Quat& operator+=(const Quat<U>& rhs) noexcept
             requires StrictArithmetic<T>;
 
         /**
@@ -270,7 +270,7 @@ namespace flcn
          */
         template <StrictArithmetic U>
             requires StrictSignedness<T, U>
-        constexpr PromotedQuaternion<T, U> operator-(const Quaternion<U>& rhs) const noexcept
+        constexpr PromotedQuaternion<T, U> operator-(const Quat<U>& rhs) const noexcept
             requires StrictArithmetic<T>;
 
 
@@ -285,7 +285,7 @@ namespace flcn
          */
         template <StrictArithmetic U>
             requires StrictSignedness<T, U>
-        constexpr Quaternion& operator-=(const Quaternion<U>& rhs) noexcept
+        constexpr Quat& operator-=(const Quat<U>& rhs) noexcept
             requires StrictArithmetic<T>;
 
 
@@ -315,7 +315,7 @@ namespace flcn
          */
         template <StrictArithmetic S>
             requires StrictSignedness<T, S>
-        constexpr Quaternion& operator*=(S scalar) noexcept
+        constexpr Quat& operator*=(S scalar) noexcept
             requires StrictArithmetic<T>;
 
 
@@ -349,7 +349,7 @@ namespace flcn
          */
         template <StrictArithmetic S>
             requires StrictSignedness<T, S>
-        constexpr Quaternion& operator/=(S scalar) noexcept
+        constexpr Quat& operator/=(S scalar) noexcept
             requires StrictArithmetic<T>;
 
 
@@ -360,7 +360,7 @@ namespace flcn
          *
          * @return A new @ref flcn::Quaternion with negated components.
          */
-        [[nodiscard]] constexpr Quaternion operator-() const noexcept
+        [[nodiscard]] constexpr Quat operator-() const noexcept
             requires SignedStrictArithmetic<T>;
 
         /** @} */
@@ -395,7 +395,7 @@ namespace flcn
          */
         template <Arithmetic U>
             requires StrictSignedness<T, U>
-        [[nodiscard]] constexpr bool allEq(const Quaternion<U>& rhs,
+        [[nodiscard]] constexpr bool allEq(const Quat<U>& rhs,
                                            double epsilon = Config::EPSILON<std::common_type_t<T, U>>) const noexcept;
 
 
@@ -423,7 +423,7 @@ namespace flcn
          */
         template <Arithmetic U>
             requires StrictSignedness<T, U>
-        [[nodiscard]] static constexpr bool allEq(const Quaternion& lhs, const Quaternion<U>& rhs,
+        [[nodiscard]] static constexpr bool allEq(const Quat& lhs, const Quat<U>& rhs,
                                                   double epsilon = Config::EPSILON<std::common_type_t<T, U>>) noexcept;
 
 
@@ -450,7 +450,7 @@ namespace flcn
          */
         template <Arithmetic U>
             requires StrictSignedness<T, U>
-        [[nodiscard]] constexpr bool anyNeq(const Quaternion<U>& rhs,
+        [[nodiscard]] constexpr bool anyNeq(const Quat<U>& rhs,
                                             double epsilon = Config::EPSILON<std::common_type_t<T, U>>) const noexcept;
 
 
@@ -478,7 +478,7 @@ namespace flcn
          */
         template <Arithmetic U>
             requires StrictSignedness<T, U>
-        [[nodiscard]] static constexpr bool anyNeq(const Quaternion& lhs, const Quaternion<U>& rhs,
+        [[nodiscard]] static constexpr bool anyNeq(const Quat& lhs, const Quat<U>& rhs,
                                                    double epsilon = Config::EPSILON<std::common_type_t<T, U>>) noexcept;
 
 
@@ -504,8 +504,8 @@ namespace flcn
          */
         template <Arithmetic U>
             requires StrictSignedness<T, U>
-        [[nodiscard]] constexpr Quaternion<bool> eq(
-            const Quaternion<U>& rhs, double epsilon = Config::EPSILON<std::common_type_t<T, U>>) const noexcept;
+        [[nodiscard]] constexpr Quat<bool> eq(
+            const Quat<U>& rhs, double epsilon = Config::EPSILON<std::common_type_t<T, U>>) const noexcept;
 
 
         /**
@@ -529,8 +529,8 @@ namespace flcn
          */
         template <Arithmetic U>
             requires StrictSignedness<T, U>
-        [[nodiscard]] static constexpr Quaternion<bool> eq(
-            const Quaternion& lhs, const Quaternion<U>& rhs,
+        [[nodiscard]] static constexpr Quat<bool> eq(
+            const Quat& lhs, const Quat<U>& rhs,
             double epsilon = Config::EPSILON<std::common_type_t<T, U>>) noexcept;
 
 
@@ -556,8 +556,8 @@ namespace flcn
          */
         template <Arithmetic U>
             requires StrictSignedness<T, U>
-        [[nodiscard]] constexpr Quaternion<bool> neq(
-            const Quaternion<U>& rhs, double epsilon = Config::EPSILON<std::common_type_t<T, U>>) const noexcept;
+        [[nodiscard]] constexpr Quat<bool> neq(
+            const Quat<U>& rhs, double epsilon = Config::EPSILON<std::common_type_t<T, U>>) const noexcept;
 
 
         /**
@@ -581,8 +581,8 @@ namespace flcn
          */
         template <Arithmetic U>
             requires StrictSignedness<T, U>
-        [[nodiscard]] static constexpr Quaternion<bool> neq(
-            const Quaternion& lhs, const Quaternion<U>& rhs,
+        [[nodiscard]] static constexpr Quat<bool> neq(
+            const Quat& lhs, const Quat<U>& rhs,
             double epsilon = Config::EPSILON<std::common_type_t<T, U>>) noexcept;
 
 
@@ -608,7 +608,7 @@ namespace flcn
          */
         template <Arithmetic U>
             requires StrictSignedness<T, U>
-        [[nodiscard]] constexpr bool vecEq(const Quaternion<U>& rhs,
+        [[nodiscard]] constexpr bool vecEq(const Quat<U>& rhs,
                                            double epsilon = Config::EPSILON<std::common_type_t<T, U>>) const noexcept;
 
 
@@ -632,7 +632,7 @@ namespace flcn
          */
         template <Arithmetic U>
             requires StrictSignedness<T, U>
-        [[nodiscard]] static constexpr bool vecEq(const Quaternion& lhs, const Quaternion<U>& rhs,
+        [[nodiscard]] static constexpr bool vecEq(const Quat& lhs, const Quat<U>& rhs,
                                                   double epsilon = Config::EPSILON<std::common_type_t<T, U>>) noexcept;
 
 
@@ -658,7 +658,7 @@ namespace flcn
          */
         template <Arithmetic U>
             requires StrictSignedness<T, U>
-        [[nodiscard]] constexpr bool vecNeq(const Quaternion<U>& rhs,
+        [[nodiscard]] constexpr bool vecNeq(const Quat<U>& rhs,
                                             double epsilon = Config::EPSILON<std::common_type_t<T, U>>) const noexcept;
 
 
@@ -682,7 +682,7 @@ namespace flcn
          */
         template <Arithmetic U>
             requires StrictSignedness<T, U>
-        [[nodiscard]] static constexpr bool vecNeq(const Quaternion& lhs, const Quaternion<U>& rhs,
+        [[nodiscard]] static constexpr bool vecNeq(const Quat& lhs, const Quat<U>& rhs,
                                                    double epsilon = Config::EPSILON<std::common_type_t<T, U>>) noexcept;
 
 
@@ -699,7 +699,7 @@ namespace flcn
          */
         template <Arithmetic U>
             requires StrictSignedness<T, U>
-        [[nodiscard]] constexpr bool operator==(const Quaternion<U>& rhs) const noexcept;
+        [[nodiscard]] constexpr bool operator==(const Quat<U>& rhs) const noexcept;
 
 
         /**
@@ -715,7 +715,7 @@ namespace flcn
          */
         template <Arithmetic U>
             requires StrictSignedness<T, U>
-        [[nodiscard]] constexpr bool operator!=(const Quaternion<U>& rhs) const noexcept;
+        [[nodiscard]] constexpr bool operator!=(const Quat<U>& rhs) const noexcept;
 
 
         /** @} */
@@ -738,7 +738,7 @@ namespace flcn
          */
         template <StrictArithmetic U>
             requires StrictSignedness<T, U>
-        constexpr PromotedQuaternion<T, U> operator*(const Quaternion<U>& other) const noexcept
+        constexpr PromotedQuaternion<T, U> operator*(const Quat<U>& other) const noexcept
             requires StrictArithmetic<T>;
 
 
@@ -753,7 +753,7 @@ namespace flcn
          */
         template <StrictArithmetic U>
             requires StrictSignedness<T, U>
-        constexpr Quaternion& operator*=(const Quaternion<U>& other) noexcept
+        constexpr Quat& operator*=(const Quat<U>& other) noexcept
             requires StrictArithmetic<T>;
 
 
@@ -765,7 +765,7 @@ namespace flcn
          *
          * @return A new @ref flcn::Quaternion with negated vector components.
          */
-        [[nodiscard]] constexpr Quaternion conjugate() const noexcept
+        [[nodiscard]] constexpr Quat conjugate() const noexcept
             requires SignedStrictArithmetic<T>;
 
 
@@ -777,7 +777,7 @@ namespace flcn
          *
          * @return A new @ref flcn::Quaternion with negated vector components.
          */
-        [[nodiscard]] static constexpr Quaternion conjugate(const Quaternion& quat) noexcept
+        [[nodiscard]] static constexpr Quat conjugate(const Quat& quat) noexcept
             requires SignedStrictArithmetic<T>;
 
 
@@ -803,13 +803,13 @@ namespace flcn
          * @note To avoid precision loss, integral types are promoted to their
          *       corresponding floating-point representation via @ref Magnitude.
          * @note If you only want the magnitude squared, use @ref dot,
-         *       which is faster due to be the absense of sqrt.
+         *       which is faster due to be the absence of sqrt.
          *
          * @param[in] quat The quaternion to compute the magnitude of.
          *
          * @return The scalar magnitude of @p quat.
          */
-        [[nodiscard]] static constexpr Magnitude<T> mag(const Quaternion& quat) noexcept
+        [[nodiscard]] static constexpr Magnitude<T> mag(const Quat& quat) noexcept
             requires StrictArithmetic<T>;
 
 
@@ -824,7 +824,7 @@ namespace flcn
          *
          * @return A new @ref flcn::Quaternion which satisfies q * inv(q) = [0 0 0 1].
          */
-        [[nodiscard]] constexpr Quaternion<Magnitude<T>> inverse() const noexcept
+        [[nodiscard]] constexpr Quat<Magnitude<T>> inverse() const noexcept
             requires SignedStrictArithmetic<T>;
 
 
@@ -839,7 +839,7 @@ namespace flcn
          *
          * @return A new @ref flcn::Quaternion which satisfies q * inv(q) = [0 0 0 1].
          */
-        [[nodiscard]] static constexpr Quaternion<Magnitude<T>> inverse(const Quaternion& quat) noexcept
+        [[nodiscard]] static constexpr Quat<Magnitude<T>> inverse(const Quat& quat) noexcept
             requires SignedStrictArithmetic<T>;
 
         /** @} */
@@ -866,7 +866,7 @@ namespace flcn
          */
         template <StrictArithmetic U>
             requires StrictSignedness<T, U>
-        [[nodiscard]] constexpr PromotedValue_t<T, U> dot(const Quaternion<U>& rhs) const noexcept
+        [[nodiscard]] constexpr PromotedValue_t<T, U> dot(const Quat<U>& rhs) const noexcept
             requires StrictArithmetic<T>;
 
 
@@ -886,8 +886,8 @@ namespace flcn
          */
         template <StrictArithmetic U>
             requires StrictSignedness<T, U>
-        [[nodiscard]] static constexpr PromotedValue_t<T, U> dot(const Quaternion& lhs,
-                                                                 const Quaternion<U>& rhs) noexcept
+        [[nodiscard]] static constexpr PromotedValue_t<T, U> dot(const Quat& lhs,
+                                                                 const Quat<U>& rhs) noexcept
             requires StrictArithmetic<T>;
 
         /** @} */
@@ -918,7 +918,7 @@ namespace flcn
          *
          * @return True if at least one component is positive or negative infinity.
          */
-        [[nodiscard]] static constexpr bool hasInf(const Quaternion& quat) noexcept;
+        [[nodiscard]] static constexpr bool hasInf(const Quat& quat) noexcept;
 
 
         /**
@@ -940,7 +940,7 @@ namespace flcn
          *
          * @return True if at least one component is NaN.
          */
-        [[nodiscard]] static constexpr bool hasNaN(const Quaternion& quat) noexcept;
+        [[nodiscard]] static constexpr bool hasNaN(const Quat& quat) noexcept;
 
         /** @} */
 
@@ -953,25 +953,25 @@ namespace flcn
         /**
          * @brief A quaternion with zero vector part and unit scalar part (0i, 0j, 0k, 1).
          */
-        static constexpr Quaternion identity()
+        static constexpr Quat identity()
             requires StrictArithmetic<T>
-        { return Quaternion{ T(0), T(0), T(0), T(1) }; }
+        { return Quat{ T(0), T(0), T(0), T(1) }; }
 
 
         /**
          * @brief A quaternion with unit vector part and scalar part (1i, 1j, 1k, 1).
          */
-        static constexpr Quaternion one()
+        static constexpr Quat one()
             requires StrictArithmetic<T>
-        { return Quaternion{ T(1), T(1), T(1), T(1) }; }
+        { return Quat{ T(1), T(1), T(1), T(1) }; }
 
 
         /**
          * @brief A quaternion with all components set to zero (0i, 0j, 0k, 0).
          */
-        static constexpr Quaternion zero()
+        static constexpr Quat zero()
             requires StrictArithmetic<T>
-        { return Quaternion{ T(0), T(0), T(0), T(0) }; }
+        { return Quat{ T(0), T(0), T(0), T(0) }; }
 
         /** @} */
 
@@ -1000,7 +1000,7 @@ namespace flcn
      */
     template <StrictArithmetic T, StrictArithmetic S>
         requires StrictSignedness<T, S>
-    constexpr PromotedQuaternion<T, S> operator*(S scalar, const Quaternion<T>& quat) noexcept;
+    constexpr PromotedQuaternion<T, S> operator*(S scalar, const Quat<T>& quat) noexcept;
 
     /** @} */
 
@@ -1009,14 +1009,14 @@ namespace flcn
     /** @brief Template deduction guide for Quaternion. */
     template <typename T>
         requires Arithmetic<T>
-    Quaternion(T, T, T, T) -> Quaternion<T>;
+    Quat(T, T, T, T) -> Quat<T>;
 
     template <typename T>
         requires Arithmetic<T>
-    Quaternion(Vec3<T>, T) -> Quaternion<T>;
+    Quat(Vec3<T>, T) -> Quat<T>;
 
 } // namespace flcn
 
 
 
-#include "Quaternion.tpp"
+#include "Quat.tpp"

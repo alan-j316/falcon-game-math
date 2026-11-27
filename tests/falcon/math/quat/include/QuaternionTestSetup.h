@@ -12,7 +12,7 @@
 #include "../../../CommonSetup.h"
 
 #include <cmath>
-#include <falcon/math/Quaternion.h>
+#include <falcon/math/Quat.h>
 #include <type_traits>
 
 
@@ -58,7 +58,7 @@ namespace flcn::testutils
      *       if the quaternions are not equal.
      */
     template <Arithmetic T, Arithmetic U>
-    constexpr void expectQuaternionEq(const Quaternion<T>& expected, const Quaternion<U>& actual)
+    constexpr void expectQuaternionEq(const Quat<T>& expected, const Quat<U>& actual)
     {
         using ValueType = std::common_type_t<T, U>;
         if constexpr (std::is_same_v<ValueType, double>)
@@ -100,7 +100,7 @@ namespace flcn::testutils
      *       internal state does not match the provided scalars.
      */
     template <Arithmetic T>
-    void expectQuaternionContains(const Quaternion<T>& quat, T x, T y, T z, T w)
+    void expectQuaternionContains(const Quat<T>& quat, T x, T y, T z, T w)
     {
         if constexpr (std::is_same_v<T, float>)
         {
@@ -137,7 +137,7 @@ namespace flcn::testutils
      *       if any of the quaternion components are not @ref `INFINITY` or `-INFINITY`.
      */
     template <Arithmetic T>
-    void expectQuatInf(const Quaternion<T>& quat)
+    void expectQuatInf(const Quat<T>& quat)
     {
         if (std::is_floating_point_v<T>)
         {

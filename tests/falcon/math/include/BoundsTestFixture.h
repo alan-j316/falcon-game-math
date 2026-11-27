@@ -12,7 +12,7 @@
 
 #include "CommonSetup.h"
 
-#include <falcon/math/Quaternion.h>
+#include <falcon/math/Quat.h>
 #include <falcon/math/utils/Interpolation.h>
 #include <falcon/math/vectors/Vec2.h>
 #include <falcon/math/vectors/Vec3.h>

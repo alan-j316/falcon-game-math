@@ -21,7 +21,7 @@
 
 namespace flcn
 {
-    // MIN, MAX, SQRT, RSQRT, EXP, EXP2, LOG, LOG2, LOG10, SIN, COS, TAN, ASIN, ACOS, ATAN, ATAN2
+    // MAX, SQRT, RSQRT, EXP, EXP2, LOG, LOG2, LOG10, SIN, COS, TAN, ASIN, ACOS, ATAN, ATAN2
     // CEIL, FLOOR, TRUNCATE, SIGNBIT, CLAMP
 
     /**
@@ -130,6 +130,30 @@ namespace flcn
     template <Arithmetic T>
     constexpr T min(std::initializer_list<T> iList) noexcept;
 
+
+    /**
+     * @brief Compare and return the larger value of @p a and @p b.
+     * @tparam T The numeric type of comparable. Must satisfy @ref Arithmetic.
+     * @note Passing a list of zero-size is undefined behavior.
+     *
+     * @param a The first value to compare.
+     * @param b The second value to compare.
+     * @return The larger of the two values.
+     */
+    template <Arithmetic T>
+    constexpr T max(const T& a, const T& b) noexcept;
+
+
+    /**
+     * @brief Compare and return the largest value from the @p iList.
+     * @tparam T The numeric type of comparable. Must satisfy @ref Arithmetic.
+     * @note Passing a list of zero-size is undefined behavior.
+     *
+     * @param iList The list of values to compare.
+     * @return The largest value from the list.
+     */
+    template <Arithmetic T>
+    constexpr T max(std::initializer_list<T> iList) noexcept;
 
     /**
      * @brief Compute the square root of a number.

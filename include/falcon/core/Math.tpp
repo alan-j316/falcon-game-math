@@ -11,6 +11,7 @@
 
 #include "Preprocessors.h"
 
+#include <algorithm>
 #include <bit>
 #include <cmath>
 #include <type_traits>
@@ -145,6 +146,21 @@ namespace flcn
     {
         // std::min is constexpr from c++14.
         return std::min(iList);
+    }
+
+
+    template <Arithmetic T>
+    constexpr T max(const T& a, const T& b) noexcept
+    {
+        // std::max is constexpr from c++14.
+        return std::max(a, b);
+    }
+
+    template <Arithmetic T>
+    constexpr T max(std::initializer_list<T> iList) noexcept
+    {
+        // std::max is constexpr from c++14.
+        return std::max(iList);
     }
 
 

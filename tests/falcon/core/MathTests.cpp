@@ -182,6 +182,51 @@ namespace
 
 
 
+    /**
+     * @brief Test fixture for @ref flcn::min.
+     * @tparam T The scalar type(int, float, double...) of the values.
+     */
+    template <typename T>
+    class MaxTypedTests: public testing::Test
+    {
+    public:
+        std::vector<T> elements{};
+        T expected;
+
+    protected:
+        void SetUp() override
+        {
+            elements = { T(99), T(0), T(5), T(3) };
+            expected = T(99);
+        }
+    };
+    TYPED_TEST_SUITE(MaxTypedTests, SupportedArithmeticTypes);
+
+
+    /// @brief Parameterized test fixture for flcn::max(binary parameters)
+    class MaxBinaryParamTests: public testing::TestWithParam<BinaryMathTestParam<float>>
+    {};
+    INSTANTIATE_TEST_SUITE_P(
+        MaxBinaryParamTests, MaxBinaryParamTests,
+        testing::Values(BinaryMathTestParam{ 1.0f, 2.0f, 2.0f }, BinaryMathTestParam{ 1.0f, -2.0f, 1.0f },
+                        BinaryMathTestParam{ -1.0f, -2.0f, -1.0f }, BinaryMathTestParam{ INF_F, -2.0f, INF_F },
+                        BinaryMathTestParam{ -INF_F, -2.0f, -2.0f }, BinaryMathTestParam{ -INF_F, INF_F, INF_F },
+                        BinaryMathTestParam{ 5000.0f, INF_F, INF_F }));
+
+    /// @brief Parameterized test fixture for flcn::max(binary parameters)
+    class MaxListParamTests: public testing::TestWithParam<ListMathTestParam<float>>
+    {};
+    INSTANTIATE_TEST_SUITE_P(MaxListParamTests, MaxListParamTests,
+                             testing::Values(ListMathTestParam{ FpVec4{ 1.0f, 2.0f, 3.0f, 4.0f }, 4.0f },
+                                             ListMathTestParam{ FpVec4{ 1.0f, -2.0f, -1.5f, 0.5f }, 1.0f },
+                                             ListMathTestParam{ FpVec4{ -1.0f, -2.0f, -3.5f, -99.0f }, -1.0f },
+                                             ListMathTestParam{ FpVec4{ INF_F, -2.0f, INF_F, 49.0f }, INF_F },
+                                             ListMathTestParam{ FpVec4{ -INF_F, -2.0f, INF_F, 2.0f }, INF_F },
+                                             ListMathTestParam{ FpVec4{ -INF_F, INF_F, 0.0f, 999999.0f }, INF_F },
+                                             ListMathTestParam{ FpVec4{ 5000.0f, INF_F, 50.0f, 316.0f }, INF_F }));
+
+
+
     /// +---------------------------------------------------------------------------------------+
     /// |                                 STATIC TESTS                                          |
     /// +---------------------------------------------------------------------------------------+
@@ -207,18 +252,20 @@ namespace
         static_assert(flcn::abs(flcn::constants::NaN_D) != flcn::constants::NaN_D);
 
 
-        /** @test Verify that @ref flcn::isnan is correct boolean at compile time. */
+        /** @test Verify that @ref flcn::isNaN is correct boolean at compile time. */
         static_assert(flcn::isNaN(-3.53) == false);
+        static_assert(flcn::isNaN(3.53) == false);
+        static_assert(flcn::isNaN(0) == false);
         static_assert(flcn::isNaN(flcn::constants::NaN) == true);
         static_assert(flcn::isNaN(flcn::constants::NaN_D) == true);
 
 
-        /** @test Verify that @ref flcn::isinf returns correct boolean at compile time. */
+        /** @test Verify that @ref flcn::isInf returns correct boolean at compile time. */
         static_assert(flcn::isInf(-3.53) == false);
         static_assert(flcn::isInf(3.53) == false);
+        static_assert(flcn::isInf(0) == false);
         static_assert(flcn::isInf(INF_F) == true);
         static_assert(flcn::isInf(-INF_F) == true);
-
 
         /** @test Verify that @ref flcn::min return the smallest value at compile time. */
         static_assert(flcn::min(0, 1) == 0);
@@ -241,6 +288,28 @@ namespace
         static_assert(flcn::min({ 1.0f, -2.0f, -INF_F }) == -INF_F);
         static_assert(flcn::min({ 1.0f, -2.0f, INF_F }) == -2.0f);
         static_assert(flcn::min({ 1.0f, INF_F, -INF_F }) == -INF_F);
+
+        /** @test Verify that @ref flcn::max return the largest value at compile time. */
+        static_assert(flcn::max(0, 1) == 1);
+        static_assert(flcn::max(-1, 1) == 1);
+        static_assert(flcn::max(-1, -5) == -1);
+        static_assert(flcn::max(5.0f, 5.5f) == 5.5f);
+        static_assert(flcn::max(5.0f, 5.01f) == 5.01f);
+        static_assert(flcn::max(4.99f, 5.01f) == 5.01f);
+        static_assert(flcn::max(4.99f, -5.01f) == 4.99f);
+        static_assert(flcn::max(-INF_F, -5.01f) == -5.01f);
+        static_assert(flcn::max(-INF_F, INF_F) == INF_F);
+        static_assert(flcn::max(-2.0f, INF_F) == INF_F);
+
+        /** @test Verify that @ref flcn::max(init list) return the largest value at compile time. */
+        static_assert(flcn::max({ 1, 2, 3 }) == 3);
+        static_assert(flcn::max({ -1, -2, -3 }) == -1);
+        static_assert(flcn::max({ 1, -2, 3 }) == 3);
+        static_assert(flcn::max({ 1.0f, 2.0f, 3.0f }) == 3.0f);
+        static_assert(flcn::max({ 1.0f, -2.0f, 3.0f }) == 3.0f);
+        static_assert(flcn::max({ 1.0f, -2.0f, -INF_F }) == 1.0f);
+        static_assert(flcn::max({ 1.0f, -2.0f, INF_F }) == INF_F);
+        static_assert(flcn::max({ 1.0f, INF_F, -INF_F }) == INF_F);
 
 
         /// TODO: Add sqrt tests
@@ -378,6 +447,38 @@ TEST_P(MinListParamTests, ReturnsTheMinimumValue)
     const auto& [list, expected] = GetParam();
     EXPECT_EQ(4, list.size()) << "Test Parameter error: List must be of size of 4.";
     EXPECT_MAG_EQ(expected, flcn::min({ list[0], list[1], list[2], list[3] }));
+}
+
+
+
+/// +---------------------------------------------------------------------------------------+
+/// |                                  MAX TESTS                                            |
+/// +---------------------------------------------------------------------------------------+
+
+TYPED_TEST(MaxTypedTests, BinaryValues_ReturnsTheMinimumOfTwo)
+{ EXPECT_MAG_EQ(this->expected, flcn::max(this->elements[0], this->elements[1])); }
+
+
+TYPED_TEST(MaxTypedTests, ListValues_ReturnsTheMinimumFromTheList)
+{
+    EXPECT_EQ(4, this->elements.size()) << "Test Parameter error: List must be of size of 4.";
+    EXPECT_MAG_EQ(this->expected,
+                  flcn::max({ this->elements[0], this->elements[1], this->elements[2], this->elements[3] }));
+}
+
+
+TEST_P(MaxBinaryParamTests, ReturnsTheMinimumValue)
+{
+    const auto [first, second, expected] = GetParam();
+    EXPECT_MAG_EQ(expected, flcn::max(first, second));
+}
+
+
+TEST_P(MaxListParamTests, ReturnsTheMinimumValue)
+{
+    const auto& [list, expected] = GetParam();
+    EXPECT_EQ(4, list.size()) << "Test Parameter error: List must be of size of 4.";
+    EXPECT_MAG_EQ(expected, flcn::max({ list[0], list[1], list[2], list[3] }));
 }
 
 

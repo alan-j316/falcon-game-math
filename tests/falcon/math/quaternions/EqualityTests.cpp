@@ -12,7 +12,7 @@
 
 #include "include/QuaternionTestSetup.h"
 
-#include <falcon/math/common/Constants.h>
+#include <../../../../include/falcon/core/Constants.h>
 
 
 /**

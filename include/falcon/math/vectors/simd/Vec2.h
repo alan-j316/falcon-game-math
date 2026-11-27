@@ -21,12 +21,12 @@
  */
 
 // TODO: Update header description
-#include <falcon/core/traits/MathTraits.h>
+#include <falcon/core/Constants.h>
 #include "falcon/math/common/Config.h"
-#include "falcon/math/common/Constants.h"
 #include "falcon/math/common/OperationStatus.h"
 
 #include <falcon/core/Preprocessors.h>
+#include <falcon/core/traits/MathTraits.h>
 #include <falcon/core/traits/TypeHelpers.h>
 #include <falcon/simd/FalconSimd.h>
 #include <iomanip>

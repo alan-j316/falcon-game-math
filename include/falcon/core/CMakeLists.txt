@@ -2,7 +2,9 @@ set(FALCON_CORE_TARGET_NAME FalconCore${FALCON_INTERNAL_TARGET_SUFFIX})
 add_library(${FALCON_CORE_TARGET_NAME} INTERFACE
         traits/TypeHelpers.h
         traits/MathTraits.h
+        traits/MathTraits.h
 
+        Constants.h
         Preprocessors.h
         DoxygenGroups.h
         Bitwise.h

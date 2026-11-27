@@ -22,12 +22,12 @@
 
 #include "Vec2.h"
 #include "falcon/math/common/Config.h"
-#include "falcon/math/common/Constants.h"
 #include "falcon/math/common/OperationStatus.h"
 #include "falcon/math/common/Types.h"
 
 #include <array>
 #include <cstdint>
+#include <falcon/core/Constants.h>
 #include <iomanip>
 #include <type_traits>
 

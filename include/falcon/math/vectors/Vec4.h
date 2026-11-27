@@ -21,14 +21,14 @@
  * @copyright Copyright (c) 2026 Alan Abraham P Kochumon
  */
 
-#include <falcon/core/traits/MathTraits.h>
+#include <falcon/core/Constants.h>
 #include "falcon/math/common/Config.h"
-#include "falcon/math/common/Constants.h"
 #include "falcon/math/common/OperationStatus.h"
 #include "falcon/math/common/Types.h"
 
 #include <array>
 #include <cstdint>
+#include <falcon/core/traits/MathTraits.h>
 #include <iomanip>
 #include <ostream>
 

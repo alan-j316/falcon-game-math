@@ -12,7 +12,7 @@
 
 #include "Mat3TestSetup.h"
 
-#include <falcon/math/common/Constants.h>
+#include <falcon/core/Constants.h>
 
 
 

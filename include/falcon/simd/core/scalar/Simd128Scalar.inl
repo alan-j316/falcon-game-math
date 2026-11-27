@@ -10,8 +10,8 @@
  */
 
 
-#include "falcon/core/Bitwise.h"
-#include "falcon/math/common/Constants.h"
+#include <falcon/core/Bitwise.h>
+#include <falcon/core/Constants.h>
 
 #include <bit>
 #include <cmath>

@@ -21,8 +21,8 @@
 // TODO: Update Class Doc Header
 
 
+#include <falcon/core/Constants.h>
 #include "Vec2.h"
-#include "falcon/math/common/Constants.h"
 #include "falcon/math/common/OperationStatus.h"
 #include "falcon/math/common/Types.h"
 

@@ -22,8 +22,7 @@
 namespace flcn
 {
     // MIN, MAX, SQRT, RSQRT, EXP, EXP2, LOG, LOG2, LOG10, SIN, COS, TAN, ASIN, ACOS, ATAN, ATAN2
-    // CEIL, FLOOR, TRUNCATE, SIGNBIT, CLAMP,
-    // template<Arithmetic
+    // CEIL, FLOOR, TRUNCATE, SIGNBIT, CLAMP
 
     /**
      * @brief Compute the absolute value of an integral or floating-point value.
@@ -103,9 +102,34 @@ namespace flcn
      *
      * @return A boolean whether the values are equal.
      */
-    template <typename T>
-        requires std::floating_point<T> || std::integral<T>
+    template <Arithmetic T>
     constexpr bool compareEq(T a, T b) noexcept;
+
+
+    /**
+     * @brief Compare and return the smaller value of @p a and @p b.
+     * @tparam T The numeric type of comparable. Must satisfy @ref Arithmetic.
+     * @note Passing a list of zero-size is undefined behavior.
+     *
+     * @param a The first value to compare.
+     * @param b The second value to compare.
+     * @return The smaller of the two values.
+     */
+    template <Arithmetic T>
+    constexpr T min(const T& a, const T& b) noexcept;
+
+
+    /**
+     * @brief Compare and return the smallest value from the @p iList.
+     * @tparam T The numeric type of comparable. Must satisfy @ref Arithmetic.
+     * @note Passing a list of zero-size is undefined behavior.
+     *
+     * @param iList The list of values to compare.
+     * @return The smallest value from the list.
+     */
+    template <Arithmetic T>
+    constexpr T min(std::initializer_list<T> iList) noexcept;
+
 
     /**
      * @brief Compute the square root of a number.

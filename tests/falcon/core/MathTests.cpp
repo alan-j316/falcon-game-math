@@ -12,6 +12,7 @@
 
 #include "CommonSetup.h"
 
+#include <array>
 #include <falcon/core/Constants.h>
 #include <falcon/core/Math.h>
 
@@ -24,10 +25,49 @@
 namespace
 {
     using namespace testutils;
+    inline constexpr auto INF_F = flcn::constants::INFINITY_F;
+    using FpVec4                = std::vector<float>;
 
-    /**************************************
-     *            TEST SETUP              *
-     **************************************/
+    /// +---------------------------------------------------------------------------------------+
+    /// |                                TEST PARAMS                                            |
+    /// +---------------------------------------------------------------------------------------+
+
+    /**
+     * @brief Test parameter for testing math functions binary arithmetic arguments
+     *        returning another arithmetic value.
+     * @tparam T Numeric type for arguments.
+     */
+    template <typename T>
+    struct BinaryMathTestParam
+    {
+        T a, b;
+        T expected;
+    };
+
+
+    /**
+     * @brief Test parameter for testing math functions with list of parameters.
+     * @tparam T Numeric type for elements.
+     */
+    template <typename T>
+    struct ListMathTestParam
+    {
+        std::vector<T> list;
+        T expected;
+    };
+
+
+    template <typename T>
+    struct CompareEqTestParams
+    {
+        T a, b;
+        bool expected;
+    };
+
+
+    /// +---------------------------------------------------------------------------------------+
+    /// |                               TEST SETUP                                              |
+    /// +---------------------------------------------------------------------------------------+
 
     /**
      * @brief Test fixture for @ref flcn::diffAbs.
@@ -37,14 +77,6 @@ namespace
     {};
     TYPED_TEST_SUITE(FalconDiffAbsTests, SupportedArithmeticTypes);
 
-
-
-    template <typename T>
-    struct CompareEqTestParams
-    {
-        T a, b;
-        bool expected;
-    };
 
     /**
      * @brief Test fixture for validating @ref flcn::compareEq across different types.
@@ -63,6 +95,7 @@ namespace
         }
     };
     TYPED_TEST_SUITE(CompareEqTests, SupportedArithmeticTypes);
+
 
     /**
      * @brief Test fixture for @ref flcn::abs(signed numbers).
@@ -104,9 +137,54 @@ namespace
     TYPED_TEST_SUITE(AbsTest, SupportedArithmeticTypes);
 
 
-    /**************************************
-     *            STATIC TESTS            *
-     **************************************/
+    /**
+     * @brief Test fixture for @ref flcn::min.
+     * @tparam T The scalar type(int, float, double...) of the values.
+     */
+    template <typename T>
+    class MinTypedTests: public testing::Test
+    {
+    public:
+        std::vector<T> elements{};
+        T expected;
+
+    protected:
+        void SetUp() override
+        {
+            elements = { T(99), T(0), T(5), T(3) };
+            expected = T(0);
+        }
+    };
+    TYPED_TEST_SUITE(MinTypedTests, SupportedArithmeticTypes);
+
+
+    /// @brief Parameterized test fixture for flcn::min(binary parameters)
+    class MinBinaryParamTests: public testing::TestWithParam<BinaryMathTestParam<float>>
+    {};
+    INSTANTIATE_TEST_SUITE_P(
+        MinBinaryParamTests, MinBinaryParamTests,
+        testing::Values(BinaryMathTestParam{ 1.0f, 2.0f, 1.0f }, BinaryMathTestParam{ 1.0f, -2.0f, -2.0f },
+                        BinaryMathTestParam{ -1.0f, -2.0f, -2.0f }, BinaryMathTestParam{ INF_F, -2.0f, -2.0f },
+                        BinaryMathTestParam{ -INF_F, -2.0f, -INF_F }, BinaryMathTestParam{ -INF_F, INF_F, -INF_F },
+                        BinaryMathTestParam{ 5000.0f, INF_F, 5000.0f }));
+
+    /// @brief Parameterized test fixture for flcn::min(binary parameters)
+    class MinListParamTests: public testing::TestWithParam<ListMathTestParam<float>>
+    {};
+    INSTANTIATE_TEST_SUITE_P(MinListParamTests, MinListParamTests,
+                             testing::Values(ListMathTestParam{ FpVec4{ 1.0f, 2.0f, 3.0f, 4.0f }, 1.0f },
+                                             ListMathTestParam{ FpVec4{ 1.0f, -2.0f, -1.5f, 0.5f }, -2.0f },
+                                             ListMathTestParam{ FpVec4{ -1.0f, -2.0f, -3.5f, -99.0f }, -99.0f },
+                                             ListMathTestParam{ FpVec4{ INF_F, -2.0f, INF_F, 49.0f }, -2.0f },
+                                             ListMathTestParam{ FpVec4{ -INF_F, -2.0f, INF_F, 2.0f }, -INF_F },
+                                             ListMathTestParam{ FpVec4{ -INF_F, INF_F, 0.0f, 999999.0f }, -INF_F },
+                                             ListMathTestParam{ FpVec4{ 5000.0f, INF_F, 50.0f, 316.0f }, 50.0f }));
+
+
+
+    /// +---------------------------------------------------------------------------------------+
+    /// |                                 STATIC TESTS                                          |
+    /// +---------------------------------------------------------------------------------------+
 
     namespace static_tests
     {
@@ -138,8 +216,32 @@ namespace
         /** @test Verify that @ref flcn::isinf returns correct boolean at compile time. */
         static_assert(flcn::isInf(-3.53) == false);
         static_assert(flcn::isInf(3.53) == false);
-        static_assert(flcn::isInf(flcn::constants::INFINITY_F) == true);
-        static_assert(flcn::isInf(-flcn::constants::INFINITY_F) == true);
+        static_assert(flcn::isInf(INF_F) == true);
+        static_assert(flcn::isInf(-INF_F) == true);
+
+
+        /** @test Verify that @ref flcn::min return the smallest value at compile time. */
+        static_assert(flcn::min(0, 1) == 0);
+        static_assert(flcn::min(-1, 1) == -1);
+        static_assert(flcn::min(-1, -5) == -5);
+        static_assert(flcn::min(5.0f, 5.5f) == 5.0f);
+        static_assert(flcn::min(5.0f, 5.01f) == 5.0f);
+        static_assert(flcn::min(4.99f, 5.01f) == 4.99f);
+        static_assert(flcn::min(4.99f, -5.01f) == -5.01f);
+        static_assert(flcn::min(-INF_F, -5.01f) == -INF_F);
+        static_assert(flcn::min(-INF_F, INF_F) == -INF_F);
+        static_assert(flcn::min(-2.0f, INF_F) == -2.0f);
+
+        /** @test Verify that @ref flcn::min(init list) return the smallest value at compile time. */
+        static_assert(flcn::min({ 1, 2, 3 }) == 1);
+        static_assert(flcn::min({ -1, -2, -3 }) == -3);
+        static_assert(flcn::min({ 1, -2, 3 }) == -2);
+        static_assert(flcn::min({ 1.0f, 2.0f, 3.0f }) == 1.0f);
+        static_assert(flcn::min({ 1.0f, -2.0f, 3.0f }) == -2.0f);
+        static_assert(flcn::min({ 1.0f, -2.0f, -INF_F }) == -INF_F);
+        static_assert(flcn::min({ 1.0f, -2.0f, INF_F }) == -2.0f);
+        static_assert(flcn::min({ 1.0f, INF_F, -INF_F }) == -INF_F);
+
 
         /// TODO: Add sqrt tests
         //     static_assert(flcn::utils::sqrt(4) - 2.0f <= flcn::Config::FLOAT_EPSILON);
@@ -156,10 +258,9 @@ namespace
 
 
 
-
-/**************************************
- *              DIFF ABS              *
- **************************************/
+/// +---------------------------------------------------------------------------------------+
+/// |                                DIFF_ABS TESTS                                         |
+/// +---------------------------------------------------------------------------------------+
 
 TYPED_TEST(FalconDiffAbsTests, ReturnsAbsoluteValueWithUnderflow_WhenAGreaterThanB)
 {
@@ -189,9 +290,9 @@ TYPED_TEST(FalconDiffAbsTests, ReturnsAbsoluteValueWithUnderflow_WhenAEqualsB)
 
 
 
-/**************************************
- *             COMPARE EQ             *
- **************************************/
+/// +---------------------------------------------------------------------------------------+
+/// |                               COMPARE_EQ TESTS                                        |
+/// +---------------------------------------------------------------------------------------+
 
 TYPED_TEST(CompareEqTests, EqualValues_ReturnTrue)
 { EXPECT_TRUE(flcn::compareEq(this->_equalValueA, this->_equalValueB)); }
@@ -202,14 +303,13 @@ TYPED_TEST(CompareEqTests, UnequalValues_ReturnFalse)
 
 
 /// @test Verify that compareEq works with relative precision when compared IEEE 754 floating point types.
-TEST(CompareEqTests, MaintainsARelativePrecision)
-{ EXPECT_FALSE(flcn::compareEq(316.810892301231, 316.810892301222)); }
+TEST(CompareEqTests, MaintainsARelativePrecision) { EXPECT_FALSE(flcn::compareEq(316.810892301231, 316.810892301222)); }
 
 
 
-/**************************************
- *              ABS TEST              *
- **************************************/
+/// +---------------------------------------------------------------------------------------+
+/// |                                  ABS TESTS                                            |
+/// +---------------------------------------------------------------------------------------+
 
 TYPED_TEST(AbsTestUnsigned, UnsignedNumbers_ReturnsAbsoluteValue)
 { testutils::EXPECT_MAG_EQ(this->_expectedAbsValue, flcn::abs(this->_value)); }
@@ -220,33 +320,65 @@ TYPED_TEST(AbsTest, SignedNumbers_ReturnsAbsoluteValue)
 
 
 
-/**************************************
- *            ISNAN TESTS             *
- **************************************/
+/// +---------------------------------------------------------------------------------------+
+/// |                                 ISNAN TESTS                                           |
+/// +---------------------------------------------------------------------------------------+
 
-/** @test Verify thatcheck for IEEE 754 NaN using @ref flcn::isnan returns true for a standard quiet NaN. */
+/** @test Verify that check for IEEE 754 NaN using @ref flcn::isnan returns true for a standard quiet NaN. */
 TEST(IsNaNTests, NaNReturnsTrue) { EXPECT_TRUE(flcn::isNaN(flcn::constants::NaN)); }
 
 
-/** @test Verify thatcheck for IEEE 754 NaN using @ref flcn::isnan returns false for a non-NaN. */
+/** @test Verify that check for IEEE 754 NaN using @ref flcn::isnan returns false for a non-NaN. */
 TEST(IsNaNTests, NumberReturnsFalse) { EXPECT_FALSE(flcn::isNaN(3.16f)); }
 
 
 
-/**************************************
- *            IS INF TESTS            *
- **************************************/
+/// +---------------------------------------------------------------------------------------+
+/// |                                 IS_INF TESTS                                          |
+/// +---------------------------------------------------------------------------------------+
 
-/** @test Verify thatcheck for IEEE 754 infinity using @ref flcn::isinf returns true for a positive infinity. */
-TEST(IsInfTests, PositiveInfinityReturnsTrue) { EXPECT_TRUE(flcn::isInf(flcn::constants::INFINITY_F)); }
-
-
-/** @test Verify thatcheck for IEEE 754 infinity using @ref flcn::isinf returns true for a negative infinity. */
-TEST(IsInfTests, NegativeInfinityReturnsTrue) { EXPECT_TRUE(flcn::isInf(-flcn::constants::INFINITY_F)); }
+/** @test Verify that check for IEEE 754 infinity using @ref flcn::isinf returns true for a positive infinity. */
+TEST(IsInfTests, PositiveInfinityReturnsTrue) { EXPECT_TRUE(flcn::isInf(INF_F)); }
 
 
-/** @test Verify thatcheck for IEEE 754 infinity using @ref flcn::isinf returns true for a non-infinity value. */
+/** @test Verify that check for IEEE 754 infinity using @ref flcn::isinf returns true for a negative infinity. */
+TEST(IsInfTests, NegativeInfinityReturnsTrue) { EXPECT_TRUE(flcn::isInf(-INF_F)); }
+
+
+/** @test Verify that check for IEEE 754 infinity using @ref flcn::isinf returns true for a non-infinity value. */
 TEST(IsInfTests, NonInfiniteNumberReturnsFalse) { EXPECT_FALSE(flcn::isInf(3.16f)); }
+
+
+
+/// +---------------------------------------------------------------------------------------+
+/// |                                  MIN TESTS                                            |
+/// +---------------------------------------------------------------------------------------+
+
+TYPED_TEST(MinTypedTests, BinaryValues_ReturnsTheMinimumOfTwo)
+{ EXPECT_MAG_EQ(this->expected, flcn::min(this->elements[0], this->elements[1])); }
+
+
+TYPED_TEST(MinTypedTests, ListValues_ReturnsTheMinimumFromTheList)
+{
+    EXPECT_EQ(4, this->elements.size()) << "Test Parameter error: List must be of size of 4.";
+    EXPECT_MAG_EQ(this->expected,
+                  flcn::min({ this->elements[0], this->elements[1], this->elements[2], this->elements[3] }));
+}
+
+
+TEST_P(MinBinaryParamTests, ReturnsTheMinimumValue)
+{
+    const auto [first, second, expected] = GetParam();
+    EXPECT_MAG_EQ(expected, flcn::min(first, second));
+}
+
+
+TEST_P(MinListParamTests, ReturnsTheMinimumValue)
+{
+    const auto& [list, expected] = GetParam();
+    EXPECT_EQ(4, list.size()) << "Test Parameter error: List must be of size of 4.";
+    EXPECT_MAG_EQ(expected, flcn::min({ list[0], list[1], list[2], list[3] }));
+}
 
 
 /** @} */

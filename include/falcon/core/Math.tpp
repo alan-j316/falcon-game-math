@@ -9,14 +9,16 @@
  * @copyright Copyright (c) 2026 Alan Abraham P Kochumon
  */
 
-#include <cmath>
+#include "Preprocessors.h"
+
 #include <bit>
+#include <cmath>
 #include <type_traits>
 
 namespace flcn
 {
     template <Arithmetic T>
-    constexpr bool isNaN(T num) noexcept
+    FALCON_INLINE constexpr bool isNaN(T num) noexcept
     {
         if constexpr (std::is_floating_point_v<T>)
         {
@@ -35,7 +37,7 @@ namespace flcn
 
 
     template <StrictArithmetic T>
-    constexpr T abs(T num) noexcept
+    FALCON_INLINE constexpr T abs(T num) noexcept
     {
         // Return the number, if it's an unsigned number.
         if constexpr (std::is_unsigned_v<T>)
@@ -90,7 +92,7 @@ namespace flcn
     }
 
     template <Arithmetic T>
-    constexpr bool isInf(T num) noexcept
+    FALCON_INLINE constexpr bool isInf(T num) noexcept
     {
         if (std::is_constant_evaluated())
         {
@@ -108,7 +110,7 @@ namespace flcn
 
 
     template <Arithmetic T, Arithmetic U>
-    constexpr PromotedValue_t<T, U> diffAbs(T lhs, U rhs) noexcept
+    FALCON_INLINE constexpr PromotedValue_t<T, U> diffAbs(T lhs, U rhs) noexcept
     {
         // Only one side of the expression is evaluated to a non-zero number.
         // So, if either side of + underflows, it will be canceled out by the boolean expression.
@@ -116,9 +118,8 @@ namespace flcn
     }
 
 
-    template <typename T>
-        requires std::floating_point<T> || std::integral<T>
-    constexpr bool compareEq(const T a, const T b) noexcept
+    template <Arithmetic T>
+    FALCON_INLINE constexpr bool compareEq(const T a, const T b) noexcept
     {
         if constexpr (std::integral<T>)
         {
@@ -128,6 +129,22 @@ namespace flcn
         {
             return flcn::abs(a - b) <= std::numeric_limits<T>::epsilon() * std::max(flcn::abs(a), flcn::abs(b));
         }
+    }
+
+
+    template <Arithmetic T>
+    FALCON_INLINE constexpr T min(const T& a, const T& b) noexcept
+    {
+        // std::min is constexpr from c++14 the library provides only a no-cost wrapper abstraction
+        return std::min(a, b);
+    }
+
+
+    template <Arithmetic T>
+    FALCON_INLINE constexpr T min(std::initializer_list<T> iList) noexcept
+    {
+        // std::min is constexpr from c++14.
+        return std::min(iList);
     }
 
 

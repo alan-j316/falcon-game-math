@@ -909,6 +909,62 @@ namespace flcn::simd
 
 
     /// +---------------------------------------------------------------------------------------+
+    /// |                                NORMALIZATION                                          |
+    /// +---------------------------------------------------------------------------------------+
+
+    template <Arithmetic T>
+    FALCON_INLINE constexpr Vec3<T> Vec3<T>::normalize() const noexcept
+        requires FPArithmetic<T>
+    {
+        // TODO: Update to fast inv sqrt
+        const auto magnitude = mag();
+        FALCON_ASSERT_MSG(magnitude >= flcn::Config::EPSILON<decltype(magnitude)>,
+                          flcn::messages::assertion::VEC_NORMALIZE_DIV_BY_ZERO);
+        return *this / magnitude;
+    }
+
+
+    template <Arithmetic T>
+    FALCON_INLINE constexpr Vec3<T> Vec3<T>::safeNormalize() const noexcept
+        requires FPArithmetic<T>
+    {
+        T magnitude = mag();
+        if (flcn::isNaN(magnitude))
+        {
+            return Vec3<T>::zero();
+        }
+        if (magnitude <= Config::EPSILON_SQUARE<T>)
+        {
+            return Vec3<T>::zero();
+        }
+
+        return *this / magnitude;
+    }
+
+
+    template <Arithmetic T>
+    FALCON_INLINE constexpr Vec3<T> Vec3<T>::tryNormalize(OperationStatus& status) const noexcept
+        requires FPArithmetic<T>
+    {
+        T magnitude = mag();
+        if (flcn::isNaN(magnitude))
+        {
+            status = OperationStatus::NANOPERAND;
+            return Vec3<T>::zero();
+        }
+        if (magnitude <= Config::EPSILON_SQUARE<T>)
+        {
+            status = OperationStatus::DIVISIONBYZERO;
+            return Vec3<T>::zero();
+        }
+
+        status = OperationStatus::SUCCESS;
+        return *this / magnitude;
+    }
+
+
+
+    /// +---------------------------------------------------------------------------------------+
     /// |                              VECTOR PROJECTION                                        |
     /// +---------------------------------------------------------------------------------------+
 

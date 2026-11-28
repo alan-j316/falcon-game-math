@@ -12,7 +12,7 @@ target_sources(
         EqualityTests.cpp
         InitializationTests.cpp
         MagnitudeTests.cpp
-        #        NormalizationTests.cpp
+        NormalizationTests.cpp
         PNormTests.cpp
         ProductTests.cpp
         ProjectionTests.cpp

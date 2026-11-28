@@ -46,6 +46,8 @@ add_library(${FALCON_MATH_TARGET_NAME} INTERFACE
         utils/Interpolation.tpp
         utils/Bounds.h
         utils/Bounds.tpp
+        utils/Normalization.h
+        utils/Normalization.tpp
 
         # SIMD-ACCELERATED WRAPPER
         vectors/simd/Vec2.h

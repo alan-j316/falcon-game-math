@@ -513,12 +513,6 @@ namespace flcn::simd
     }
 
 
-    template <StrictArithmetic T, StrictArithmetic S>
-    FALCON_INLINE constexpr Vec3<T> operator*(S scalar, const Vec3<T>& vector) noexcept
-        requires StrictArithmetic<T>
-    { return vector * scalar; }
-
-
     template <Arithmetic T>
     template <StrictArithmetic S>
     FALCON_INLINE constexpr Vec3<T>& Vec3<T>::operator*=(S scalar) noexcept
@@ -527,6 +521,11 @@ namespace flcn::simd
         *this = *this * scalar;
         return *this;
     }
+
+
+    template <StrictArithmetic T, StrictArithmetic S>
+    FALCON_INLINE constexpr Vec3<T> operator*(S scalar, const Vec3<T>& vec) noexcept
+    { return vec * scalar; }
 
 
     template <Arithmetic T>

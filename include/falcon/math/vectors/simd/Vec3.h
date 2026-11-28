@@ -2168,38 +2168,36 @@ namespace flcn::simd
             Vec3& _vec;
         };
     };
-    //
-    //
-    //     /*************************************
-    //      *                                   *
-    //      *       NON-MEMBER FUNCTIONS        *
-    //      *                                   *
-    //      *************************************/
-    //
-    //     /**
-    //      * @addtogroup Falcon_Vec3_Arithmetic
-    //      * @{
-    //      */
-    //
-    //     /**
-    //      * @brief Scale the vector by a scalar value.
-    //      *        Multiply @p scalar by each component of the vector and returns a new vector.
-    //      *
-    //      * @note Promotes the result to the wider type using @ref PromotedVec3<T, S>.
-    //      * @note Operation is restricted to numeric types via @ref StrictArithmetic.
-    //      *
-    //      * @tparam S Numeric type of the scalar. Must satisfy @ref StrictArithmetic.
-    //      *
-    //      * @param[in] scalar The value to scale by.
-    //      * @param[in] vector The vector to scale[RHS].
-    //      *
-    //      * @return A new @ref Vec3 scaled by @p scalar.
-    //      */
-    //     template <StrictArithmetic T, StrictArithmetic S>
-    //     [[nodiscard]] constexpr PromotedVec3<T, S> operator*(S scalar, const Vec3<T>& vector) noexcept
-    //         requires StrictArithmetic<T>;
-    //
-    //     /** @} */
+
+
+    /// +---------------------------------------------------------------------------------------+
+    /// |                            NON-MEMBER FUNCTIONS                                       |
+    /// +---------------------------------------------------------------------------------------+
+
+    /**
+     * @addtogroup Falcon_Vec3_Arithmetic
+     * @{
+     */
+
+    /**
+     * @brief Scale the vector by a scalar value.
+     *        Multiply @p scalar by each component of the vector and returns a new vector.
+     *
+     * @note Promotes the result to the wider type using @ref PromotedVec3<T, S>.
+     * @note Operation is restricted to numeric types via @ref StrictArithmetic.
+     *
+     * @tparam T Numeric type of the vector. Must satisfy @ref StrictArithmetic.
+     * @tparam S Numeric type of the scalar. Must satisfy @ref StrictArithmetic.
+     *
+     * @param[in] scalar The value to scale by.
+     * @param[in] vec    The vector to scale[RHS].
+     *
+     * @return A new @ref Vec3 scaled by @p scalar.
+     */
+    template <StrictArithmetic T, StrictArithmetic S>
+    [[nodiscard]] constexpr Vec3<T> operator*(S scalar, const Vec3<T>& vec) noexcept;
+
+    /** @} */
 
 
     /**

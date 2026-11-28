@@ -1489,7 +1489,7 @@ namespace flcn::simd
          *
          * @return A new @ref Vec2 with a magnitude of 1.0.
          */
-        [[nodiscard]] constexpr Vec2<Magnitude<T>> normalize() const noexcept
+        [[nodiscard]] constexpr Vec2 normalize() const noexcept
             requires FPArithmetic<T>;
 
 
@@ -1505,7 +1505,7 @@ namespace flcn::simd
          *
          * @return A new @ref Vec2 with a magnitude of 1.0.
          */
-        [[nodiscard]] static constexpr Vec2<Magnitude<T>> normalize(const Vec2& vec) noexcept
+        [[nodiscard]] static constexpr Vec2 normalize(const Vec2& vec) noexcept
             requires FPArithmetic<T>;
 
 
@@ -1520,7 +1520,7 @@ namespace flcn::simd
          * @return A @ref Vec2 with a magnitude of 1.0, or a zero-vector if the original magnitude is below
          *         the epsilon threshold or if this vector has NaN(Not-a-Number) component(s).
          */
-        [[nodiscard]] constexpr Vec2<Magnitude<T>> safeNormalize() const noexcept
+        [[nodiscard]] constexpr Vec2 safeNormalize() const noexcept
             requires FPArithmetic<T>;
 
 
@@ -1537,7 +1537,7 @@ namespace flcn::simd
          * @return A @ref flcn::simd::Vec2 with a magnitude of 1.0, or a zero-vector if the original magnitude is
          *         below the epsilon threshold or if the vector has NaN(Not-a-Number) component(s).
          */
-        [[nodiscard]] static constexpr Vec2<Magnitude<T>> safeNormalize(const Vec2& vec) noexcept
+        [[nodiscard]] static constexpr Vec2 safeNormalize(const Vec2& vec) noexcept
             requires FPArithmetic<T>;
 
 
@@ -1556,7 +1556,7 @@ namespace flcn::simd
          * @return A @ref flcn::simd::Vec2 with a magnitude of 1.0, or a zero-vector if the original magnitude is
          *         below the epsilon threshold or if this vector has NaN(Not-a-Number) component(s).
          */
-        [[nodiscard]] constexpr Vec2<Magnitude<T>> tryNormalize(OperationStatus& status) const noexcept
+        [[nodiscard]] constexpr Vec2 tryNormalize(OperationStatus& status) const noexcept
             requires FPArithmetic<T>;
 
 
@@ -1576,7 +1576,7 @@ namespace flcn::simd
          * @return A @ref flcn::simd::Vec2 with a magnitude of 1.0, or a zero-vector if the original magnitude is
          *         below the epsilon threshold or if the vector has NaN(Not-a-Number) component(s).
          */
-        [[nodiscard]] static constexpr Vec2<Magnitude<T>> tryNormalize(const Vec2& vec,
+        [[nodiscard]] static constexpr Vec2 tryNormalize(const Vec2& vec,
                                                                        OperationStatus& status) noexcept
             requires FPArithmetic<T>;
 

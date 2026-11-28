@@ -939,7 +939,7 @@ namespace flcn::simd
      *************************************/
 
     template <Arithmetic T>
-    FALCON_INLINE constexpr Vec2<Magnitude<T>> Vec2<T>::normalize() const noexcept
+    FALCON_INLINE constexpr Vec2<T> Vec2<T>::normalize() const noexcept
         requires FPArithmetic<T>
     {
         // TODO: Update to fast inv sqrt
@@ -951,13 +951,13 @@ namespace flcn::simd
 
 
     template <Arithmetic T>
-    FALCON_INLINE constexpr Vec2<Magnitude<T>> Vec2<T>::normalize(const Vec2& vec) noexcept
+    FALCON_INLINE constexpr Vec2<T> Vec2<T>::normalize(const Vec2& vec) noexcept
         requires FPArithmetic<T>
     { return vec.normalize(); }
 
 
     template <Arithmetic T>
-    FALCON_INLINE constexpr Vec2<Magnitude<T>> Vec2<T>::safeNormalize() const noexcept
+    FALCON_INLINE constexpr Vec2<T> Vec2<T>::safeNormalize() const noexcept
         requires FPArithmetic<T>
     {
         T magnitude = mag();
@@ -975,13 +975,13 @@ namespace flcn::simd
 
 
     template <Arithmetic T>
-    FALCON_INLINE constexpr Vec2<Magnitude<T>> Vec2<T>::safeNormalize(const Vec2& vec) noexcept
+    FALCON_INLINE constexpr Vec2<T> Vec2<T>::safeNormalize(const Vec2& vec) noexcept
         requires FPArithmetic<T>
     { return vec.safeNormalize(); }
 
 
     template <Arithmetic T>
-    FALCON_INLINE constexpr Vec2<Magnitude<T>> Vec2<T>::tryNormalize(OperationStatus& status) const noexcept
+    FALCON_INLINE constexpr Vec2<T> Vec2<T>::tryNormalize(OperationStatus& status) const noexcept
         requires FPArithmetic<T>
     {
         T magnitude = mag();
@@ -1002,7 +1002,7 @@ namespace flcn::simd
 
 
     template <Arithmetic T>
-    FALCON_INLINE constexpr Vec2<Magnitude<T>> Vec2<T>::tryNormalize(const Vec2& vec, OperationStatus& status) noexcept
+    FALCON_INLINE constexpr Vec2<T> Vec2<T>::tryNormalize(const Vec2& vec, OperationStatus& status) noexcept
         requires FPArithmetic<T>
     { return vec.tryNormalize(status); }
 

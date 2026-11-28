@@ -29,7 +29,7 @@ TEST(SimdVec3TypeConversionTests, ConversionCtor_PromotesType)
 {
     const flcn::simd::Vec3 vec1(3.0f, 1.0f, 6.0f);
     [[maybe_unused]] const flcn::simd::Vec3<double> vec2(vec1);
-    static_assert(std::is_same_v<decltype(vec2)::value_type, double>);
+    static_assert(std::is_same_v<decltype(vec2)::ValueType, double>);
 }
 
 
@@ -59,7 +59,7 @@ TEST(SimdVec3TypeConversionTests, ConversionCtor_DemotesType)
 {
     const flcn::simd::Vec3 vec1(3.0, 1.0, 6.0);
     [[maybe_unused]] const flcn::simd::Vec3<float> vec2(vec1);
-    static_assert(std::is_same_v<decltype(vec2)::value_type, float>);
+    static_assert(std::is_same_v<decltype(vec2)::ValueType, float>);
 }
 
 /** @} */

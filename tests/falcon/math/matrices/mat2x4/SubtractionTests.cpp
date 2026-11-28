@@ -91,7 +91,7 @@ TEST(Mat2x4SubtractionTests, MinusOperator_MixedType_PromotesType)
 
     [[maybe_unused]] const flcn::Mat2x4 difference = mat1 - mat2;
 
-    static_assert(std::is_same_v<decltype(difference)::value_type, double>);
+    static_assert(std::is_same_v<decltype(difference)::ValueType, double>);
 }
 
 
@@ -108,7 +108,7 @@ TEST(Mat2x4SubtractionTests, MinusEqualsOperator_MixedType_DoesNotPromoteType)
     [[maybe_unused]] const flcn::Mat2x4 mat2(9.0, 10.0, 3.0, 4.0, 0.1, 2.5, 0.5, 2.25);
 
     mat1 -= mat2;
-    static_assert(std::is_same_v<decltype(mat1)::value_type, float>);
+    static_assert(std::is_same_v<decltype(mat1)::ValueType, float>);
 }
 
 /** @} */

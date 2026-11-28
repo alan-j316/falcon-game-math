@@ -29,11 +29,11 @@ namespace
 
     // Verify that the matrix can be type promoted at compile time.
     constexpr flcn::Mat4x3<double> MAT_D(MAT);
-    static_assert(std::is_same_v<decltype(MAT_D)::value_type, double>);
+    static_assert(std::is_same_v<decltype(MAT_D)::ValueType, double>);
 
     // Verify that the matrix can be type demoted at compile time.
     constexpr flcn::Mat4x3<int> MATI(MAT);
-    static_assert(std::is_same_v<decltype(MATI)::value_type, int>);
+    static_assert(std::is_same_v<decltype(MATI)::ValueType, int>);
 } // namespace
 
 
@@ -51,7 +51,7 @@ TEST(Mat4x3TypeConversionTests, ConversionCtor_PromotesType)
 
     [[maybe_unused]] const flcn::Mat4x3<double> mat2(mat1);
 
-    static_assert(std::is_same_v<decltype(mat2)::value_type, double>);
+    static_assert(std::is_same_v<decltype(mat2)::ValueType, double>);
 }
 
 
@@ -83,7 +83,7 @@ TEST(Mat4x3TypeConversionTests, ConversionCtor_DemotesType)
 
     [[maybe_unused]] const flcn::Mat4x3<float> mat2(mat1);
 
-    static_assert(std::is_same_v<decltype(mat2)::value_type, float>);
+    static_assert(std::is_same_v<decltype(mat2)::ValueType, float>);
 }
 
 /** @} */

@@ -59,7 +59,7 @@ TYPED_TEST(SimdVec3ConstantsTests, ZERO_ReturnsVectorWithZeroComponents) { EXPEC
 TEST(SimdVec3Constants, INF_Float_ReturnsFloatVectorWithInfinityComponents)
 {
     const auto inf = flcn::simd::Vec3<float>::inf();
-    static_assert(std::is_same_v<typename decltype(inf)::value_type, float>);
+    static_assert(std::is_same_v<typename decltype(inf)::ValueType, float>);
     EXPECT_VEC3_POS_INF(inf)
 }
 
@@ -68,7 +68,7 @@ TEST(SimdVec3Constants, INF_Float_ReturnsFloatVectorWithInfinityComponents)
 TEST(SimdVec3Constants, INF_Double_ReturnsDoubleVectorWithInfinityComponents)
 {
     const auto inf = flcn::simd::Vec3<double>::inf();
-    static_assert(std::is_same_v<typename decltype(inf)::value_type, double>);
+    static_assert(std::is_same_v<typename decltype(inf)::ValueType, double>);
     EXPECT_VEC3_POS_INF(inf)
 }
 
@@ -77,7 +77,7 @@ TEST(SimdVec3Constants, INF_Double_ReturnsDoubleVectorWithInfinityComponents)
 TEST(SimdVec3Constants, INFNEG_Float_ReturnsFloatVectorWithNegativeInfinityComponents)
 {
     const auto inf = flcn::simd::Vec3<float>::infNeg();
-    static_assert(std::is_same_v<typename decltype(inf)::value_type, float>);
+    static_assert(std::is_same_v<typename decltype(inf)::ValueType, float>);
     EXPECT_VEC3_NEG_INF(inf)
 }
 
@@ -86,7 +86,7 @@ TEST(SimdVec3Constants, INFNEG_Float_ReturnsFloatVectorWithNegativeInfinityCompo
 TEST(SimdVec3Constants, INFNEG_Double_ReturnsDoubleVectorWithNegativeInfinityComponents)
 {
     const auto inf = flcn::simd::Vec3<double>::infNeg();
-    static_assert(std::is_same_v<typename decltype(inf)::value_type, double>);
+    static_assert(std::is_same_v<typename decltype(inf)::ValueType, double>);
     EXPECT_VEC3_NEG_INF(inf)
 }
 

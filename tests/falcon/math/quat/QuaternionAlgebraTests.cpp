@@ -198,7 +198,7 @@ TYPED_TEST(QuaternionInverseTests, ReturnsValidQuaternion)
 
 
 TYPED_TEST(QuaternionInverseTests, AlwaysReturnFloatingPointQuaternion)
-{ static_assert(std::is_floating_point_v<typename decltype(this->_quat.inverse())::value_type> == true); }
+{ static_assert(std::is_floating_point_v<typename decltype(this->_quat.inverse())::ValueType> == true); }
 
 
 TYPED_TEST(QuaternionInverseTests, StaticWrapper_ReturnsValidQuaternion)
@@ -208,7 +208,7 @@ TYPED_TEST(QuaternionInverseTests, StaticWrapper_ReturnsValidQuaternion)
 TYPED_TEST(QuaternionInverseTests, StaticWrapper_AlwaysReturnFloatingPointQuaternion)
 {
     static_assert(
-        std::is_floating_point_v<typename decltype(flcn::Quat<TypeParam>::inverse(this->_quat))::value_type> ==
+        std::is_floating_point_v<typename decltype(flcn::Quat<TypeParam>::inverse(this->_quat))::ValueType> ==
         true);
 }
 

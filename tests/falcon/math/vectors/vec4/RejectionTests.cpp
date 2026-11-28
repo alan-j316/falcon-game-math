@@ -317,7 +317,7 @@ TEST(Vec4RejectionTests, MixedTypeRejectionPromotesType)
     const flcn::Vec4 actualRejection = vec.reject(from);
 
     // Then, the resultant vector is type promoted
-    static_assert(std::is_same_v<decltype(actualRejection)::value_type, double>);
+    static_assert(std::is_same_v<decltype(actualRejection)::ValueType, double>);
     // and is the rejection
     EXPECT_VEC_EQ(expectedRejection, actualRejection);
 }
@@ -346,7 +346,7 @@ TEST(Vec4RejectionTests, StaticWrapper_RejectionFromNormalizedVectorReturnsNonZe
 TYPED_TEST(Vec4RejectionTests, Reject_AlwaysReturnFloatingPointVector)
 {
     [[maybe_unused]] const flcn::Vec4 rejection = this->_vec.reject(this->_fromVec);
-    static_assert(std::is_floating_point_v<typename decltype(rejection)::value_type>);
+    static_assert(std::is_floating_point_v<typename decltype(rejection)::ValueType>);
 }
 
 
@@ -357,7 +357,7 @@ TYPED_TEST(Vec4RejectionTests, Reject_AlwaysReturnFloatingPointVector)
 TYPED_TEST(Vec4RejectionTests, StaticWrapper_Reject_AlwaysReturnFloatingPointVector)
 {
     [[maybe_unused]] const flcn::Vec4 rejection = flcn::Vec4<TypeParam>::reject(this->_vec, this->_fromVec);
-    static_assert(std::is_floating_point_v<typename decltype(rejection)::value_type>);
+    static_assert(std::is_floating_point_v<typename decltype(rejection)::ValueType>);
 }
 
 
@@ -477,7 +477,7 @@ TEST(Vec4RejectionTests, SafeReject_MixedTypeRejectionPromotesType)
     const flcn::Vec4 actualRejection = vec.safeReject(from);
 
     // Then, the resultant vector is type promoted
-    static_assert(std::is_same_v<decltype(actualRejection)::value_type, double>);
+    static_assert(std::is_same_v<decltype(actualRejection)::ValueType, double>);
     // and is the rejection
     EXPECT_VEC_EQ(expectedRejection, actualRejection);
 }
@@ -607,7 +607,7 @@ TEST(Vec4RejectionTests, StaticWrapper_SafeReject_MixedTypeRejectionPromotesType
     const flcn::Vec4 actualRejection = flcn::Vec4<int>::safeReject(vec, from);
 
     // Then, the resultant vector is type promoted
-    static_assert(std::is_same_v<decltype(actualRejection)::value_type, double>);
+    static_assert(std::is_same_v<decltype(actualRejection)::ValueType, double>);
     // and is the rejection
     EXPECT_VEC_EQ(expectedRejection, actualRejection);
 }
@@ -631,7 +631,7 @@ TYPED_TEST(Vec4RejectionTests, StaticWrapper_SafeReject_FromZeroVectorReturnsSam
 TYPED_TEST(Vec4RejectionTests, SafeReject_AlwaysReturnFloatingPointVector)
 {
     [[maybe_unused]] const flcn::Vec4 rejection = this->_vec.safeReject(this->_fromVec);
-    static_assert(std::is_floating_point_v<typename decltype(rejection)::value_type>);
+    static_assert(std::is_floating_point_v<typename decltype(rejection)::ValueType>);
 }
 
 
@@ -642,7 +642,7 @@ TYPED_TEST(Vec4RejectionTests, SafeReject_AlwaysReturnFloatingPointVector)
 TYPED_TEST(Vec4RejectionTests, StaticWrapper_SafeReject_AlwaysReturnFloatingPointVector)
 {
     [[maybe_unused]] const flcn::Vec4 rejection = flcn::Vec4<TypeParam>::safeReject(this->_vec, this->_fromVec);
-    static_assert(std::is_floating_point_v<typename decltype(rejection)::value_type>);
+    static_assert(std::is_floating_point_v<typename decltype(rejection)::ValueType>);
 }
 
 
@@ -834,7 +834,7 @@ TEST(Vec4RejectionTests, TryReject_MixedTypeRejectionPromotesType)
     const flcn::Vec4 actualRejection = vec.tryReject(from, flag);
 
     // Then, the resultant vector is type promoted
-    static_assert(std::is_same_v<decltype(actualRejection)::value_type, double>);
+    static_assert(std::is_same_v<decltype(actualRejection)::ValueType, double>);
     // and is the rejection
     EXPECT_VEC_EQ(expectedRejection, actualRejection);
     EXPECT_EQ(flcn::OperationStatus::SUCCESS, flag);
@@ -991,7 +991,7 @@ TEST(Vec4RejectionTests, StaticWrapper_TryReject_MixedTypeRejectionPromotesType)
     const flcn::Vec4 actualRejection = flcn::Vec4<int>::tryReject(vec, from, flag);
 
     // Then, the resultant vector is type promoted
-    static_assert(std::is_same_v<decltype(actualRejection)::value_type, double>);
+    static_assert(std::is_same_v<decltype(actualRejection)::ValueType, double>);
     // and is the rejection
     EXPECT_VEC_EQ(expectedRejection, actualRejection);
     // Flag is set to SUCCESS
@@ -1020,7 +1020,7 @@ TYPED_TEST(Vec4RejectionTests, TryRejectAlwaysReturnFloatingPointVector)
 {
     [[maybe_unused]] flcn::OperationStatus status;
     [[maybe_unused]] const flcn::Vec4 rejection = this->_vec.tryReject(this->_fromVec, status);
-    static_assert(std::is_floating_point_v<typename decltype(rejection)::value_type>);
+    static_assert(std::is_floating_point_v<typename decltype(rejection)::ValueType>);
 }
 
 
@@ -1032,7 +1032,7 @@ TYPED_TEST(Vec4RejectionTests, StaticWrapper_TryReject_AlwaysReturnFloatingPoint
 {
     [[maybe_unused]] flcn::OperationStatus status;
     [[maybe_unused]] const flcn::Vec4 rejection = flcn::Vec4<TypeParam>::tryReject(this->_vec, this->_fromVec, status);
-    static_assert(std::is_floating_point_v<typename decltype(rejection)::value_type>);
+    static_assert(std::is_floating_point_v<typename decltype(rejection)::ValueType>);
 }
 
 

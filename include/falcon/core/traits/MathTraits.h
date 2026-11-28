@@ -90,15 +90,15 @@ namespace flcn
 
     /**
      * @brief Defines the requirements for a linear algebraic vector.
-     * @details Requires a value_type alias, a static dimension constant, and subscript [] access. The underlying type
+     * @details Requires a ValueType alias, a static dimension constant, and subscript [] access. The underlying type
      *          must satisfy @ref Arithmetic.
      */
     template <typename T>
     concept Vector = requires(T v, std::size_t i) {
-        typename T::value_type;
+        typename T::ValueType;
         { T::DIMENSION } -> std::same_as<const std::size_t&>;
-        { v[i] } -> std::convertible_to<typename T::value_type>;
-    } && Arithmetic<typename T::value_type>;
+        { v[i] } -> std::convertible_to<typename T::ValueType>;
+    } && Arithmetic<typename T::ValueType>;
 
 
     /**
@@ -108,12 +108,12 @@ namespace flcn
      */
     template <typename T>
     concept Matrix = requires(T matrix, std::size_t r, std::size_t c) {
-        typename T::value_type;
+        typename T::ValueType;
         { T::ROWS } -> std::same_as<const std::size_t&>;
         { T::COLUMNS } -> std::same_as<const std::size_t&>;
-        { matrix(r, c) } -> std::convertible_to<typename T::value_type>;
+        { matrix(r, c) } -> std::convertible_to<typename T::ValueType>;
         { matrix[c] };
-    } && Arithmetic<typename T::value_type>;
+    } && Arithmetic<typename T::ValueType>;
 
 
     /**

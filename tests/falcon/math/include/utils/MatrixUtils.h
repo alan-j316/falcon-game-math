@@ -50,7 +50,7 @@ namespace testutils
     void EXPECT_MAT_EQ(const T& expected, const U& actual,
                        const double epsilon = std::is_same_v<T, double> ? 1e-14 : 1e-5)
     {
-        using ValueType = T::value_type;
+        using ValueType = T::ValueType;
 
         static_assert(T::ROWS == U::ROWS && T::COLUMNS == U::COLUMNS,
                       "Matrices must of the same dimension, e.g: 3x3 and 3x3");
@@ -158,7 +158,7 @@ namespace testutils
     void EXPECT_MAT_NEAR(const T& expected, const U& actual, double tolerance = 1e-5)
     {
 
-        using ValueType = T::value_type;
+        using ValueType = T::ValueType;
         static_assert(T::ROWS == U::ROWS && T::COLUMNS == U::COLUMNS,
                       "Matrices must of the same dimension, e.g: 3x3 and 3x3");
 
@@ -188,7 +188,7 @@ namespace testutils
     template <flcn::Matrix T>
     void EXPECT_MAT_IDENTITY(const T& actual, const double epsilon = std::is_same_v<T, double> ? 1e-14 : 1e-5)
     {
-        using ValueType = T::value_type;
+        using ValueType = T::ValueType;
         EXPECT_EQ(T::ROWS, T::COLUMNS) << "Identity matrices must be square(e.g: 3x3)\n";
 
         for (std::size_t i = 0; i < T::ROWS; ++i)
@@ -224,7 +224,7 @@ namespace testutils
     template <flcn::Matrix T>
     void EXPECT_MAT_ONE(const T& actual, const double epsilon = std::is_same_v<T, double> ? 1e-14 : 1e-5)
     {
-        using ValueType = T::value_type;
+        using ValueType = T::ValueType;
 
         for (std::size_t i = 0; i < T::ROWS; ++i)
         {
@@ -259,7 +259,7 @@ namespace testutils
     template <flcn::Matrix T>
     void EXPECT_MAT_ZERO(const T& actual, const double epsilon = std::is_same_v<T, double> ? 1e-14 : 1e-5)
     {
-        using ValueType = T::value_type;
+        using ValueType = T::ValueType;
 
         for (std::size_t i = 0; i < T::ROWS; ++i)
         {

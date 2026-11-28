@@ -111,7 +111,7 @@ TEST(Mat4AdditionTests, PlusOperator_MixedType_PromotesType)
                               flcn::Vec4{ 3.25, 5.1, 0.0, 0.25 }, flcn::Vec4{ 12.0, 13.0, 14.0, 15.0 } };
 
     [[maybe_unused]] constexpr flcn::Mat4 sum = mat1 + mat2;
-    static_assert(std::is_same_v<decltype(sum)::value_type, double>);
+    static_assert(std::is_same_v<decltype(sum)::ValueType, double>);
 }
 
 
@@ -131,7 +131,7 @@ TEST(Mat4AdditionTests, PlusEqualsOperator_MixedType_DoesNotPromoteType)
                                                flcn::Vec4{ 3.25, 5.1, 0.0, 0.25 }, flcn::Vec4{ 12.0, 13.0, 14.0, 15.0 } };
 
     (void) (mat1 += mat2);
-    static_assert(std::is_same_v<decltype(mat1)::value_type, float>);
+    static_assert(std::is_same_v<decltype(mat1)::ValueType, float>);
 }
 
 /** @} */

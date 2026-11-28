@@ -252,7 +252,7 @@ TEST(QuaternionAddition, PlusOperator_MixedType_PromotesType)
 
     [[maybe_unused]] const flcn::Quat result = quat1 + quat2;
 
-    static_assert(std::is_same_v<decltype(result)::value_type, double>);
+    static_assert(std::is_same_v<decltype(result)::ValueType, double>);
 }
 
 
@@ -264,7 +264,7 @@ TEST(QuaternionAddition, PlusEqualsOperator_MixedType_DoesNotPromoteType)
 
     static_cast<void>(quat1 += quat2);
 
-    static_assert(std::is_same_v<decltype(quat1)::value_type, float>);
+    static_assert(std::is_same_v<decltype(quat1)::ValueType, float>);
 }
 
 
@@ -291,7 +291,7 @@ TEST(QuaternionSubtraction, MinusOperator_MixedType_PromotesType)
 
     [[maybe_unused]] const flcn::Quat result = quat1 - quat2;
 
-    static_assert(std::is_same_v<decltype(result)::value_type, double>);
+    static_assert(std::is_same_v<decltype(result)::ValueType, double>);
 }
 
 
@@ -302,7 +302,7 @@ TEST(QuaternionSubtraction, MinusEqualsOperator_MixedType_DoesNotPromoteType)
 
     static_cast<void>(quat1 -= quat2);
 
-    static_assert(std::is_same_v<decltype(quat1)::value_type, float>);
+    static_assert(std::is_same_v<decltype(quat1)::ValueType, float>);
 }
 
 
@@ -379,7 +379,7 @@ TEST(QuaternionScalarMultiplication, MixedTypeScalarMultiplication_PromotesType)
     flcn::Quat quat(3.0f, 0.0f, -1.0f, 2.0f);
     [[maybe_unused]] const auto result = quat * scalar;
 
-    static_assert(std::is_same_v<typename decltype(result)::value_type, double>);
+    static_assert(std::is_same_v<typename decltype(result)::ValueType, double>);
 }
 
 
@@ -389,7 +389,7 @@ TEST(QuaternionScalarMultiplication, MixedTypeScalarMultiplicationAssignment_Doe
     const double scalar = 5.0;
     quat *= scalar;
 
-    static_assert(std::is_same_v<decltype(quat)::value_type, float>);
+    static_assert(std::is_same_v<decltype(quat)::ValueType, float>);
 }
 
 
@@ -443,7 +443,7 @@ TEST(QuaternionQuaternionMultiplication, TimesOperator_MixedType_PromotesType)
 
     [[maybe_unused]] const auto result = quatA * quatB;
 
-    static_assert(std::is_same_v<typename decltype(result)::value_type, double>);
+    static_assert(std::is_same_v<typename decltype(result)::ValueType, double>);
 }
 
 
@@ -453,7 +453,7 @@ TEST(QuaternionQuaternionMultiplication, TimesEqualsOperator_MixedType_DoesNotPr
     const flcn::Quat quatB(1.0, 2.0, 3.0, 4.0);
     quatA *= quatB;
 
-    static_assert(std::is_same_v<decltype(quatA)::value_type, float>);
+    static_assert(std::is_same_v<decltype(quatA)::ValueType, float>);
 }
 
 
@@ -488,7 +488,7 @@ TEST(QuaternionScalarDivision, DivideOperator_MixedType_PromotesType)
 
     [[maybe_unused]] const auto result = quat / scalar;
 
-    static_assert(std::is_same_v<decltype(result)::value_type, double>);
+    static_assert(std::is_same_v<decltype(result)::ValueType, double>);
 }
 
 
@@ -499,7 +499,7 @@ TEST(QuaternionScalarDivision, DivideEqualsOperator_MixedType_DoesNotPromoteType
 
     quat /= scalar;
 
-    static_assert(std::is_same_v<decltype(quat)::value_type, float>);
+    static_assert(std::is_same_v<decltype(quat)::ValueType, float>);
 }
 
 

@@ -190,7 +190,7 @@ TEST(Transform4VectorMultiplicationTests, MatTimesVec_MixedTypeScalarMultiplicat
     const flcn::Vec3 vec{ 2, 1, 3 };
 
     [[maybe_unused]] const auto transformedVector = mat * vec;
-    static_assert(std::is_same_v<decltype(transformedVector)::value_type, double>);
+    static_assert(std::is_same_v<decltype(transformedVector)::ValueType, double>);
 }
 
 
@@ -218,7 +218,7 @@ TEST(Transform4PointMultiplicationTests, MatTimesVec_MixedTypeScalarMultiplicati
     const flcn::Point3 point{ 2, 1, 3 };
 
     [[maybe_unused]] const auto transformedPoint = mat * point;
-    static_assert(std::is_same_v<decltype(transformedPoint)::value_type, double>);
+    static_assert(std::is_same_v<decltype(transformedPoint)::ValueType, double>);
 }
 
 
@@ -247,7 +247,7 @@ TEST(Transform4TransformMultiplicationTests, TimesOperator_MixedTypes_PromotesTo
     const flcn::Transform4 transformB{ 2, 1, 3, 4, 5, 6, 7, 8, 9, 10, 11, 12 };
 
     [[maybe_unused]] const auto transformedVector = transformA * transformB;
-    static_assert(std::is_same_v<decltype(transformedVector)::value_type, double>);
+    static_assert(std::is_same_v<decltype(transformedVector)::ValueType, double>);
 }
 
 
@@ -271,7 +271,7 @@ TEST(Transform4TransformMultiplicationTests, TimesEqualOperator_MixedTypes_DoesN
     const flcn::Transform4 transformB{ 1.0, 2.0, 3.0, 4.0, 5.0, 6.0, 7.0, 8.0, 9.0, 10.0, 11.0, 12.0 };
 
     transformA *= transformB;
-    static_assert(std::is_same_v<decltype(transformA)::value_type, int>);
+    static_assert(std::is_same_v<decltype(transformA)::ValueType, int>);
 }
 
 /** @} */

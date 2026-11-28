@@ -64,7 +64,7 @@ TEST(Vec2NormalizationTests, StaticWrapper_SafeNormalize_NaNVectorReturnsZeroVec
 TYPED_TEST(Vec2NormalizationTests, StaticWrapper_SafeNormalize_NormalizedVectorIsAlwaysTypedPromotedToFloatingPointType)
 {
     [[maybe_unused]] const auto normalized = flcn::safeNormalize(this->_vec);
-    static_assert(std::is_floating_point_v<typename decltype(normalized)::value_type>);
+    static_assert(std::is_floating_point_v<typename decltype(normalized)::ValueType>);
 }
 
 
@@ -115,7 +115,7 @@ TYPED_TEST(Vec2NormalizationTests, StaticWrapper_TryNormalize_NormalizedVectorIs
 {
     [[maybe_unused]] flcn::OperationStatus flag;
     [[maybe_unused]] const auto normalized = flcn::tryNormalize(this->_vec, flag);
-    static_assert(std::is_floating_point_v<typename decltype(normalized)::value_type>);
+    static_assert(std::is_floating_point_v<typename decltype(normalized)::ValueType>);
 }
 
 
@@ -184,7 +184,7 @@ TEST(Vec3Normalization, StaticWrapper_SafeNormalize_NaNVectorReturnsZeroVector)
 TYPED_TEST(Vec3NormalizationTests, StaticWrapper_SafeNormalize_NormalizedVectorIsAlwaysTypedPromotedToFloatingPointType)
 {
     [[maybe_unused]] const auto normalized = flcn::safeNormalize(this->_vec);
-    static_assert(std::is_floating_point_v<typename decltype(normalized)::value_type>);
+    static_assert(std::is_floating_point_v<typename decltype(normalized)::ValueType>);
 }
 
 
@@ -247,7 +247,7 @@ TYPED_TEST(Vec3NormalizationTests, StaticWrapper_TryNormalize_NormalizedVectorIs
 {
     [[maybe_unused]] flcn::OperationStatus flag;
     [[maybe_unused]] const auto normalized = flcn::tryNormalize(this->_vec, flag);
-    static_assert(std::is_floating_point_v<typename decltype(normalized)::value_type>);
+    static_assert(std::is_floating_point_v<typename decltype(normalized)::ValueType>);
 }
 
 /**
@@ -324,7 +324,7 @@ TEST(Vec4Normalization, StaticWrapper_SafeNormalize_NaNVectorReturnsZeroVector)
 TYPED_TEST(Vec4NormalizationTests, StaticWrapper_SafeNormalize_NormalizedVectorIsAlwaysTypedPromotedToFloatingPointType)
 {
     [[maybe_unused]] const auto normalized = flcn::safeNormalize(this->_vec);
-    static_assert(std::is_floating_point_v<typename decltype(normalized)::value_type>);
+    static_assert(std::is_floating_point_v<typename decltype(normalized)::ValueType>);
 }
 
 /**
@@ -374,7 +374,7 @@ TYPED_TEST(Vec4NormalizationTests, StaticWrapper_TryNormalize_NormalizedVectorIs
 {
     [[maybe_unused]] flcn::OperationStatus flag;
     [[maybe_unused]] const auto normalized = flcn::tryNormalize(this->_vec, flag);
-    static_assert(std::is_floating_point_v<typename decltype(normalized)::value_type>);
+    static_assert(std::is_floating_point_v<typename decltype(normalized)::ValueType>);
 }
 
 
@@ -436,7 +436,7 @@ TYPED_TEST(SimdVec2NormalizationTests,
            StaticWrapper_SafeNormalize_NormalizedVectorIsAlwaysTypedPromotedToFloatingPointType)
 {
     [[maybe_unused]] const auto normalized = flcn::safeNormalize(this->_vec);
-    static_assert(std::is_floating_point_v<typename decltype(normalized)::value_type>);
+    static_assert(std::is_floating_point_v<typename decltype(normalized)::ValueType>);
 }
 
 
@@ -489,7 +489,7 @@ TYPED_TEST(SimdVec2NormalizationTests,
 {
     [[maybe_unused]] flcn::OperationStatus flag;
     [[maybe_unused]] const auto normalized = flcn::tryNormalize(this->_vec, flag);
-    static_assert(std::is_floating_point_v<typename decltype(normalized)::value_type>);
+    static_assert(std::is_floating_point_v<typename decltype(normalized)::ValueType>);
 }
 
 /**
@@ -566,7 +566,7 @@ TYPED_TEST(SimdVec3NormalizationTests,
            StaticWrapper_SafeNormalize_NormalizedVectorIsAlwaysTypedPromotedToFloatingPointType)
 {
     [[maybe_unused]] const auto normalized = flcn::safeNormalize(this->_vec);
-    static_assert(std::is_floating_point_v<typename decltype(normalized)::value_type>);
+    static_assert(std::is_floating_point_v<typename decltype(normalized)::ValueType>);
 }
 
 
@@ -620,7 +620,7 @@ TYPED_TEST(SimdVec3NormalizationTests,
 {
     [[maybe_unused]] flcn::OperationStatus flag;
     [[maybe_unused]] const auto normalized = flcn::tryNormalize(this->_vec, flag);
-    static_assert(std::is_floating_point_v<typename decltype(normalized)::value_type>);
+    static_assert(std::is_floating_point_v<typename decltype(normalized)::ValueType>);
 }
 
 

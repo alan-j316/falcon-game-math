@@ -220,7 +220,7 @@ TEST(SimdVec3ProjectionTests, StaticWrapper_ProjectionOntoNormalizedVectorReturn
 TYPED_TEST(SimdVec3ProjectionTests, Project_AlwaysReturnFloatingPointVector)
 {
     [[maybe_unused]] const flcn::simd::Vec3 projection = this->_vec.project(this->_ontoVec);
-    static_assert(std::is_floating_point_v<typename decltype(projection)::value_type>);
+    static_assert(std::is_floating_point_v<typename decltype(projection)::ValueType>);
 }
 
 
@@ -231,7 +231,7 @@ TYPED_TEST(SimdVec3ProjectionTests, Project_AlwaysReturnFloatingPointVector)
 TYPED_TEST(SimdVec3ProjectionTests, StaticWrapper_Project_AlwaysReturnFloatingPointVector)
 {
     [[maybe_unused]] const flcn::simd::Vec3 projection = flcn::simd::Vec3<TypeParam>::project(this->_vec, this->_ontoVec);
-    static_assert(std::is_floating_point_v<typename decltype(projection)::value_type>);
+    static_assert(std::is_floating_point_v<typename decltype(projection)::ValueType>);
 }
 
 //
@@ -443,7 +443,7 @@ TYPED_TEST(SimdVec3ProjectionTests, StaticWrapper_Project_AlwaysReturnFloatingPo
 // TYPED_TEST(SimdVec3ProjectionTests, SafeProject_AlwaysReturnFloatingPointVector)
 // {
 //     [[maybe_unused]] const flcn::simd::Vec3 projection = this->_vec.safeProject(this->_ontoVec);
-//     static_assert(std::is_floating_point_v<typename decltype(projection)::value_type>);
+//     static_assert(std::is_floating_point_v<typename decltype(projection)::ValueType>);
 // }
 //
 //
@@ -454,7 +454,7 @@ TYPED_TEST(SimdVec3ProjectionTests, StaticWrapper_Project_AlwaysReturnFloatingPo
 // TYPED_TEST(SimdVec3ProjectionTests, StaticWrapper_SafeProject_AlwaysReturnFloatingPointVector)
 // {
 //     [[maybe_unused]] const flcn::simd::Vec3 projection = flcn::simd::Vec3<TypeParam>::safeProject(this->_vec, this->_ontoVec);
-//     static_assert(std::is_floating_point_v<typename decltype(projection)::value_type>);
+//     static_assert(std::is_floating_point_v<typename decltype(projection)::ValueType>);
 // }
 //
 //
@@ -756,7 +756,7 @@ TYPED_TEST(SimdVec3ProjectionTests, StaticWrapper_Project_AlwaysReturnFloatingPo
 // {
 //     [[maybe_unused]] flcn::OperationStatus flag;
 //     [[maybe_unused]] const flcn::simd::Vec3 projection = this->_vec.tryProject(this->_ontoVec, flag);
-//     static_assert(std::is_floating_point_v<typename decltype(projection)::value_type>);
+//     static_assert(std::is_floating_point_v<typename decltype(projection)::ValueType>);
 // }
 //
 //
@@ -768,7 +768,7 @@ TYPED_TEST(SimdVec3ProjectionTests, StaticWrapper_Project_AlwaysReturnFloatingPo
 // {
 //     [[maybe_unused]] flcn::OperationStatus flag;
 //     [[maybe_unused]] const flcn::simd::Vec3 projection = flcn::simd::Vec3<TypeParam>::tryProject(this->_vec, this->_ontoVec,
-//     flag); static_assert(std::is_floating_point_v<typename decltype(projection)::value_type>);
+//     flag); static_assert(std::is_floating_point_v<typename decltype(projection)::ValueType>);
 // }
 //
 //

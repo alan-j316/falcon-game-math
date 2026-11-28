@@ -72,8 +72,7 @@ namespace flcn::simd
          * @addtogroup Falcon_Vec3_Members
          * @{
          */
-        // TODO: Update to ValueType
-        using value_type = T; ///< The numeric type of the vector components.
+        using ValueType = T; ///< The numeric type of the vector components.
 
         static constexpr size_t DIMENSION = 3; ///< The number of components of the vector.
 
@@ -854,7 +853,7 @@ namespace flcn::simd
         //          * @brief Perform component-wise logical AND between this vector and @p rhs vector.
         //          *        Compute the conjunction between each component pair.
         //          *
-        //          * @note Only available for @ref bVec3 and vectors with `bool` value_type.
+        //          * @note Only available for @ref bVec3 and vectors with `bool` ValueType.
         //          *
         //          * @param[in] rhs The vector to combine with.
         //          *
@@ -868,7 +867,7 @@ namespace flcn::simd
         //          * @brief Perform an in-place component-wise logical AND between this vector and @p rhs vector.
         //          *        Compute the conjunction between each component pair in-place and update the calling vector.
         //          *
-        //          * @note Only available for @ref bVec3 and vectors with `bool` value_type.
+        //          * @note Only available for @ref bVec3 and vectors with `bool` ValueType.
         //          *
         //          * @param[in] rhs The vector to combine with.
         //          *
@@ -882,7 +881,7 @@ namespace flcn::simd
         //          * @brief Perform component-wise logical OR between this vector and @p rhs vector.
         //          *        Compute the disjunction between each component pair.
         //          *
-        //          * @note Only available for @ref bVec3 and vectors with `bool` value_type.
+        //          * @note Only available for @ref bVec3 and vectors with `bool` ValueType.
         //          *
         //          * @param[in] rhs The vector to combine with.
         //          *
@@ -896,7 +895,7 @@ namespace flcn::simd
         //          * @brief Perform an in-place component-wise logical OR between this vector and @p rhs vector.
         //          *        Compute the disjunction between each component pair in-place and update the calling vector.
         //          *
-        //          * @note Only available for @ref bVec3 and vectors with `bool` value_type.
+        //          * @note Only available for @ref bVec3 and vectors with `bool` ValueType.
         //          *
         //          * @param[in] rhs The vector to combine with.
         //          *
@@ -910,7 +909,7 @@ namespace flcn::simd
         //          * @brief Apply a component-wise logical NOT on this vector.
         //          *        Invert each boolean component and returns a new @ref Vec3<bool>.
         //          *
-        //          * @note Only available for @ref bVec3 and vectors with `bool` value_type.
+        //          * @note Only available for @ref bVec3 and vectors with `bool` ValueType.
         //          *
         //          * @return A @ref Vec3<bool> with inverted values.
         //          */

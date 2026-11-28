@@ -45,7 +45,7 @@ TYPED_TEST(Vec2NormalizationTests, Normalize_NonZeroVectorReturnsUnitVector)
 TYPED_TEST(Vec2NormalizationTests, NormalizedVectorIsAlwaysTypedPromotedToFloatingPointType)
 {
     [[maybe_unused]] const auto normalized = this->_vec.normalize();
-    static_assert(std::is_floating_point_v<typename decltype(normalized)::value_type>);
+    static_assert(std::is_floating_point_v<typename decltype(normalized)::ValueType>);
 }
 
 
@@ -72,7 +72,7 @@ TEST(Vec2NormalizationTests, SafeNormalize_NaNVectorReturnsZeroVector)
 TYPED_TEST(Vec2NormalizationTests, SafeNormalize_NormalizedVectorIsAlwaysTypedPromotedToFloatingPointType)
 {
     [[maybe_unused]] const auto normalized = this->_vec.safeNormalize();
-    static_assert(std::is_floating_point_v<typename decltype(normalized)::value_type>);
+    static_assert(std::is_floating_point_v<typename decltype(normalized)::ValueType>);
 }
 
 
@@ -127,7 +127,7 @@ TYPED_TEST(Vec2NormalizationTests, TryNormalize_NormalizedVectorIsAlwaysTypedPro
 {
     [[maybe_unused]] flcn::OperationStatus flag;
     [[maybe_unused]] const auto normalized = this->_vec.tryNormalize(flag);
-    static_assert(std::is_floating_point_v<typename decltype(normalized)::value_type>);
+    static_assert(std::is_floating_point_v<typename decltype(normalized)::ValueType>);
 }
 
 

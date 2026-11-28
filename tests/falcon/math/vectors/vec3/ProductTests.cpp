@@ -468,7 +468,7 @@ TEST(Vec3CrossProductTests, TensorProduct_MixedTypes_PromotesType)
 
     [[maybe_unused]] const flcn::Vec3 crossProduct = vecA.cross(vecB);
 
-    static_assert(std::is_same_v<typename decltype(crossProduct)::value_type, double>);
+    static_assert(std::is_same_v<typename decltype(crossProduct)::ValueType, double>);
 }
 
 

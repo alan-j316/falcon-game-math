@@ -115,7 +115,7 @@ namespace flcn
     using PromotedVec2 = Vec2<PromotedValue_t<T, U>>;
 
 
-    /** @brief Alias for @ref Vec2 with a `value_type` of @ref Magnitude of the wider type. */
+    /** @brief Alias for @ref Vec2 with a `ValueType` of @ref Magnitude of the wider type. */
     template <Arithmetic T, Arithmetic U>
         requires Arithmetic<PromotedValue_t<T, U>>
     using PromotedFloatVec2 = Vec2<Magnitude<PromotedValue_t<T, U>>>;
@@ -127,7 +127,7 @@ namespace flcn
     using PromotedVec3 = Vec3<PromotedValue_t<T, U>>;
 
 
-    /** @brief Alias for @ref Vec3 with a `value_type` of @ref Magnitude of the wider type. */
+    /** @brief Alias for @ref Vec3 with a `ValueType` of @ref Magnitude of the wider type. */
     template <Arithmetic T, Arithmetic U>
         requires Arithmetic<PromotedValue_t<T, U>>
     using PromotedFloatVec3 = Vec3<Magnitude<PromotedValue_t<T, U>>>;
@@ -139,7 +139,7 @@ namespace flcn
     using PromotedVec4 = Vec4<PromotedValue_t<T, U>>;
 
 
-    /** @brief Alias for @ref Vec4 with a `value_type` of @ref Magnitude of the wider type. */
+    /** @brief Alias for @ref Vec4 with a `ValueType` of @ref Magnitude of the wider type. */
     template <Arithmetic T, Arithmetic U>
         requires Arithmetic<PromotedValue_t<T, U>>
     using PromotedFloatVec4 = Vec4<Magnitude<PromotedValue_t<T, U>>>;
@@ -151,7 +151,7 @@ namespace flcn
     using PromotedMat2 = Mat2<PromotedValue_t<T, U>>;
 
 
-    /** @brief Alias for @ref Mat2 with a `value_type` of @ref Magnitude of the wider type. */
+    /** @brief Alias for @ref Mat2 with a `ValueType` of @ref Magnitude of the wider type. */
     template <Arithmetic T, Arithmetic U>
     using PromotedFloatMat2 = Mat2<Magnitude<std::common_type_t<T, U>>>;
 
@@ -161,7 +161,7 @@ namespace flcn
     using PromotedMat2x3 = Mat2x3<PromotedValue_t<T, U>>;
 
 
-    /** @brief Alias for @ref Mat2x3 with a `value_type` of @ref Magnitude of the wider type. */
+    /** @brief Alias for @ref Mat2x3 with a `ValueType` of @ref Magnitude of the wider type. */
     template <Arithmetic T, Arithmetic U>
     using PromotedFloatMat2x3 = Mat2x3<Magnitude<std::common_type_t<T, U>>>;
 
@@ -172,7 +172,7 @@ namespace flcn
     using PromotedMat2x4 = Mat2x4<PromotedValue_t<T, U>>;
 
 
-    /** @brief Alias for @ref Mat2x4 with a `value_type` of @ref Magnitude of the wider type. */
+    /** @brief Alias for @ref Mat2x4 with a `ValueType` of @ref Magnitude of the wider type. */
     template <Arithmetic T, Arithmetic U>
     using PromotedFloatMat2x4 = Mat2x4<Magnitude<std::common_type_t<T, U>>>;
 
@@ -183,7 +183,7 @@ namespace flcn
     using PromotedMat3 = Mat3<PromotedValue_t<T, U>>;
 
 
-    /** @brief Alias for @ref Mat3 with a `value_type` of @ref Magnitude of the wider type. */
+    /** @brief Alias for @ref Mat3 with a `ValueType` of @ref Magnitude of the wider type. */
     template <Arithmetic T, Arithmetic U>
     using PromotedFloatMat3 = Mat3<Magnitude<std::common_type_t<T, U>>>;
 
@@ -194,7 +194,7 @@ namespace flcn
     using PromotedMat3x2 = Mat3x2<PromotedValue_t<T, U>>;
 
 
-    /** @brief Alias for @ref Mat3x2 with a `value_type` of @ref Magnitude of the wider type. */
+    /** @brief Alias for @ref Mat3x2 with a `ValueType` of @ref Magnitude of the wider type. */
     template <Arithmetic T, Arithmetic U>
     using PromotedFloatMat3x2 = Mat3x2<Magnitude<std::common_type_t<T, U>>>;
 
@@ -205,7 +205,7 @@ namespace flcn
     using PromotedMat3x4 = Mat3x4<PromotedValue_t<T, U>>;
 
 
-    /** @brief Alias for @ref Mat3x4 with a `value_type` of @ref Magnitude of the wider type. */
+    /** @brief Alias for @ref Mat3x4 with a `ValueType` of @ref Magnitude of the wider type. */
     template <Arithmetic T, Arithmetic U>
     using PromotedFloatMat3x4 = Mat3x4<Magnitude<std::common_type_t<T, U>>>;
 
@@ -216,7 +216,7 @@ namespace flcn
     using PromotedMat4x2 = Mat4x2<PromotedValue_t<T, U>>;
 
 
-    /** @brief Alias for @ref Mat4x2 with a `value_type` of @ref Magnitude of the wider type. */
+    /** @brief Alias for @ref Mat4x2 with a `ValueType` of @ref Magnitude of the wider type. */
     template <Arithmetic T, Arithmetic U>
     using PromotedFloatMat4x2 = Mat4x2<Magnitude<std::common_type_t<T, U>>>;
 
@@ -227,7 +227,7 @@ namespace flcn
     using PromotedMat4x3 = Mat4x3<PromotedValue_t<T, U>>;
 
 
-    /** @brief Alias for @ref Mat4x3 with a `value_type` of @ref Magnitude of the wider type. */
+    /** @brief Alias for @ref Mat4x3 with a `ValueType` of @ref Magnitude of the wider type. */
     template <Arithmetic T, Arithmetic U>
     using PromotedFloatMat4x3 = Mat4x3<Magnitude<std::common_type_t<T, U>>>;
 
@@ -238,7 +238,7 @@ namespace flcn
     using PromotedMat4 = Mat4<PromotedValue_t<T, U>>;
 
 
-    /** @brief Alias for @ref Mat4 with a `value_type` of @ref Magnitude of the wider type. */
+    /** @brief Alias for @ref Mat4 with a `ValueType` of @ref Magnitude of the wider type. */
     template <Arithmetic T, Arithmetic U>
     using PromotedFloatMat4 = Mat4<Magnitude<std::common_type_t<T, U>>>;
 

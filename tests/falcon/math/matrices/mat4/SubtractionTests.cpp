@@ -112,7 +112,7 @@ TEST(Mat4SubtractionTests, MinusOperator_MixedType_PromotesType)
                              11.0);
 
     [[maybe_unused]] constexpr flcn::Mat4 difference = mat1 - mat2;
-    static_assert(std::is_same_v<decltype(difference)::value_type, double>);
+    static_assert(std::is_same_v<decltype(difference)::ValueType, double>);
 }
 
 
@@ -131,7 +131,7 @@ TEST(Mat4SubtractionTests, MinusEqualsOperator_MixedType_DoesNotPromoteType)
                                               -11.0, 21.0, 11.0);
 
     (void) (mat1 -= mat2); // Static cast to void is need to prevent compiler warning that not using mat2
-    static_assert(std::is_same_v<decltype(mat1)::value_type, float>);
+    static_assert(std::is_same_v<decltype(mat1)::ValueType, float>);
 }
 
 /** @} */

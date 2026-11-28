@@ -256,7 +256,7 @@ TEST(Vec2AdditionTests, PlusOperator_MixedType_PromotesType)
 
     [[maybe_unused]] const flcn::Vec2 result = vec1 + vec2;
 
-    static_assert(std::is_same_v<decltype(result)::value_type, double>);
+    static_assert(std::is_same_v<decltype(result)::ValueType, double>);
 }
 
 
@@ -275,7 +275,7 @@ TEST(Vec2AdditionTests, PlusEqualsOperator_MixedType_DoesNotPromoteType)
 
     static_cast<void>(vec1 += vec2);
 
-    static_assert(std::is_same_v<decltype(vec1)::value_type, float>);
+    static_assert(std::is_same_v<decltype(vec1)::ValueType, float>);
 }
 
 
@@ -299,7 +299,7 @@ TEST(Vec2SubtractionTests, MinusOperator_MixedType_PromotesType)
 
     [[maybe_unused]] const flcn::Vec2 result = vec1 - vec2;
 
-    static_assert(std::is_same_v<decltype(result)::value_type, double>);
+    static_assert(std::is_same_v<decltype(result)::ValueType, double>);
 }
 
 
@@ -318,7 +318,7 @@ TEST(Vec2SubtractionTests, MinusEqualsOperator_MixedType_DoesNotPromoteType)
 
     static_cast<void>(vec1 -= vec2);
 
-    static_assert(std::is_same_v<decltype(vec1)::value_type, float>);
+    static_assert(std::is_same_v<decltype(vec1)::ValueType, float>);
 }
 
 
@@ -383,7 +383,7 @@ TYPED_TEST(Vec2ScalarMultiplicationTests, TimesOperator_MixedType_PromotesType)
 
     [[maybe_unused]] const flcn::Vec2 result = this->_vec * scalar;
 
-    static_assert(std::is_same_v<typename decltype(result)::value_type, double>);
+    static_assert(std::is_same_v<typename decltype(result)::ValueType, double>);
 }
 
 
@@ -408,7 +408,7 @@ TEST(Vec2ScalarMultiplicationTests, TimesEqualsOperator_MixedType_DoesNotPromote
     const double scalar = 5.0;
     vec *= scalar;
 
-    static_assert(std::is_same_v<decltype(vec)::value_type, float>);
+    static_assert(std::is_same_v<decltype(vec)::ValueType, float>);
 }
 
 
@@ -449,7 +449,7 @@ TYPED_TEST(Vec2VectorMultiplicationTests, TimesOperator_MixedType_PromotesType)
 
     [[maybe_unused]] const flcn::Vec2 result = this->_vecA * vecB;
 
-    static_assert(std::is_same_v<typename decltype(result)::value_type, double>);
+    static_assert(std::is_same_v<typename decltype(result)::ValueType, double>);
 }
 
 
@@ -474,7 +474,7 @@ TEST(Vec2VectorMultiplicationTests, TimesEqualsOperator_MixedType_DoesNotPromote
     const flcn::Vec2<double> vecB{ 2.123456789123456, 2.123456789123456 };
     vecA *= vecB;
 
-    static_assert(std::is_same_v<decltype(vecA)::value_type, float>);
+    static_assert(std::is_same_v<decltype(vecA)::ValueType, float>);
 }
 
 
@@ -518,7 +518,7 @@ TEST(Vec2ScalarDivisionTests, MixedType_ScalarDivision_PromotesType)
 
     [[maybe_unused]] const flcn::Vec2 result = vec / scalar;
 
-    static_assert(std::is_same_v<decltype(result)::value_type, double>);
+    static_assert(std::is_same_v<decltype(result)::ValueType, double>);
 }
 
 
@@ -537,7 +537,7 @@ TEST(Vec2ScalarDivisionTests, MixedType_ScalarDivisionAssignment_DoesNotPromoteT
 
     vec /= scalar;
 
-    static_assert(std::is_same_v<decltype(vec)::value_type, float>);
+    static_assert(std::is_same_v<decltype(vec)::ValueType, float>);
 }
 
 

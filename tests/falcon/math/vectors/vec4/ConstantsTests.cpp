@@ -148,7 +148,7 @@ TYPED_TEST(Vec4ConstantsTests, ZERO_ReturnsVectorWithZeroComponents) { EXPECT_VE
 TEST(Vec4Constants, INF_Float_ReturnsFloatVectorWithInfinityComponents)
 {
     const auto inf = flcn::Vec4<float>::inf();
-    static_assert(std::is_same_v<typename decltype(inf)::value_type, float>);
+    static_assert(std::is_same_v<typename decltype(inf)::ValueType, float>);
     EXPECT_VEC4_POS_INF(inf)
 }
 
@@ -157,7 +157,7 @@ TEST(Vec4Constants, INF_Float_ReturnsFloatVectorWithInfinityComponents)
 TEST(Vec4Constants, INF_Double_ReturnsDoubleVectorWithInfinityComponents)
 {
     const auto inf = flcn::Vec4<double>::inf();
-    static_assert(std::is_same_v<typename decltype(inf)::value_type, double>);
+    static_assert(std::is_same_v<typename decltype(inf)::ValueType, double>);
     EXPECT_VEC4_POS_INF(inf)
 }
 
@@ -166,7 +166,7 @@ TEST(Vec4Constants, INF_Double_ReturnsDoubleVectorWithInfinityComponents)
 TEST(Vec4Constants, INFNEG_Float_ReturnsFloatVectorWithNegativeInfinityComponents)
 {
     const auto inf = flcn::Vec4<float>::infNeg();
-    static_assert(std::is_same_v<typename decltype(inf)::value_type, float>);
+    static_assert(std::is_same_v<typename decltype(inf)::ValueType, float>);
     EXPECT_VEC4_NEG_INF(inf)
 }
 
@@ -175,7 +175,7 @@ TEST(Vec4Constants, INFNEG_Float_ReturnsFloatVectorWithNegativeInfinityComponent
 TEST(Vec4Constants, INFNEG_Double_ReturnsDoubleVectorWithNegativeInfinityComponents)
 {
     const auto inf = flcn::Vec4<double>::infNeg();
-    static_assert(std::is_same_v<typename decltype(inf)::value_type, double>);
+    static_assert(std::is_same_v<typename decltype(inf)::ValueType, double>);
     EXPECT_VEC4_NEG_INF(inf)
 }
 

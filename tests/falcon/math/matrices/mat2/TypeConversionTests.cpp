@@ -30,12 +30,12 @@ namespace
 
         /// @test Verify that the matrix can be type promoted at compile time.
         constexpr flcn::Mat2<double> MAT_D(MAT);
-        static_assert(std::is_same_v<decltype(MAT_D)::value_type, double>);
+        static_assert(std::is_same_v<decltype(MAT_D)::ValueType, double>);
 
 
         /// @test Verify that the matrix can be type demoted at compile time.
         constexpr flcn::Mat2<int> MATI(MAT);
-        static_assert(std::is_same_v<decltype(MATI)::value_type, int>);
+        static_assert(std::is_same_v<decltype(MATI)::ValueType, int>);
 
     } // namespace static_tests
 
@@ -52,7 +52,7 @@ TEST(Mat2TypeConversionTests, ConversionCtor_CanPromoteType)
     const flcn::Mat2 mat1(1.0f, 2.0f, 3.0f, 4.0f);
 
     [[maybe_unused]] const flcn::Mat2<double> mat2(mat1);
-    static_assert(std::is_same_v<decltype(mat2)::value_type, double>);
+    static_assert(std::is_same_v<decltype(mat2)::ValueType, double>);
 }
 
 
@@ -79,7 +79,7 @@ TEST(Mat2TypeConversionTests, ConversionCtor_CanDemoteType)
     const flcn::Mat2 mat1(1.0, 2.0, 3.0, 4.0);
 
     [[maybe_unused]] const flcn::Mat2<float> mat2(mat1);
-    static_assert(std::is_same_v<decltype(mat2)::value_type, float>);
+    static_assert(std::is_same_v<decltype(mat2)::ValueType, float>);
 }
 
 /** @} */

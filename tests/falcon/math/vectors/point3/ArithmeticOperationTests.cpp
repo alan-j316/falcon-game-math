@@ -119,7 +119,7 @@ TEST(Point3AdditionTests, PlusOperator_MixedType_PromotesType)
 
     [[maybe_unused]] const flcn::Point3 result = point + vector;
 
-    static_assert(std::is_same_v<decltype(result)::value_type, double>);
+    static_assert(std::is_same_v<decltype(result)::ValueType, double>);
 }
 
 
@@ -137,7 +137,7 @@ TEST(Point3AdditionTests, PlusEqualsOperator_MixedType_DoesNotPromoteType)
 
     static_cast<void>(point += vector);
 
-    static_assert(std::is_same_v<decltype(point)::value_type, float>);
+    static_assert(std::is_same_v<decltype(point)::ValueType, float>);
 }
 
 /** @} */
@@ -164,7 +164,7 @@ TEST(Point3SubtractionTests, MinusOperator_MixedType_PromotesType)
 
     [[maybe_unused]] const auto result = pointA - pointB;
 
-    static_assert(std::is_same_v<decltype(result)::value_type, double>);
+    static_assert(std::is_same_v<decltype(result)::ValueType, double>);
 }
 
 /** @} */

@@ -32,12 +32,12 @@ namespace
         ///       floating point quaternion at compile time.
         constexpr flcn::Quat FP_QUAT(3.0f, 1.0f, 4.0f, 5.0f);
         constexpr flcn::Quat<double> DBL_QUAT(FP_QUAT);
-        static_assert(std::is_same_v<decltype(DBL_QUAT)::value_type, double>);
+        static_assert(std::is_same_v<decltype(DBL_QUAT)::ValueType, double>);
 
         /// @test Verify that a 64-bit floating point quaternion can be converted to a 32-bt
         ///       floating point quaternion at compile time.
         [[maybe_unused]] constexpr flcn::Quat<float> FP_QUAT2(DBL_QUAT);
-        static_assert(std::is_same_v<decltype(FP_QUAT2)::value_type, float>);
+        static_assert(std::is_same_v<decltype(FP_QUAT2)::ValueType, float>);
     } // namespace static_tests
 
 } // namespace
@@ -54,7 +54,7 @@ TEST(QuaternionConversionCtor, CanPromotesType)
 
     [[maybe_unused]] const flcn::Quat<double> quat2(quat1);
 
-    static_assert(std::is_same_v<decltype(quat2)::value_type, double>);
+    static_assert(std::is_same_v<decltype(quat2)::ValueType, double>);
 }
 
 
@@ -82,7 +82,7 @@ TEST(QuaternionConversionCtor, CanDemotesType)
 
     [[maybe_unused]] const flcn::Quat<float> quat2(quat1);
 
-    static_assert(std::is_same_v<decltype(quat2)::value_type, float>);
+    static_assert(std::is_same_v<decltype(quat2)::ValueType, float>);
 }
 
 /** @} */

@@ -48,7 +48,7 @@ namespace testutils
     template <flcn::Vector T, flcn::Vector U>
     void EXPECT_VEC_EQ(const T& expected, const U& actual) // NOLINT
     {
-        using ValueType = T::value_type; // NOLINT
+        using ValueType = T::ValueType; // NOLINT
 
         static_assert(T::DIMENSION == U::DIMENSION, "Vectors must have the same dimension (e.g. both 3D)");
 
@@ -265,7 +265,7 @@ namespace testutils
     template <flcn::Vector T>
     void EXPECT_VEC_ONE(const T& vector) // NOLINT
     {
-        using ValueType    = T::value_type; // NOLINT
+        using ValueType    = T::ValueType; // NOLINT
         ValueType expected = ValueType(1);
 
         constexpr std::size_t elementCount = T::DIMENSION;
@@ -301,7 +301,7 @@ namespace testutils
     template <flcn::Vector T>
     void EXPECT_VEC_ZERO(const T& vector) // NOLINT
     {
-        using ValueType                    = T::value_type; // NOLINT
+        using ValueType                    = T::ValueType; // NOLINT
         constexpr std::size_t elementCount = T::DIMENSION;
 
         for (std::size_t i = 0; i < elementCount; ++i)

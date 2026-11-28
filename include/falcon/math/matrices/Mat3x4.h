@@ -40,7 +40,7 @@ namespace flcn
          * @{
          */
 
-        using value_type = T; ///< The numeric type of the matrix elements.
+        using ValueType = T; ///< The numeric type of the matrix elements.
 
         static constexpr std::size_t COLUMNS = 4; ///< Matrix column count.
         static constexpr std::size_t ROWS    = 3; ///< Matrix row count.

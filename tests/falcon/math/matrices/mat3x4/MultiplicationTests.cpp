@@ -189,7 +189,7 @@ TYPED_TEST(Mat3x4ScalarMultiplicationTests, TimesOperator_MixedType_PromotesType
 
     [[maybe_unused]] const flcn::Mat3x4 product = this->_mat * scalar;
 
-    static_assert(std::is_same_v<typename decltype(product)::value_type, double>);
+    static_assert(std::is_same_v<typename decltype(product)::ValueType, double>);
 }
 
 
@@ -199,7 +199,7 @@ TEST(Mat3x4ScalarMultiplicationTests, TimesEqualsOperator_MixedType_DoesNotPromo
     const double scalar = 5.0;
     mat *= scalar;
 
-    static_assert(std::is_same_v<decltype(mat)::value_type, float>);
+    static_assert(std::is_same_v<decltype(mat)::ValueType, float>);
 }
 
 

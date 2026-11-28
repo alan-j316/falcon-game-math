@@ -308,7 +308,7 @@ TYPED_TEST(Mat3ScalarMultiplicationTests, TimesOperator_MixedType_PromotesType)
 
     [[maybe_unused]] const flcn::Mat3 product = this->_mat * scalar;
 
-    static_assert(std::is_same_v<typename decltype(product)::value_type, double>);
+    static_assert(std::is_same_v<typename decltype(product)::ValueType, double>);
 }
 
 
@@ -333,7 +333,7 @@ TEST(Mat3ScalarMultiplicationTests, TimesEqualsOperator_MixedType_DoesNotPromote
     const double scalar = 5.0;
     
     mat *= scalar;
-    static_assert(std::is_same_v<decltype(mat)::value_type, float>);
+    static_assert(std::is_same_v<decltype(mat)::ValueType, float>);
 }
 
 
@@ -390,7 +390,7 @@ TEST(Mat3VectorMultiplicationTests, ColumnVector_MixedType_PromotesType)
     const flcn::Vec3I vec{ 2, 1, 3 };
 
     [[maybe_unused]] const auto transformedVector = mat * vec;
-    static_assert(std::is_same_v<decltype(transformedVector)::value_type, double>);
+    static_assert(std::is_same_v<decltype(transformedVector)::ValueType, double>);
 }
 
 
@@ -432,7 +432,7 @@ TEST(Mat3VectorMultiplicationTests, RowVector_MixedType_PromotesType)
     const flcn::Vec3I vec{ 2, 1, 3 };
 
     [[maybe_unused]] const auto transformedVector = vec * mat;
-    static_assert(std::is_same_v<decltype(transformedVector)::value_type, double>);
+    static_assert(std::is_same_v<decltype(transformedVector)::ValueType, double>);
 }
 
 
@@ -468,7 +468,7 @@ TEST(Mat3VectorMultiplicationTests, TimesEqualOperator_MixedType_DoesNotPromoteT
     [[maybe_unused]] flcn::Vec3I vec{ 2, 1, 5 };
 
     (void) (vec *= iMatrix);
-    static_assert(std::is_same_v<decltype(vec)::value_type, int>);
+    static_assert(std::is_same_v<decltype(vec)::ValueType, int>);
 }
 
 
@@ -526,7 +526,7 @@ TEST(Mat3MatrixMultiplicationTests, TimesOperator_PromotesType)
     const flcn::Mat3 matB{ 2, 1, 3 };
 
     [[maybe_unused]] const auto transformedVector = matA * matB;
-    static_assert(std::is_same_v<decltype(transformedVector)::value_type, double>);
+    static_assert(std::is_same_v<decltype(transformedVector)::ValueType, double>);
 }
 
 
@@ -561,7 +561,7 @@ TEST(Mat3MatrixMultiplicationTests, TimesEqualsOperator_MixedType_DoesNotPromote
     flcn::Mat3 mat{ 1, 2, 3 };
 
     mat *= iMatrix;
-    static_assert(std::is_same_v<decltype(mat)::value_type, int>);
+    static_assert(std::is_same_v<decltype(mat)::ValueType, int>);
 }
 
 

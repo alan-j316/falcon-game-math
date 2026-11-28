@@ -189,7 +189,7 @@ TEST_P(Mat3InverseSingularTests, SafeInverse_ReturnsIdentityMatrixByDefault)
 
 TEST_P(Mat3InverseSingularTests, SafeInverse_ReturnsPassedInFallbackMatrix)
 {
-    const auto& inverseMatrix = GetParam().safeInverse(flcn::Mat3<ParamType::value_type>::zero());
+    const auto& inverseMatrix = GetParam().safeInverse(flcn::Mat3<ParamType::ValueType>::zero());
     EXPECT_MAT_ZERO(inverseMatrix);
 }
 
@@ -203,7 +203,7 @@ TEST_P(Mat3InverseNaNTests, SafeInverse_ReturnsIdentityMatrixByDefault)
 
 TEST_P(Mat3InverseNaNTests, SafeInverse_ReturnsPassedInFallbackMatrix)
 {
-    const auto& inverseMatrix = GetParam().safeInverse(flcn::Mat3<ParamType::value_type>::zero());
+    const auto& inverseMatrix = GetParam().safeInverse(flcn::Mat3<ParamType::ValueType>::zero());
     EXPECT_MAT_ZERO(inverseMatrix);
 }
 
@@ -230,7 +230,7 @@ TEST_P(Mat3InverseSingularTests, StaticWrapper_SafeInverse_ReturnsIdentityMatrix
 TEST_P(Mat3InverseSingularTests, StaticWrapper_SafeInverse_ReturnsPassedInFallbackMatrix)
 {
     const auto& matrix = GetParam();
-    EXPECT_MAT_ZERO(ParamType::safeInverseOf(matrix, flcn::Mat3<ParamType::value_type>::zero()));
+    EXPECT_MAT_ZERO(ParamType::safeInverseOf(matrix, flcn::Mat3<ParamType::ValueType>::zero()));
 }
 
 
@@ -243,7 +243,7 @@ TEST_P(Mat3InverseNaNTests, StaticWrapper_SafeInverse_ReturnsIdentityMatrixByDef
 
 TEST_P(Mat3InverseNaNTests, StaticWrapper_SafeInverse_ReturnsPassedInFallbackMatrix)
 {
-    const auto& inverseMatrix = ParamType::safeInverseOf(GetParam(), flcn::Mat3<ParamType::value_type>::zero());
+    const auto& inverseMatrix = ParamType::safeInverseOf(GetParam(), flcn::Mat3<ParamType::ValueType>::zero());
     EXPECT_MAT_ZERO(inverseMatrix);
 }
 
@@ -299,7 +299,7 @@ TEST_P(Mat3InverseSingularTests, TryInverse_ReturnsIdentityMatrixByDefaultAndSet
 TEST_P(Mat3InverseSingularTests, TryInverse_ReturnsPassedInFallbackMatrixAndSetsCorrectFlag)
 {
     flcn::OperationStatus flag;
-    const auto& inverseMatrix = GetParam().tryInverse(flag, flcn::Mat3<ParamType::value_type>::zero());
+    const auto& inverseMatrix = GetParam().tryInverse(flag, flcn::Mat3<ParamType::ValueType>::zero());
     EXPECT_MAT_ZERO(inverseMatrix);
     EXPECT_EQ(flcn::OperationStatus::DIVISIONBYZERO, flag);
 }
@@ -325,7 +325,7 @@ TEST_P(Mat3InverseNaNTests, TryInverse_ReturnsIdentityMatrixByDefaultAndSetsCorr
 TEST_P(Mat3InverseNaNTests, TryInverse_ReturnsPassedInFallbackMatrixAndSetsCorrectFlag)
 {
     flcn::OperationStatus flag;
-    const auto& inverseMatrix = GetParam().tryInverse(flag, flcn::Mat3<ParamType::value_type>::zero());
+    const auto& inverseMatrix = GetParam().tryInverse(flag, flcn::Mat3<ParamType::ValueType>::zero());
     EXPECT_MAT_ZERO(inverseMatrix);
     EXPECT_EQ(flcn::OperationStatus::NANOPERAND, flag);
 }
@@ -378,7 +378,7 @@ TEST_P(Mat3InverseSingularTests, StaticWrapper_TryInverse_ReturnsPassedInFallbac
 {
     flcn::OperationStatus flag;
     const auto& matrix = GetParam();
-    EXPECT_MAT_ZERO(ParamType::tryInverseOf(matrix, flag, flcn::Mat3<ParamType::value_type>::zero()));
+    EXPECT_MAT_ZERO(ParamType::tryInverseOf(matrix, flag, flcn::Mat3<ParamType::ValueType>::zero()));
     EXPECT_EQ(flcn::OperationStatus::DIVISIONBYZERO, flag);
 }
 
@@ -403,7 +403,7 @@ TEST_P(Mat3InverseNaNTests, StaticWrapper_TryInverse_ReturnsIdentityMatrixByDefa
 TEST_P(Mat3InverseNaNTests, StaticWrapper_TryInverse_ReturnsPassedInFallbackMatrixAndSetsCorrectFlag)
 {
     flcn::OperationStatus flag;
-    const auto& inverseMatrix = ParamType::tryInverseOf(GetParam(), flag, flcn::Mat3<ParamType::value_type>::zero());
+    const auto& inverseMatrix = ParamType::tryInverseOf(GetParam(), flag, flcn::Mat3<ParamType::ValueType>::zero());
     EXPECT_MAT_ZERO(inverseMatrix);
     EXPECT_EQ(flcn::OperationStatus::NANOPERAND, flag);
 }

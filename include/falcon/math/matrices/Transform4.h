@@ -25,7 +25,7 @@ namespace flcn
          * @addtogroup Falcon_Transform4_Members
          * @{
          */
-        using value_type = T; ///< The numeric type of the transform elements.
+        using ValueType = T; ///< The numeric type of the transform elements.
 
         static constexpr std::size_t COLUMNS = 4; ///< Matrix column count.
         static constexpr std::size_t ROWS    = 3; ///< Matrix row count (This is a pseudo-row count).

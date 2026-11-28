@@ -170,7 +170,7 @@ TEST_P(Mat2x3DivisionNaNTests, SafeDiv_ReturnsZeroMatrixByDefault)
 
 TEST_P(Mat2x3DivisionNaNTests, SafeDiv_ReturnsPassedInFallbackMatrix)
 {
-    const flcn::Mat2x3 resultantMat = GetParam().safeDiv(2.5, flcn::Mat2x3<ParamType::value_type>::zero());
+    const flcn::Mat2x3 resultantMat = GetParam().safeDiv(2.5, flcn::Mat2x3<ParamType::ValueType>::zero());
     EXPECT_MAT_ZERO(resultantMat);
 }
 
@@ -199,7 +199,7 @@ TYPED_TEST(Mat2x3DivisionTests, StaticWrapper_SafeDiv_DivisionByZeroReturnsPasse
 
 TEST_P(Mat2x3DivisionNaNTests, StaticWrapper_SafeDiv_ReturnsZeroMatrixByDefault)
 {
-    using T                          = ParamType::value_type;
+    using T                          = ParamType::ValueType;
     const flcn::Mat2x3 resultantMat = flcn::Mat2x3<T>::safeDiv(GetParam(), 2.5);
     EXPECT_MAT_ZERO(resultantMat);
 }
@@ -207,7 +207,7 @@ TEST_P(Mat2x3DivisionNaNTests, StaticWrapper_SafeDiv_ReturnsZeroMatrixByDefault)
 
 TEST_P(Mat2x3DivisionNaNTests, StaticWrapper_SafeDiv_ReturnsPassedInFallbackMatrix)
 {
-    using T                          = ParamType::value_type;
+    using T                          = ParamType::ValueType;
     const flcn::Mat2x3 resultantMat = flcn::Mat2x3<T>::safeDiv(GetParam(), 2.5, flcn::Mat2x3<T>::zero());
     EXPECT_MAT_ZERO(resultantMat);
 }
@@ -280,7 +280,7 @@ TEST_P(Mat2x3DivisionNaNTests, TryDiv_ReturnsZeroMatrixByDefault)
 TEST_P(Mat2x3DivisionNaNTests, TryDiv_ReturnsPassedInFallbackMatrix)
 {
     flcn::OperationStatus flag;
-    const flcn::Mat2x3 resultantMat = GetParam().tryDiv(2.5, flag, flcn::Mat2x3<ParamType::value_type>::zero());
+    const flcn::Mat2x3 resultantMat = GetParam().tryDiv(2.5, flag, flcn::Mat2x3<ParamType::ValueType>::zero());
     EXPECT_MAT_ZERO(resultantMat);
     EXPECT_EQ(flcn::OperationStatus::NANOPERAND, flag);
 }
@@ -294,7 +294,7 @@ TEST_P(Mat2x3DivisionNaNTests, TryDiv_NaNOperandTakesPrecedenceOverZeroDivision)
 {
     flcn::OperationStatus flag;
     [[maybe_unused]] const flcn::Mat2x3 resultantMat =
-        GetParam().tryDiv(0, flag, flcn::Mat2x3<ParamType::value_type>::zero());
+        GetParam().tryDiv(0, flag, flcn::Mat2x3<ParamType::ValueType>::zero());
     EXPECT_EQ(flcn::OperationStatus::NANOPERAND, flag);
 }
 
@@ -348,7 +348,7 @@ TYPED_TEST(Mat2x3DivisionTests, StaticWrapper_TryDiv_DivisionByZeroReturnsPassed
 TEST_P(Mat2x3DivisionNaNTests, StaticWrapper_TryDiv_ReturnsZeroMatrixByDefault)
 {
     flcn::OperationStatus flag;
-    using T                          = ParamType::value_type;
+    using T                          = ParamType::ValueType;
     const flcn::Mat2x3 resultantMat = flcn::Mat2x3<T>::tryDiv(GetParam(), 2.5, flag);
     EXPECT_MAT_ZERO(resultantMat);
 
@@ -363,7 +363,7 @@ TEST_P(Mat2x3DivisionNaNTests, StaticWrapper_TryDiv_ReturnsZeroMatrixByDefault)
 TEST_P(Mat2x3DivisionNaNTests, StaticWrapper_TryDiv_NaNOperandTakesPrecedenceOverZeroDivision)
 {
     flcn::OperationStatus flag;
-    using T                                           = ParamType::value_type;
+    using T                                           = ParamType::ValueType;
     [[maybe_unused]] const flcn::Mat2x3 resultantMat = flcn::Mat2x3<T>::tryDiv(GetParam(), T(0), flag);
     EXPECT_EQ(flcn::OperationStatus::NANOPERAND, flag);
 }
@@ -376,9 +376,9 @@ TEST_P(Mat2x3DivisionNaNTests, StaticWrapper_TryDiv_NaNOperandTakesPrecedenceOve
 TEST_P(Mat2x3DivisionNaNTests, StaticWrapper_TryDiv_ReturnsPassedInFallback)
 {
     flcn::OperationStatus flag;
-    using T = ParamType::value_type;
+    using T = ParamType::ValueType;
     const flcn::Mat2x3 resultantMat =
-        flcn::Mat2x3<T>::tryDiv(GetParam(), 2.5, flag, flcn::Mat2x3<ParamType::value_type>::zero());
+        flcn::Mat2x3<T>::tryDiv(GetParam(), 2.5, flag, flcn::Mat2x3<ParamType::ValueType>::zero());
     EXPECT_MAT_ZERO(resultantMat);
     EXPECT_EQ(flcn::OperationStatus::NANOPERAND, flag);
 }

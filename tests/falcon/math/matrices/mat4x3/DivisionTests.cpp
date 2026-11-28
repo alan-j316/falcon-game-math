@@ -192,7 +192,7 @@ TEST_P(Mat4x3DivisionNaNTests, SafeDiv_ReturnsIdentityMatrixByDefault)
 
 TEST_P(Mat4x3DivisionNaNTests, SafeDiv_ReturnsPassedInFallbackMatrix)
 {
-    const flcn::Mat4x3 inverseScaledMat = GetParam().safeDiv(2.5, flcn::Mat4x3<ParamType::value_type>::zero());
+    const flcn::Mat4x3 inverseScaledMat = GetParam().safeDiv(2.5, flcn::Mat4x3<ParamType::ValueType>::zero());
     EXPECT_MAT_ZERO(inverseScaledMat);
 }
 
@@ -222,7 +222,7 @@ TYPED_TEST(Mat4x3DivisionTests, StaticWrapper_SafeDiv_DivisionByZeroReturnsPasse
 
 TEST_P(Mat4x3DivisionNaNTests, StaticWrapper_SafeDiv_ReturnsIdentityMatrixByDefault)
 {
-    using T                            = ParamType::value_type;
+    using T                            = ParamType::ValueType;
     const flcn::Mat4x3 inverseScaledMat = flcn::Mat4x3<T>::safeDiv(GetParam(), 2.5);
     EXPECT_MAT_ZERO(inverseScaledMat);
 }
@@ -230,7 +230,7 @@ TEST_P(Mat4x3DivisionNaNTests, StaticWrapper_SafeDiv_ReturnsIdentityMatrixByDefa
 
 TEST_P(Mat4x3DivisionNaNTests, StaticWrapper_SafeDiv_ReturnsPassedInFallbackMatrix)
 {
-    using T                            = ParamType::value_type;
+    using T                            = ParamType::ValueType;
     const flcn::Mat4x3 inverseScaledMat = flcn::Mat4x3<T>::safeDiv(GetParam(), 2.5, flcn::Mat4x3<T>::zero());
     EXPECT_MAT_ZERO(inverseScaledMat);
 }
@@ -303,7 +303,7 @@ TEST_P(Mat4x3DivisionNaNTests, TryDiv_ReturnsIdentityMatrixByDefaultAndSetsCorre
 TEST_P(Mat4x3DivisionNaNTests, TryDiv_ReturnsPassedInFallbackMatrix)
 {
     flcn::OperationStatus flag;
-    const flcn::Mat4x3 inverseScaledMat = GetParam().tryDiv(2.5, flag, flcn::Mat4x3<ParamType::value_type>::zero());
+    const flcn::Mat4x3 inverseScaledMat = GetParam().tryDiv(2.5, flag, flcn::Mat4x3<ParamType::ValueType>::zero());
     EXPECT_MAT_ZERO(inverseScaledMat);
     EXPECT_EQ(flcn::OperationStatus::NANOPERAND, flag);
 }
@@ -317,7 +317,7 @@ TEST_P(Mat4x3DivisionNaNTests, TryDiv_NaNOperandTakesPrecedenceOverZeroDivisionA
 {
     flcn::OperationStatus flag;
     [[maybe_unused]] const flcn::Mat4x3 inverseScaledMat =
-        GetParam().tryDiv(0, flag, flcn::Mat4x3<ParamType::value_type>::zero());
+        GetParam().tryDiv(0, flag, flcn::Mat4x3<ParamType::ValueType>::zero());
     EXPECT_EQ(flcn::OperationStatus::NANOPERAND, flag);
 }
 
@@ -371,7 +371,7 @@ TYPED_TEST(Mat4x3DivisionTests, StaticWrapper_TryDiv_DivisionByZeroReturnsPassed
 TEST_P(Mat4x3DivisionNaNTests, StaticWrapper_TryDiv_ReturnsIdentityMatrixByDefaultAndSetsCorrectFlag)
 {
     flcn::OperationStatus flag;
-    using T                            = ParamType::value_type;
+    using T                            = ParamType::ValueType;
     const flcn::Mat4x3 inverseScaledMat = flcn::Mat4x3<T>::tryDiv(GetParam(), 2.5, flag);
     EXPECT_MAT_ZERO(inverseScaledMat);
 
@@ -386,7 +386,7 @@ TEST_P(Mat4x3DivisionNaNTests, StaticWrapper_TryDiv_ReturnsIdentityMatrixByDefau
 TEST_P(Mat4x3DivisionNaNTests, StaticWrapper_TryDiv_NaNOperandTakesPrecedenceOverZeroDivisionAndSetsCorrectFlag)
 {
     flcn::OperationStatus flag;
-    using T                                             = ParamType::value_type;
+    using T                                             = ParamType::ValueType;
     [[maybe_unused]] const flcn::Mat4x3 inverseScaledMat = flcn::Mat4x3<T>::tryDiv(GetParam(), T(0), flag);
     EXPECT_EQ(flcn::OperationStatus::NANOPERAND, flag);
 }
@@ -399,9 +399,9 @@ TEST_P(Mat4x3DivisionNaNTests, StaticWrapper_TryDiv_NaNOperandTakesPrecedenceOve
 TEST_P(Mat4x3DivisionNaNTests, StaticWrapper_TryDiv_ReturnsPassedInFallbackMatrixAndSetsCorrectFlag)
 {
     flcn::OperationStatus flag;
-    using T = ParamType::value_type;
+    using T = ParamType::ValueType;
     const flcn::Mat4x3 inverseScaledMat =
-        flcn::Mat4x3<T>::tryDiv(GetParam(), 2.5, flag, flcn::Mat4x3<ParamType::value_type>::zero());
+        flcn::Mat4x3<T>::tryDiv(GetParam(), 2.5, flag, flcn::Mat4x3<ParamType::ValueType>::zero());
     EXPECT_MAT_ZERO(inverseScaledMat);
     EXPECT_EQ(flcn::OperationStatus::NANOPERAND, flag);
 }

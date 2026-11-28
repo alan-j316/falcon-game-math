@@ -46,7 +46,7 @@ namespace flcn
     struct Quat
     {
 
-        using value_type = T; /// The numeric type of member variables.
+        using ValueType = T; /// The numeric type of member variables.
 
 
         /**

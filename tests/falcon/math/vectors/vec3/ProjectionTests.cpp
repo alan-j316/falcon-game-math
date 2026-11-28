@@ -274,7 +274,7 @@ TEST(Vec3ProjectionTests, MixedTypeProjectionPromotesType)
     const flcn::Vec3 actualProjection = vec.project(onto);
 
     // Then, the resultant vector is type promoted
-    static_assert(std::is_same_v<decltype(actualProjection)::value_type, double>);
+    static_assert(std::is_same_v<decltype(actualProjection)::ValueType, double>);
     // and is the projection
     EXPECT_VEC_EQ(expectedProjection, actualProjection);
 }
@@ -303,7 +303,7 @@ TEST(Vec3ProjectionTests, StaticWrapper_ProjectionOntoNormalizedVectorReturnsNon
 TYPED_TEST(Vec3ProjectionTests, Project_AlwaysReturnFloatingPointVector)
 {
     [[maybe_unused]] const flcn::Vec3 projection = this->_vec.project(this->_ontoVec);
-    static_assert(std::is_floating_point_v<typename decltype(projection)::value_type>);
+    static_assert(std::is_floating_point_v<typename decltype(projection)::ValueType>);
 }
 
 
@@ -314,7 +314,7 @@ TYPED_TEST(Vec3ProjectionTests, Project_AlwaysReturnFloatingPointVector)
 TYPED_TEST(Vec3ProjectionTests, StaticWrapper_Project_AlwaysReturnFloatingPointVector)
 {
     [[maybe_unused]] const flcn::Vec3 projection = flcn::Vec3<TypeParam>::project(this->_vec, this->_ontoVec);
-    static_assert(std::is_floating_point_v<typename decltype(projection)::value_type>);
+    static_assert(std::is_floating_point_v<typename decltype(projection)::ValueType>);
 }
 
 
@@ -424,7 +424,7 @@ TEST(Vec3ProjectionTests, SafeProject_MixedTypeProjectionPromotesType)
     const flcn::Vec3 actualProjection = vec.safeProject(onto);
 
     // Then, the resultant vector is type promoted
-    static_assert(std::is_same_v<decltype(actualProjection)::value_type, double>);
+    static_assert(std::is_same_v<decltype(actualProjection)::ValueType, double>);
     // and is the projection
     EXPECT_VEC_EQ(expectedProjection, actualProjection);
 }
@@ -544,7 +544,7 @@ TEST(Vec3ProjectionTests, StaticWrapper_SafeProject_MixedTypeProjectionPromotesT
     const flcn::Vec3 actualProjection = flcn::Vec3<int>::safeProject(vec, onto);
 
     // Then, the resultant vector is type promoted
-    static_assert(std::is_same_v<decltype(actualProjection)::value_type, double>);
+    static_assert(std::is_same_v<decltype(actualProjection)::ValueType, double>);
     // and is the projection
     EXPECT_VEC_EQ(expectedProjection, actualProjection);
 }
@@ -568,7 +568,7 @@ TYPED_TEST(Vec3ProjectionTests, StaticWrapper_SafeProject_OntoZeroVectorReturnsZ
 TYPED_TEST(Vec3ProjectionTests, SafeProject_AlwaysReturnFloatingPointVector)
 {
     [[maybe_unused]] const flcn::Vec3 projection = this->_vec.safeProject(this->_ontoVec);
-    static_assert(std::is_floating_point_v<typename decltype(projection)::value_type>);
+    static_assert(std::is_floating_point_v<typename decltype(projection)::ValueType>);
 }
 
 
@@ -579,7 +579,7 @@ TYPED_TEST(Vec3ProjectionTests, SafeProject_AlwaysReturnFloatingPointVector)
 TYPED_TEST(Vec3ProjectionTests, StaticWrapper_SafeProject_AlwaysReturnFloatingPointVector)
 {
     [[maybe_unused]] const flcn::Vec3 projection = flcn::Vec3<TypeParam>::safeProject(this->_vec, this->_ontoVec);
-    static_assert(std::is_floating_point_v<typename decltype(projection)::value_type>);
+    static_assert(std::is_floating_point_v<typename decltype(projection)::ValueType>);
 }
 
 
@@ -754,7 +754,7 @@ TEST(Vec3ProjectionTests, TryProject_MixedTypeProjectionPromotesType)
     const flcn::Vec3 actualProjection = vec.tryProject(onto, flag);
 
     // Then, the resultant vector is type promoted
-    static_assert(std::is_same_v<decltype(actualProjection)::value_type, double>);
+    static_assert(std::is_same_v<decltype(actualProjection)::ValueType, double>);
     // and is the projection
     EXPECT_VEC_EQ(expectedProjection, actualProjection);
     // And sets the flag to SUCCESS
@@ -901,7 +901,7 @@ TEST(Vec3ProjectionTests, StaticWrapper_TryProject_MixedTypeProjectionPromotesTy
     const flcn::Vec3 actualProjection = flcn::Vec3<int>::tryProject(vec, onto, flag);
 
     // Then, the resultant vector is type promoted
-    static_assert(std::is_same_v<decltype(actualProjection)::value_type, double>);
+    static_assert(std::is_same_v<decltype(actualProjection)::ValueType, double>);
     // and is the projection
     EXPECT_VEC_EQ(expectedProjection, actualProjection);
     // And sets the flag to SUCCESS
@@ -930,7 +930,7 @@ TYPED_TEST(Vec3ProjectionTests, TryProject_AlwaysReturnFloatingPointVectorAndSet
 {
     [[maybe_unused]] flcn::OperationStatus flag;
     [[maybe_unused]] const flcn::Vec3 projection = this->_vec.tryProject(this->_ontoVec, flag);
-    static_assert(std::is_floating_point_v<typename decltype(projection)::value_type>);
+    static_assert(std::is_floating_point_v<typename decltype(projection)::ValueType>);
 }
 
 
@@ -942,7 +942,7 @@ TYPED_TEST(Vec3ProjectionTests, StaticWrapper_TryProject_AlwaysReturnFloatingPoi
 {
     [[maybe_unused]] flcn::OperationStatus flag;
     [[maybe_unused]] const flcn::Vec3 projection = flcn::Vec3<TypeParam>::tryProject(this->_vec, this->_ontoVec, flag);
-    static_assert(std::is_floating_point_v<typename decltype(projection)::value_type>);
+    static_assert(std::is_floating_point_v<typename decltype(projection)::ValueType>);
 }
 
 

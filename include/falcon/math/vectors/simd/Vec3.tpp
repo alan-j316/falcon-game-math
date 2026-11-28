@@ -988,15 +988,136 @@ namespace flcn::simd
 
 
     template <Arithmetic T>
-    FALCON_INLINE constexpr Vec3<T> Vec3<T>::project(const Vec3& vec, const Vec3& onto) noexcept
+    FALCON_INLINE constexpr Vec3<T> Vec3<T>::safeProject(const Vec3& onto) const noexcept
         requires FPArithmetic<T>
-    { return vec.project(onto); }
+    {
+        /** @note Static cast ensures integral type dots don't lose much precision */
+        const auto ontoSquared = onto.dot(onto);
+        if (hasNaN() || flcn::isNaN(ontoSquared))
+        {
+            return Vec3<T>::zero();
+        }
+        if (ontoSquared <= Config::EPSILON_SQUARE<T>)
+        {
+            return Vec3<T>::zero();
+        }
+
+        return this->dot(onto) / ontoSquared * onto; // a.dot(b) / b.dot(b) * b
+    }
 
 
     template <Arithmetic T>
-    FALCON_INLINE constexpr Vec3<T> Vec3<T>::projectNorm(const Vec3& vec, const Vec3& onto) noexcept
+    FALCON_INLINE constexpr Vec3<T> Vec3<T>::safeProjectNorm(const Vec3& onto) const noexcept
         requires FPArithmetic<T>
-    { return vec.projectNorm(onto); }
+    {
+
+        if (hasNaN() || onto.hasNaN())
+        {
+            return Vec3<T>::zero();
+        }
+        return this->dot(onto) * onto;
+    }
+
+
+    template <Arithmetic T>
+    FALCON_INLINE constexpr Vec3<T> Vec3<T>::tryProject(const Vec3& onto, OperationStatus& status) const noexcept
+        requires FPArithmetic<T>
+    {
+        /** @note Static cast ensures integral type dots don't lose much precision */
+        const auto ontoSquared = onto.dot(onto);
+
+        if (hasNaN() || flcn::isNaN(ontoSquared))
+        {
+            status = OperationStatus::NANOPERAND;
+            return Vec3<T>::zero();
+        }
+
+        if (ontoSquared <= Config::EPSILON_SQUARE<T>)
+        {
+            status = OperationStatus::DIVISIONBYZERO;
+            return Vec3<T>::zero();
+        }
+
+        status = OperationStatus::SUCCESS;
+        return this->dot(onto) / ontoSquared * onto; // a.dot(b) / b.dot(b) * b
+    }
+
+
+    template <Arithmetic T>
+    FALCON_INLINE constexpr Vec3<T> Vec3<T>::tryProjectNorm(const Vec3& onto, OperationStatus& status) const noexcept
+        requires FPArithmetic<T>
+    {
+        if (hasNaN() || onto.hasNaN())
+        {
+            status = OperationStatus::NANOPERAND;
+            return Vec3<T>::zero();
+        }
+        status = OperationStatus::SUCCESS;
+        return this->dot(onto) * onto;
+    }
+
+
+    template <Arithmetic T>
+    FALCON_INLINE constexpr Vec3<T> Vec3<T>::reject(const Vec3& from) const noexcept
+        requires FPArithmetic<T>
+    { return *this - this->project(from); }
+
+
+    template <Arithmetic T>
+    FALCON_INLINE constexpr Vec3<T> Vec3<T>::rejectNorm(const Vec3& from) const noexcept
+        requires FPArithmetic<T>
+    { return *this - this->projectNorm(from); }
+
+
+    template <Arithmetic T>
+    FALCON_INLINE constexpr Vec3<T> Vec3<T>::safeReject(const Vec3& from) const noexcept
+        requires FPArithmetic<T>
+    {
+        if (hasNaN() || from.hasNaN())
+        {
+            return Vec3<T>::zero();
+        }
+        return *this - safeProject(from);
+    }
+
+
+    template <Arithmetic T>
+    FALCON_INLINE constexpr Vec3<T> Vec3<T>::safeRejectNorm(const Vec3& from) const noexcept
+        requires FPArithmetic<T>
+    {
+        if (hasNaN() || from.hasNaN())
+        {
+            return Vec3<T>::zero();
+        }
+        return *this - safeProjectNorm(from);
+    }
+
+
+    template <Arithmetic T>
+    FALCON_INLINE constexpr Vec3<T> Vec3<T>::tryReject(const Vec3& from, OperationStatus& status) const noexcept
+        requires FPArithmetic<T>
+    {
+        if (hasNaN() || from.hasNaN())
+        {
+            status = OperationStatus::NANOPERAND;
+            return Vec3<T>::zero();
+        }
+        return *this - this->tryProject(from, status);
+    }
+
+
+    template <Arithmetic T>
+    FALCON_INLINE constexpr Vec3<T> Vec3<T>::tryRejectNorm(const Vec3& from, OperationStatus& status) const noexcept
+        requires FPArithmetic<T>
+    {
+        if (hasNaN() || from.hasNaN())
+        {
+            status = OperationStatus::NANOPERAND;
+            return Vec3<T>::zero();
+        }
+        return *this - this->tryProjectNorm(from, status);
+    }
+
 
 
 

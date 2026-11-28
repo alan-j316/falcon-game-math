@@ -339,6 +339,44 @@ INSTANTIATE_TEST_SUITE_P(SimdVec2RejectionNaNVectors, SimdVec2RejectionNaNTests,
 
 // ------------------------ VEC3 (SIMD) ------------------------
 
+
+/**
+ * @brief Test fixture for @ref flcn::simd::Vec3 projection.
+ *
+ * @tparam T The scalar type (e.g., float, double) used for the vectors.
+ */
+template <typename T>
+class SimdVec3ProjectionTests: public ::testing::Test
+{
+protected:
+    flcn::simd::Vec3<T> _vec;
+    flcn::simd::Vec3<T> _perpendicularVec;
+    flcn::simd::Vec3<T> _ontoVec;
+    flcn::simd::Vec3<T> _expectedProjection;
+
+    void SetUp() override
+    {
+        _vec                = { T(4), T(9), T(0) };
+        _perpendicularVec   = { T(0), T(0), T(11) };
+        _ontoVec            = { T(0), T(2), T(0) };
+        _expectedProjection = { T(0), T(9), T(0) };
+    }
+};
+TYPED_TEST_SUITE(SimdVec3ProjectionTests, SupportedFloatingPointTypes);
+
+
+/**
+ * @brief Test fixture for @ref flcn::simd::Vec3 projection with NaN vectors.
+ */
+class SimdVec3ProjectionNaNTests: public testing::TestWithParam<flcn::simd::Vec3<float>>
+{};
+INSTANTIATE_TEST_SUITE_P(SimdVec3ProjectionNaNTests, SimdVec3ProjectionNaNTests,
+                         ::testing::Values(flcn::simd::Vec3<float>(flcn::constants::NaN, 1.0f, 1.0f),
+                                           flcn::simd::Vec3<float>(1.0f, flcn::constants::NaN, 1.0f),
+                                           flcn::simd::Vec3<float>(1.0f, 1.0f, flcn::constants::NaN),
+                                           flcn::simd::Vec3<float>(flcn::constants::NaN, flcn::constants::NaN,
+                                                                   flcn::constants::NaN)));
+
 // ------------------------ VEC4 (SIMD) ------------------------
 
 

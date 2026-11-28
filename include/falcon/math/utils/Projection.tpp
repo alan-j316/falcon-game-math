@@ -265,4 +265,69 @@ namespace flcn
     FALCON_INLINE constexpr simd::Vec2<T> tryRejectNorm(const simd::Vec2<T>& vec, const simd::Vec2<T>& from,
                                                         OperationStatus& status) noexcept
     { return vec.tryRejectNorm(from, status); }
+
+
+    template <FPArithmetic T>
+    FALCON_INLINE constexpr simd::Vec3<T> project(const simd::Vec3<T>& vec, const simd::Vec3<T>& onto) noexcept
+    { return vec.project(onto); }
+
+
+    template <FPArithmetic T>
+    FALCON_INLINE constexpr simd::Vec3<T> projectNorm(const simd::Vec3<T>& vec, const simd::Vec3<T>& onto) noexcept
+    { return vec.projectNorm(onto); }
+
+
+    template <FPArithmetic T>
+    FALCON_INLINE constexpr simd::Vec3<T> safeProject(const simd::Vec3<T>& vec, const simd::Vec3<T>& onto) noexcept
+    { return vec.safeProject(onto); }
+
+
+    template <FPArithmetic T>
+    FALCON_INLINE constexpr simd::Vec3<T> safeProjectNorm(const simd::Vec3<T>& vec, const simd::Vec3<T>& onto) noexcept
+    { return vec.safeProjectNorm(onto); }
+
+
+    template <FPArithmetic T>
+    FALCON_INLINE constexpr simd::Vec3<T> tryProject(const simd::Vec3<T>& vec, const simd::Vec3<T>& onto,
+                                                     OperationStatus& status) noexcept
+    { return vec.tryProject(onto, status); }
+
+
+    template <FPArithmetic T>
+    FALCON_INLINE constexpr simd::Vec3<T> tryProjectNorm(const simd::Vec3<T>& vec, const simd::Vec3<T>& onto,
+                                                         OperationStatus& status) noexcept
+    { return vec.tryProjectNorm(onto, status); }
+
+
+    template <FPArithmetic T>
+    FALCON_INLINE constexpr simd::Vec3<T> reject(const simd::Vec3<T>& vec, const simd::Vec3<T>& from) noexcept
+    { return vec.reject(from); }
+
+
+    template <FPArithmetic T>
+    FALCON_INLINE constexpr simd::Vec3<T> rejectNorm(const simd::Vec3<T>& vec, const simd::Vec3<T>& from) noexcept
+    { return vec.rejectNorm(from); }
+
+
+    template <FPArithmetic T>
+    FALCON_INLINE constexpr simd::Vec3<T> safeReject(const simd::Vec3<T>& vec, const simd::Vec3<T>& from) noexcept
+    { return vec.safeReject(from); }
+
+
+    template <FPArithmetic T>
+    FALCON_INLINE constexpr simd::Vec3<T> safeRejectNorm(const simd::Vec3<T>& vec, const simd::Vec3<T>& from) noexcept
+    { return vec.safeRejectNorm(from); }
+
+
+    template <FPArithmetic T>
+    FALCON_INLINE constexpr simd::Vec3<T> tryReject(const simd::Vec3<T>& vec, const simd::Vec3<T>& from,
+                                                    OperationStatus& status) noexcept
+    { return vec.tryReject(from, status); }
+
+
+    template <FPArithmetic T>
+    FALCON_INLINE constexpr simd::Vec3<T> tryRejectNorm(const simd::Vec3<T>& vec, const simd::Vec3<T>& from,
+                                                        OperationStatus& status) noexcept
+    { return vec.tryRejectNorm(from, status); }
+
 } // namespace flcn

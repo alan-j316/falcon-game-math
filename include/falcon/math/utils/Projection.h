@@ -41,6 +41,7 @@ namespace flcn
      * @note If @p onto is normalized, use @ref projectNorm as it is a faster implementation for unit vectors.
      * @note Performs assertion for division by zero, resulting from zero-length vector, in **Debug mode**.
      *
+     * @tparam T Numeric type of the LHS vector. Must satisfy @ref StrictArithmetic.
      * @tparam U Numeric type of the RHS vector. Must satisfy @ref StrictArithmetic.
      *
      * @param[in] vec  The vector to project.
@@ -61,6 +62,7 @@ namespace flcn
      * @note Promotes the result to the wider type using @ref PromotedFloatVec2<T, U>.
      * @note Only use this method if @p onto is normalized. If not, use @ref project.
      *
+     * @tparam T Numeric type of the LHS vector. Must satisfy @ref StrictArithmetic.
      * @tparam U Numeric type of the RHS vector. Must satisfy @ref StrictArithmetic.
      *
      * @param[in] vec  The vector to project.
@@ -84,6 +86,7 @@ namespace flcn
      * @note Promotes the result to the wider type using @ref PromotedFloatVec2<T, U>.
      * @note If @p onto is normalized, use @ref safeProjectNorm as it is a faster implementation for unit vectors.
      *
+     * @tparam T Numeric type of the LHS vector. Must satisfy @ref StrictArithmetic.
      * @tparam U Numeric type of the RHS vector. Must satisfy @ref StrictArithmetic.
      *
      * @param[in] vec  The vector to project.
@@ -106,6 +109,7 @@ namespace flcn
      * @note Promotes the result to the wider type using @ref PromotedVec2<T, U>.
      * @note Only use this method if @p onto is normalized. If not, use @ref safeProject.
      *
+     * @tparam T Numeric type of the LHS vector. Must satisfy @ref StrictArithmetic.
      * @tparam U Numeric type of the RHS vector. Must satisfy @ref StrictArithmetic.
      *
      * @param[in] vec  The vector to project.
@@ -131,6 +135,7 @@ namespace flcn
      * @note Promotes the result to the wider type using @ref PromotedFloatVec2<T, U>.
      * @note If @p onto is normalized, use @ref tryProjectNorm as it is a faster implementation for unit vectors.
      *
+     * @tparam T Numeric type of the LHS vector. Must satisfy @ref StrictArithmetic.
      * @tparam U Numeric type of the RHS vector. Must satisfy @ref StrictArithmetic.
      *
      * @param[in] vec     The vector to project.
@@ -159,6 +164,7 @@ namespace flcn
      *       corresponding floating-point representation via @ref Magnitude.
      * @note Only use this method if @p onto is normalized. If not, use @ref tryProject.
      *
+     * @tparam T Numeric type of the LHS vector. Must satisfy @ref StrictArithmetic.
      * @tparam U Numeric type of the RHS vector. Must satisfy @ref StrictArithmetic.
      *
      * @param[in] vec     The vector to project.
@@ -181,6 +187,7 @@ namespace flcn
      * @note Promotes the result to the wider type using @ref PromotedFloatVec2<T, U>.
      * @note If @p from is normalized, use @ref rejectNorm as it is a faster implementation for unit vectors.
      *
+     * @tparam T Numeric type of the LHS vector. Must satisfy @ref StrictArithmetic.
      * @tparam U Numeric type of the RHS vector. Must satisfy @ref StrictArithmetic.
      *
      * @param[in] vec  The vector to be rejected.
@@ -199,6 +206,7 @@ namespace flcn
      * @note Promotes the result to the wider type using @ref PromotedVec2<T, U>.
      * @note Only use this method if @p from is normalized. If not, use @ref reject.
      *
+     * @tparam T Numeric type of the LHS vector. Must satisfy @ref StrictArithmetic.
      * @tparam U Numeric type of the RHS vector. Must satisfy @ref StrictArithmetic.
      *
      * @param[in] vec  The vector to be rejected.
@@ -219,6 +227,7 @@ namespace flcn
      * @note Promotes the result to the wider type using @ref PromotedFloatVec2<T, U>.
      * @note If @p from is normalized, use @ref safeRejectNorm as it is a faster implementation for unit vectors.
      *
+     * @tparam T Numeric type of the LHS vector. Must satisfy @ref StrictArithmetic.
      * @tparam U Numeric type of the RHS vector. Must satisfy @ref StrictArithmetic.
      *
      * @param[in] vec  The vector to reject.
@@ -239,6 +248,7 @@ namespace flcn
      * @note Promotes the result to the wider type using @ref PromotedVec2<T, U>.
      * @note Only use this method if @p from is normalized. If not, use @ref safeReject.
      *
+     * @tparam T Numeric type of the LHS vector. Must satisfy @ref StrictArithmetic.
      * @tparam U Numeric type of the RHS vector. Must satisfy @ref StrictArithmetic.
      *
      * @param[in] vec  The vector to reject.
@@ -261,6 +271,7 @@ namespace flcn
      * @note Promotes the result to the wider type using @ref PromotedFloatVec2<T, U>.
      * @note If @p from is normalized, use @ref tryRejectNorm as it is a faster implementation for unit vectors.
      *
+     * @tparam T Numeric type of the LHS vector. Must satisfy @ref StrictArithmetic.
      * @tparam U Numeric type of the RHS vector. Must satisfy @ref StrictArithmetic.
      *
      * @param[in] vec     The vector to reject.
@@ -284,6 +295,7 @@ namespace flcn
      * @note Promotes the result to the wider type using @ref PromotedVec2<T, U>.
      * @note Only use this method if @p from is normalized. If not, use @ref tryReject.
      *
+     * @tparam T Numeric type of the LHS vector. Must satisfy @ref StrictArithmetic.
      * @tparam U Numeric type of the RHS vector. Must satisfy @ref StrictArithmetic.
      *
      * @param[in] vec     The vector to reject.
@@ -311,6 +323,7 @@ namespace flcn
      * @note If @p onto is normalized, use @ref projectNorm as it is a faster implementation for unit vectors.
      * @note Performs assertion for division by zero, resulting from zero-length vector, in **Debug mode**.
      *
+     * @tparam T Numeric type of the LHS vector. Must satisfy @ref StrictArithmetic.
      * @tparam U Numeric type of the RHS vector. Must satisfy @ref StrictArithmetic.
      *
      * @param[in] vec  The vector to project.
@@ -331,6 +344,7 @@ namespace flcn
      * @note Promotes the result to the wider type using @ref PromotedFloatVec3<T, U>.
      * @note Only use this method if @p onto is normalized. If not, use @ref project.
      *
+     * @tparam T Numeric type of the LHS vector. Must satisfy @ref StrictArithmetic.
      * @tparam U Numeric type of the RHS vector. Must satisfy @ref StrictArithmetic.
      *
      * @param[in] vec  The vector to project.
@@ -354,6 +368,7 @@ namespace flcn
      * @note Promotes the result to the wider type using @ref PromotedFloatVec3<T, U>.
      * @note If @p onto is normalized, use @ref safeProjectNorm as it is a faster implementation for unit vectors.
      *
+     * @tparam T Numeric type of the LHS vector. Must satisfy @ref StrictArithmetic.
      * @tparam U Numeric type of the RHS vector. Must satisfy @ref StrictArithmetic.
      *
      * @param[in] vec  The vector to project.
@@ -376,6 +391,7 @@ namespace flcn
      * @note Promotes the result to the wider type using @ref PromotedVec3<T, U>.
      * @note Only use this method if @p onto is normalized. If not, use @ref safeProject.
      *
+     * @tparam T Numeric type of the LHS vector. Must satisfy @ref StrictArithmetic.
      * @tparam U Numeric type of the RHS vector. Must satisfy @ref StrictArithmetic.
      *
      * @param[in] vec  The vector to project.
@@ -401,6 +417,7 @@ namespace flcn
      * @note Promotes the result to the wider type using @ref PromotedFloatVec3<T, U>.
      * @note If @p onto is normalized, use @ref tryProjectNorm as it is a faster implementation for unit vectors.
      *
+     * @tparam T Numeric type of the LHS vector. Must satisfy @ref StrictArithmetic.
      * @tparam U Numeric type of the RHS vector. Must satisfy @ref StrictArithmetic.
      *
      * @param[in] vec     The vector to project.
@@ -429,6 +446,7 @@ namespace flcn
      *       corresponding floating-point representation via @ref Magnitude.
      * @note Only use this method if @p onto is normalized. If not, use @ref tryProject.
      *
+     * @tparam T Numeric type of the LHS vector. Must satisfy @ref StrictArithmetic.
      * @tparam U Numeric type of the RHS vector. Must satisfy @ref StrictArithmetic.
      *
      * @param[in] vec     The vector to project.
@@ -451,6 +469,7 @@ namespace flcn
      * @note Promotes the result to the wider type using @ref PromotedFloatVec3<T, U>.
      * @note If @p from is normalized, use @ref rejectNorm as it is a faster implementation for unit vectors.
      *
+     * @tparam T Numeric type of the LHS vector. Must satisfy @ref StrictArithmetic.
      * @tparam U Numeric type of the RHS vector. Must satisfy @ref StrictArithmetic.
      *
      * @param[in] vec  The vector to be rejected.
@@ -469,6 +488,7 @@ namespace flcn
      * @note Promotes the result to the wider type using @ref PromotedVec3<T, U>.
      * @note Only use this method if @p from is normalized. If not, use @ref reject.
      *
+     * @tparam T Numeric type of the LHS vector. Must satisfy @ref StrictArithmetic.
      * @tparam U Numeric type of the RHS vector. Must satisfy @ref StrictArithmetic.
      *
      * @param[in] vec  The vector to be rejected.
@@ -489,6 +509,7 @@ namespace flcn
      * @note Promotes the result to the wider type using @ref PromotedFloatVec3<T, U>.
      * @note If @p from is normalized, use @ref safeRejectNorm as it is a faster implementation for unit vectors.
      *
+     * @tparam T Numeric type of the LHS vector. Must satisfy @ref StrictArithmetic.
      * @tparam U Numeric type of the RHS vector. Must satisfy @ref StrictArithmetic.
      *
      * @param[in] vec  The vector to reject.
@@ -509,6 +530,7 @@ namespace flcn
      * @note Promotes the result to the wider type using @ref PromotedVec3<T, U>.
      * @note Only use this method if @p from is normalized. If not, use @ref safeReject.
      *
+     * @tparam T Numeric type of the LHS vector. Must satisfy @ref StrictArithmetic.
      * @tparam U Numeric type of the RHS vector. Must satisfy @ref StrictArithmetic.
      *
      * @param[in] vec  The vector to reject.
@@ -531,6 +553,7 @@ namespace flcn
      * @note Promotes the result to the wider type using @ref PromotedFloatVec3<T, U>.
      * @note If @p from is normalized, use @ref tryRejectNorm as it is a faster implementation for unit vectors.
      *
+     * @tparam T Numeric type of the LHS vector. Must satisfy @ref StrictArithmetic.
      * @tparam U Numeric type of the RHS vector. Must satisfy @ref StrictArithmetic.
      *
      * @param[in] vec     The vector to reject.
@@ -554,6 +577,7 @@ namespace flcn
      * @note Promotes the result to the wider type using @ref PromotedVec3<T, U>.
      * @note Only use this method if @p from is normalized. If not, use @ref tryReject.
      *
+     * @tparam T Numeric type of the LHS vector. Must satisfy @ref StrictArithmetic.
      * @tparam U Numeric type of the RHS vector. Must satisfy @ref StrictArithmetic.
      *
      * @param[in] vec     The vector to reject.
@@ -582,6 +606,7 @@ namespace flcn
      * @note If @p onto is normalized, use @ref projectNorm as it is a faster implementation for unit vectors.
      * @note Performs assertion for division by zero, resulting from zero-length vector, in **Debug mode**.
      *
+     * @tparam T Numeric type of the LHS vector. Must satisfy @ref StrictArithmetic.
      * @tparam U Numeric type of the RHS vector. Must satisfy @ref StrictArithmetic.
      *
      * @param[in] vec  The vector to project.
@@ -602,6 +627,7 @@ namespace flcn
      * @note Promotes the result to the wider type using @ref PromotedFloatVec4<T, U>.
      * @note Only use this method if @p onto is normalized. If not, use @ref project.
      *
+     * @tparam T Numeric type of the LHS vector. Must satisfy @ref StrictArithmetic.
      * @tparam U Numeric type of the RHS vector. Must satisfy @ref StrictArithmetic.
      *
      * @param[in] vec  The vector to project.
@@ -625,6 +651,7 @@ namespace flcn
      * @note Promotes the result to the wider type using @ref PromotedFloatVec4<T, U>.
      * @note If @p onto is normalized, use @ref safeProjectNorm as it is a faster implementation for unit vectors.
      *
+     * @tparam T Numeric type of the LHS vector. Must satisfy @ref StrictArithmetic.
      * @tparam U Numeric type of the RHS vector. Must satisfy @ref StrictArithmetic.
      *
      * @param[in] vec  The vector to project.
@@ -647,6 +674,7 @@ namespace flcn
      * @note Promotes the result to the wider type using @ref PromotedVec4<T, U>.
      * @note Only use this method if @p onto is normalized. If not, use @ref safeProject.
      *
+     * @tparam T Numeric type of the LHS vector. Must satisfy @ref StrictArithmetic.
      * @tparam U Numeric type of the RHS vector. Must satisfy @ref StrictArithmetic.
      *
      * @param[in] vec  The vector to project.
@@ -672,6 +700,7 @@ namespace flcn
      * @note Promotes the result to the wider type using @ref PromotedFloatVec4<T, U>.
      * @note If @p onto is normalized, use @ref tryProjectNorm as it is a faster implementation for unit vectors.
      *
+     * @tparam T Numeric type of the LHS vector. Must satisfy @ref StrictArithmetic.
      * @tparam U Numeric type of the RHS vector. Must satisfy @ref StrictArithmetic.
      *
      * @param[in] vec     The vector to project.
@@ -700,6 +729,7 @@ namespace flcn
      *       corresponding floating-point representation via @ref Magnitude.
      * @note Only use this method if @p onto is normalized. If not, use @ref tryProject.
      *
+     * @tparam T Numeric type of the LHS vector. Must satisfy @ref StrictArithmetic.
      * @tparam U Numeric type of the RHS vector. Must satisfy @ref StrictArithmetic.
      *
      * @param[in] vec     The vector to project.
@@ -722,6 +752,7 @@ namespace flcn
      * @note Promotes the result to the wider type using @ref PromotedFloatVec4<T, U>.
      * @note If @p from is normalized, use @ref rejectNorm as it is a faster implementation for unit vectors.
      *
+     * @tparam T Numeric type of the LHS vector. Must satisfy @ref StrictArithmetic.
      * @tparam U Numeric type of the RHS vector. Must satisfy @ref StrictArithmetic.
      *
      * @param[in] vec  The vector to be rejected.
@@ -740,6 +771,7 @@ namespace flcn
      * @note Promotes the result to the wider type using @ref PromotedVec4<T, U>.
      * @note Only use this method if @p from is normalized. If not, use @ref reject.
      *
+     * @tparam T Numeric type of the LHS vector. Must satisfy @ref StrictArithmetic.
      * @tparam U Numeric type of the RHS vector. Must satisfy @ref StrictArithmetic.
      *
      * @param[in] vec  The vector to be rejected.
@@ -760,6 +792,7 @@ namespace flcn
      * @note Promotes the result to the wider type using @ref PromotedFloatVec4<T, U>.
      * @note If @p from is normalized, use @ref safeRejectNorm as it is a faster implementation for unit vectors.
      *
+     * @tparam T Numeric type of the LHS vector. Must satisfy @ref StrictArithmetic.
      * @tparam U Numeric type of the RHS vector. Must satisfy @ref StrictArithmetic.
      *
      * @param[in] vec  The vector to reject.
@@ -780,6 +813,7 @@ namespace flcn
      * @note Promotes the result to the wider type using @ref PromotedVec4<T, U>.
      * @note Only use this method if @p from is normalized. If not, use @ref safeReject.
      *
+     * @tparam T Numeric type of the LHS vector. Must satisfy @ref StrictArithmetic.
      * @tparam U Numeric type of the RHS vector. Must satisfy @ref StrictArithmetic.
      *
      * @param[in] vec  The vector to reject.
@@ -802,6 +836,7 @@ namespace flcn
      * @note Promotes the result to the wider type using @ref PromotedFloatVec4<T, U>.
      * @note If @p from is normalized, use @ref tryRejectNorm as it is a faster implementation for unit vectors.
      *
+     * @tparam T Numeric type of the LHS vector. Must satisfy @ref StrictArithmetic.
      * @tparam U Numeric type of the RHS vector. Must satisfy @ref StrictArithmetic.
      *
      * @param[in] vec     The vector to reject.
@@ -825,6 +860,7 @@ namespace flcn
      * @note Promotes the result to the wider type using @ref PromotedVec4<T, U>.
      * @note Only use this method if @p from is normalized. If not, use @ref tryReject.
      *
+     * @tparam T Numeric type of the LHS vector. Must satisfy @ref StrictArithmetic.
      * @tparam U Numeric type of the RHS vector. Must satisfy @ref StrictArithmetic.
      *
      * @param[in] vec     The vector to reject.
@@ -854,6 +890,8 @@ namespace flcn
      *          \frac{\mathbf{a} \cdot \mathbf{b}}{\|\mathbf{b}\|^2} \mathbf{b}
      *        \f$
      *
+     * @tparam T Numeric type of the vectors. Must satisfy @ref FPArithmetic.
+     *
      * @note If @p onto is normalized, use @ref projectNorm as it is a faster implementation for unit vectors.
      * @note Performs assertion for division by zero, resulting from zero-length vector, in **Debug mode**.
      *
@@ -873,6 +911,8 @@ namespace flcn
      *        \f$
      *
      * @note Only use this method if @p onto is normalized. If not, use @ref project.
+     *
+     * @tparam T Numeric type of the vectors. Must satisfy @ref FPArithmetic.
      *
      * @param[in] vec  The vector to project.
      * @param[in] onto The vector to project onto.
@@ -894,6 +934,7 @@ namespace flcn
      *       epsilon, or if either vector contains NaN components, projection is bypassed.
      * @note If @p onto is normalized, use @ref safeProjectNorm as it is a faster implementation for unit vectors.
      *
+     * @tparam T Numeric type of the vectors. Must satisfy @ref FPArithmetic.
      *
      * @param[in] vec  The vector to project.
      * @param[in] onto The vector to project onto.
@@ -913,6 +954,8 @@ namespace flcn
      *
      * @note This is a safe operation. If either vector contains NaN components, projection is bypassed.
      * @note Only use this method if @p onto is normalized. If not, use @ref safeProject.
+     *
+     * @tparam T Numeric type of the vectors. Must satisfy @ref FPArithmetic.
      *
      * @param[in] vec  The vector to project.
      * @param[in] onto The vector to project onto.
@@ -936,6 +979,7 @@ namespace flcn
      *       epsilon, or if either vector contains NaN components, projection is bypassed.
      * @note If @p onto is normalized, use @ref tryProjectNorm as it is a faster implementation for unit vectors.
      *
+     * @tparam T Numeric type of the vectors. Must satisfy @ref FPArithmetic.
      *
      * @param[in] vec     The vector to project.
      * @param[in] onto    The vector to project onto.
@@ -960,6 +1004,8 @@ namespace flcn
      * @note This is a safe operation. If either vector contains NaN components, projection is bypassed.
      * @note Only use this method if @p onto is normalized. If not, use @ref tryProject.
      *
+     * @tparam T Numeric type of the vectors. Must satisfy @ref FPArithmetic.
+     *
      * @param[in] vec     The vector to project.
      * @param[in] onto    The vector to project onto.
      * @param[out] status The status flag to store the status of the current operation result.
@@ -979,6 +1025,8 @@ namespace flcn
      *
      * @note If @p from is normalized, use @ref rejectNorm as it is a faster implementation for unit vectors.
      *
+     * @tparam T Numeric type of the vectors. Must satisfy @ref FPArithmetic.
+     *
      * @param[in] vec  The vector to be rejected.
      * @param[in] from The vector to reject from.
      *
@@ -993,6 +1041,8 @@ namespace flcn
      *        \f$ \text{rej}_{\mathbf{b}} \mathbf{a} = \mathbf{a} - \text{proj}_{\mathbf{b}} \mathbf{a} \f$
      *
      * @note Only use this method if @p from is normalized. If not, use @ref reject.
+     *
+     * @tparam T Numeric type of the vectors. Must satisfy @ref FPArithmetic.
      *
      * @param[in] vec The vector to be rejected.
      * @param[in] from   The vector to reject from.
@@ -1011,6 +1061,8 @@ namespace flcn
      *       epsilon, or if either vector contains NaN components, rejection is bypassed.
      * @note If @p from is normalized, use @ref safeRejectNorm as it is a faster implementation for unit vectors.
      *
+     * @tparam T Numeric type of the vectors. Must satisfy @ref FPArithmetic.
+     *
      * @param[in] vec  The vector to reject.
      * @param[in] from The vector to reject from.
      *
@@ -1027,6 +1079,8 @@ namespace flcn
      *
      * @note This is a safe operation. If either vector contains NaN components, rejection is bypassed.
      * @note Only use this method if @p from is normalized. If not, use @ref safeReject.
+     *
+     * @tparam T Numeric type of the vectors. Must satisfy @ref FPArithmetic.
      *
      * @param[in] vec  The vector to reject.
      * @param[in] from The vector to reject from.
@@ -1047,6 +1101,7 @@ namespace flcn
      *       epsilon, or if either vector contains NaN components, rejection is bypassed.
      * @note If @p from is normalized, use @ref tryRejectNorm as it is a faster implementation for unit vectors.
      *
+     * @tparam T Numeric type of the vectors. Must satisfy @ref FPArithmetic.
      *
      * @param[in] vec     The vector to reject.
      * @param[in] from    The vector to reject from.
@@ -1068,6 +1123,8 @@ namespace flcn
      * @note This is a safe operation. If either vector contains NaN components, rejection is bypassed.
      * @note Only use this method if @p from is normalized. If not, use @ref tryReject.
      *
+     * @tparam T Numeric type of the vectors. Must satisfy @ref FPArithmetic.
+     *
      * @param[in] vec     The vector to reject.
      * @param[in] from    The vector to reject from.
      * @param[out] status The status flag to store the status of the current operation result.
@@ -1082,6 +1139,261 @@ namespace flcn
 
 
     // ------------------------ VEC3(SIMD) ------------------------
+
+    /**
+     * @brief Project the @p Vec vector onto the @p onto vector.
+     *        \f$
+     *          \text{proj}_{\mathbf{b}} \mathbf{a} =
+     *          \frac{\mathbf{a} \cdot \mathbf{b}}{\|\mathbf{b}\|^2} \mathbf{b}
+     *        \f$
+     *
+     * @tparam T Numeric type of the vectors. Must satisfy @ref FPArithmetic.
+     *
+     * @note If @p onto is normalized, use @ref projectNorm as it is a faster implementation for unit vectors.
+     * @note Performs assertion for division by zero, resulting from zero-length vector, in **Debug mode**.
+     *
+     * @param[in] vec  The vector to project.
+     * @param[in] onto The vector to project onto.
+     *
+     * @return The projected @ref simd::Vec3<T>.
+     */
+    template <FPArithmetic T>
+    [[nodiscard]] constexpr simd::Vec3<T> project(const simd::Vec3<T>& vec, const simd::Vec3<T>& onto) noexcept;
+
+
+    /**
+     * @brief Project the @p Vec vector onto the **unit** @p onto vector.
+     *        \f$
+     *            \text{proj}_{\mathbf{b}} \mathbf{a} = (\mathbf{a} \cdot \mathbf{b}) \mathbf{\hat{b}}
+     *        \f$
+     *
+     * @note Only use this method if @p onto is normalized. If not, use @ref project.
+     *
+     * @tparam T Numeric type of the vectors. Must satisfy @ref FPArithmetic.
+     *
+     * @param[in] vec  The vector to project.
+     * @param[in] onto The vector to project onto.
+     *
+     * @return The projected @ref simd::Vec3<T>.
+     */
+    template <FPArithmetic T>
+    [[nodiscard]] constexpr simd::Vec3<T> projectNorm(const simd::Vec3<T>& vec, const simd::Vec3<T>& onto) noexcept;
+
+
+    /**
+     * @brief Project the @p Vec vector onto the @p onto vector.
+     *        \f$
+     *          \text{proj}_{\mathbf{b}} \mathbf{a} =
+     *          \frac{\mathbf{a} \cdot \mathbf{b}}{\|\mathbf{b}\|^2} \mathbf{b}
+     *        \f$
+     *
+     * @note This is a safe operation. If the @p onto vector's magnitude falls below the internal
+     *       epsilon, or if either vector contains NaN components, projection is bypassed.
+     * @note If @p onto is normalized, use @ref safeProjectNorm as it is a faster implementation for unit vectors.
+     *
+     * @tparam T Numeric type of the vectors. Must satisfy @ref FPArithmetic.
+     *
+     * @param[in] vec  The vector to project.
+     * @param[in] onto The vector to project onto.
+     *
+     * @return The projected @ref simd::Vec3<T> or a zero-vector if projected onto a zero-length vector
+     *         or if either of the vectors has NaN(Not-a-Number) component(s).
+     */
+    template <FPArithmetic T>
+    [[nodiscard]] constexpr simd::Vec3<T> safeProject(const simd::Vec3<T>& vec, const simd::Vec3<T>& onto) noexcept;
+
+
+    /**
+     * @brief Project the @p Vec vector onto the **unit** @p onto vector.
+     *        \f$
+     *            \text{proj}_{\mathbf{b}} \mathbf{a} = (\mathbf{a} \cdot \mathbf{b}) \mathbf{\hat{b}}
+     *        \f$
+     *
+     * @note This is a safe operation. If either vector contains NaN components, projection is bypassed.
+     * @note Only use this method if @p onto is normalized. If not, use @ref safeProject.
+     *
+     * @tparam T Numeric type of the vectors. Must satisfy @ref FPArithmetic.
+     *
+     * @param[in] vec  The vector to project.
+     * @param[in] onto The vector to project onto.
+     *
+     * @return The projected @ref simd::Vec3<T> or a zero-vector if projected onto a zero-length vector
+     *         or if either of the vectors has NaN(Not-a-Number) component(s).
+     */
+    template <FPArithmetic T>
+    [[nodiscard]] constexpr simd::Vec3<T> safeProjectNorm(const simd::Vec3<T>& vec, const simd::Vec3<T>& onto) noexcept;
+
+
+    /**
+     * @brief Project the @p Vec vector onto the @p onto vector and set @p status to the
+     *        projection operation result.
+     *        \f$
+     *          \text{proj}_{\mathbf{b}} \mathbf{a} =
+     *          \frac{\mathbf{a} \cdot \mathbf{b}}{\|\mathbf{b}\|^2} \mathbf{b}
+     *        \f$
+     *
+     * @note This is a safe operation. If the @p onto vector's magnitude falls below the internal
+     *       epsilon, or if either vector contains NaN components, projection is bypassed.
+     * @note If @p onto is normalized, use @ref tryProjectNorm as it is a faster implementation for unit vectors.
+     *
+     * @tparam T Numeric type of the vectors. Must satisfy @ref FPArithmetic.
+     *
+     * @param[in] vec     The vector to project.
+     * @param[in] onto    The vector to project onto.
+     * @param[out] status The status flag to store the status of the current operation result.
+     *                    For details on status codes see @ref OperationStatus.
+     *
+     * @return The projected @ref simd::Vec3<T> or a zero-vector if projected onto a zero-length vector or if
+     *         either vector has NaN(Not-a-Number) component(s).
+     */
+    template <FPArithmetic T>
+    [[nodiscard]] constexpr simd::Vec3<T> tryProject(const simd::Vec3<T>& vec, const simd::Vec3<T>& onto,
+                                                     OperationStatus& status) noexcept;
+
+
+    /**
+     * @brief Project the @p Vec vector onto the **unit** @p onto vector and set @p status to the
+     *        projection operation result.
+     *        \f$
+     *            \text{proj}_{\mathbf{b}} \mathbf{a} = (\mathbf{a} \cdot \mathbf{b}) \mathbf{\hat{b}}
+     *        \f$
+     *
+     * @note This is a safe operation. If either vector contains NaN components, projection is bypassed.
+     * @note Only use this method if @p onto is normalized. If not, use @ref tryProject.
+     *
+     * @tparam T Numeric type of the vectors. Must satisfy @ref FPArithmetic.
+     *
+     * @param[in] vec     The vector to project.
+     * @param[in] onto    The vector to project onto.
+     * @param[out] status The status flag to store the status of the current operation result.
+     *                    For details on status codes see @ref OperationStatus.
+     *
+     * @return The projected @ref simd::Vec3<T> or a zero-vector if projected onto a zero-length vector or if
+     *         either vector has NaN(Not-a-Number) component(s).
+     */
+    template <FPArithmetic T>
+    [[nodiscard]] constexpr simd::Vec3<T> tryProjectNorm(const simd::Vec3<T>& vec, const simd::Vec3<T>& onto,
+                                                         OperationStatus& status) noexcept;
+
+
+    /**
+     * @brief Reject the @p Vec vector from the @p from vector.
+     *        \f$ \text{rej}_{\mathbf{b}} \mathbf{a} = \mathbf{a} - \text{proj}_{\mathbf{b}} \mathbf{a} \f$
+     *
+     * @note If @p from is normalized, use @ref rejectNorm as it is a faster implementation for unit vectors.
+     *
+     * @tparam T Numeric type of the vectors. Must satisfy @ref FPArithmetic.
+     *
+     * @param[in] vec  The vector to be rejected.
+     * @param[in] from The vector to reject from.
+     *
+     * @return The perpendicular @ref simd::Vec3<T> component.
+     */
+    template <FPArithmetic T>
+    [[nodiscard]] constexpr simd::Vec3<T> reject(const simd::Vec3<T>& vec, const simd::Vec3<T>& from) noexcept;
+
+
+    /**
+     * @brief Reject the @p Vec vector from the **unit** @p from vector.
+     *        \f$ \text{rej}_{\mathbf{b}} \mathbf{a} = \mathbf{a} - \text{proj}_{\mathbf{b}} \mathbf{a} \f$
+     *
+     * @note Only use this method if @p from is normalized. If not, use @ref reject.
+     *
+     * @tparam T Numeric type of the vectors. Must satisfy @ref FPArithmetic.
+     *
+     * @param[in] vec The vector to be rejected.
+     * @param[in] from   The vector to reject from.
+     *
+     * @return The perpendicular @ref simd::Vec3<T> component.
+     */
+    template <FPArithmetic T>
+    [[nodiscard]] constexpr simd::Vec3<T> rejectNorm(const simd::Vec3<T>& vec, const simd::Vec3<T>& from) noexcept;
+
+
+    /**
+     * @brief Reject the @p Vec vector from the @p from vector.
+     *        \f$ \text{rej}_{\mathbf{b}} \mathbf{a} = \mathbf{a} - \text{proj}_{\mathbf{b}} \mathbf{a} \f$
+     *
+     * @note This is a safe operation. If the @p from vector's magnitude falls below the internal
+     *       epsilon, or if either vector contains NaN components, rejection is bypassed.
+     * @note If @p from is normalized, use @ref safeRejectNorm as it is a faster implementation for unit vectors.
+     *
+     * @tparam T Numeric type of the vectors. Must satisfy @ref FPArithmetic.
+     *
+     * @param[in] vec  The vector to reject.
+     * @param[in] from The vector to reject from.
+     *
+     * @return The perpendicular @ref simd::Vec3<T> component or a zero-vector if projected onto a zero-length vector
+     *         or if either of the vectors has NaN(Not-a-Number) component(s).
+     */
+    template <FPArithmetic T>
+    [[nodiscard]] constexpr simd::Vec3<T> safeReject(const simd::Vec3<T>& vec, const simd::Vec3<T>& from) noexcept;
+
+
+    /**
+     * @brief Reject the @p Vec vector from the **unit** @p from vector.
+     *        \f$ \text{rej}_{\mathbf{b}} \mathbf{a} = \mathbf{a} - \text{proj}_{\mathbf{b}} \mathbf{a} \f$
+     *
+     * @note This is a safe operation. If either vector contains NaN components, rejection is bypassed.
+     * @note Only use this method if @p from is normalized. If not, use @ref safeReject.
+     *
+     * @tparam T Numeric type of the vectors. Must satisfy @ref FPArithmetic.
+     *
+     * @param[in] vec  The vector to reject.
+     * @param[in] from The vector to reject from.
+     *
+     * @return The perpendicular @ref simd::Vec3<T> component or a zero-vector if projected onto a zero-length vector
+     *         or if either of the vectors has NaN(Not-a-Number) component(s).
+     */
+    template <FPArithmetic T>
+    [[nodiscard]] constexpr simd::Vec3<T> safeRejectNorm(const simd::Vec3<T>& vec, const simd::Vec3<T>& from) noexcept;
+
+
+    /**
+     * @brief Reject the @p Vec vector from the @p from vector and set @p status to the result of
+     *        rejection operation.
+     *        \f$ \text{rej}_{\mathbf{b}} \mathbf{a} = \mathbf{a} - \text{proj}_{\mathbf{b}} \mathbf{a} \f$
+     *
+     * @note This is a safe operation. If the @p from vector's magnitude falls below the internal
+     *       epsilon, or if either vector contains NaN components, rejection is bypassed.
+     * @note If @p from is normalized, use @ref tryRejectNorm as it is a faster implementation for unit vectors.
+     *
+     * @tparam T Numeric type of the vectors. Must satisfy @ref FPArithmetic.
+     *
+     * @param[in] vec     The vector to reject.
+     * @param[in] from    The vector to reject from.
+     * @param[out] status The status flag to store the status of the current operation result.
+     *                    For details on status codes see @ref OperationStatus.
+     *
+     * @return The perpendicular @ref simd::Vec3<T> component or a zero-vector if projected onto a zero-length vector
+     *         or if either of the vectors has NaN(Not-a-Number) component(s).
+     */
+    template <FPArithmetic T>
+    [[nodiscard]] constexpr simd::Vec3<T> tryReject(const simd::Vec3<T>& vec, const simd::Vec3<T>& from,
+                                                    OperationStatus& status) noexcept;
+
+
+    /**
+     * @brief Reject the @p Vec vector from the **unit** @p from vector.
+     *        \f$ \text{rej}_{\mathbf{b}} \mathbf{a} = \mathbf{a} - \text{proj}_{\mathbf{b}} \mathbf{a} \f$
+     *
+     * @note This is a safe operation. If either vector contains NaN components, rejection is bypassed.
+     * @note Only use this method if @p from is normalized. If not, use @ref tryReject.
+     *
+     * @tparam T Numeric type of the vectors. Must satisfy @ref FPArithmetic.
+     *
+     * @param[in] vec     The vector to reject.
+     * @param[in] from    The vector to reject from.
+     * @param[out] status The status flag to store the status of the current operation result.
+     *                    For details on status codes see @ref OperationStatus.
+     *
+     * @return The perpendicular @ref simd::Vec3<T> component or a zero-vector if projected onto a zero-length vector
+     *         or if either of the vectors has NaN(Not-a-Number) component(s).
+     */
+    template <FPArithmetic T>
+    [[nodiscard]] constexpr simd::Vec3<T> tryRejectNorm(const simd::Vec3<T>& vec, const simd::Vec3<T>& from,
+                                                        OperationStatus& status) noexcept;
+
 
 
     // ------------------------ VEC4(SIMD) ------------------------

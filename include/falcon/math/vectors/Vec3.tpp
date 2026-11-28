@@ -951,7 +951,7 @@ namespace flcn
     template <Arithmetic T>
     FALCON_INLINE constexpr T Vec3<T>::chebyshevNorm() const noexcept
         requires StrictArithmetic<T>
-    { return std::max({ flcn::abs(_data[0]), flcn::abs(_data[1]), flcn::abs(_data[2]) }); }
+    { return flcn::max({ flcn::abs(_data[0]), flcn::abs(_data[1]), flcn::abs(_data[2]) }); }
 
 
     template <Arithmetic T>
@@ -1053,8 +1053,8 @@ namespace flcn
     FALCON_INLINE constexpr PromotedValue_t<T, U> Vec3<T>::chebyshevDist(const Vec3<U>& rhs) const noexcept
         requires StrictArithmetic<T>
     {
-        return std::max(flcn::diffAbs(_data[0], rhs[0]),
-                        std::max(flcn::diffAbs(_data[1], rhs[1]), flcn::diffAbs(_data[2], rhs[2])));
+        return flcn::max(flcn::diffAbs(_data[0], rhs[0]),
+                        flcn::max(flcn::diffAbs(_data[1], rhs[1]), flcn::diffAbs(_data[2], rhs[2])));
     }
 
 
@@ -1499,12 +1499,12 @@ namespace flcn
 
     template <Arithmetic T>
     FALCON_INLINE constexpr Vec3<T> Vec3<T>::min(const Vec3& vec) const noexcept
-    { return Vec3{ std::min(_data[0], vec[0]), std::min(_data[1], vec[1]), std::min(_data[2], vec[2]) }; }
+    { return Vec3{ flcn::min(_data[0], vec[0]), flcn::min(_data[1], vec[1]), flcn::min(_data[2], vec[2]) }; }
 
 
     template <Arithmetic T>
     FALCON_INLINE constexpr Vec3<T> Vec3<T>::max(const Vec3& vec) const noexcept
-    { return Vec3{ std::max(_data[0], vec[0]), std::max(_data[1], vec[1]), std::max(_data[2], vec[2]) }; }
+    { return Vec3{ flcn::max(_data[0], vec[0]), flcn::max(_data[1], vec[1]), flcn::max(_data[2], vec[2]) }; }
 
 
     template <Arithmetic T>

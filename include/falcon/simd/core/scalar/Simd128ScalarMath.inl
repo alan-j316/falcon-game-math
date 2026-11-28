@@ -19,7 +19,7 @@ namespace flcn
         details::Reg128Scalar<DataType, Lane> retReg{};
         for (size_t i = 0; i < Lane; ++i)
         {
-            retReg.setAt(i, std::min((*a)[i], (*b)[i]));
+            retReg.setAt(i, flcn::min((*a)[i], (*b)[i]));
         }
         return retReg;
     }
@@ -32,7 +32,7 @@ namespace flcn
         details::Reg128Scalar<DataType, Lane> retReg{};
         for (size_t i = 0; i < Lane; ++i)
         {
-            retReg.setAt(i, std::max((*a)[i], (*b)[i]));
+            retReg.setAt(i, flcn::max((*a)[i], (*b)[i]));
         }
         return retReg;
     }

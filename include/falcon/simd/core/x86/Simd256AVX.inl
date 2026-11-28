@@ -2882,13 +2882,12 @@ namespace flcn::details
         if constexpr (_FALCON_SIMD256_SUPPORT_NATIVE_INTRINSIC(DataType))
         {
             constexpr auto halfLane = Lane / 2;
-            // TODO: Replace std::min with flcn::min
             if constexpr (types::IsFP64<DataType>)
             {
                 auto loLane = _mm256_castpd256_pd128(_reg);
                 auto hiLane = _mm256_extractf128_pd(_reg, 1);
 
-                return std::min(Simd128<SimdBackend::ARCH_SSE2, DataType, halfLane>(loLane).horizontalMin(),
+                return flcn::min(Simd128<SimdBackend::ARCH_SSE2, DataType, halfLane>(loLane).horizontalMin(),
                                 Simd128<SimdBackend::ARCH_SSE2, DataType, halfLane>(hiLane).horizontalMin());
             }
             else if constexpr (types::IsFP32<DataType>)
@@ -2896,7 +2895,7 @@ namespace flcn::details
                 auto loLane = _mm256_castps256_ps128(_reg);
                 auto hiLane = _mm256_extractf128_ps(_reg, 1);
 
-                return std::min(Simd128<SimdBackend::ARCH_SSE2, DataType, halfLane>(loLane).horizontalMin(),
+                return flcn::min(Simd128<SimdBackend::ARCH_SSE2, DataType, halfLane>(loLane).horizontalMin(),
                                 Simd128<SimdBackend::ARCH_SSE2, DataType, halfLane>(hiLane).horizontalMin());
             }
             else if constexpr (std::is_integral_v<DataType>)
@@ -2904,7 +2903,7 @@ namespace flcn::details
                 auto loLane = _mm256_castsi256_si128(_reg);
                 auto hiLane = _mm256_extracti128_si256(_reg, 1);
 
-                return std::min(Simd128<SimdBackend::ARCH_SSE2, DataType, halfLane>(loLane).horizontalMin(),
+                return flcn::min(Simd128<SimdBackend::ARCH_SSE2, DataType, halfLane>(loLane).horizontalMin(),
                                 Simd128<SimdBackend::ARCH_SSE2, DataType, halfLane>(hiLane).horizontalMin());
             }
             else
@@ -2927,13 +2926,12 @@ namespace flcn::details
         if constexpr (_FALCON_SIMD256_SUPPORT_NATIVE_INTRINSIC(DataType))
         {
             constexpr auto halfLane = Lane / 2;
-            // TODO: Replace std::min with flcn::max
             if constexpr (types::IsFP64<DataType>)
             {
                 auto loLane = _mm256_castpd256_pd128(_reg);
                 auto hiLane = _mm256_extractf128_pd(_reg, 1);
 
-                return std::max(Simd128<SimdBackend::ARCH_SSE2, DataType, halfLane>(loLane).horizontalMax(),
+                return flcn::max(Simd128<SimdBackend::ARCH_SSE2, DataType, halfLane>(loLane).horizontalMax(),
                                 Simd128<SimdBackend::ARCH_SSE2, DataType, halfLane>(hiLane).horizontalMax());
             }
             else if constexpr (types::IsFP32<DataType>)
@@ -2941,7 +2939,7 @@ namespace flcn::details
                 auto loLane = _mm256_castps256_ps128(_reg);
                 auto hiLane = _mm256_extractf128_ps(_reg, 1);
 
-                return std::max(Simd128<SimdBackend::ARCH_SSE2, DataType, halfLane>(loLane).horizontalMax(),
+                return flcn::max(Simd128<SimdBackend::ARCH_SSE2, DataType, halfLane>(loLane).horizontalMax(),
                                 Simd128<SimdBackend::ARCH_SSE2, DataType, halfLane>(hiLane).horizontalMax());
             }
             else if constexpr (std::is_integral_v<DataType>)
@@ -2949,7 +2947,7 @@ namespace flcn::details
                 auto loLane = _mm256_castsi256_si128(_reg);
                 auto hiLane = _mm256_extracti128_si256(_reg, 1);
 
-                return std::max(Simd128<SimdBackend::ARCH_SSE2, DataType, halfLane>(loLane).horizontalMax(),
+                return flcn::max(Simd128<SimdBackend::ARCH_SSE2, DataType, halfLane>(loLane).horizontalMax(),
                                 Simd128<SimdBackend::ARCH_SSE2, DataType, halfLane>(hiLane).horizontalMax());
             }
             else

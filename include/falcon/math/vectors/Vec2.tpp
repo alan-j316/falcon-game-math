@@ -932,7 +932,7 @@ namespace flcn
     template <Arithmetic T>
     FALCON_INLINE constexpr T Vec2<T>::chebyshevNorm() const noexcept
         requires StrictArithmetic<T>
-    { return std::max(flcn::abs(_data[0]), flcn::abs(_data[1])); }
+    { return flcn::max(flcn::abs(_data[0]), flcn::abs(_data[1])); }
 
 
     template <Arithmetic T>
@@ -1030,7 +1030,7 @@ namespace flcn
         requires StrictSignedness<T, U>
     FALCON_INLINE constexpr PromotedValue_t<T, U> Vec2<T>::chebyshevDist(const Vec2<U>& rhs) const noexcept
         requires StrictArithmetic<T>
-    { return std::max(flcn::diffAbs(_data[0], rhs[0]), flcn::diffAbs(_data[1], rhs[1])); }
+    { return flcn::max(flcn::diffAbs(_data[0], rhs[0]), flcn::diffAbs(_data[1], rhs[1])); }
 
 
     template <Arithmetic T>
@@ -1475,12 +1475,12 @@ namespace flcn
 
     template <Arithmetic T>
     FALCON_INLINE constexpr Vec2<T> Vec2<T>::min(const Vec2& vec) const noexcept
-    { return Vec2{ std::min(_data[0], vec[0]), std::min(_data[1], vec[1]) }; }
+    { return Vec2{ flcn::min(_data[0], vec[0]), flcn::min(_data[1], vec[1]) }; }
 
 
     template <Arithmetic T>
     FALCON_INLINE constexpr Vec2<T> Vec2<T>::max(const Vec2& vec) const noexcept
-    { return Vec2{ std::max(_data[0], vec[0]), std::max(_data[1], vec[1]) }; }
+    { return Vec2{ flcn::max(_data[0], vec[0]), flcn::max(_data[1], vec[1]) }; }
 
 
     template <Arithmetic T>

@@ -15,6 +15,7 @@
 #include <algorithm>
 #include <bit>
 #include <cstddef>
+#include <falcon/core/Math.h>
 #include <type_traits>
 
 namespace flcn::simd
@@ -46,7 +47,7 @@ namespace flcn::simd
         }
 
         const size_t packedSize           = std::bit_ceil(totalByteSize);
-        const size_t optimalRegisterWidth = std::min(packedSize, maxAlignAs);
+        const size_t optimalRegisterWidth = flcn::min(packedSize, maxAlignAs);
         const size_t numRegisters         = packedSize / optimalRegisterWidth;
 
         return PackingParams{ packedSize, packedSize - totalByteSize, optimalRegisterWidth, numRegisters };

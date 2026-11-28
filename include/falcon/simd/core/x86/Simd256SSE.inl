@@ -641,12 +641,12 @@ namespace flcn::details
 
     template <typename DataType, size_t Lane>
     FALCON_INLINE constexpr DataType Simd256<SimdBackend::ARCH_SSE2, DataType, Lane>::horizontalMin() const noexcept
-    { return std::min(_lower.horizontalMin(), _upper.horizontalMin()); }
+    { return flcn::min(_lower.horizontalMin(), _upper.horizontalMin()); }
 
 
     template <typename DataType, size_t Lane>
     FALCON_INLINE constexpr DataType Simd256<SimdBackend::ARCH_SSE2, DataType, Lane>::horizontalMax() const noexcept
-    { return std::max(_lower.horizontalMax(), _upper.horizontalMax()); }
+    { return flcn::max(_lower.horizontalMax(), _upper.horizontalMax()); }
 
 
     template <typename DataType, size_t Lane>

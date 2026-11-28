@@ -523,7 +523,7 @@ namespace flcn::details
         DataType min{ _reg[0] };
         for (size_t i = 1; i < Lane; ++i)
         {
-            min = std::min(min, _reg[i]);
+            min = flcn::min(min, _reg[i]);
         }
         return min;
     }
@@ -536,7 +536,7 @@ namespace flcn::details
         DataType max{ _reg[0] };
         for (size_t i = 1; i < Lane; ++i)
         {
-            max = std::max(max, _reg[i]);
+            max = flcn::max(max, _reg[i]);
         }
         return max;
     }
@@ -572,7 +572,7 @@ namespace flcn::details
         {
             // TODO: Update to flcn::sqrt
             // NOTE: sqrt of negative numbers are undefined and returns a zero.
-            retReg._reg[i] = static_cast<DataType>(std::sqrt(std::max(_reg[i], DataType(0))));
+            retReg._reg[i] = static_cast<DataType>(std::sqrt(flcn::max(_reg[i], DataType(0))));
         }
         return retReg;
     }

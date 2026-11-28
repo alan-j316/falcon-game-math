@@ -69,24 +69,10 @@ TYPED_TEST(Vec2ProjectionTests, StaticWrapper_ProjectionOntoZeroVectorTriggersAs
 }
 
 
-TYPED_TEST(Vec2RejectionTests, StaticWrapper_FromZeroVectorTriggersAssertionInCallback)
-{
-    const flcn::Vec2<TypeParam> zeroVec(0, 0);
-    EXPECT_DEBUG_DEATH(static_cast<void>(flcn::reject(this->_vec, zeroVec)), "");
-}
-
-
 TYPED_TEST(Vec3ProjectionTests, StaticWrapper_ProjectionOntoZeroVectorTriggersAssertionInCallback)
 {
     const flcn::Vec3<TypeParam> zeroVec(0, 0, 0);
     EXPECT_DEBUG_DEATH(static_cast<void>(flcn::project(this->_vec, zeroVec)), "");
-}
-
-
-TYPED_TEST(Vec3RejectionTests, StaticWrapper_FromZeroVectorTriggersAssertionInCallback)
-{
-    const flcn::Vec3<TypeParam> zeroVec(0, 0, 0);
-    EXPECT_DEBUG_DEATH(static_cast<void>(flcn::reject(this->_vec, zeroVec)), "");
 }
 
 
@@ -97,17 +83,36 @@ TYPED_TEST(Vec4ProjectionTests, StaticWrapper_ProjectionOntoZeroVectorTriggersAs
 }
 
 
-TYPED_TEST(Vec4RejectionTests, StaticWrapper_FromZeroVectorTriggersAssertionInCallback)
-{
-    const flcn::Vec4<TypeParam> zeroVec(0, 0, 0, 0);
-    EXPECT_DEBUG_DEATH(static_cast<void>(flcn::reject(this->_vec, zeroVec)), "");
-}
-
-
 TYPED_TEST(SimdVec2ProjectionTests, StaticWrapper_ProjectionOntoZeroVectorTriggersAssertionInCallback)
 {
     const flcn::simd::Vec2<TypeParam> zeroVec(0, 0);
     EXPECT_DEBUG_DEATH(static_cast<void>(flcn::project(this->_vec, zeroVec)), "");
+}
+
+
+
+/// +---------------------------------------------------------------------------------------+
+/// |                                REJECTION TESTS                                        |
+/// +---------------------------------------------------------------------------------------+
+
+TYPED_TEST(Vec2RejectionTests, StaticWrapper_FromZeroVectorTriggersAssertionInCallback)
+{
+    const flcn::Vec2<TypeParam> zeroVec(0, 0);
+    EXPECT_DEBUG_DEATH(static_cast<void>(flcn::reject(this->_vec, zeroVec)), "");
+}
+
+
+TYPED_TEST(Vec3RejectionTests, StaticWrapper_FromZeroVectorTriggersAssertionInCallback)
+{
+    const flcn::Vec3<TypeParam> zeroVec(0, 0, 0);
+    EXPECT_DEBUG_DEATH(static_cast<void>(flcn::reject(this->_vec, zeroVec)), "");
+}
+
+
+TYPED_TEST(Vec4RejectionTests, StaticWrapper_FromZeroVectorTriggersAssertionInCallback)
+{
+    const flcn::Vec4<TypeParam> zeroVec(0, 0, 0, 0);
+    EXPECT_DEBUG_DEATH(static_cast<void>(flcn::reject(this->_vec, zeroVec)), "");
 }
 
 
@@ -118,8 +123,17 @@ TYPED_TEST(SimdVec2RejectionTests, StaticWrapper_FromZeroVectorTriggersAssertion
 }
 
 
-/// +---------------------------------------------------------------------------------------+
-/// |                                REJECTION TESTS                                        |
-/// +---------------------------------------------------------------------------------------+
+TYPED_TEST(SimdVec3ProjectionTests, StaticWrapper_ProjectionOntoZeroVectorTriggersAssertionInCallback)
+{
+    const flcn::simd::Vec3<TypeParam> zeroVec(0, 0, 0);
+    EXPECT_DEBUG_DEATH(static_cast<void>(flcn::project(this->_vec, zeroVec)), "");
+}
+
+
+TYPED_TEST(SimdVec3RejectionTests, StaticWrapper_FromZeroVectorTriggersAssertionInCallback)
+{
+    const flcn::simd::Vec3<TypeParam> zeroVec(0, 0, 0);
+    EXPECT_DEBUG_DEATH(static_cast<void>(flcn::reject(this->_vec, zeroVec)), "");
+}
 
 #endif

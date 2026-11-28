@@ -9,7 +9,7 @@
  */
 
 
-#include "include/QuaternionTestSetup.h"
+#include "QuatTestSetup.h"
 
 /**
  * @addtogroup T_Falcon_Quaternion_Init

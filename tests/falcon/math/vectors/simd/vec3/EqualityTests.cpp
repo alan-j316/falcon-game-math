@@ -12,7 +12,7 @@
 
 #include "Vec3TestSetup.h"
 
-#include <../../../../../../include/falcon/core/Constants.h>
+#include <falcon/core/Constants.h>
 
 /**
  * @addtogroup T_Falcon_Vec3_Equality

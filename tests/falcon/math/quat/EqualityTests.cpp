@@ -10,9 +10,9 @@
  */
 
 
-#include "include/QuaternionTestSetup.h"
+#include "QuatTestSetup.h"
 
-#include <../../../../include/falcon/core/Constants.h>
+#include <falcon/core/Constants.h>
 
 
 /**

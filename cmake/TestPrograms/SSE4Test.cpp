@@ -8,8 +8,8 @@
  * @copyright Copyright (c) 2026 Alan Abraham P Kochumon
  */
 
-#include "../../../../../../../Program Files/Microsoft Visual Studio/18/Community/VC/Tools/MSVC/14.51.36231/include/emmintrin.h"
 
+#include <emmintrin.h>
 #include <immintrin.h>
 #include <smmintrin.h>
 

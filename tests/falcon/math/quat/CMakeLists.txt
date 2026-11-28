@@ -11,7 +11,7 @@ add_executable(FalconMathQuaternionsTests
         VectorAlgebraTests.cpp
 
         # Headers
-        include/QuaternionTestSetup.h
+        QuatTestSetup.h
 )
 set_target_properties(FalconMathQuaternionsTests PROPERTIES CXX_STANDARD 20)
 set_target_properties(FalconMathQuaternionsTests PROPERTIES CXX_STANDARD_REQUIRED ON)
@@ -52,7 +52,7 @@ add_executable(FalconMathQuaternionsDeathTests
         death-tests/QuaternionAlgebraTests.cpp
 
         # Headers
-        include/QuaternionTestSetup.h
+        QuatTestSetup.h
 )
 set_target_properties(FalconMathQuaternionsDeathTests PROPERTIES CXX_STANDARD 20)
 set_target_properties(FalconMathQuaternionsDeathTests PROPERTIES CXX_STANDARD_REQUIRED ON)

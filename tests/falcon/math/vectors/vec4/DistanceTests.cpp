@@ -10,7 +10,7 @@
 
 
 
-#include "../../../CommonSetup.h"
+#include "CommonSetup.h"
 #include "Vec4TestSetup.h"
 
 #include <numbers>

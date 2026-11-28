@@ -10,7 +10,7 @@
  */
 
 
-#include "include/QuaternionTestSetup.h"
+#include "QuatTestSetup.h"
 
 
 

@@ -12,7 +12,7 @@
 
 #include "Vec2TestSetup.h"
 
-#include <../../../../../../include/falcon/core/Constants.h>
+#include <falcon/core/Constants.h>
 
 
 

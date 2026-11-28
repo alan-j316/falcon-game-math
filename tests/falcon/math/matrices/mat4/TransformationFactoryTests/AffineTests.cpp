@@ -9,10 +9,8 @@
  */
 
 
-
 #include "../../mat3/Mat3TestSetup.h"
 #include "../Mat4TestSetup.h"
-
 
 
 /**

@@ -9,7 +9,7 @@
  */
 
 
-#include "../include/QuaternionTestSetup.h"
+#include "QuatTestSetup.h"
 
 
 #ifdef ENABLE_DEBUG_TESTS

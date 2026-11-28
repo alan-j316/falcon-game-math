@@ -9,7 +9,7 @@
  * @copyright Copyright (c) 2026 Alan Abraham P Kochumon
  */
 
-#include "../../../CommonSetup.h"
+#include "CommonSetup.h"
 
 #include <cmath>
 #include <falcon/math/Quat.h>

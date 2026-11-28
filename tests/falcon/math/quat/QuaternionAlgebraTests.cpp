@@ -9,7 +9,7 @@
  */
 
 
-#include "include/QuaternionTestSetup.h"
+#include "QuatTestSetup.h"
 #include "utils/VectorUtils.h"
 
 

@@ -9,7 +9,6 @@
  */
 
 
-#include "Vec3TestSetup.h"
 
 
 /**
@@ -17,118 +16,8 @@
  * @{
  */
 
-namespace
-{
-    /**************************************
-     *           TEST SETUP               *
-     **************************************/
-
-    /**
-     * @brief Test fixture for @ref flcn::simd::Vec3 rejection.
-     *
-     * @tparam T The scalar type (e.g., float, double) used for the vectors.
-     */
-template <typename T>
-class SimdVec3RejectionTests: public testing::Test
-{
-protected:
-    flcn::simd::Vec3<T> _vec;
-    flcn::simd::Vec3<T> _parallelVec;
-    flcn::simd::Vec3<T> _fromVec;
-    flcn::simd::Vec3<T> _expectedRejection;
-
-    void SetUp() override
-    {
-        _vec               = { T(1), T(2), T(3) };
-        _parallelVec       = { T(2), T(4), T(6) };
-        _fromVec           = { T(0), T(2), T(0) };
-        _expectedRejection = { T(1), T(0), T(3) };
-    }
-};
-/** @brief Test fixture for @ref flcn::simd::Vec3 rejection, parameterized by @ref SupportedArithmeticTypes. */
-TYPED_TEST_SUITE(SimdVec3RejectionTests, SupportedArithmeticTypes);
-
-
-
-    /**
-     * @brief Test fixture for @ref flcn::simd::Vec3 rejection with NaN vectors.
-     */
-class SimdVec3RejectionNaNTests: public testing::TestWithParam<flcn::simd::Vec3<float>>
-{};
-INSTANTIATE_TEST_SUITE_P(Vec3RejectionNaNVectors, Vec3RejectionNaNTests,
-                         ::testing::Values(flcn::simd::Vec3<float>(flcn::constants::NaN, 1.0f, 1.0f),
-                                           flcn::simd::Vec3<float>(1.0f, flcn::constants::NaN, 1.0f),
-                                           flcn::simd::Vec3<float>(1.0f, 1.0f, flcn::constants::NaN),
-                                           flcn::simd::Vec3<float>(flcn::constants::NaN, flcn::constants::NaN,
-                                                            flcn::constants::NaN)));
-
-
-
-    /**************************************
-     *           STATIC TESTS             *
-     **************************************/
-
-    namespace static_tests
-    {
-    constexpr flcn::simd::Vec3 VEC_A(1, 2, 3);
-    constexpr flcn::simd::Vec3 VEC_B(1, 0, 0);
-
-
-    /// @test Verify that vector rejection(reject) returns a valid vector at compile time.
-        constexpr auto REJ_VEC = VEC_A.reject(VEC_B);
-        static_assert(REJ_VEC.x() == 0);
-        static_assert(REJ_VEC.y() == 2);
-        static_assert(REJ_VEC.z() == 3);
-
-        /// @test Verify that vector rejection(reject-static wrapper) returns a valid vector at compile time.
-        constexpr auto REJ_VEC_STATIC = flcn::simd::Vec3<int>::reject(VEC_A, VEC_B);
-        static_assert(REJ_VEC_STATIC.x() == 0);
-        static_assert(REJ_VEC_STATIC.y() == 2);
-        static_assert(REJ_VEC_STATIC.z() == 3);
-
-        /// @test Verify that vector rejection(reject normalized) returns a valid vector at compile time.
-        constexpr auto REJ_NORM_VEC = VEC_A.rejectNorm(VEC_B);
-        static_assert(REJ_NORM_VEC.x() == 0);
-        static_assert(REJ_NORM_VEC.y() == 2);
-        static_assert(REJ_NORM_VEC.z() == 3);
-
-        /// @test Verify that vector rejection(reject normalized-static wrapper) returns a valid vector at compile
-        /// time.
-        constexpr auto REJ_NORM_VEC_STATIC = flcn::simd::Vec3<int>::rejectNorm(VEC_A, VEC_B);
-        static_assert(REJ_NORM_VEC_STATIC.x() == 0);
-        static_assert(REJ_NORM_VEC_STATIC.y() == 2);
-        static_assert(REJ_NORM_VEC_STATIC.z() == 3);
-
-
-        /// @test Verify that vector rejection(safe reject) returns a valid vector at compile time.
-        constexpr auto SAFE_REJ_VEC = VEC_A.safeReject(VEC_B);
-        static_assert(SAFE_REJ_VEC.x() == 0);
-        static_assert(SAFE_REJ_VEC.y() == 2);
-        static_assert(SAFE_REJ_VEC.z() == 3);
-
-        /// @test Verify that vector rejection(safe reject-static wrapper) returns a valid vector at compile time.
-        constexpr auto SAFE_REJ_VEC_STATIC = flcn::simd::Vec3<int>::safeReject(VEC_A, VEC_B);
-        static_assert(SAFE_REJ_VEC_STATIC.x() == 0);
-        static_assert(SAFE_REJ_VEC_STATIC.y() == 2);
-        static_assert(SAFE_REJ_VEC_STATIC.z() == 3);
-
-
-        /// @test Verify that vector rejection(safe reject normalized) returns a valid vector at compile time.
-        constexpr auto SAFE_REJ_NORM_VEC = VEC_A.safeRejectNorm(VEC_B);
-        static_assert(SAFE_REJ_NORM_VEC.x() == 0);
-        static_assert(SAFE_REJ_NORM_VEC.y() == 2);
-        static_assert(SAFE_REJ_NORM_VEC.z() == 3);
-
-        /// @test Verify that vector rejection(safe reject normalized-static wrapper) returns a valid vector at
-        /// compile time.
-        constexpr auto SAFE_REJ_NORM_VEC_STATIC = flcn::simd::Vec3<int>::safeRejectNorm(VEC_A, VEC_B);
-        static_assert(SAFE_REJ_NORM_VEC_STATIC.x() == 0);
-        static_assert(SAFE_REJ_NORM_VEC_STATIC.y() == 2);
-        static_assert(SAFE_REJ_NORM_VEC_STATIC.z() == 3);
-    } // namespace static_tests
-
-} // namespace
-
+#include "ProjectionTestFixture.h"
+#include "Vec3TestSetup.h"
 
 
 /**************************************
@@ -228,18 +117,6 @@ TYPED_TEST(SimdVec3RejectionTests, NonOrthogonalRejectionReturnsNonZeroVector)
 
 
 /**
- * @test Verify that rejecting from a non-orthogonal vector using static variant of @ref flcn::simd::Vec3::reject
- *       returns a non-zero vector with perpendicular component.
- */
-TYPED_TEST(SimdVec3RejectionTests, StaticWrapper_NonOrthogonalRejectionReturnsNonZeroVector)
-{
-    const flcn::simd::Vec3 actualRejection = flcn::simd::Vec3<TypeParam>::reject(this->_vec, this->_fromVec);
-
-    EXPECT_VEC_EQ(this->_expectedRejection, actualRejection);
-}
-
-
-/**
  * @test Verify that rejecting from an orthogonal unit vector using @ref flcn::simd::Vec3::rejectNorm
  *       returns a non-zero vector with perpendicular component.
  */
@@ -277,46 +154,6 @@ TEST(SimdVec3Rejection, RejectionFromVectorInOppositeDirectionReturnsVectorWithP
 }
 
 
-/**
- * @test Verify that rejecting a vector from another vector of different numeric type using @ref flcn::simd::Vec3::reject
- *       returns a type-promoted vector.
- */
-TEST(SimdVec3Rejection, MixedTypeRejectionPromotesType)
-{
-    // Given two arbitrary vectors
-    const flcn::simd::Vec3 vec(7, 13, 29);
-    const flcn::simd::Vec3 from(2.0, 4.0, 4.0);
-    const flcn::simd::Vec3 expectedRejection(-3.11111111111111, -7.22222222222222, 8.77777777777777);
-
-    // When reject from another
-    const flcn::simd::Vec3 actualRejection = vec.reject(from);
-
-    // Then, the resultant vector is type promoted
-    static_assert(std::is_same_v<decltype(actualRejection)::ValueType, double>);
-    // and is the rejection
-    EXPECT_VEC_EQ(expectedRejection, actualRejection);
-}
-
-
-/**
- * @test Verify that rejecting from an orthogonal unit vector using static variant of @ref flcn::simd::Vec3::rejectNorm
- *       returns a non-zero vector with perpendicular component.
- */
-TEST(SimdVec3Rejection, StaticWrapper_RejectionFromNormalizedVectorReturnsNonZeroVector)
-{
-    // Given an arbitrary vector and a normalized vector
-    const flcn::simd::Vec3 a(1.0f, 2.0f, 3.0f);
-    const flcn::simd::Vec3 b(1.0f, 0.0f, 0.0f);
-    const flcn::simd::Vec3 expectedRejection(0.0f, 2.0f, 3.0f);
-
-    // When rejected from another
-    const flcn::simd::Vec3 actualRejection = flcn::simd::Vec3<float>::rejectNorm(a, b);
-
-    // Then, the resultant vector has components perpendicular to the `from` vector.
-    EXPECT_VEC_EQ(expectedRejection, actualRejection);
-}
-
-
 /** @test Verify that rejection using @ref flcn::simd::Vec3::reject always return floating-point vector. */
 TYPED_TEST(SimdVec3RejectionTests, Reject_AlwaysReturnFloatingPointVector)
 {
@@ -324,16 +161,6 @@ TYPED_TEST(SimdVec3RejectionTests, Reject_AlwaysReturnFloatingPointVector)
     static_assert(std::is_floating_point_v<typename decltype(rejection)::ValueType>);
 }
 
-
-/**
- * @test Verify that rejection using static variant of @ref flcn::simd::Vec3::reject
- *       always return floating-point vector.
- */
-TYPED_TEST(SimdVec3RejectionTests, StaticWrapper_Reject_AlwaysReturnFloatingPointVector)
-{
-    [[maybe_unused]] const flcn::simd::Vec3 rejection = flcn::simd::Vec3<TypeParam>::reject(this->_vec, this->_fromVec);
-    static_assert(std::is_floating_point_v<typename decltype(rejection)::ValueType>);
-}
 
 
 /**************************************
@@ -420,7 +247,8 @@ TEST(SimdVec3Rejection, SafeRejectNorm_NaNVectorReturnsNonZeroVector)
 
 
 /**
- * @test Verify that safely rejecting from a NaN vector using @ref flcn::simd::Vec3::safeRejectNorm returns a zero vector.
+ * @test Verify that safely rejecting from a NaN vector using @ref flcn::simd::Vec3::safeRejectNorm returns a zero
+ * vector.
  */
 TEST(SimdVec3Rejection, SafeRejectNorm_FromNaNVectorReturnsNonZeroVector)
 {
@@ -436,167 +264,14 @@ TEST(SimdVec3Rejection, SafeRejectNorm_FromNaNVectorReturnsNonZeroVector)
 }
 
 
-
-/**
- * @test Verify that safely rejecting a vector from another vector of different numeric
- *       type using @ref flcn::simd::Vec3::safeReject returns a type-promoted vector.
- */
-TEST(SimdVec3Rejection, SafeReject_MixedTypeRejectionPromotesType)
-{
-    // Given two arbitrary vectors
-    const flcn::simd::Vec3 vec(7, 13, 29);
-    const flcn::simd::Vec3 from(2.0, 4.0, 4.0);
-    const flcn::simd::Vec3 expectedRejection(-3.11111111111111, -7.22222222222222, 8.77777777777777);
-
-    // When rejected from another
-    const flcn::simd::Vec3 actualRejection = vec.safeReject(from);
-
-    // Then, the resultant vector is type promoted
-    static_assert(std::is_same_v<decltype(actualRejection)::ValueType, double>);
-    // and is the rejection
-    EXPECT_VEC_EQ(expectedRejection, actualRejection);
-}
-
-
 /**
  * @test Verify that safely rejecting from a zero vector using @ref flcn::simd::Vec3::safeReject
  *       returns the same vector.
  */
 TYPED_TEST(SimdVec3RejectionTests, SafeReject_FromZeroVectorReturnsSameVector)
 {
-    const flcn::simd::Vec3 zeroVec = flcn::simd::Vec3<TypeParam>::zero();
-
+    const flcn::simd::Vec3 zeroVec         = flcn::simd::Vec3<TypeParam>::zero();
     const flcn::simd::Vec3 actualRejection = this->_vec.safeReject(zeroVec);
-
-    EXPECT_VEC_EQ(this->_vec, actualRejection);
-}
-
-
-/**
- * @test Verify that safely rejecting from a parallel vector using static variant of @ref flcn::simd::Vec3::safeReject
- *       returns a zero vector.
- */
-TYPED_TEST(SimdVec3RejectionTests, StaticWrapper_SafeReject_ParallelVectorsReturnsZeroVector)
-{
-    const flcn::simd::Vec3 actualRejection = flcn::simd::Vec3<TypeParam>::safeReject(this->_vec, this->_parallelVec);
-
-    EXPECT_VEC_ZERO(actualRejection);
-}
-
-
-/**
- * @test Verify that safely rejecting a vector from an orthogonal vector using
- *       static variant of @ref flcn::simd::Vec3::safeReject returns the original vector.
- */
-TEST(SimdVec3Rejection, StaticWrapper_SafeReject_OrthogonalRejectionReturnsOriginalVector)
-{
-    const flcn::simd::Vec3 a(1.0f, 2.0f, 0.0f);
-    const flcn::simd::Vec3 b(0.0f, 0.0f, 1.0f);
-
-    const flcn::simd::Vec3 actualRejection = flcn::simd::Vec3<float>::safeReject(a, b);
-
-    EXPECT_VEC_EQ(a, actualRejection);
-}
-
-
-/**
- * @test Verify that safely rejecting from a non-orthogonal vector using static variant of
- *       @ref flcn::simd::Vec3::safeReject returns a non-zero vector with perpendicular component.
- */
-TYPED_TEST(SimdVec3RejectionTests, StaticWrapper_SafeReject_NonOrthogonalRejectionReturnsNonZeroVector)
-{
-    const flcn::simd::Vec3 actualRejection = flcn::simd::Vec3<TypeParam>::safeReject(this->_vec, this->_fromVec);
-
-    EXPECT_VEC_EQ(this->_expectedRejection, actualRejection);
-}
-
-
-/**
- * @test Verify that safely rejecting from an orthogonal unit vector using static variant of
- *       @ref flcn::simd::Vec3::safeRejectNorm returns a non-zero vector with perpendicular component.
- */
-TEST(SimdVec3Rejection, StaticWrapper_SafeRejectNorm_FromNormalizedVectorReturnsNonZeroVector)
-{
-    // Given an arbitrary vector and a normalized vector
-    const flcn::simd::Vec3 a(1.0f, 2.0f, 3.0f);
-    const flcn::simd::Vec3 b(1.0f, 0.0f, 0.0f);
-    const flcn::simd::Vec3 expectedRejection(0.0f, 2.0f, 3.0f);
-
-    // When rejected from another
-    const flcn::simd::Vec3 actualRejection = flcn::simd::Vec3<float>::safeRejectNorm(a, b);
-
-    // Then, the resultant vector has components perpendicular to the `from` vector.
-    EXPECT_VEC_EQ(expectedRejection, actualRejection);
-}
-
-
-/**
- * @test Verify that safely rejecting a NaN vector from a non-orthogonal unit vector using static variant of
- *       @ref flcn::simd::Vec3::safeRejectNorm returns a zero vector.
- */
-TEST(SimdVec3Rejection, StaticWrapper_SafeRejectNorm_NaNVectorReturnsNonZeroVector)
-{
-    // Given a NaN vector
-    const flcn::simd::Vec3 a(1.0f, flcn::constants::NaN, 3.0f);
-    const flcn::simd::Vec3 b(1.0f, 0.0f, 0.0f);
-
-    // When the vector is rejected onto the normalized vector
-    const flcn::simd::Vec3 actualRejection = flcn::simd::Vec3<float>::safeRejectNorm(a, b);
-
-    // Then, the resultant vector is a zero vector
-    EXPECT_VEC_ZERO(actualRejection);
-}
-
-
-/**
- * @test Verify that safely rejecting from a NaN vector using static variant of
- *       @ref flcn::simd::Vec3::safeRejectNorm returns a zero vector.
- */
-TEST(SimdVec3Rejection, StaticWrapper_SafeRejectNorm_FromNaNVectorReturnsNonZeroVector)
-{
-    // Given an arbitrary vector
-    const flcn::simd::Vec3 a(1.0f, 2.0f, 3.0f);
-    const flcn::simd::Vec3 b(1.0f, flcn::constants::NaN, 0.0f);
-
-    // When the vector is rejected from a NaN vector
-    const flcn::simd::Vec3 actualRejection = flcn::simd::Vec3<float>::safeRejectNorm(a, b);
-
-    // Then, the resultant vector is a zero vector
-    EXPECT_VEC_ZERO(actualRejection);
-}
-
-
-/**
- * @test Verify that safely rejecting a vector from another vector of different numeric type
- *       using static variant of @ref flcn::simd::Vec3::safeReject returns a type-promoted vector.
- */
-TEST(SimdVec3Rejection, StaticWrapper_SafeReject_MixedTypeRejectionPromotesType)
-{
-    // Given two arbitrary vectors
-    const flcn::simd::Vec3 vec(7, 13, 29);
-    const flcn::simd::Vec3 from(2.0, 4.0, 4.0);
-    const flcn::simd::Vec3 expectedRejection(-3.11111111111111, -7.22222222222222, 8.77777777777777);
-
-    // When rejected from another
-    const flcn::simd::Vec3 actualRejection = flcn::simd::Vec3<int>::safeReject(vec, from);
-
-    // Then, the resultant vector is type promoted
-    static_assert(std::is_same_v<decltype(actualRejection)::ValueType, double>);
-    // and is the rejection
-    EXPECT_VEC_EQ(expectedRejection, actualRejection);
-}
-
-
-/**
- * @test Verify that safely rejecting from a zero length vector using static variant of @ref flcn::simd::Vec3::safeReject
- *       returns the same vector.
- */
-TYPED_TEST(SimdVec3RejectionTests, StaticWrapper_SafeReject_FromZeroVectorReturnsSameVector)
-{
-    const flcn::simd::Vec3 zeroVec = flcn::simd::Vec3<TypeParam>::zero();
-
-    const flcn::simd::Vec3 actualRejection = flcn::simd::Vec3<TypeParam>::safeReject(this->_vec, zeroVec);
-
     EXPECT_VEC_EQ(this->_vec, actualRejection);
 }
 
@@ -605,17 +280,6 @@ TYPED_TEST(SimdVec3RejectionTests, StaticWrapper_SafeReject_FromZeroVectorReturn
 TYPED_TEST(SimdVec3RejectionTests, SafeReject_AlwaysReturnFloatingPointVector)
 {
     [[maybe_unused]] const flcn::simd::Vec3 rejection = this->_vec.safeReject(this->_fromVec);
-    static_assert(std::is_floating_point_v<typename decltype(rejection)::ValueType>);
-}
-
-
-/**
- * @test Verify that rejection using static variant of @ref flcn::simd::Vec3::safeReject
- *       always return floating-point vector.
- */
-TYPED_TEST(SimdVec3RejectionTests, StaticWrapper_SafeReject_AlwaysReturnFloatingPointVector)
-{
-    [[maybe_unused]] const flcn::simd::Vec3 rejection = flcn::simd::Vec3<TypeParam>::safeReject(this->_vec, this->_fromVec);
     static_assert(std::is_floating_point_v<typename decltype(rejection)::ValueType>);
 }
 
@@ -646,36 +310,9 @@ TEST_P(SimdVec3RejectionNaNTests, SafeReject_OntoNaNVectorReturnsZeroVectorAndSe
 }
 
 
-/**
- * @test Verify that the rejection of NaN vector using static variant of @ref flcn::simd::Vec3::safeReject
- *       returns zero vector.
- */
-TEST_P(SimdVec3RejectionNaNTests, StaticWrapper_SafeReject_NaNVectorReturnsZeroVector)
-{
-    const auto& nanVec  = GetParam();
-    const auto& ontoVec = flcn::simd::Vec3<float>::one();
-
-    EXPECT_VEC_ZERO(flcn::simd::Vec3<float>::safeReject(nanVec, ontoVec));
-}
-
-
-/**
- * @test Verify that rejecting onto a NaN vector using static variant of @ref flcn::simd::Vec3::safeReject
- *       returns zero vector.
- */
-TEST_P(SimdVec3RejectionNaNTests, StaticWrapper_SafeReject_OntoNaNVectorReturnsZeroVector)
-{
-    const auto& oneVec     = flcn::simd::Vec3<float>::one();
-    const auto& ontoNaNVec = GetParam();
-
-    EXPECT_VEC_ZERO(flcn::simd::Vec3<float>::safeReject(oneVec, ontoNaNVec));
-}
-
 
 /**************************************
- *                                    *
  *        TRY REJECTION TESTS         *
- *                                    *
  **************************************/
 
 /**
@@ -749,8 +386,8 @@ TEST(SimdVec3Rejection, TryRejectNorm_FromNormalizedVectorReturnsNonZeroVectorAn
 
 
 /**
- * @test Verify that safely rejecting NaN vector from an orthogonal unit vector using @ref flcn::simd::Vec3::tryRejectNorm
- *       returns a zero vector and sets flag to @ref flcn::OperationStatus::NANOPERAND.
+ * @test Verify that safely rejecting NaN vector from an orthogonal unit vector using @ref
+ * flcn::simd::Vec3::tryRejectNorm returns a zero vector and sets flag to @ref flcn::OperationStatus::NANOPERAND.
  */
 TEST(SimdVec3Rejection, TryRejectNorm_NaNVectorReturnsZeroVectorAndSetsCorrectStatusFlag)
 {
@@ -791,30 +428,6 @@ TEST(SimdVec3Rejection, TryRejectNorm_FromNaNVectorReturnsZeroVectorAndSetsCorre
 
 
 /**
- * @test Verify that safely rejecting a vector from another vector of different numeric
- *       type using @ref flcn::simd::Vec3::tryReject returns a type-promoted vector
- *       sets flag to @ref flcn::OperationStatus::SUCCESS.
- */
-TEST(SimdVec3Rejection, TryReject_MixedTypeRejectionPromotesType)
-{
-    // Given two arbitrary vectors
-    const flcn::simd::Vec3 vec(7, 13, 29);
-    const flcn::simd::Vec3 from(2.0, 4.0, 4.0);
-    const flcn::simd::Vec3 expectedRejection(-3.11111111111111, -7.22222222222222, 8.77777777777777);
-    flcn::OperationStatus flag;
-
-    // When rejected from another
-    const flcn::simd::Vec3 actualRejection = vec.tryReject(from, flag);
-
-    // Then, the resultant vector is type promoted
-    static_assert(std::is_same_v<decltype(actualRejection)::ValueType, double>);
-    // and is the rejection
-    EXPECT_VEC_EQ(expectedRejection, actualRejection);
-    EXPECT_EQ(flcn::OperationStatus::SUCCESS, flag);
-}
-
-
-/**
  * @test Verify that safely rejecting from a zero vector using @ref flcn::simd::Vec3::tryReject
  *       returns the same vector and sets flag to @ref flcn::OperationStatus::DIVISIONBYZERO.
  */
@@ -830,160 +443,6 @@ TYPED_TEST(SimdVec3RejectionTests, TryReject_FromZeroVectorReturnsSameVectorAndS
 }
 
 
-/**
- * @test Verify that safely rejecting from a parallel vector using static variant of @ref flcn::simd::Vec3::tryReject
- *       returns a zero vector and sets flag to @ref flcn::OperationStatus::SUCCESS.
- */
-TYPED_TEST(SimdVec3RejectionTests, StaticWrapper_TryReject_ParallelVectorsReturnsZeroVectorAndSetsCorrectStatusFlag)
-{
-    flcn::OperationStatus flag;
-
-    const flcn::simd::Vec3 actualRejection = flcn::simd::Vec3<TypeParam>::tryReject(this->_vec, this->_parallelVec, flag);
-
-    EXPECT_VEC_ZERO(actualRejection);
-    EXPECT_EQ(flcn::OperationStatus::SUCCESS, flag);
-}
-
-
-/**
- * @test Verify that safely rejecting a vector from an orthogonal vector using
- *       static variant of @ref flcn::simd::Vec3::tryReject returns the original vector
- *       and sets flag to @ref flcn::OperationStatus::SUCCESS.
- */
-TEST(SimdVec3Rejection, StaticWrapper_TryReject_OrthogonalRejectionReturnsOriginalVectorAndSetsCorrectStatusFlag)
-{
-    const flcn::simd::Vec3 a(1.0f, 2.0f, 0.0f);
-    const flcn::simd::Vec3 b(0.0f, 0.0f, 1.0f);
-    flcn::OperationStatus flag;
-
-    const flcn::simd::Vec3 actualRejection = flcn::simd::Vec3<float>::tryReject(a, b, flag);
-
-    EXPECT_VEC_EQ(a, actualRejection);
-    EXPECT_EQ(flcn::OperationStatus::SUCCESS, flag);
-}
-
-
-/**
- * @test Verify that safely rejecting from a non-orthogonal vector using static variant of
- *       @ref flcn::simd::Vec3::tryReject returns a non-zero vector with perpendicular component
- *       and sets flag to @ref flcn::OperationStatus::SUCCESS.
- */
-TYPED_TEST(SimdVec3RejectionTests, StaticWrapper_TryReject_NonOrthogonalRejectionReturnsNonZeroVectorAndSetsCorrectStatusFlag)
-{
-    flcn::OperationStatus flag;
-
-    const flcn::simd::Vec3 actualRejection = flcn::simd::Vec3<TypeParam>::tryReject(this->_vec, this->_fromVec, flag);
-
-    EXPECT_VEC_EQ(this->_expectedRejection, actualRejection);
-    EXPECT_EQ(flcn::OperationStatus::SUCCESS, flag);
-}
-
-
-/**
- * @test Verify that safely rejecting from an orthogonal unit vector using static variant of
- *       @ref flcn::simd::Vec3::tryRejectNorm returns a non-zero vector and with perpendicular component sets flag to
- *       @ref flcn::OperationStatus::SUCCESS.
- */
-TEST(SimdVec3Rejection, StaticWrapper_TryRejectNorm_FromNormalizedVectorReturnsNonZeroVectorAndSetsCorrectStatusFlag)
-{
-    // Given an arbitrary vector and a normalized vector
-    const flcn::simd::Vec3 a(1.0f, 2.0f, 3.0f);
-    const flcn::simd::Vec3 b(1.0f, 0.0f, 0.0f);
-    const flcn::simd::Vec3 expectedRejection(0.0f, 2.0f, 3.0f);
-    flcn::OperationStatus flag;
-
-    // When rejected from another
-    const flcn::simd::Vec3 actualRejection = flcn::simd::Vec3<float>::tryRejectNorm(a, b, flag);
-
-    // Then, the resultant vector has components perpendicular to the `from` vector.
-    EXPECT_VEC_EQ(expectedRejection, actualRejection);
-    // Flag is set to SUCCESS
-    EXPECT_EQ(flcn::OperationStatus::SUCCESS, flag);
-}
-
-
-/**
- * @test Verify that safely rejecting NaN vector from an orthogonal unit vector using static variant of
- *       @ref flcn::simd::Vec3::tryRejectNorm returns a zero vector and sets flag to @ref flcn::OperationStatus::NANOPERAND.
- */
-TEST(SimdVec3Rejection, StaticWrapper_TryRejectNorm_NaNVectorReturnsZeroVectorAndSetsCorrectStatusFlag)
-{
-    // Given an arbitrary vector and a normalized vector
-    const flcn::simd::Vec3 a(1.0f, flcn::constants::NaN, 3.0f);
-    const flcn::simd::Vec3 b(1.0f, 0.0f, 0.0f);
-    flcn::OperationStatus flag;
-
-
-    // When rejected from another
-    const flcn::simd::Vec3 actualRejection = flcn::simd::Vec3<float>::tryRejectNorm(a, b, flag);
-
-    // Then, the resultant vector has components perpendicular to the `from` vector.
-    EXPECT_VEC_ZERO(actualRejection);
-    EXPECT_EQ(flcn::OperationStatus::NANOPERAND, flag);
-}
-
-/**
- * @test Verify that safely rejecting from an NaN vector using static variant of @ref flcn::simd::Vec3::tryRejectNorm
- *       returns a zero vector and sets flag to @ref flcn::OperationStatus::NANOPERAND.
- */
-TEST(SimdVec3Rejection, StaticWrapper_TryRejectNorm_FromNaNVectorReturnsZeroVectorAndSetsCorrectStatusFlag)
-{
-    // Given an arbitrary vector and a normalized vector
-    const flcn::simd::Vec3 a(1.0f, 2.0f, 3.0f);
-    const flcn::simd::Vec3 b(1.0f, flcn::constants::NaN, 0.0f);
-    flcn::OperationStatus flag;
-
-
-    // When rejected from another
-    const flcn::simd::Vec3 actualRejection = flcn::simd::Vec3<float>::tryRejectNorm(a, b, flag);
-
-    // Then, the resultant vector has components perpendicular to the `from` vector.
-    EXPECT_VEC_ZERO(actualRejection);
-    EXPECT_EQ(flcn::OperationStatus::NANOPERAND, flag);
-}
-
-
-/**
- * @test Verify that safely rejecting a vector from another vector of different numeric type
- *       using static variant of @ref flcn::simd::Vec3::tryReject returns a type-promoted vector
- *       and sets flag to @ref flcn::OperationStatus::SUCCESS.
- */
-TEST(SimdVec3Rejection, StaticWrapper_TryReject_MixedTypeRejectionPromotesType)
-{
-    // Given two arbitrary vectors
-    const flcn::simd::Vec3 vec(7, 13, 29);
-    const flcn::simd::Vec3 from(2.0, 4.0, 4.0);
-    const flcn::simd::Vec3 expectedRejection(-3.11111111111111, -7.22222222222222, 8.77777777777777);
-    flcn::OperationStatus flag;
-
-    // When rejected from another
-    const flcn::simd::Vec3 actualRejection = flcn::simd::Vec3<int>::tryReject(vec, from, flag);
-
-    // Then, the resultant vector is type promoted
-    static_assert(std::is_same_v<decltype(actualRejection)::ValueType, double>);
-    // and is the rejection
-    EXPECT_VEC_EQ(expectedRejection, actualRejection);
-    // Flag is set to SUCCESS
-    EXPECT_EQ(flcn::OperationStatus::SUCCESS, flag);
-}
-
-
-/**
- * @test Verify that safely rejecting from a zero length vector using static variant of @ref flcn::simd::Vec3::tryReject
- *       returns the same vector and sets flag to @ref flcn::OperationStatus::DIVISIONBYZERO.
- */
-TYPED_TEST(SimdVec3RejectionTests, StaticWrapper_TryReject_FromZeroVectorReturnsSameVectorAndSetsCorrectStatusFlag)
-{
-    const flcn::simd::Vec3 zeroVec = flcn::simd::Vec3<TypeParam>::zero();
-    flcn::OperationStatus flag;
-
-    const flcn::simd::Vec3 actualRejection = flcn::simd::Vec3<TypeParam>::tryReject(this->_vec, zeroVec, flag);
-
-    EXPECT_VEC_EQ(this->_vec, actualRejection);
-    EXPECT_EQ(flcn::OperationStatus::DIVISIONBYZERO, flag);
-}
-
-
 /** @test Verify that rejection using @ref flcn::simd::Vec3::tryReject always return floating-point vector. */
 TYPED_TEST(SimdVec3RejectionTests, TryRejectAlwaysReturnFloatingPointVector)
 {
@@ -991,19 +450,6 @@ TYPED_TEST(SimdVec3RejectionTests, TryRejectAlwaysReturnFloatingPointVector)
     [[maybe_unused]] const flcn::simd::Vec3 rejection = this->_vec.tryReject(this->_fromVec, status);
     static_assert(std::is_floating_point_v<typename decltype(rejection)::ValueType>);
 }
-
-
-/**
- * @test Verify that rejection using static variant of @ref flcn::simd::Vec3::tryReject
- *       always return floating-point vector.
- */
-TYPED_TEST(SimdVec3RejectionTests, StaticWrapper_TryReject_AlwaysReturnFloatingPointVector)
-{
-    [[maybe_unused]] flcn::OperationStatus status;
-    [[maybe_unused]] const flcn::simd::Vec3 rejection = flcn::simd::Vec3<TypeParam>::tryReject(this->_vec, this->_fromVec, status);
-    static_assert(std::is_floating_point_v<typename decltype(rejection)::ValueType>);
-}
-
 
 
 /**
@@ -1032,36 +478,6 @@ TEST_P(SimdVec3RejectionNaNTests, TryReject_OntoNaNVectorReturnsZeroVectorAndSet
     flcn::OperationStatus flag;
 
     EXPECT_VEC_ZERO(oneVec.tryReject(ontoNaNVec, flag));
-    EXPECT_EQ(flcn::OperationStatus::NANOPERAND, flag);
-}
-
-
-/**
- * @test Verify that the rejection of NaN vector using static variant of @ref flcn::simd::Vec3::tryReject
- *       returns zero vector and sets the flag to @ref flcn::OperationStatus::NANOPERAND.
- */
-TEST_P(SimdVec3RejectionNaNTests, StaticWrapper_TryReject_NaNVectorReturnsZeroVectorAndSetsCorrectFlag)
-{
-    const auto& nanVec  = GetParam();
-    const auto& ontoVec = flcn::simd::Vec3<float>::one();
-    flcn::OperationStatus flag;
-
-    EXPECT_VEC_ZERO(flcn::simd::Vec3<float>::tryReject(nanVec, ontoVec, flag));
-    EXPECT_EQ(flcn::OperationStatus::NANOPERAND, flag);
-}
-
-
-/**
- * @test Verify that the rejection onto NaN vector using static variant of @ref flcn::simd::Vec3::tryReject
- *       returns zero vector and sets the flag to @ref flcn::OperationStatus::NANOPERAND.
- */
-TEST_P(SimdVec3RejectionNaNTests, StaticWrapper_TryReject_OntoNaNVectorReturnsZeroVectorAndSetsCorrectFlag)
-{
-    const auto& oneVec     = flcn::simd::Vec3<float>::one();
-    const auto& ontoNaNVec = GetParam();
-    flcn::OperationStatus flag;
-
-    EXPECT_VEC_ZERO(flcn::simd::Vec3<float>::tryReject(oneVec, ontoNaNVec, flag));
     EXPECT_EQ(flcn::OperationStatus::NANOPERAND, flag);
 }
 

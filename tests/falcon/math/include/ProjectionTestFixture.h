@@ -48,7 +48,7 @@ protected:
         _expectedProjection = { T(4), T(0) };
     }
 };
-TYPED_TEST_SUITE(Vec2ProjectionTests, SupportedArithmeticTypes);
+TYPED_TEST_SUITE(Vec2ProjectionTests, SupportedFloatingPointTypes);
 
 
 /**
@@ -83,7 +83,7 @@ protected:
         _expectedRejection = { T(4), T(0) };
     }
 };
-TYPED_TEST_SUITE(Vec2RejectionTests, SupportedArithmeticTypes);
+TYPED_TEST_SUITE(Vec2RejectionTests, SupportedFloatingPointTypes);
 
 
 
@@ -121,7 +121,7 @@ protected:
         _expectedProjection = { T(0), T(9), T(0) };
     }
 };
-TYPED_TEST_SUITE(Vec3ProjectionTests, SupportedArithmeticTypes);
+TYPED_TEST_SUITE(Vec3ProjectionTests, SupportedFloatingPointTypes);
 
 
 
@@ -160,8 +160,8 @@ protected:
         _expectedRejection = { T(1), T(0), T(3) };
     }
 };
-/** @brief Test fixture for @ref flcn::Vec3 rejection, parameterized by @ref SupportedArithmeticTypes. */
-TYPED_TEST_SUITE(Vec3RejectionTests, SupportedArithmeticTypes);
+/** @brief Test fixture for @ref flcn::Vec3 rejection, parameterized by @ref SupportedFloatingPointTypes. */
+TYPED_TEST_SUITE(Vec3RejectionTests, SupportedFloatingPointTypes);
 
 
 
@@ -201,7 +201,7 @@ protected:
         _expectedProjection = { T(0), T(6), T(0), T(0) };
     }
 };
-TYPED_TEST_SUITE(Vec4ProjectionTests, SupportedArithmeticTypes);
+TYPED_TEST_SUITE(Vec4ProjectionTests, SupportedFloatingPointTypes);
 
 
 
@@ -241,7 +241,7 @@ protected:
         _expectedRejection = { T(1), T(0), T(3), T(4) };
     }
 };
-TYPED_TEST_SUITE(Vec4RejectionTests, SupportedArithmeticTypes);
+TYPED_TEST_SUITE(Vec4RejectionTests, SupportedFloatingPointTypes);
 
 
 /**
@@ -376,6 +376,46 @@ INSTANTIATE_TEST_SUITE_P(SimdVec3ProjectionNaNTests, SimdVec3ProjectionNaNTests,
                                            flcn::simd::Vec3<float>(1.0f, 1.0f, flcn::constants::NaN),
                                            flcn::simd::Vec3<float>(flcn::constants::NaN, flcn::constants::NaN,
                                                                    flcn::constants::NaN)));
+
+
+/**
+ * @brief Test fixture for @ref flcn::simd::Vec3 rejection.
+ *
+ * @tparam T The scalar type (e.g., float, double) used for the vectors.
+ */
+template <typename T>
+class SimdVec3RejectionTests: public testing::Test
+{
+protected:
+    flcn::simd::Vec3<T> _vec;
+    flcn::simd::Vec3<T> _parallelVec;
+    flcn::simd::Vec3<T> _fromVec;
+    flcn::simd::Vec3<T> _expectedRejection;
+
+    void SetUp() override
+    {
+        _vec               = { T(1), T(2), T(3) };
+        _parallelVec       = { T(2), T(4), T(6) };
+        _fromVec           = { T(0), T(2), T(0) };
+        _expectedRejection = { T(1), T(0), T(3) };
+    }
+};
+/** @brief Test fixture for @ref flcn::simd::Vec3 rejection, parameterized by @ref SupportedFloatingPointTypes. */
+TYPED_TEST_SUITE(SimdVec3RejectionTests, SupportedFloatingPointTypes);
+
+
+/**
+ * @brief Test fixture for @ref flcn::simd::Vec3 rejection with NaN vectors.
+ */
+class SimdVec3RejectionNaNTests: public testing::TestWithParam<flcn::simd::Vec3<float>>
+{};
+INSTANTIATE_TEST_SUITE_P(SimdVec3RejectionNaNTests, SimdVec3RejectionNaNTests,
+                         ::testing::Values(flcn::simd::Vec3<float>(flcn::constants::NaN, 1.0f, 1.0f),
+                                           flcn::simd::Vec3<float>(1.0f, flcn::constants::NaN, 1.0f),
+                                           flcn::simd::Vec3<float>(1.0f, 1.0f, flcn::constants::NaN),
+                                           flcn::simd::Vec3<float>(flcn::constants::NaN, flcn::constants::NaN,
+                                                                   flcn::constants::NaN)));
+
 
 // ------------------------ VEC4 (SIMD) ------------------------
 

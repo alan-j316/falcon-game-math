@@ -549,6 +549,16 @@
 
     /**
      * @defgroup Falcon_Utils Utility functions
+     * @brief Helper utilities and static wrappers for math functions.
+     * @ingroup Falcon_Math
+     * @{
+     *   @defgroup Falcon_Math_Bounds Boundary functions like min, max, clamp.
+     *   @defgroup Falcon_Math_Interpolation Interpolation functions like mix, slerp
+     *   @defgroup Falcon_Math_Normalization Vector/Quaternion normalization wrappers.
+     * @}
+     */
+    /**
+     * @defgroup Falcon_Utils Utility functions
      * @brief Helper utilities for FALCON.
      * @ingroup Falcon_Math
      */

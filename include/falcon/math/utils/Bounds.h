@@ -15,7 +15,13 @@
 #include "falcon/math/vectors/Vec4.h"
 #include "falcon/math/vectors/simd/Vec2.h"
 #include "falcon/math/vectors/simd/Vec3.h"
-// TODO: Add group
+
+
+/**
+ *  @addtogroup Falcon_Math_Bounds
+ *  @{
+ */
+
 namespace flcn
 {
 
@@ -138,5 +144,7 @@ namespace flcn
     [[nodiscard]] constexpr simd::Vec3<T> max(const simd::Vec3<T>& vecA, const simd::Vec3<T>& vecB) noexcept;
 
 } // namespace flcn
+
+/** @} */
 
 #include "Bounds.tpp"

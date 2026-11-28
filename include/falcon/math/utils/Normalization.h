@@ -10,6 +10,11 @@
  */
 
 
+/**
+ *  @addtogroup Falcon_Math_Normalization
+ *  @{
+ */
+
 namespace flcn
 {
     /// +---------------------------------------------------------------------------------------+
@@ -315,5 +320,6 @@ namespace flcn
 
 } // namespace flcn
 
+/** @} */
 
 #include "Normalization.tpp"

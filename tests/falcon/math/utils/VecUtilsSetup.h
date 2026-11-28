@@ -16,7 +16,7 @@
 #include "InterpolationTestFixture.h"
 #include "utils/VectorUtils.h"
 
-#include <../../../../include/falcon/core/traits/MathTraits.h>
+#include <falcon/core/traits/MathTraits.h>
 #include <falcon/math/utils/Bounds.h>
 #include <falcon/math/utils/Interpolation.h>
 #include <gtest/gtest.h>

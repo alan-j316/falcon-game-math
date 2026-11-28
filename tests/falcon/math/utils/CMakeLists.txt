@@ -4,7 +4,11 @@ add_executable(
         BoundsTests.cpp
         InterpolationTests.cpp
         NormalizationTests.cpp
-        ProjectionTests.cpp
+        projection/SimdVec2.cpp
+        projection/SimdVec3.cpp
+        projection/Vec2.cpp
+        projection/Vec3.cpp
+        projection/Vec4.cpp
         VecUtilsSetup.h
 )
 

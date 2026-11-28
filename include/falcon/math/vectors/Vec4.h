@@ -1516,23 +1516,6 @@ namespace flcn
             requires StrictArithmetic<T>;
 
 
-
-        /**
-         * @brief Compute the normalized (unit) form of @p Vec
-         *        \f$ \mathbf{\hat{v}} = \frac{\mathbf{v}}{\|\mathbf{v}\|} \f$
-         *
-         * @note To maintain precision, result components are promoted to their
-         *       corresponding floating-point representation via @ref Magnitude.
-         * @note Performs assertion for division by zero, resulting from zero-length vector, in **Debug mode**.
-         *
-         * @param[in] vec The vector to normalize.
-         *
-         * @return A new @ref Vec4 with a magnitude of 1.0.
-         */
-        [[nodiscard]] static constexpr Vec4<Magnitude<T>> normalize(const Vec4& vec) noexcept
-            requires StrictArithmetic<T>;
-
-
         /**
          * @brief Compute the normalized (unit) form of this vector.
          *        \f$ \mathbf{\hat{v}} = \frac{\mathbf{v}}{\|\mathbf{v}\|} \f$
@@ -1546,24 +1529,6 @@ namespace flcn
          *         epsilon threshold or if this vector has NaN(Not-a-Number) component(s).
          */
         [[nodiscard]] constexpr Vec4<Magnitude<T>> safeNormalize() const noexcept
-            requires StrictArithmetic<T>;
-
-
-        /**
-         * @brief Compute the normalized (unit) form of @p Vec.
-         *        \f$ \mathbf{\hat{v}} = \frac{\mathbf{v}}{\|\mathbf{v}\|} \f$
-         *
-         * @note This is a safe operation. If the vector's magnitude falls below the internal
-         *       epsilon, or if it contains NaN components, division by zero is bypassed.
-         * @note To maintain precision, result components are promoted to their
-         *       corresponding floating-point representation via @ref Magnitude.
-         *
-         * @param[in] vec The vector to be normalized.
-         *
-         * @return A @ref flcn::Vec4 with a magnitude of 1.0, or a zero-vector if the original magnitude is below the
-         *         epsilon threshold or if the vector has NaN(Not-a-Number) component(s).
-         */
-        [[nodiscard]] static constexpr Vec4<Magnitude<T>> safeNormalize(const Vec4& vec) noexcept
             requires StrictArithmetic<T>;
 
 
@@ -1584,28 +1549,6 @@ namespace flcn
          *         epsilon threshold or if this vector has NaN(Not-a-Number) component(s).
          */
         [[nodiscard]] constexpr Vec4<Magnitude<T>> tryNormalize(OperationStatus& status) const noexcept
-            requires StrictArithmetic<T>;
-
-
-        /**
-         * @brief Compute the normalized (unit) form of the @p Vec and
-         *        set @p status to the normalization operation result.
-         *        \f$ \mathbf{\hat{v}} = \frac{\mathbf{v}}{\|\mathbf{v}\|} \f$
-         *
-         * @note This is a safe operation. If the vector's magnitude falls below the internal
-         *       epsilon, or if it contains NaN components, division by zero is bypassed.
-         * @note To maintain precision, result components are promoted to their
-         *       corresponding floating-point representation via @ref Magnitude.
-         *
-         * @param[in] vec     The vector to be normalized.
-         * @param[out] status The status flag to store the status of the current operation result.*
-         *                    For details on status codes see @ref OperationStatus.
-         *
-         * @return A @ref flcn::Vec4 with a magnitude of 1.0, or a zero-vector if the original magnitude is below the
-         *         epsilon threshold or if the vector has NaN(Not-a-Number) component(s).
-         */
-        [[nodiscard]] static constexpr Vec4<Magnitude<T>> tryNormalize(const Vec4& vec,
-                                                                       OperationStatus& status) noexcept
             requires StrictArithmetic<T>;
 
         /** @} */

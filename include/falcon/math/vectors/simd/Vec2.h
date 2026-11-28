@@ -21,10 +21,10 @@
  */
 
 // TODO: Update header description
-#include <falcon/core/Constants.h>
 #include "falcon/math/common/Config.h"
 #include "falcon/math/common/OperationStatus.h"
 
+#include <falcon/core/Constants.h>
 #include <falcon/core/Preprocessors.h>
 #include <falcon/core/traits/MathTraits.h>
 #include <falcon/core/traits/TypeHelpers.h>
@@ -1494,22 +1494,6 @@ namespace flcn::simd
 
 
         /**
-         * @brief Compute the normalized (unit) form of @p Vec.
-         *        \f$ \mathbf{\hat{v}} = \frac{\mathbf{v}}{\|\mathbf{v}\|} \f$
-         *
-         * @note Performs assertion for division by zero, resulting from zero-length vector,
-         *       in **Debug mode**.
-         * @note Restricted to floating point types via @ref FPArithmetic.
-         *
-         * @param[in] vec The vector to normalize.
-         *
-         * @return A new @ref Vec2 with a magnitude of 1.0.
-         */
-        [[nodiscard]] static constexpr Vec2 normalize(const Vec2& vec) noexcept
-            requires FPArithmetic<T>;
-
-
-        /**
          * @brief Compute the normalized (unit) form of this vector.
          *        \f$ \mathbf{\hat{v}} = \frac{\mathbf{v}}{\|\mathbf{v}\|} \f$
          *
@@ -1521,23 +1505,6 @@ namespace flcn::simd
          *         the epsilon threshold or if this vector has NaN(Not-a-Number) component(s).
          */
         [[nodiscard]] constexpr Vec2 safeNormalize() const noexcept
-            requires FPArithmetic<T>;
-
-
-        /**
-         * @brief Compute the normalized (unit) form of @p Vec.
-         *        \f$ \mathbf{\hat{v}} = \frac{\mathbf{v}}{\|\mathbf{v}\|} \f$
-         *
-         * @note This is a safe operation. If the vector's magnitude falls below the internal
-         *       epsilon, or if it contains NaN components, division by zero is bypassed.
-         * @note Restricted to floating point types via @ref FPArithmetic.
-         *
-         * @param[in] vec The vector to be normalized.
-         *
-         * @return A @ref flcn::simd::Vec2 with a magnitude of 1.0, or a zero-vector if the original magnitude is
-         *         below the epsilon threshold or if the vector has NaN(Not-a-Number) component(s).
-         */
-        [[nodiscard]] static constexpr Vec2 safeNormalize(const Vec2& vec) noexcept
             requires FPArithmetic<T>;
 
 
@@ -1559,28 +1526,8 @@ namespace flcn::simd
         [[nodiscard]] constexpr Vec2 tryNormalize(OperationStatus& status) const noexcept
             requires FPArithmetic<T>;
 
-
-        /**
-         * @brief Compute the normalized (unit) form of @p Vec and
-         *        set @p status to the normalization operation result.
-         *        \f$ \mathbf{\hat{v}} = \frac{\mathbf{v}}{\|\mathbf{v}\|} \f$
-         *
-         * @note This is a safe operation. If the vector's magnitude falls below the internal
-         *       epsilon, or if it contains NaN components, division by zero is bypassed.
-         * @note Restricted to floating point types via @ref FPArithmetic.
-         *
-         * @param[in] vec     The vector to be normalized.
-         * @param[out] status The status flag to store the status of the current operation result.*
-         *                    For details on status codes see @ref OperationStatus.
-         *
-         * @return A @ref flcn::simd::Vec2 with a magnitude of 1.0, or a zero-vector if the original magnitude is
-         *         below the epsilon threshold or if the vector has NaN(Not-a-Number) component(s).
-         */
-        [[nodiscard]] static constexpr Vec2 tryNormalize(const Vec2& vec,
-                                                                       OperationStatus& status) noexcept
-            requires FPArithmetic<T>;
-
         /** @} */
+
 
 
         /**

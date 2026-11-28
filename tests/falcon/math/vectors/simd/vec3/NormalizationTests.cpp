@@ -9,75 +9,13 @@
  */
 
 
-#include "Vec3TestSetup.h"
-
-
-
 /**
  * @addtogroup T_Falcon_Vec3_Normalize
  * @{
  */
 
-namespace
-{
-    /**************************************
-     *           TEST SETUP               *
-     **************************************/
-
-    /**
-     * @brief Test fixture for @ref Vec3 normalization.
-     * @tparam T The scalar type (int, float, double...) of the vector components.
-     */
-    template <typename T>
-    class SimdVec3NormalizationTests: public testing::Test
-    {
-        using R = flcn::Magnitude<T>;
-
-    protected:
-        flcn::simd::Vec3<T> _vec;
-        flcn::simd::Vec3<R> _expectedUnitVec;
-
-        void SetUp() override
-        {
-            _vec             = { T(14), T(27), T(83) };
-            _expectedUnitVec = { static_cast<R>(0.1583767155508236), static_cast<R>(0.30544080856230266),
-                                 static_cast<R>(0.9389476707655972) };
-        }
-    };
-    TYPED_TEST_SUITE(SimdVec3NormalizationTests, SupportedFloatingPointTypes);
-
-
-
-    /**
-     * @brief Test fixture for @ref Vec3 normalization with zero vectors.
-     * @tparam T The scalar type (int, float, double...) of the vector components.
-     */
-    template <typename T>
-    class SimdVec3ZeroNormalizationTests: public testing::Test
-    {
-    protected:
-        flcn::simd::Vec3<T> _vec;
-
-        void SetUp() override { _vec = { T(0), T(0), T(0) }; }
-    };
-    TYPED_TEST_SUITE(SimdVec3ZeroNormalization, SupportedFloatingPointTypes);
-
-
-
-    /**
-     * @brief Test fixture for @ref Vec3 normalization with NaN vectors.
-     */
-    class SimdVec3NormalizationNaNTests: public testing::TestWithParam<flcn::simd::Vec3<float>>
-    {};
-    INSTANTIATE_TEST_SUITE_P(SimdVec3NormalizationNaNVectors, SimdVec3NormalizationNaNTests,
-                             ::testing::Values(flcn::simd::Vec3<float>(flcn::constants::NaN, 1.0f, 1.0f),
-                                               flcn::simd::Vec3<float>(1.0f, flcn::constants::NaN, 1.0f),
-                                               flcn::simd::Vec3<float>(1.0f, 1.0f, flcn::constants::NaN),
-                                               flcn::simd::Vec3<float>(flcn::constants::NaN, flcn::constants::NaN,
-                                                                flcn::constants::NaN)));
-
-} // namespace
-
+#include "Vec3TestSetup.h"
+#include "NormalizationTestFixture.h"
 
 
 /**************************************

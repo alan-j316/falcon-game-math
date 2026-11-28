@@ -3,6 +3,7 @@ add_executable(
 
         BoundsTests.cpp
         InterpolationTests.cpp
+        NormalizationTests.cpp
         VecUtilsSetup.h
 )
 

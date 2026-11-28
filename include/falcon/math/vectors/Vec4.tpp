@@ -1123,12 +1123,6 @@ namespace flcn
 
 
     template <Arithmetic T>
-    FALCON_INLINE constexpr Vec4<Magnitude<T>> Vec4<T>::normalize(const Vec4& vec) noexcept
-        requires StrictArithmetic<T>
-    { return vec.normalize(); }
-
-
-    template <Arithmetic T>
     FALCON_INLINE constexpr Vec4<Magnitude<T>> Vec4<T>::safeNormalize() const noexcept
         requires StrictArithmetic<T>
     {
@@ -1145,12 +1139,6 @@ namespace flcn
 
         return *this / magnitude;
     }
-
-
-    template <Arithmetic T>
-    FALCON_INLINE constexpr Vec4<Magnitude<T>> Vec4<T>::safeNormalize(const Vec4& vec) noexcept
-        requires StrictArithmetic<T>
-    { return vec.safeNormalize(); }
 
 
     template <Arithmetic T>
@@ -1174,11 +1162,6 @@ namespace flcn
         return *this / magnitude;
     }
 
-
-    template <Arithmetic T>
-    FALCON_INLINE constexpr Vec4<Magnitude<T>> Vec4<T>::tryNormalize(const Vec4& vec, OperationStatus& status) noexcept
-        requires StrictArithmetic<T>
-    { return vec.tryNormalize(status); }
 
 
     /*************************************

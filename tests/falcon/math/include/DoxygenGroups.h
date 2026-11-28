@@ -521,16 +521,19 @@
      * @brief Static tests verifying concepts and type alias.
      */
 
-
     /**
      * @defgroup T_Falcon_Trivial Class/Struct Triviality Tests
      * @brief Static tests verifying trivial behavior of classes and structs.
      */
 
-
     /**
      * @defgroup T_Falcon_Interpolation Interpolation Tests
      * @brief Tests verifying unified interface for interpolation(mix/slerp).
+     */
+
+    /**
+     * @defgroup T_Falcon_Normalization Normalization Tests
+     * @brief Tests verifying vector normalization(mix/slerp).
      */
 
     /**

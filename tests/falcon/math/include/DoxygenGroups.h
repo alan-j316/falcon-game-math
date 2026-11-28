@@ -536,6 +536,12 @@
      * @brief Tests verifying vector normalization(mix/slerp).
      */
 
+
+    /**
+     * @defgroup T_Falcon_Projection Projection/Rejection Tests
+     * @brief Tests verifying vector projection and rejection.
+     */
+
     /**
      * @defgroup T_Falcon_Utils Utility Tests
      * @brief Validates logic of all fgm utility functions.

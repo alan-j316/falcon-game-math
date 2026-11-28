@@ -37,7 +37,7 @@ namespace flcn
      * @return A 2D vector with the minimum components of the two.
      */
     template <Arithmetic T>
-    [[nodiscard]] static constexpr Vec2<T> min(const Vec2<T>& vecA, const Vec2<T>& vecB) noexcept;
+    [[nodiscard]] constexpr Vec2<T> min(const Vec2<T>& vecA, const Vec2<T>& vecB) noexcept;
 
 
     /**
@@ -48,7 +48,7 @@ namespace flcn
      * @return A 2D vector with the maximum components of the two.
      */
     template <Arithmetic T>
-    [[nodiscard]] static constexpr Vec2<T> max(const Vec2<T>& vecA, const Vec2<T>& vecB) noexcept;
+    [[nodiscard]] constexpr Vec2<T> max(const Vec2<T>& vecA, const Vec2<T>& vecB) noexcept;
 
 
     /**
@@ -59,7 +59,7 @@ namespace flcn
      * @return A 3D vector with the minimum components of the two.
      */
     template <Arithmetic T>
-    [[nodiscard]] static constexpr Vec3<T> min(const Vec3<T>& vecA, const Vec3<T>& vecB) noexcept;
+    [[nodiscard]] constexpr Vec3<T> min(const Vec3<T>& vecA, const Vec3<T>& vecB) noexcept;
 
 
     /**
@@ -70,7 +70,7 @@ namespace flcn
      * @return A 3D vector with the maximum components of the two.
      */
     template <Arithmetic T>
-    [[nodiscard]] static constexpr Vec3<T> max(const Vec3<T>& vecA, const Vec3<T>& vecB) noexcept;
+    [[nodiscard]] constexpr Vec3<T> max(const Vec3<T>& vecA, const Vec3<T>& vecB) noexcept;
 
 
     /**
@@ -81,7 +81,7 @@ namespace flcn
      * @return A 4D vector with the minimum components of the two.
      */
     template <Arithmetic T>
-    [[nodiscard]] static constexpr Vec4<T> min(const Vec4<T>& vecA, const Vec4<T>& vecB) noexcept;
+    [[nodiscard]] constexpr Vec4<T> min(const Vec4<T>& vecA, const Vec4<T>& vecB) noexcept;
 
 
     /**
@@ -92,7 +92,7 @@ namespace flcn
      * @return A 4D vector with the maximum components of the two.
      */
     template <Arithmetic T>
-    [[nodiscard]] static constexpr Vec4<T> max(const Vec4<T>& vecA, const Vec4<T>& vecB) noexcept;
+    [[nodiscard]] constexpr Vec4<T> max(const Vec4<T>& vecA, const Vec4<T>& vecB) noexcept;
 
 
 

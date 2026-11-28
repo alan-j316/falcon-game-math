@@ -1574,42 +1574,6 @@ namespace flcn::simd
 
 
         /**
-         * @brief Project the @p Vec vector onto the @p onto vector.
-         *        \f$
-         *          \text{proj}_{\mathbf{b}} \mathbf{a} =
-         *          \frac{\mathbf{a} \cdot \mathbf{b}}{\|\mathbf{b}\|^2} \mathbf{b}
-         *        \f$
-         *
-         * @note If @p onto is normalized, use @ref projectNorm as it is a faster implementation for unit vectors.
-         * @note Performs assertion for division by zero, resulting from zero-length vector, in **Debug mode**.
-         *
-         * @param[in] vec  The vector to project.
-         * @param[in] onto The vector to project onto.
-         *
-         * @return The projected @ref Vec2.
-         */
-        [[nodiscard]] static constexpr Vec2 project(const Vec2& vec, const Vec2& onto) noexcept
-            requires FPArithmetic<T>;
-
-
-        /**
-         * @brief Project the @p Vec vector onto the **unit** @p onto vector.
-         *        \f$
-         *            \text{proj}_{\mathbf{b}} \mathbf{a} = (\mathbf{a} \cdot \mathbf{b}) \mathbf{\hat{b}}
-         *        \f$
-         *
-         * @note Only use this method if @p onto is normalized. If not, use @ref project.
-         *
-         * @param[in] vec  The vector to project.
-         * @param[in] onto The vector to project onto.
-         *
-         * @return The projected @ref Vec2.
-         */
-        [[nodiscard]] static constexpr Vec2 projectNorm(const Vec2& vec, const Vec2& onto) noexcept
-            requires FPArithmetic<T>;
-
-
-        /**
          * @brief Project this vector onto the @p onto vector.
          *        \f$
          *          \text{proj}_{\mathbf{b}} \mathbf{a} =
@@ -1646,47 +1610,6 @@ namespace flcn::simd
          *         or if either of the vectors has NaN(Not-a-Number) component(s).
          */
         [[nodiscard]] constexpr Vec2 safeProjectNorm(const Vec2& onto) const noexcept
-            requires FPArithmetic<T>;
-
-
-        /**
-         * @brief Project the @p Vec vector onto the @p onto vector.
-         *        \f$
-         *          \text{proj}_{\mathbf{b}} \mathbf{a} =
-         *          \frac{\mathbf{a} \cdot \mathbf{b}}{\|\mathbf{b}\|^2} \mathbf{b}
-         *        \f$
-         *
-         * @note This is a safe operation. If the @p onto vector's magnitude falls below the internal
-         *       epsilon, or if either vector contains NaN components, projection is bypassed.
-         * @note If @p onto is normalized, use @ref safeProjectNorm as it is a faster implementation for unit vectors.
-         *
-         *
-         * @param[in] vec  The vector to project.
-         * @param[in] onto The vector to project onto.
-         *
-         * @return The projected @ref Vec2 or a zero-vector if projected onto a zero-length vector
-         *         or if either of the vectors has NaN(Not-a-Number) component(s).
-         */
-        [[nodiscard]] static constexpr Vec2 safeProject(const Vec2& vec, const Vec2& onto) noexcept
-            requires FPArithmetic<T>;
-
-
-        /**
-         * @brief Project the @p Vec vector onto the **unit** @p onto vector.
-         *        \f$
-         *            \text{proj}_{\mathbf{b}} \mathbf{a} = (\mathbf{a} \cdot \mathbf{b}) \mathbf{\hat{b}}
-         *        \f$
-         *
-         * @note This is a safe operation. If either vector contains NaN components, projection is bypassed.
-         * @note Only use this method if @p onto is normalized. If not, use @ref safeProject.
-         *
-         * @param[in] vec  The vector to project.
-         * @param[in] onto The vector to project onto.
-         *
-         * @return The projected @ref Vec2 or a zero-vector if projected onto a zero-length vector
-         *         or if either of the vectors has NaN(Not-a-Number) component(s).
-         */
-        [[nodiscard]] static constexpr Vec2 safeProjectNorm(const Vec2& vec, const Vec2& onto) noexcept
             requires FPArithmetic<T>;
 
 
@@ -1736,56 +1659,6 @@ namespace flcn::simd
 
 
         /**
-         * @brief Project the @p Vec vector onto the @p onto vector and set @p status to the
-         *        projection operation result.
-         *        \f$
-         *          \text{proj}_{\mathbf{b}} \mathbf{a} =
-         *          \frac{\mathbf{a} \cdot \mathbf{b}}{\|\mathbf{b}\|^2} \mathbf{b}
-         *        \f$
-         *
-         * @note This is a safe operation. If the @p onto vector's magnitude falls below the internal
-         *       epsilon, or if either vector contains NaN components, projection is bypassed.
-         * @note If @p onto is normalized, use @ref tryProjectNorm as it is a faster implementation for unit vectors.
-         *
-         *
-         * @param[in] vec     The vector to project.
-         * @param[in] onto    The vector to project onto.
-         * @param[out] status The status flag to store the status of the current operation result.
-         *                    For details on status codes see @ref OperationStatus.
-         *
-         * @return The projected @ref Vec2 or a zero-vector if projected onto a zero-length vector or if
-         *         either vector has NaN(Not-a-Number) component(s).
-         */
-        [[nodiscard]] static constexpr Vec2 tryProject(const Vec2& vec, const Vec2& onto,
-                                                       OperationStatus& status) noexcept
-            requires FPArithmetic<T>;
-
-
-        /**
-         * @brief Project the @p Vec vector onto the **unit** @p onto vector and set @p status to the
-         *        projection operation result.
-         *        \f$
-         *            \text{proj}_{\mathbf{b}} \mathbf{a} = (\mathbf{a} \cdot \mathbf{b}) \mathbf{\hat{b}}
-         *        \f$
-         *
-         * @note This is a safe operation. If either vector contains NaN components, projection is bypassed.
-         * @note Only use this method if @p onto is normalized. If not, use @ref tryProject.
-         *
-         * @param[in] vec     The vector to project.
-         * @param[in] onto    The vector to project onto.
-         * @param[out] status The status flag to store the status of the current operation result.
-         *                    For details on status codes see @ref OperationStatus.
-         *
-         * @return The projected @ref Vec2 or a zero-vector if projected onto a zero-length vector or if
-         either
-         *         vector has NaN(Not-a-Number) component(s).
-         */
-        [[nodiscard]] static constexpr Vec2 tryProjectNorm(const Vec2& vec, const Vec2& onto,
-                                                           OperationStatus& status) noexcept
-            requires FPArithmetic<T>;
-
-
-        /**
          * @brief Reject this vector from the @p from vector.
          *        \f$ \text{rej}_{\mathbf{b}} \mathbf{a} = \mathbf{a} - \text{proj}_{\mathbf{b}} \mathbf{a} \f$
          *
@@ -1811,36 +1684,6 @@ namespace flcn::simd
          * @return The perpendicular @ref Vec2 component.
          */
         [[nodiscard]] constexpr Vec2 rejectNorm(const Vec2& from) const noexcept
-            requires FPArithmetic<T>;
-
-
-        /**
-         * @brief Reject the @p Vec vector from the @p from vector.
-         *        \f$ \text{rej}_{\mathbf{b}} \mathbf{a} = \mathbf{a} - \text{proj}_{\mathbf{b}} \mathbf{a} \f$
-         *
-         * @note If @p from is normalized, use @ref rejectNorm as it is a faster implementation for unit vectors.
-         *
-         * @param[in] vec  The vector to be rejected.
-         * @param[in] from The vector to reject from.
-         *
-         * @return The perpendicular @ref Vec2 component.
-         */
-        [[nodiscard]] static constexpr Vec2 reject(const Vec2& vec, const Vec2& from) noexcept
-            requires FPArithmetic<T>;
-
-
-        /**
-         * @brief Reject the @p Vec vector from the **unit** @p from vector.
-         *        \f$ \text{rej}_{\mathbf{b}} \mathbf{a} = \mathbf{a} - \text{proj}_{\mathbf{b}} \mathbf{a} \f$
-         *
-         * @note Only use this method if @p from is normalized. If not, use @ref reject.
-         *
-         * @param[in] vec The vector to be rejected.
-         * @param[in] from   The vector to reject from.
-         *
-         * @return The perpendicular @ref Vec2 component.
-         */
-        [[nodiscard]] static constexpr Vec2 rejectNorm(const Vec2& vec, const Vec2& from) noexcept
             requires FPArithmetic<T>;
 
 
@@ -1874,41 +1717,6 @@ namespace flcn::simd
          *         or if either of the vectors has NaN(Not-a-Number) component(s).
          */
         [[nodiscard]] constexpr Vec2 safeRejectNorm(const Vec2& from) const noexcept
-            requires FPArithmetic<T>;
-
-
-        /**
-         * @brief Reject the @p Vec vector from the @p from vector.
-         *        \f$ \text{rej}_{\mathbf{b}} \mathbf{a} = \mathbf{a} - \text{proj}_{\mathbf{b}} \mathbf{a} \f$
-         *
-         * @note This is a safe operation. If the @p from vector's magnitude falls below the internal
-         *       epsilon, or if either vector contains NaN components, rejection is bypassed.
-         * @note If @p from is normalized, use @ref safeRejectNorm as it is a faster implementation for unit vectors.
-         *
-         * @param[in] vec  The vector to reject.
-         * @param[in] from The vector to reject from.
-         *
-         * @return The perpendicular @ref Vec2 component or a zero-vector if projected onto a zero-length vector
-         *         or if either of the vectors has NaN(Not-a-Number) component(s).
-         */
-        [[nodiscard]] static constexpr Vec2 safeReject(const Vec2& vec, const Vec2& from) noexcept
-            requires FPArithmetic<T>;
-
-
-        /**
-         * @brief Reject the @p Vec vector from the **unit** @p from vector.
-         *        \f$ \text{rej}_{\mathbf{b}} \mathbf{a} = \mathbf{a} - \text{proj}_{\mathbf{b}} \mathbf{a} \f$
-         *
-         * @note This is a safe operation. If either vector contains NaN components, rejection is bypassed.
-         * @note Only use this method if @p from is normalized. If not, use @ref safeReject.
-         *
-         * @param[in] vec  The vector to reject.
-         * @param[in] from The vector to reject from.
-         *
-         * @return The perpendicular @ref Vec2 component or a zero-vector if projected onto a zero-length vector
-         *         or if either of the vectors has NaN(Not-a-Number) component(s).
-         */
-        [[nodiscard]] static constexpr Vec2 safeRejectNorm(const Vec2& vec, const Vec2& from) noexcept
             requires FPArithmetic<T>;
 
 
@@ -1947,49 +1755,6 @@ namespace flcn::simd
          *         or if either of the vectors has NaN(Not-a-Number) component(s).
          */
         [[nodiscard]] constexpr Vec2 tryRejectNorm(const Vec2& from, OperationStatus& status) const noexcept
-            requires FPArithmetic<T>;
-
-
-        /**
-         * @brief Reject the @p Vec vector from the @p from vector and set @p status to the result of
-         *        rejection operation.
-         *        \f$ \text{rej}_{\mathbf{b}} \mathbf{a} = \mathbf{a} - \text{proj}_{\mathbf{b}} \mathbf{a} \f$
-         *
-         * @note This is a safe operation. If the @p from vector's magnitude falls below the internal
-         *       epsilon, or if either vector contains NaN components, rejection is bypassed.
-         * @note If @p from is normalized, use @ref tryRejectNorm as it is a faster implementation for unit vectors.
-         *
-         *
-         * @param[in] vec     The vector to reject.
-         * @param[in] from    The vector to reject from.
-         * @param[out] status The status flag to store the status of the current operation result.
-         *                    For details on status codes see @ref OperationStatus.
-         *
-         * @return The perpendicular @ref Vec2 component or a zero-vector if projected onto a zero-length vector
-         *         or if either of the vectors has NaN(Not-a-Number) component(s).
-         */
-        [[nodiscard]] static constexpr Vec2 tryReject(const Vec2& vec, const Vec2& from,
-                                                      OperationStatus& status) noexcept
-            requires FPArithmetic<T>;
-
-
-        /**
-         * @brief Reject the @p Vec vector from the **unit** @p from vector.
-         *        \f$ \text{rej}_{\mathbf{b}} \mathbf{a} = \mathbf{a} - \text{proj}_{\mathbf{b}} \mathbf{a} \f$
-         *
-         * @note This is a safe operation. If either vector contains NaN components, rejection is bypassed.
-         * @note Only use this method if @p from is normalized. If not, use @ref tryReject.
-         *
-         * @param[in] vec     The vector to reject.
-         * @param[in] from    The vector to reject from.
-         * @param[out] status The status flag to store the status of the current operation result.
-         *                    For details on status codes see @ref OperationStatus.
-         *
-         * @return The perpendicular @ref Vec2 component or a zero-vector if projected onto a zero-length vector
-         *         or if either of the vectors has NaN(Not-a-Number) component(s).
-         */
-        [[nodiscard]] static constexpr Vec2 tryRejectNorm(const Vec2& vec, const Vec2& from,
-                                                          OperationStatus& status) noexcept
             requires FPArithmetic<T>;
 
         /** @} */

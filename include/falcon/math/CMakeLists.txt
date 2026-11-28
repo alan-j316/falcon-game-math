@@ -48,6 +48,8 @@ add_library(${FALCON_MATH_TARGET_NAME} INTERFACE
         utils/Bounds.tpp
         utils/Normalization.h
         utils/Normalization.tpp
+        utils/Projection.h
+        utils/Projection.tpp
 
         # SIMD-ACCELERATED WRAPPER
         vectors/simd/Vec2.h

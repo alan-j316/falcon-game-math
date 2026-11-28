@@ -186,7 +186,6 @@ INSTANTIATE_TEST_SUITE_P(Vec4NormalizationNaNVectors, Vec4NormalizationNaNTests,
                                                              flcn::constants::NaN, flcn::constants::NaN)));
 
 
-
 /// +---------------------------------------------------------------------------------------+
 /// |                             VEC2, VEC3, VEC4(SIMD)                                    |
 /// +---------------------------------------------------------------------------------------+
@@ -303,3 +302,12 @@ INSTANTIATE_TEST_SUITE_P(SimdVec3NormalizationNaNVectors, SimdVec3NormalizationN
 /// +---------------------------------------------------------------------------------------+
 /// |                                 QUATERNIONS                                           |
 /// +---------------------------------------------------------------------------------------+
+
+
+
+GTEST_ALLOW_UNINSTANTIATED_PARAMETERIZED_TEST(Vec2NormalizationNaNTests);
+GTEST_ALLOW_UNINSTANTIATED_PARAMETERIZED_TEST(Vec3NormalizationNaNTests);
+GTEST_ALLOW_UNINSTANTIATED_PARAMETERIZED_TEST(Vec4NormalizationNaNTests);
+GTEST_ALLOW_UNINSTANTIATED_PARAMETERIZED_TEST(SimdVec2NormalizationNaNTests);
+GTEST_ALLOW_UNINSTANTIATED_PARAMETERIZED_TEST(SimdVec3NormalizationNaNTests);
+// GTEST_ALLOW_UNINSTANTIATED_PARAMETERIZED_TEST(SimdVec4NormalizationNaNTests);

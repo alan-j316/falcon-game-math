@@ -10,6 +10,7 @@
 // TODO: Add back
 // #ifdef ENABLE_DEBUG_TESTS
 //     #include "CommonSetup.h"
+//     #include "NormalizationTestFixture.h"
 //
 //     #include <falcon/math/vectors/Vec3.h>
 //     #include <gtest/gtest.h>
@@ -48,28 +49,7 @@
 //     };
 //     TYPED_TEST_SUITE(SimdVec3ScalarDivisionTests, SupportedArithmeticTypes);
 //
-//
-//     /**
-//      * @brief Test fixture for @ref Vec3 normalization.
-//      * @tparam T The scalar type (int, float, double...) of the vector components.
-//      */
-//     template <typename T>
-//     class SimdVec3NormalizationTests: public testing::Test
-//     {
-//         using R = flcn::Magnitude<T>;
-//
-//     protected:
-//         flcn::simd::Vec3<T> _vec;
-//
-//         void SetUp() override
-//         {
-//             _vec             = { T(14), T(27), T(0) };
-//         }
-//     };
-//     TYPED_TEST_SUITE(SimdVec3NormalizationTests, SupportedArithmeticTypes);
-//
-//
-//
+
 //     /**
 //      * @brief Test fixture for @ref flcn::simd::Vec3 projection.
 //      *
@@ -157,13 +137,7 @@
 //     EXPECT_DEBUG_DEATH(static_cast<void>(zVec.normalize()), "");
 // }
 //
-//
-// TYPED_TEST(SimdVec3NormalizationTests, StaticWrapper_ZeroMagnitudeTriggersAssertInDebugMode)
-// {
-//     const flcn::simd::Vec3<TypeParam> zVec(0, 0, 0);
-//     EXPECT_DEBUG_DEATH(static_cast<void>(flcn::simd::Vec3<TypeParam>::normalize(zVec)), "");
-// }
-//
+
 //
 // TYPED_TEST(SimdVec3ProjectionTests, ProjectionOntoZeroVectorTriggersAssertionInCallback)
 // {

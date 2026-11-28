@@ -1162,22 +1162,6 @@ namespace flcn
     template <Arithmetic T>
     template <StrictArithmetic U>
         requires StrictSignedness<T, U>
-    FALCON_INLINE constexpr PromotedFloatVec3<T, U> Vec3<T>::project(const Vec3& vec, const Vec3<U>& onto) noexcept
-        requires StrictArithmetic<T>
-    { return vec.project(onto); }
-
-
-    template <Arithmetic T>
-    template <StrictArithmetic U>
-        requires StrictSignedness<T, U>
-    FALCON_INLINE constexpr PromotedVec3<T, U> Vec3<T>::projectNorm(const Vec3& vec, const Vec3<U>& onto) noexcept
-        requires StrictArithmetic<T>
-    { return vec.projectNorm(onto); }
-
-
-    template <Arithmetic T>
-    template <StrictArithmetic U>
-        requires StrictSignedness<T, U>
     FALCON_INLINE constexpr PromotedFloatVec3<T, U> Vec3<T>::safeProject(const Vec3<U>& onto) const noexcept
         requires StrictArithmetic<T>
     {
@@ -1214,22 +1198,6 @@ namespace flcn
         }
         return this->dot(onto) * onto;
     }
-
-
-    template <Arithmetic T>
-    template <StrictArithmetic U>
-        requires StrictSignedness<T, U>
-    FALCON_INLINE constexpr PromotedFloatVec3<T, U> Vec3<T>::safeProject(const Vec3& vec, const Vec3<U>& onto) noexcept
-        requires StrictArithmetic<T>
-    { return vec.safeProject(onto); }
-
-
-    template <Arithmetic T>
-    template <StrictArithmetic U>
-        requires StrictSignedness<T, U>
-    FALCON_INLINE constexpr PromotedVec3<T, U> Vec3<T>::safeProjectNorm(const Vec3& vec, const Vec3<U>& onto) noexcept
-        requires StrictArithmetic<T>
-    { return vec.safeProjectNorm(onto); }
 
 
     template <Arithmetic T>
@@ -1283,28 +1251,9 @@ namespace flcn
     }
 
 
-    template <Arithmetic T>
-    template <StrictArithmetic U>
-        requires StrictSignedness<T, U>
-    FALCON_INLINE constexpr PromotedFloatVec3<T, U> Vec3<T>::tryProject(const Vec3& vec, const Vec3<U>& onto,
-                                                                        OperationStatus& status) noexcept
-        requires StrictArithmetic<T>
-    { return vec.tryProject(onto, status); }
-
-
-    template <Arithmetic T>
-    template <StrictArithmetic U>
-        requires StrictSignedness<T, U>
-    FALCON_INLINE constexpr PromotedVec3<T, U> Vec3<T>::tryProjectNorm(const Vec3& vec, const Vec3<U>& onto,
-                                                                       OperationStatus& status) noexcept
-        requires StrictArithmetic<T>
-    { return vec.tryProjectNorm(onto, status); }
-
 
     /*************************************
-     *                                   *
      *         VECTOR REJECTION          *
-     *                                   *
      *************************************/
 
     template <Arithmetic T>
@@ -1321,22 +1270,6 @@ namespace flcn
     FALCON_INLINE constexpr PromotedVec3<T, U> Vec3<T>::rejectNorm(const Vec3<U>& from) const noexcept
         requires StrictArithmetic<T>
     { return *this - this->projectNorm(from); }
-
-
-    template <Arithmetic T>
-    template <StrictArithmetic U>
-        requires StrictSignedness<T, U>
-    FALCON_INLINE constexpr PromotedFloatVec3<T, U> Vec3<T>::reject(const Vec3& vector, const Vec3<U>& from) noexcept
-        requires StrictArithmetic<T>
-    { return vector.reject(from); }
-
-
-    template <Arithmetic T>
-    template <StrictArithmetic U>
-        requires StrictSignedness<T, U>
-    FALCON_INLINE constexpr PromotedVec3<T, U> Vec3<T>::rejectNorm(const Vec3& vector, const Vec3<U>& from) noexcept
-        requires StrictArithmetic<T>
-    { return vector.rejectNorm(from); }
 
 
     template <Arithmetic T>
@@ -1372,22 +1305,6 @@ namespace flcn
     template <Arithmetic T>
     template <StrictArithmetic U>
         requires StrictSignedness<T, U>
-    FALCON_INLINE constexpr PromotedFloatVec3<T, U> Vec3<T>::safeReject(const Vec3& vec, const Vec3<U>& from) noexcept
-        requires StrictArithmetic<T>
-    { return vec.safeReject(from); }
-
-
-    template <Arithmetic T>
-    template <StrictArithmetic U>
-        requires StrictSignedness<T, U>
-    FALCON_INLINE constexpr PromotedVec3<T, U> Vec3<T>::safeRejectNorm(const Vec3& vec, const Vec3<U>& from) noexcept
-        requires StrictArithmetic<T>
-    { return vec.safeRejectNorm(from); }
-
-
-    template <Arithmetic T>
-    template <StrictArithmetic U>
-        requires StrictSignedness<T, U>
     FALCON_INLINE constexpr PromotedFloatVec3<T, U> Vec3<T>::tryReject(const Vec3<U>& from,
                                                                        OperationStatus& status) const noexcept
         requires StrictArithmetic<T>
@@ -1417,24 +1334,6 @@ namespace flcn
 
         return *this - this->tryProjectNorm(from, status);
     }
-
-
-    template <Arithmetic T>
-    template <StrictArithmetic U>
-        requires StrictSignedness<T, U>
-    FALCON_INLINE constexpr PromotedFloatVec3<T, U> Vec3<T>::tryReject(const Vec3& vec, const Vec3<U>& from,
-                                                                       OperationStatus& status) noexcept
-        requires StrictArithmetic<T>
-    { return vec.tryReject(from, status); }
-
-
-    template <Arithmetic T>
-    template <StrictArithmetic U>
-        requires StrictSignedness<T, U>
-    FALCON_INLINE constexpr PromotedVec3<T, U> Vec3<T>::tryRejectNorm(const Vec3& vec, const Vec3<U>& from,
-                                                                      OperationStatus& status) noexcept
-        requires StrictArithmetic<T>
-    { return vec.tryRejectNorm(from, status); }
 
 
 

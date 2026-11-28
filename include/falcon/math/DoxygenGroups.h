@@ -555,6 +555,7 @@
      *   @defgroup Falcon_Math_Bounds Boundary functions like min, max, clamp.
      *   @defgroup Falcon_Math_Interpolation Interpolation functions like mix, slerp
      *   @defgroup Falcon_Math_Normalization Vector/Quaternion normalization wrappers.
+     *   @defgroup Falcon_Math_Projection Vector projection/rejection wrappers.
      * @}
      */
     /**

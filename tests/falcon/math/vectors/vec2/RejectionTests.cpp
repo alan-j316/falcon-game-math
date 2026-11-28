@@ -9,8 +9,6 @@
  */
 
 
-#include "Vec2TestSetup.h"
-
 
 
 /**
@@ -18,54 +16,16 @@
  * @{
  */
 
+
+#include "ProjectionTestFixture.h"
+#include "Vec2TestSetup.h"
+
+
 namespace
 {
-    /**************************************
-     *           TEST SETUP               *
-     **************************************/
-
-    /**
-     * @brief Test fixture for @ref flcn::Vec2 rejection.
-     *
-     * @tparam T The scalar type (e.g., float, double) used for the vectors.
-     */
-    template <typename T>
-    class Vec2RejectionTests: public testing::Test
-    {
-    protected:
-        flcn::Vec2<T> _vec;
-        flcn::Vec2<T> _parallelVec;
-        flcn::Vec2<T> _fromVec;
-        flcn::Vec2<T> _expectedRejection;
-
-        void SetUp() override
-        {
-            _vec               = { T(4), T(0) };
-            _parallelVec       = { T(6), T(0) };
-            _fromVec           = { T(0), T(2) };
-            _expectedRejection = { T(4), T(0) };
-        }
-    };
-    TYPED_TEST_SUITE(Vec2RejectionTests, SupportedArithmeticTypes);
-
-
-
-    /**
-     * @brief Test fixture for @ref flcn::Vec2 rejection with NaN vectors.
-     */
-    class Vec2RejectionNaNTests: public testing::TestWithParam<flcn::Vec2<float>>
-    {};
-    INSTANTIATE_TEST_SUITE_P(Vec2RejectionNaNVectors, Vec2RejectionNaNTests,
-                             ::testing::Values(flcn::Vec2<float>(flcn::constants::NaN, 1.0f),
-                                               flcn::Vec2<float>(1.0f, flcn::constants::NaN),
-                                               flcn::Vec2<float>(flcn::constants::NaN, flcn::constants::NaN)));
-
-
-
-
-    /**************************************
-     *           STATIC TESTS             *
-     **************************************/
+    /// +---------------------------------------------------------------------------------------+
+    /// |                                STATIC TESTS                                           |
+    /// +---------------------------------------------------------------------------------------+
 
     namespace static_tests
     {
@@ -77,45 +37,21 @@ namespace
         static_assert(REJ_VEC.x() == 0);
         static_assert(REJ_VEC.y() == 2);
 
-        /// @test Verify that vector rejection(reject-static wrapper) returns a valid vector at compile time.
-        constexpr auto REJ_VEC_STATIC = flcn::Vec2<int>::reject(VEC_A, VEC_B);
-        static_assert(REJ_VEC_STATIC.x() == 0);
-        static_assert(REJ_VEC_STATIC.y() == 2);
-
-
         /// @test Verify that vector rejection(reject normalized) returns a valid vector at compile time.
         constexpr auto REJ_NORM_VEC = VEC_A.rejectNorm(VEC_B);
         static_assert(REJ_NORM_VEC.x() == 0);
         static_assert(REJ_NORM_VEC.y() == 2);
-
-        /// @test Verify that vector rejection(reject normalized-static wrapper) returns a valid vector at compile
-        /// time.
-        constexpr auto REJ_NORM_VEC_STATIC = flcn::Vec2<int>::rejectNorm(VEC_A, VEC_B);
-        static_assert(REJ_NORM_VEC_STATIC.x() == 0);
-        static_assert(REJ_NORM_VEC_STATIC.y() == 2);
-
 
         /// @test Verify that vector rejection(safe reject) returns a valid vector at compile time.
         constexpr auto SAFE_REJ_VEC = VEC_A.safeReject(VEC_B);
         static_assert(SAFE_REJ_VEC.x() == 0);
         static_assert(SAFE_REJ_VEC.y() == 2);
 
-        /// @test Verify that vector rejection(safe reject-static wrapper) returns a valid vector at compile time.
-        constexpr auto SAFE_REJ_VEC_STATIC = flcn::Vec2<int>::safeReject(VEC_A, VEC_B);
-        static_assert(SAFE_REJ_VEC_STATIC.x() == 0);
-        static_assert(SAFE_REJ_VEC_STATIC.y() == 2);
-
-
         /// @test Verify that vector rejection(safe reject normalized) returns a valid vector at compile time.
         constexpr auto SAFE_REJ_NORM_VEC = VEC_A.safeRejectNorm(VEC_B);
         static_assert(SAFE_REJ_NORM_VEC.x() == 0);
         static_assert(SAFE_REJ_NORM_VEC.y() == 2);
 
-        /// @test Verify that vector rejection(safe reject normalized-static wrapper) returns a valid vector at
-        /// compile time.
-        constexpr auto SAFE_REJ_NORM_VEC_STATIC = flcn::Vec2<int>::safeRejectNorm(VEC_A, VEC_B);
-        static_assert(SAFE_REJ_NORM_VEC_STATIC.x() == 0);
-        static_assert(SAFE_REJ_NORM_VEC_STATIC.y() == 2);
     } // namespace static_tests
 } // namespace
 
@@ -199,18 +135,6 @@ TYPED_TEST(Vec2RejectionTests, NonOrthogonalRejectionReturnsNonZeroVector)
 
 
 /**
- * @test Verify that rejecting from a non-orthogonal vector using static variant of @ref flcn::Vec2::reject
- *       returns a non-zero vector with perpendicular component.
- */
-TYPED_TEST(Vec2RejectionTests, StaticWrapper_NonOrthogonalRejectionReturnsNonZeroVector)
-{
-    const flcn::Vec2 actualRejection = flcn::Vec2<TypeParam>::reject(this->_vec, this->_fromVec);
-
-    EXPECT_VEC_EQ(this->_expectedRejection, actualRejection);
-}
-
-
-/**
  * @test Verify that rejecting from an orthogonal unit vector using @ref flcn::Vec2::rejectNorm
  *       returns a non-zero vector with perpendicular component.
  */
@@ -269,40 +193,10 @@ TEST(Vec2RejectionTests, MixedTypeRejectionPromotesType)
 }
 
 
-/**
- * @test Verify that rejecting from an orthogonal unit vector using static variant of @ref flcn::Vec2::rejectNorm
- *       returns a non-zero vector with perpendicular component.
- */
-TEST(Vec2RejectionTests, StaticWrapper_RejectionFromNormalizedVectorReturnsNonZeroVector)
-{
-    // Given an arbitrary vector and a normalized vector
-    const flcn::Vec2 a(1.0f, 2.0f);
-    const flcn::Vec2 b(1.0f, 0.0f);
-    const flcn::Vec2 expectedRejection(0.0f, 2.0f);
-
-    // When rejected from another
-    const flcn::Vec2 actualRejection = flcn::Vec2<float>::rejectNorm(a, b);
-
-    // Then, the resultant vector has components perpendicular to the `from` vector.
-    EXPECT_VEC_EQ(expectedRejection, actualRejection);
-}
-
-
 /** @test Verify that rejection using @ref flcn::Vec2::reject always return floating-point vector. */
 TYPED_TEST(Vec2RejectionTests, Reject_AlwaysReturnFloatingPointVector)
 {
     [[maybe_unused]] const flcn::Vec2 rejection = this->_vec.reject(this->_fromVec);
-    static_assert(std::is_floating_point_v<typename decltype(rejection)::ValueType>);
-}
-
-
-/**
- * @test Verify that rejection using static variant of @ref flcn::Vec2::reject
- *       always return floating-point vector.
- */
-TYPED_TEST(Vec2RejectionTests, StaticWrapper_Reject_AlwaysReturnFloatingPointVector)
-{
-    [[maybe_unused]] const flcn::Vec2 rejection = flcn::Vec2<TypeParam>::reject(this->_vec, this->_fromVec);
     static_assert(std::is_floating_point_v<typename decltype(rejection)::ValueType>);
 }
 
@@ -407,61 +301,6 @@ TEST(Vec2RejectionTests, SafeRejectNorm_FromNaNVectorReturnsNonZeroVector)
 
 
 /**
- * @test Verify that safely rejecting from an orthogonal unit vector using static variant of
- *       @ref flcn::Vec2::safeRejectNorm returns a non-zero vector with perpendicular component.
- */
-TEST(Vec2RejectionTests, StaticWrapper_SafeRejectNorm_FromNormalizedVectorReturnsNonZeroVector)
-{
-    // Given an arbitrary vector and a normalized vector
-    const flcn::Vec2 a(1.0f, 2.0f);
-    const flcn::Vec2 b(1.0f, 0.0f);
-    const flcn::Vec2 expectedRejection(0.0f, 2.0f);
-
-    // When rejected from another
-    const flcn::Vec2 actualRejection = flcn::Vec2<float>::safeRejectNorm(a, b);
-
-    // Then, the resultant vector has components perpendicular to the `from` vector.
-    EXPECT_VEC_EQ(expectedRejection, actualRejection);
-}
-
-
-/**
- * @test Verify that safely rejecting a NaN vector from a non-orthogonal unit vector using static variant of
- *       @ref flcn::Vec2::safeRejectNorm returns a zero vector.
- */
-TEST(Vec2RejectionTests, StaticWrapper_SafeRejectNorm_NaNVectorReturnsNonZeroVector)
-{
-    // Given a NaN vector
-    const flcn::Vec2 a(1.0f, flcn::constants::NaN);
-    const flcn::Vec2 b(1.0f, 0.0f);
-
-    // When the vector is rejected onto the normalized vector
-    const flcn::Vec2 actualRejection = flcn::Vec2<float>::safeRejectNorm(a, b);
-
-    // Then, the resultant vector is a zero vector
-    EXPECT_VEC_ZERO(actualRejection);
-}
-
-
-/**
- * @test Verify that safely rejecting from a NaN vector using static variant of
- *       @ref flcn::Vec2::safeRejectNorm returns a zero vector.
- */
-TEST(Vec2RejectionTests, StaticWrapper_SafeRejectNorm_FromNaNVectorReturnsNonZeroVector)
-{
-    // Given an arbitrary vector
-    const flcn::Vec2 a(1.0f, 2.0f);
-    const flcn::Vec2 b(1.0f, flcn::constants::NaN);
-
-    // When the vector is rejected from a NaN vector
-    const flcn::Vec2 actualRejection = flcn::Vec2<float>::safeRejectNorm(a, b);
-
-    // Then, the resultant vector is a zero vector
-    EXPECT_VEC_ZERO(actualRejection);
-}
-
-
-/**
  * @test Verify that safely rejecting a vector from another vector of different numeric
  *       type using @ref flcn::Vec2::safeReject returns a type-promoted vector.
  */
@@ -496,95 +335,10 @@ TYPED_TEST(Vec2RejectionTests, SafeReject_FromZeroVectorReturnsSameVector)
 }
 
 
-/**
- * @test Verify that safely rejecting from a parallel vector using static variant of @ref flcn::Vec2::safeReject
- *       returns a zero vector.
- */
-TYPED_TEST(Vec2RejectionTests, StaticWrapper_SafeReject_ParallelVectorsReturnsZeroVector)
-{
-    const flcn::Vec2 actualRejection = flcn::Vec2<TypeParam>::safeReject(this->_vec, this->_parallelVec);
-
-    EXPECT_VEC_ZERO(actualRejection);
-}
-
-
-/**
- * @test Verify that safely rejecting a vector from an orthogonal vector using
- *       static variant of @ref flcn::Vec2::safeReject returns the original vector.
- */
-TEST(Vec2RejectionTests, StaticWrapper_SafeReject_OrthogonalRejectionReturnsOriginalVector)
-{
-    const flcn::Vec2 a(0.0f, 2.0f);
-    const flcn::Vec2 b(1.0f, 0.0f);
-
-    const flcn::Vec2 actualRejection = flcn::Vec2<float>::safeReject(a, b);
-
-    EXPECT_VEC_EQ(a, actualRejection);
-}
-
-
-/**
- * @test Verify that safely rejecting from a non-orthogonal vector using static variant of
- *       @ref flcn::Vec2::safeReject returns a non-zero vector with perpendicular component.
- */
-TYPED_TEST(Vec2RejectionTests, StaticWrapper_SafeReject_NonOrthogonalRejectionReturnsNonZeroVector)
-{
-    const flcn::Vec2 actualRejection = flcn::Vec2<TypeParam>::safeReject(this->_vec, this->_fromVec);
-
-    EXPECT_VEC_EQ(this->_expectedRejection, actualRejection);
-}
-
-
-/**
- * @test Verify that safely rejecting a vector from another vector of different numeric type
- *       using static variant of @ref flcn::Vec2::safeReject returns a type-promoted vector.
- */
-TEST(Vec2RejectionTests, StaticWrapper_SafeReject_MixedTypeRejectionPromotesType)
-{
-    // Given two arbitrary vectors
-    const flcn::Vec2 vec(7, 13);
-    const flcn::Vec2 from(2.0, 4.0);
-    const flcn::Vec2 expectedRejection(0.4, -0.2);
-
-    // When rejected from another
-    const flcn::Vec2 actualRejection = flcn::Vec2<int>::safeReject(vec, from);
-
-    // Then, the resultant vector is type promoted
-    static_assert(std::is_same_v<decltype(actualRejection)::ValueType, double>);
-    // and is the rejection
-    EXPECT_VEC_EQ(expectedRejection, actualRejection);
-}
-
-
-/**
- * @test Verify that safely rejecting from a zero length vector using static variant of @ref flcn::Vec2::safeReject
- *       returns the same vector.
- */
-TYPED_TEST(Vec2RejectionTests, StaticWrapper_SafeReject_FromZeroVectorReturnsSameVector)
-{
-    const flcn::Vec2 zeroVec = flcn::Vec2<TypeParam>::zero();
-
-    const flcn::Vec2 actualRejection = flcn::Vec2<TypeParam>::safeReject(this->_vec, zeroVec);
-
-    EXPECT_VEC_EQ(this->_vec, actualRejection);
-}
-
-
 /** @test Verify that rejection using @ref flcn::Vec2::safeReject always return floating-point vector. */
 TYPED_TEST(Vec2RejectionTests, SafeReject_AlwaysReturnFloatingPointVector)
 {
     [[maybe_unused]] const flcn::Vec2 rejection = this->_vec.safeReject(this->_fromVec);
-    static_assert(std::is_floating_point_v<typename decltype(rejection)::ValueType>);
-}
-
-
-/**
- * @test Verify that rejection using static variant of @ref flcn::Vec2::safeReject
- *       always return floating-point vector.
- */
-TYPED_TEST(Vec2RejectionTests, StaticWrapper_SafeReject_AlwaysReturnFloatingPointVector)
-{
-    [[maybe_unused]] const flcn::Vec2 rejection = flcn::Vec2<TypeParam>::safeReject(this->_vec, this->_fromVec);
     static_assert(std::is_floating_point_v<typename decltype(rejection)::ValueType>);
 }
 
@@ -612,32 +366,6 @@ TEST_P(Vec2RejectionNaNTests, SafeReject_OntoNaNVectorReturnsZeroVectorAndSetsCo
     const auto& ontoNaNVec = GetParam();
 
     EXPECT_VEC_ZERO(oneVec.safeReject(ontoNaNVec));
-}
-
-
-/**
- * @test Verify that the rejection of NaN vector using static variant of @ref flcn::Vec2::safeReject
- *       returns zero vector.
- */
-TEST_P(Vec2RejectionNaNTests, StaticWrapper_SafeReject_NaNVectorReturnsZeroVector)
-{
-    const auto& nanVec  = GetParam();
-    const auto& ontoVec = flcn::Vec2<float>::one();
-
-    EXPECT_VEC_ZERO(flcn::Vec2<float>::safeReject(nanVec, ontoVec));
-}
-
-
-/**
- * @test Verify that rejecting onto a NaN vector using static variant of @ref flcn::Vec2::safeReject
- *       returns zero vector.
- */
-TEST_P(Vec2RejectionNaNTests, StaticWrapper_SafeReject_OntoNaNVectorReturnsZeroVector)
-{
-    const auto& oneVec     = flcn::Vec2<float>::one();
-    const auto& ontoNaNVec = GetParam();
-
-    EXPECT_VEC_ZERO(flcn::Vec2<float>::safeReject(oneVec, ontoNaNVec));
 }
 
 
@@ -798,161 +526,6 @@ TYPED_TEST(Vec2RejectionTests, TryReject_FromZeroVectorReturnsSameVectorAndSetsC
 }
 
 
-/**
- * @test Verify that safely rejecting from a parallel vector using static variant of @ref flcn::Vec2::tryReject
- *       returns a zero vector and sets flag to @ref flcn::OperationStatus::SUCCESS.
- */
-TYPED_TEST(Vec2RejectionTests, StaticWrapper_TryReject_ParallelVectorsReturnsZeroVectorAndSetsCorrectStatusFlag)
-{
-    flcn::OperationStatus flag;
-
-    const flcn::Vec2 actualRejection = flcn::Vec2<TypeParam>::tryReject(this->_vec, this->_parallelVec, flag);
-
-    EXPECT_VEC_ZERO(actualRejection);
-    EXPECT_EQ(flcn::OperationStatus::SUCCESS, flag);
-}
-
-
-/**
- * @test Verify that safely rejecting a vector from an orthogonal vector using
- *       static variant of @ref flcn::Vec2::tryReject returns the original vector
- *       and sets flag to @ref flcn::OperationStatus::SUCCESS.
- */
-TEST(Vec2RejectionTests, StaticWrapper_TryReject_OrthogonalRejectionReturnsOriginalVectorAndSetsCorrectStatusFlag)
-{
-    const flcn::Vec2 a(0.0f, 2.0f);
-    const flcn::Vec2 b(1.0f, 0.0f);
-    flcn::OperationStatus flag;
-
-    const flcn::Vec2 actualRejection = flcn::Vec2<float>::tryReject(a, b, flag);
-
-    EXPECT_VEC_EQ(a, actualRejection);
-    EXPECT_EQ(flcn::OperationStatus::SUCCESS, flag);
-}
-
-
-/**
- * @test Verify that safely rejecting from a non-orthogonal vector using static variant of
- *       @ref flcn::Vec2::tryReject returns a non-zero vector with perpendicular component
- *       and sets flag to @ref flcn::OperationStatus::SUCCESS.
- */
-TYPED_TEST(Vec2RejectionTests,
-           StaticWrapper_TryReject_NonOrthogonalRejectionReturnsNonZeroVectorAndSetsCorrectStatusFlag)
-{
-    flcn::OperationStatus flag;
-
-    const flcn::Vec2 actualRejection = flcn::Vec2<TypeParam>::tryReject(this->_vec, this->_fromVec, flag);
-
-    EXPECT_VEC_EQ(this->_expectedRejection, actualRejection);
-    EXPECT_EQ(flcn::OperationStatus::SUCCESS, flag);
-}
-
-
-/**
- * @test Verify that safely rejecting from an orthogonal unit vector using static variant of
- *       @ref flcn::Vec2::tryRejectNorm returns a non-zero vector and with perpendicular component sets flag to
- *       @ref flcn::OperationStatus::SUCCESS.
- */
-TEST(Vec2RejectionTests, StaticWrapper_TryRejectNorm_FromNormalizedVectorReturnsNonZeroVectorAndSetsCorrectStatusFlag)
-{
-    // Given an arbitrary vector and a normalized vector
-    const flcn::Vec2 a(1.0f, 2.0f);
-    const flcn::Vec2 b(1.0f, 0.0f);
-    const flcn::Vec2 expectedRejection(0.0f, 2.0f);
-    flcn::OperationStatus flag;
-
-
-    // When rejected from another
-    const flcn::Vec2 actualRejection = flcn::Vec2<float>::tryRejectNorm(a, b, flag);
-
-    // Then, the resultant vector has components perpendicular to the `from` vector.
-    EXPECT_VEC_EQ(expectedRejection, actualRejection);
-    EXPECT_EQ(flcn::OperationStatus::SUCCESS, flag);
-}
-
-/**
- * @test Verify that safely rejecting NaN vector from an orthogonal unit vector using static variant of
- *       @ref flcn::Vec2::tryRejectNorm returns a zero vector and sets flag to @ref flcn::OperationStatus::NANOPERAND.
- */
-TEST(Vec2RejectionTests, StaticWrapper_TryRejectNorm_NaNVectorReturnsZeroVectorAndSetsCorrectStatusFlag)
-{
-    // Given an arbitrary vector and a normalized vector
-    const flcn::Vec2 a(1.0f, flcn::constants::NaN);
-    const flcn::Vec2 b(1.0f, 0.0f);
-    flcn::OperationStatus flag;
-
-
-    // When rejected from another
-    const flcn::Vec2 actualRejection = flcn::Vec2<float>::tryRejectNorm(a, b, flag);
-
-    // Then, the resultant vector has components perpendicular to the `from` vector.
-    EXPECT_VEC_ZERO(actualRejection);
-    EXPECT_EQ(flcn::OperationStatus::NANOPERAND, flag);
-}
-
-
-/**
- * @test Verify that safely rejecting from an NaN vector using static variant of @ref flcn::Vec2::tryRejectNorm
- *       returns a zero vector and sets flag to @ref flcn::OperationStatus::NANOPERAND.
- */
-TEST(Vec2RejectionTests, StaticWrapper_TryRejectNorm_FromNaNVectorReturnsZeroVectorAndSetsCorrectStatusFlag)
-{
-    // Given an arbitrary vector and a normalized vector
-    const flcn::Vec2 a(1.0f, 2.0f);
-    const flcn::Vec2 b(1.0f, flcn::constants::NaN);
-    flcn::OperationStatus flag;
-
-
-    // When rejected from another
-    const flcn::Vec2 actualRejection = flcn::Vec2<float>::tryRejectNorm(a, b, flag);
-
-    // Then, the resultant vector has components perpendicular to the `from` vector.
-    EXPECT_VEC_ZERO(actualRejection);
-    EXPECT_EQ(flcn::OperationStatus::NANOPERAND, flag);
-}
-
-
-/**
- * @test Verify that safely rejecting a vector from another vector of different numeric type
- *       using static variant of @ref flcn::Vec2::tryReject returns a type-promoted vector
- *       and sets flag to @ref flcn::OperationStatus::SUCCESS.
- */
-TEST(Vec2RejectionTests, StaticWrapper_TryReject_MixedTypeRejectionPromotesType)
-{
-    // Given two arbitrary vectors
-    const flcn::Vec2 vec(7, 13);
-    const flcn::Vec2 from(2.0, 4.0);
-    const flcn::Vec2 expectedRejection(0.4, -0.2);
-    flcn::OperationStatus flag;
-
-    // When rejected from another
-    const flcn::Vec2 actualRejection = flcn::Vec2<int>::tryReject(vec, from, flag);
-
-    // Then, the resultant vector is type promoted
-    static_assert(std::is_same_v<decltype(actualRejection)::ValueType, double>);
-    // and is the rejection
-    EXPECT_VEC_EQ(expectedRejection, actualRejection);
-    // Flag is set to SUCCESS
-    EXPECT_EQ(flcn::OperationStatus::SUCCESS, flag);
-}
-
-
-/**
- * @test Verify that safely rejecting from a zero length vector using static variant of @ref flcn::Vec2::tryReject
- *       returns the same vector and sets flag to @ref flcn::OperationStatus::DIVISIONBYZERO.
- */
-TYPED_TEST(Vec2RejectionTests, StaticWrapper_TryReject_FromZeroVectorReturnsSameVectorAndSetsCorrectStatusFlag)
-{
-    const flcn::Vec2 zeroVec = flcn::Vec2<TypeParam>::zero();
-    flcn::OperationStatus flag;
-
-    const flcn::Vec2 actualRejection = flcn::Vec2<TypeParam>::tryReject(this->_vec, zeroVec, flag);
-
-    EXPECT_VEC_EQ(this->_vec, actualRejection);
-    EXPECT_EQ(flcn::OperationStatus::DIVISIONBYZERO, flag);
-}
-
-
 /** @test Verify that rejection using @ref flcn::Vec2::tryReject always return floating-point vector. */
 TYPED_TEST(Vec2RejectionTests, TryRejectAlwaysReturnFloatingPointVector)
 {
@@ -960,19 +533,6 @@ TYPED_TEST(Vec2RejectionTests, TryRejectAlwaysReturnFloatingPointVector)
     [[maybe_unused]] const flcn::Vec2 rejection = this->_vec.tryReject(this->_fromVec, status);
     static_assert(std::is_floating_point_v<typename decltype(rejection)::ValueType>);
 }
-
-
-/**
- * @test Verify that rejection using static variant of @ref flcn::Vec2::tryReject
- *       always return floating-point vector.
- */
-TYPED_TEST(Vec2RejectionTests, StaticWrapper_TryReject_AlwaysReturnFloatingPointVector)
-{
-    [[maybe_unused]] flcn::OperationStatus status;
-    [[maybe_unused]] const flcn::Vec2 rejection = flcn::Vec2<TypeParam>::tryReject(this->_vec, this->_fromVec, status);
-    static_assert(std::is_floating_point_v<typename decltype(rejection)::ValueType>);
-}
-
 
 
 /**
@@ -1001,36 +561,6 @@ TEST_P(Vec2RejectionNaNTests, TryReject_OntoNaNVectorReturnsZeroVectorAndSetsCor
     flcn::OperationStatus flag;
 
     EXPECT_VEC_ZERO(oneVec.tryReject(ontoNaNVec, flag));
-    EXPECT_EQ(flcn::OperationStatus::NANOPERAND, flag);
-}
-
-
-/**
- * @test Verify that the rejection of NaN vector using static variant of @ref flcn::Vec2::tryReject
- *       returns zero vector and sets the flag to @ref flcn::OperationStatus::NANOPERAND.
- */
-TEST_P(Vec2RejectionNaNTests, StaticWrapper_TryReject_NaNVectorReturnsZeroVectorAndSetsCorrectFlag)
-{
-    const auto& nanVec  = GetParam();
-    const auto& ontoVec = flcn::Vec2<float>::one();
-    flcn::OperationStatus flag;
-
-    EXPECT_VEC_ZERO(flcn::Vec2<float>::tryReject(nanVec, ontoVec, flag));
-    EXPECT_EQ(flcn::OperationStatus::NANOPERAND, flag);
-}
-
-
-/**
- * @test Verify that the rejection onto NaN vector using static variant of @ref flcn::Vec2::tryReject
- *       returns zero vector and sets the flag to @ref flcn::OperationStatus::NANOPERAND.
- */
-TEST_P(Vec2RejectionNaNTests, StaticWrapper_TryReject_OntoNaNVectorReturnsZeroVectorAndSetsCorrectFlag)
-{
-    const auto& oneVec     = flcn::Vec2<float>::one();
-    const auto& ontoNaNVec = GetParam();
-    flcn::OperationStatus flag;
-
-    EXPECT_VEC_ZERO(flcn::Vec2<float>::tryReject(oneVec, ontoNaNVec, flag));
     EXPECT_EQ(flcn::OperationStatus::NANOPERAND, flag);
 }
 

@@ -9,10 +9,11 @@
  */
 
 #ifdef ENABLE_DEBUG_TESTS
-    #include "../../../CommonSetup.h"
+    #include "CommonSetup.h"
 
     #include <falcon/math/vectors/Vec2.h>
     #include <gtest/gtest.h>
+    #include "NormalizationTestFixture.h"
 
 namespace
 {
@@ -49,29 +50,6 @@ namespace
         }
     };
     TYPED_TEST_SUITE(Vec2ScalarDivisionTests, SupportedArithmeticTypes);
-
-
-    /**
-     * @brief Test fixture for @ref Vec2 normalization.
-     * @tparam T The scalar type (int, float, double...) of the vector components.
-     */
-    template <typename T>
-    class Vec2NormalizationTests: public testing::Test
-    {
-        using R = flcn::Magnitude<T>;
-
-    protected:
-        flcn::Vec2<T> _vec;
-        flcn::Vec2<R> _expectedUnitVec;
-
-        void SetUp() override
-        {
-            _vec             = { T(14), T(27) };
-            _expectedUnitVec = { static_cast<R>(0.46031716445500037), static_cast<R>(0.8877545314489294) };
-        }
-    };
-    TYPED_TEST_SUITE(Vec2NormalizationTests, SupportedArithmeticTypes);
-
 
 
     /**
@@ -162,13 +140,6 @@ TYPED_TEST(Vec2NormalizationTests, ZeroMagnitudeTriggersAssertInDebugMode)
 }
 
 
-TYPED_TEST(Vec2NormalizationTests, StaticWrapper_ZeroMagnitudeTriggersAssertInDebugMode)
-{
-    const flcn::Vec2<TypeParam> zVec(0, 0);
-    EXPECT_DEBUG_DEATH(static_cast<void>(flcn::Vec2<TypeParam>::normalize(zVec)), "");
-}
-
-
 TYPED_TEST(Vec2ProjectionTests, ProjectionOntoZeroVectorTriggersAssertionInCallback)
 {
     const flcn::Vec2<TypeParam> zeroVec(0, 0);
@@ -176,23 +147,10 @@ TYPED_TEST(Vec2ProjectionTests, ProjectionOntoZeroVectorTriggersAssertionInCallb
 }
 
 
-TYPED_TEST(Vec2ProjectionTests, StaticWrapper_ProjectionOntoZeroVectorTriggersAssertionInCallback)
-{
-    const flcn::Vec2<TypeParam> zeroVec(0, 0);
-    EXPECT_DEBUG_DEATH(static_cast<void>(flcn::Vec2<TypeParam>::project(this->_vec, zeroVec)), "");
-}
-
 TYPED_TEST(Vec2RejectionTests, FromZeroVectorTriggersAssertionInCallback)
 {
     const flcn::Vec2<TypeParam> zeroVec(0, 0);
     EXPECT_DEBUG_DEATH(static_cast<void>(this->_vec.reject(zeroVec)), "");
-}
-
-
-TYPED_TEST(Vec2RejectionTests, StaticWrapper_FromZeroVectorTriggersAssertionInCallback)
-{
-    const flcn::Vec2<TypeParam> zeroVec(0, 0);
-    EXPECT_DEBUG_DEATH(static_cast<void>(flcn::Vec2<TypeParam>::reject(this->_vec, zeroVec)), "");
 }
 
 #endif

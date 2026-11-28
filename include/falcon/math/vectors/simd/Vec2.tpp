@@ -1014,18 +1014,6 @@ namespace flcn::simd
 
 
     template <Arithmetic T>
-    FALCON_INLINE constexpr Vec2<T> Vec2<T>::project(const Vec2& vec, const Vec2& onto) noexcept
-        requires FPArithmetic<T>
-    { return vec.project(onto); }
-
-
-    template <Arithmetic T>
-    FALCON_INLINE constexpr Vec2<T> Vec2<T>::projectNorm(const Vec2& vec, const Vec2& onto) noexcept
-        requires FPArithmetic<T>
-    { return vec.projectNorm(onto); }
-
-
-    template <Arithmetic T>
     FALCON_INLINE constexpr Vec2<T> Vec2<T>::safeProject(const Vec2& onto) const noexcept
         requires FPArithmetic<T>
     {
@@ -1050,18 +1038,6 @@ namespace flcn::simd
 
         return this->dot(onto) * onto;
     }
-
-
-    template <Arithmetic T>
-    FALCON_INLINE constexpr Vec2<T> Vec2<T>::safeProject(const Vec2& vec, const Vec2& onto) noexcept
-        requires FPArithmetic<T>
-    { return vec.safeProject(onto); }
-
-
-    template <Arithmetic T>
-    FALCON_INLINE constexpr Vec2<T> Vec2<T>::safeProjectNorm(const Vec2& vec, const Vec2& onto) noexcept
-        requires FPArithmetic<T>
-    { return vec.safeProjectNorm(onto); }
 
 
     template <Arithmetic T>
@@ -1099,20 +1075,6 @@ namespace flcn::simd
     }
 
 
-    template <Arithmetic T>
-    FALCON_INLINE constexpr Vec2<T> Vec2<T>::tryProject(const Vec2& vec, const Vec2& onto,
-                                                        OperationStatus& status) noexcept
-        requires FPArithmetic<T>
-    { return vec.tryProject(onto, status); }
-
-
-    template <Arithmetic T>
-    FALCON_INLINE constexpr Vec2<T> Vec2<T>::tryProjectNorm(const Vec2& vec, const Vec2& onto,
-                                                            OperationStatus& status) noexcept
-        requires FPArithmetic<T>
-    { return vec.tryProjectNorm(onto, status); }
-
-
 
     /*************************************
      *         VECTOR REJECTION          *
@@ -1128,18 +1090,6 @@ namespace flcn::simd
     FALCON_INLINE constexpr Vec2<T> Vec2<T>::rejectNorm(const Vec2& from) const noexcept
         requires FPArithmetic<T>
     { return *this - this->projectNorm(from); }
-
-
-    template <Arithmetic T>
-    FALCON_INLINE constexpr Vec2<T> Vec2<T>::reject(const Vec2& vec, const Vec2& from) noexcept
-        requires FPArithmetic<T>
-    { return vec.reject(from); }
-
-
-    template <Arithmetic T>
-    FALCON_INLINE constexpr Vec2<T> Vec2<T>::rejectNorm(const Vec2& vec, const Vec2& from) noexcept
-        requires FPArithmetic<T>
-    { return vec.rejectNorm(from); }
 
 
     template <Arithmetic T>
@@ -1169,18 +1119,6 @@ namespace flcn::simd
 
 
     template <Arithmetic T>
-    FALCON_INLINE constexpr Vec2<T> Vec2<T>::safeReject(const Vec2& vec, const Vec2& from) noexcept
-        requires FPArithmetic<T>
-    { return vec.safeReject(from); }
-
-
-    template <Arithmetic T>
-    FALCON_INLINE constexpr Vec2<T> Vec2<T>::safeRejectNorm(const Vec2& vec, const Vec2& from) noexcept
-        requires FPArithmetic<T>
-    { return vec.safeRejectNorm(from); }
-
-
-    template <Arithmetic T>
     FALCON_INLINE constexpr Vec2<T> Vec2<T>::tryReject(const Vec2& from, OperationStatus& status) const noexcept
         requires FPArithmetic<T>
     {
@@ -1206,20 +1144,6 @@ namespace flcn::simd
 
         return *this - this->tryProjectNorm(from, status);
     }
-
-
-    template <Arithmetic T>
-    FALCON_INLINE constexpr Vec2<T> Vec2<T>::tryReject(const Vec2& vec, const Vec2& from,
-                                                       OperationStatus& status) noexcept
-        requires FPArithmetic<T>
-    { return vec.tryReject(from, status); }
-
-
-    template <Arithmetic T>
-    FALCON_INLINE constexpr Vec2<T> Vec2<T>::tryRejectNorm(const Vec2& vec, const Vec2& from,
-                                                           OperationStatus& status) noexcept
-        requires FPArithmetic<T>
-    { return vec.tryRejectNorm(from, status); }
 
 
 

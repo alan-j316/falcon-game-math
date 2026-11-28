@@ -6,6 +6,7 @@ add_library(FalconMathTestSetup INTERFACE
         include/utils/VectorUtils.h
         include/InterpolationTestFixture.h
         include/NormalizationTestFixture.h
+        include/ProjectionTestFixture.h
         include/BoundsTestFixture.h
 )
 

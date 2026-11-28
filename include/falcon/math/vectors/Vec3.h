@@ -1614,54 +1614,6 @@ namespace flcn
 
 
         /**
-         * @brief Project the @p Vec vector onto the @p onto vector.
-         *        \f$
-         *          \text{proj}_{\mathbf{b}} \mathbf{a} =
-         *          \frac{\mathbf{a} \cdot \mathbf{b}}{\|\mathbf{b}\|^2} \mathbf{b}
-         *        \f$
-         *
-         * @note To maintain precision, result components are promoted to their
-         *       corresponding floating-point representation via @ref Magnitude.
-         * @note If @p onto is normalized, use @ref projectNorm as it is a faster implementation for unit vectors.
-         * @note Performs assertion for division by zero, resulting from zero-length vector, in **Debug mode**.
-         *
-         * @tparam U Numeric type of the RHS vector. Must satisfy @ref StrictArithmetic.
-         *
-         * @param[in] vec  The vector to project.
-         * @param[in] onto The vector to project onto.
-         *
-         * @return The projected @ref Vec3.
-         */
-        template <StrictArithmetic U>
-            requires StrictSignedness<T, U>
-        [[nodiscard]] static constexpr PromotedFloatVec3<T, U> project(const Vec3& vec, const Vec3<U>& onto) noexcept
-            requires StrictArithmetic<T>;
-
-
-        /**
-         * @brief Project the @p Vec vector onto the **unit** @p onto vector.
-         *        \f$
-         *            \text{proj}_{\mathbf{b}} \mathbf{a} = (\mathbf{a} \cdot \mathbf{b}) \mathbf{\hat{b}}
-         *        \f$
-         *
-         * @note To maintain precision, result components are promoted to their
-         *       corresponding floating-point representation via @ref Magnitude.
-         * @note Only use this method if @p onto is normalized. If not, use @ref project.
-         *
-         * @tparam U Numeric type of the RHS vector. Must satisfy @ref StrictArithmetic.
-         *
-         * @param[in] vec  The vector to project.
-         * @param[in] onto The vector to project onto.
-         *
-         * @return The projected @ref Vec3.
-         */
-        template <StrictArithmetic U>
-            requires StrictSignedness<T, U>
-        [[nodiscard]] static constexpr PromotedVec3<T, U> projectNorm(const Vec3& vec, const Vec3<U>& onto) noexcept
-            requires StrictArithmetic<T>;
-
-
-        /**
          * @brief Project this vector onto the @p onto vector.
          *        \f$
          *          \text{proj}_{\mathbf{b}} \mathbf{a} =
@@ -1708,59 +1660,6 @@ namespace flcn
         template <StrictArithmetic U>
             requires StrictSignedness<T, U>
         [[nodiscard]] constexpr PromotedVec3<T, U> safeProjectNorm(const Vec3<U>& onto) const noexcept
-            requires StrictArithmetic<T>;
-
-
-        /**
-         * @brief Project the @p Vec vector onto the @p onto vector.
-         *        \f$
-         *          \text{proj}_{\mathbf{b}} \mathbf{a} =
-         *          \frac{\mathbf{a} \cdot \mathbf{b}}{\|\mathbf{b}\|^2} \mathbf{b}
-         *        \f$
-         *
-         * @note This is a safe operation. If the @p onto vector's magnitude falls below the internal
-         *       epsilon, or if either vector contains NaN components, projection is bypassed.
-         * @note To maintain precision, result components are promoted to their
-         *       corresponding floating-point representation via @ref Magnitude.
-         * @note If @p onto is normalized, use @ref safeProjectNorm as it is a faster implementation for unit vectors.
-         *
-         * @tparam U Numeric type of the RHS vector. Must satisfy @ref StrictArithmetic.
-         *
-         * @param[in] vec  The vector to project.
-         * @param[in] onto The vector to project onto.
-         *
-         * @return The projected @ref Vec3 or a zero-vector if projected onto a zero-length vector
-         *         or if either of the vectors has NaN(Not-a-Number) component(s).
-         */
-        template <StrictArithmetic U>
-            requires StrictSignedness<T, U>
-        [[nodiscard]] static constexpr PromotedFloatVec3<T, U> safeProject(const Vec3& vec,
-                                                                           const Vec3<U>& onto) noexcept
-            requires StrictArithmetic<T>;
-
-
-        /**
-         * @brief Project the @p Vec vector onto the **unit** @p onto vector.
-         *        \f$
-         *            \text{proj}_{\mathbf{b}} \mathbf{a} = (\mathbf{a} \cdot \mathbf{b}) \mathbf{\hat{b}}
-         *        \f$
-         *
-         * @note This is a safe operation. If either vector contains NaN components, projection is bypassed.
-         * @note To maintain precision, result components are promoted to their
-         *       corresponding floating-point representation via @ref Magnitude.
-         * @note Only use this method if @p onto is normalized. If not, use @ref safeProject.
-         *
-         * @tparam U Numeric type of the RHS vector. Must satisfy @ref StrictArithmetic.
-         *
-         * @param[in] vec  The vector to project.
-         * @param[in] onto The vector to project onto.
-         *
-         * @return The projected @ref Vec3 or a zero-vector if projected onto a zero-length vector
-         *         or if either of the vectors has NaN(Not-a-Number) component(s).
-         */
-        template <StrictArithmetic U>
-            requires StrictSignedness<T, U>
-        [[nodiscard]] static constexpr PromotedVec3<T, U> safeProjectNorm(const Vec3& vec, const Vec3<U>& onto) noexcept
             requires StrictArithmetic<T>;
 
 
@@ -1823,67 +1722,6 @@ namespace flcn
 
 
         /**
-         * @brief Project the @p Vec vector onto the @p onto vector and set @p status to the
-         *        projection operation result.
-         *        \f$
-         *          \text{proj}_{\mathbf{b}} \mathbf{a} =
-         *          \frac{\mathbf{a} \cdot \mathbf{b}}{\|\mathbf{b}\|^2} \mathbf{b}
-         *        \f$
-         *
-         * @note This is a safe operation. If the @p onto vector's magnitude falls below the internal
-         *       epsilon, or if either vector contains NaN components, projection is bypassed.
-         * @note To maintain precision, result components are promoted to their corresponding floating-point
-         *       representation via @ref Magnitude.
-         * @note If @p onto is normalized, use @ref tryProjectNorm as it is a faster implementation for unit vectors.
-         *
-         * @tparam U Numeric type of the RHS vector. Must satisfy @ref StrictArithmetic.
-         *
-         * @param[in] vec     The vector to project.
-         * @param[in] onto    The vector to project onto.
-         * @param[out] status The status flag to store the status of the current operation result.
-         *                    For details on status codes see @ref OperationStatus.
-         *
-         * @return The projected @ref Vec3 or a zero-vector if projected onto a zero-length vector or if either
-         *         vector has NaN(Not-a-Number) component(s).
-         */
-        template <StrictArithmetic U>
-            requires StrictSignedness<T, U>
-        [[nodiscard]] static constexpr PromotedFloatVec3<T, U> tryProject(const Vec3& vec, const Vec3<U>& onto,
-                                                                          OperationStatus& status) noexcept
-            requires StrictArithmetic<T>;
-
-
-        /**
-         * @brief Project the @p Vec vector onto the **unit** @p onto vector and set @p status to the
-         *        projection operation result.
-         *        \f$
-         *            \text{proj}_{\mathbf{b}} \mathbf{a} = (\mathbf{a} \cdot \mathbf{b}) \mathbf{\hat{b}}
-         *        \f$
-         *
-         * @note This is a safe operation. If either vector contains NaN components, projection is bypassed.
-         * @note To maintain precision, result components are promoted to their
-         *       corresponding floating-point representation via @ref Magnitude.
-         * @note Only use this method if @p onto is normalized. If not, use @ref tryProject.
-         *
-         * @tparam U Numeric type of the RHS vector. Must satisfy @ref StrictArithmetic.
-         *
-         * @param[in] vec     The vector to project.
-         * @param[in] onto    The vector to project onto.
-         * @param[out] status The status flag to store the status of the current operation result.
-         *                    For details on status codes see @ref OperationStatus.
-         *
-         * @return The projected @ref Vec3 or a zero-vector if projected onto a zero-length vector or if either
-         *         vector has NaN(Not-a-Number) component(s).
-         */
-        template <StrictArithmetic U>
-            requires StrictSignedness<T, U>
-        [[nodiscard]] static constexpr PromotedVec3<T, U> tryProjectNorm(const Vec3& vec, const Vec3<U>& onto,
-                                                                         OperationStatus& status) noexcept
-            requires StrictArithmetic<T>;
-
-
-
-        /**
          * @brief Reject this vector from the @p from vector.
          *        \f$ \text{rej}_{\mathbf{b}} \mathbf{a} = \mathbf{a} - \text{proj}_{\mathbf{b}} \mathbf{a} \f$
          *
@@ -1921,49 +1759,6 @@ namespace flcn
         template <StrictArithmetic U>
             requires StrictSignedness<T, U>
         [[nodiscard]] constexpr PromotedVec3<T, U> rejectNorm(const Vec3<U>& from) const noexcept
-            requires StrictArithmetic<T>;
-
-
-        /**
-         * @brief Reject the @p Vec vector from the @p from vector.
-         *        \f$ \text{rej}_{\mathbf{b}} \mathbf{a} = \mathbf{a} - \text{proj}_{\mathbf{b}} \mathbf{a} \f$
-         *
-         * @note To maintain precision, result components are promoted to their
-         *       corresponding floating-point representation via @ref Magnitude.
-         * @note If @p from is normalized, use @ref rejectNorm as it is a faster implementation for unit vectors.
-         * @note Performs assertion for division by zero, resulting from zero-length vector, in **Debug mode**.
-         *
-         * @tparam U Numeric type of the RHS vector. Must satisfy @ref StrictArithmetic.
-         *
-         * @param[in] vector The vector to be rejected.
-         * @param[in] from   The vector to reject from.
-         *
-         * @return The perpendicular @ref Vec3 component.
-         */
-        template <StrictArithmetic U>
-            requires StrictSignedness<T, U>
-        [[nodiscard]] static constexpr PromotedFloatVec3<T, U> reject(const Vec3& vector, const Vec3<U>& from) noexcept
-            requires StrictArithmetic<T>;
-
-
-        /**
-         * @brief Reject the @p Vec vector from the **unit** @p from vector.
-         *        \f$ \text{rej}_{\mathbf{b}} \mathbf{a} = \mathbf{a} - \text{proj}_{\mathbf{b}} \mathbf{a} \f$
-         *
-         * @note To maintain precision, result components are promoted to their
-         *       corresponding floating-point representation via @ref Magnitude.
-         * @note Only use this method if @p from is normalized. If not, use @ref reject.
-         *
-         * @tparam U Numeric type of the RHS vector. Must satisfy @ref StrictArithmetic.
-         *
-         * @param[in] vector The vector to be rejected.
-         * @param[in] from   The vector to reject from.
-         *
-         * @return The perpendicular @ref Vec3 component.
-         */
-        template <StrictArithmetic U>
-            requires StrictSignedness<T, U>
-        [[nodiscard]] static constexpr PromotedVec3<T, U> rejectNorm(const Vec3& vector, const Vec3<U>& from) noexcept
             requires StrictArithmetic<T>;
 
 
@@ -2009,53 +1804,6 @@ namespace flcn
         template <StrictArithmetic U>
             requires StrictSignedness<T, U>
         [[nodiscard]] constexpr PromotedVec3<T, U> safeRejectNorm(const Vec3<U>& from) const noexcept
-            requires StrictArithmetic<T>;
-
-
-        /**
-         * @brief Reject the @p Vec vector from the @p from vector.
-         *        \f$ \text{rej}_{\mathbf{b}} \mathbf{a} = \mathbf{a} - \text{proj}_{\mathbf{b}} \mathbf{a} \f$
-         *
-         * @note This is a safe operation. If the @p from vector's magnitude falls below the internal
-         *       epsilon, or if either vector contains NaN components, rejection is bypassed.
-         * @note To maintain precision, result components are promoted to their
-         *       corresponding floating-point representation via @ref Magnitude.
-         * @note If @p from is normalized, use @ref safeRejectNorm as it is a faster implementation for unit vectors.
-         *
-         * @tparam U Numeric type of the RHS vector. Must satisfy @ref StrictArithmetic.
-         *
-         * @param[in] vec  The vector to reject.
-         * @param[in] from The vector to reject from.
-         *
-         * @return The perpendicular @ref Vec3 component or a zero-vector if projected onto a zero-length vector
-         *         or if either of the vectors has NaN(Not-a-Number) component(s).
-         */
-        template <StrictArithmetic U>
-            requires StrictSignedness<T, U>
-        [[nodiscard]] static constexpr PromotedFloatVec3<T, U> safeReject(const Vec3& vec, const Vec3<U>& from) noexcept
-            requires StrictArithmetic<T>;
-
-
-        /**
-         * @brief Reject the @p Vec vector from the **unit** @p from vector.
-         *        \f$ \text{rej}_{\mathbf{b}} \mathbf{a} = \mathbf{a} - \text{proj}_{\mathbf{b}} \mathbf{a} \f$
-         *
-         * @note This is a safe operation. If either vector contains NaN components, rejection is bypassed.
-         * @note To maintain precision, result components are promoted to their
-         *       corresponding floating-point representation via @ref Magnitude.
-         * @note Only use this method if @p from is normalized. If not, use @ref safeReject.
-         *
-         * @tparam U Numeric type of the RHS vector. Must satisfy @ref StrictArithmetic.
-         *
-         * @param[in] vec  The vector to reject.
-         * @param[in] from The vector to reject from.
-         *
-         * @return The perpendicular @ref Vec3 component or a zero-vector if projected onto a zero-length vector
-         *         or if either of the vectors has NaN(Not-a-Number) component(s).
-         */
-        template <StrictArithmetic U>
-            requires StrictSignedness<T, U>
-        [[nodiscard]] static constexpr PromotedVec3<T, U> safeRejectNorm(const Vec3& vec, const Vec3<U>& from) noexcept
             requires StrictArithmetic<T>;
 
 
@@ -2108,60 +1856,6 @@ namespace flcn
             requires StrictSignedness<T, U>
         [[nodiscard]] constexpr PromotedVec3<T, U> tryRejectNorm(const Vec3<U>& from,
                                                                  OperationStatus& status) const noexcept
-            requires StrictArithmetic<T>;
-
-
-        /**
-         * @brief Reject the @p Vec vector from the @p from vector and set @p status to the result of
-         *        rejection operation.
-         *        \f$ \text{rej}_{\mathbf{b}} \mathbf{a} = \mathbf{a} - \text{proj}_{\mathbf{b}} \mathbf{a} \f$
-         *
-         * @note This is a safe operation. If the @p from vector's magnitude falls below the internal
-         *       epsilon, or if either vector contains NaN components, rejection is bypassed.
-         * @note To maintain precision, result components are promoted to their
-         *       corresponding floating-point representation via @ref Magnitude.
-         * @note If @p from is normalized, use @ref tryRejectNorm as it is a faster implementation for unit vectors.
-         *
-         * @tparam U Numeric type of the RHS vector. Must satisfy @ref StrictArithmetic.
-         *
-         * @param[in] vec     The vector to reject.
-         * @param[in] from    The vector to reject from.
-         * @param[out] status The status flag to store the status of the current operation result.
-         *                    For details on status codes see @ref OperationStatus.
-         *
-         * @return The perpendicular @ref Vec3 component or a zero-vector if projected onto a zero-length vector
-         *         or if either of the vectors has NaN(Not-a-Number) component(s).
-         */
-        template <StrictArithmetic U>
-            requires StrictSignedness<T, U>
-        [[nodiscard]] static constexpr PromotedFloatVec3<T, U> tryReject(const Vec3& vec, const Vec3<U>& from,
-                                                                         OperationStatus& status) noexcept
-            requires StrictArithmetic<T>;
-
-
-        /**
-         * @brief Reject the @p Vec vector from the **unit** @p from vector.
-         *        \f$ \text{rej}_{\mathbf{b}} \mathbf{a} = \mathbf{a} - \text{proj}_{\mathbf{b}} \mathbf{a} \f$
-         *
-         * @note This is a safe operation. If either vector contains NaN components, rejection is bypassed.
-         * @note To maintain precision, result components are promoted to their
-         *       corresponding floating-point representation via @ref Magnitude.
-         * @note Only use this method if @p from is normalized. If not, use @ref tryReject.
-         *
-         * @tparam U Numeric type of the RHS vector. Must satisfy @ref StrictArithmetic.
-         *
-         * @param[in] vec     The vector to reject.
-         * @param[in] from    The vector to reject from.
-         * @param[out] status The status flag to store the status of the current operation result.
-         *                    For details on status codes see @ref OperationStatus.
-         *
-         * @return The perpendicular @ref Vec3 component or a zero-vector if projected onto a zero-length vector
-         *         or if either of the vectors has NaN(Not-a-Number) component(s).
-         */
-        template <StrictArithmetic U>
-            requires StrictSignedness<T, U>
-        [[nodiscard]] static constexpr PromotedVec3<T, U> tryRejectNorm(const Vec3& vec, const Vec3<U>& from,
-                                                                        OperationStatus& status) noexcept
             requires StrictArithmetic<T>;
 
         /** @} */

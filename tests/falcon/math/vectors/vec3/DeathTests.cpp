@@ -9,10 +9,11 @@
  */
 
 #ifdef ENABLE_DEBUG_TESTS
-    #include "../../../CommonSetup.h"
+    #include "CommonSetup.h"
 
     #include <falcon/math/vectors/Vec3.h>
     #include <gtest/gtest.h>
+    #include "NormalizationTestFixture.h"
 
 namespace
 {
@@ -47,27 +48,6 @@ namespace
         }
     };
     TYPED_TEST_SUITE(Vec3ScalarDivisionTests, SupportedArithmeticTypes);
-
-
-    /**
-     * @brief Test fixture for @ref Vec3 normalization.
-     * @tparam T The scalar type (int, float, double...) of the vector components.
-     */
-    template <typename T>
-    class Vec3NormalizationTests: public testing::Test
-    {
-        using R = flcn::Magnitude<T>;
-
-    protected:
-        flcn::Vec3<T> _vec;
-
-        void SetUp() override
-        {
-            _vec             = { T(14), T(27), T(0) };
-        }
-    };
-    TYPED_TEST_SUITE(Vec3NormalizationTests, SupportedArithmeticTypes);
-
 
 
     /**
@@ -158,12 +138,6 @@ TYPED_TEST(Vec3NormalizationTests, ZeroMagnitudeTriggersAssertInDebugMode)
 }
 
 
-TYPED_TEST(Vec3NormalizationTests, StaticWrapper_ZeroMagnitudeTriggersAssertInDebugMode)
-{
-    const flcn::Vec3<TypeParam> zVec(0, 0, 0);
-    EXPECT_DEBUG_DEATH(static_cast<void>(flcn::Vec3<TypeParam>::normalize(zVec)), "");
-}
-
 
 TYPED_TEST(Vec3ProjectionTests, ProjectionOntoZeroVectorTriggersAssertionInCallback)
 {
@@ -172,23 +146,10 @@ TYPED_TEST(Vec3ProjectionTests, ProjectionOntoZeroVectorTriggersAssertionInCallb
 }
 
 
-TYPED_TEST(Vec3ProjectionTests, StaticWrapper_ProjectionOntoZeroVectorTriggersAssertionInCallback)
-{
-    const flcn::Vec3<TypeParam> zeroVec(0, 0, 0);
-    EXPECT_DEBUG_DEATH(static_cast<void>(flcn::Vec3<TypeParam>::project(this->_vec, zeroVec)), "");
-}
-
 TYPED_TEST(Vec3RejectionTests, FromZeroVectorTriggersAssertionInCallback)
 {
     const flcn::Vec3<TypeParam> zeroVec(0, 0, 0);
     EXPECT_DEBUG_DEATH(static_cast<void>(this->_vec.reject(zeroVec)), "");
-}
-
-
-TYPED_TEST(Vec3RejectionTests, StaticWrapper_FromZeroVectorTriggersAssertionInCallback)
-{
-    const flcn::Vec3<TypeParam> zeroVec(0, 0, 0);
-    EXPECT_DEBUG_DEATH(static_cast<void>(flcn::Vec3<TypeParam>::reject(this->_vec, zeroVec)), "");
 }
 
 #endif

@@ -9,7 +9,8 @@
  */
 
 #ifdef ENABLE_DEBUG_TESTS
-    #include "../../../CommonSetup.h"
+    #include "CommonSetup.h"
+    #include "NormalizationTestFixture.h"
 
     #include <falcon/math/vectors/Vec4.h>
     #include <gtest/gtest.h>
@@ -44,23 +45,6 @@ namespace
         void SetUp() override { _vec = { T(17), T(31), T(5), T(10) }; }
     };
     TYPED_TEST_SUITE(Vec4ScalarDivisionTests, SupportedArithmeticTypes);
-
-
-    /**
-     * @brief Test fixture for @ref Vec4 normalization.
-     * @tparam T The scalar type (int, float, double...) of the vector components.
-     */
-    template <typename T>
-    class Vec4NormalizationTests: public testing::Test
-    {
-        using R = flcn::Magnitude<T>;
-
-    protected:
-        flcn::Vec4<T> _vec;
-
-        void SetUp() override { _vec = { T(14), T(27), T(0), T(0) }; }
-    };
-    TYPED_TEST_SUITE(Vec4NormalizationTests, SupportedArithmeticTypes);
 
 
 
@@ -120,7 +104,7 @@ namespace
 
 TEST_P(Vec4IndexingTests, OutOfBoundAccess_TriggersAssertInDebugMode)
 {
-    const flcn::Vec4 vec(1, 2, 3,4);
+    const flcn::Vec4 vec(1, 2, 3, 4);
     const auto index = GetParam();
     EXPECT_DEBUG_DEATH(vec[index], "");
 }
@@ -128,7 +112,7 @@ TEST_P(Vec4IndexingTests, OutOfBoundAccess_TriggersAssertInDebugMode)
 
 TEST_P(Vec4IndexingTests, OutOfBoundMutationTriggers_AssertInDebugMode)
 {
-    flcn::Vec4 vec(1, 2, 3,4);
+    flcn::Vec4 vec(1, 2, 3, 4);
     const auto index = GetParam();
     EXPECT_DEBUG_DEATH(vec[index] = 2, "");
 }
@@ -152,13 +136,6 @@ TYPED_TEST(Vec4NormalizationTests, ZeroMagnitudeTriggersAssertInDebugMode)
 }
 
 
-TYPED_TEST(Vec4NormalizationTests, StaticWrapper_ZeroMagnitudeTriggersAssertInDebugMode)
-{
-    const flcn::Vec4<TypeParam> zVec(0, 0, 0, 0);
-    EXPECT_DEBUG_DEATH(static_cast<void>(flcn::Vec4<TypeParam>::normalize(zVec)), "");
-}
-
-
 TYPED_TEST(Vec4ProjectionTests, ProjectionOntoZeroVectorTriggersAssertionInCallback)
 {
     const flcn::Vec4<TypeParam> zeroVec(0, 0, 0, 0);
@@ -166,23 +143,10 @@ TYPED_TEST(Vec4ProjectionTests, ProjectionOntoZeroVectorTriggersAssertionInCallb
 }
 
 
-TYPED_TEST(Vec4ProjectionTests, StaticWrapper_ProjectionOntoZeroVectorTriggersAssertionInCallback)
-{
-    const flcn::Vec4<TypeParam> zeroVec(0, 0, 0, 0);
-    EXPECT_DEBUG_DEATH(static_cast<void>(flcn::Vec4<TypeParam>::project(this->_vec, zeroVec)), "");
-}
-
 TYPED_TEST(Vec4RejectionTests, FromZeroVectorTriggersAssertionInCallback)
 {
     const flcn::Vec4<TypeParam> zeroVec(0, 0, 0, 0);
     EXPECT_DEBUG_DEATH(static_cast<void>(this->_vec.reject(zeroVec)), "");
-}
-
-
-TYPED_TEST(Vec4RejectionTests, StaticWrapper_FromZeroVectorTriggersAssertionInCallback)
-{
-    const flcn::Vec4<TypeParam> zeroVec(0, 0, 0, 0);
-    EXPECT_DEBUG_DEATH(static_cast<void>(flcn::Vec4<TypeParam>::reject(this->_vec, zeroVec)), "");
 }
 
 #endif

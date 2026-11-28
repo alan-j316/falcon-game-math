@@ -8,7 +8,8 @@
  * @copyright Copyright (c) 2026 Alan Abraham P Kochumon
  */
 
-#include "../../../../CommonSetup.h"
+#include "CommonSetup.h"
+#include "NormalizationTestFixture.h"
 #include "Vec2TestSetup.h"
 
 
@@ -26,7 +27,6 @@ namespace
     class SimdVec2IndexingTests: public testing::TestWithParam<size_t>
     {};
     INSTANTIATE_TEST_SUITE_P(Vec2InvalidIndices, SimdVec2IndexingTests, testing::Values(3, 4, 100));
-
 
 
     /**
@@ -52,30 +52,6 @@ namespace
 
 
     /**
-     * @brief Test fixture for @ref Vec2 normalization.
-     * @tparam T The scalar type (int, float, double...) of the vector components.
-     */
-    template <typename T>
-    class SimdVec2NormalizationTests: public testing::Test
-    {
-        //NOLINTNEXTLINE
-        using R = flcn::Magnitude<T>;
-
-    protected:
-        flcn::simd::Vec2<T> _vec;
-        flcn::simd::Vec2<R> _expectedUnitVec;
-
-        void SetUp() override
-        {
-            _vec             = { T(14), T(27) };
-            _expectedUnitVec = { static_cast<R>(0.46031716445500037), static_cast<R>(0.8877545314489294) };
-        }
-    };
-    TYPED_TEST_SUITE(SimdVec2NormalizationTests, SupportedFloatingPointTypes);
-
-
-
-    /**
      * @brief Test fixture for @ref flcn::simd::Vec2 projection.
      *
      * @tparam T The scalar type (e.g., float, double) used for the vectors.
@@ -98,7 +74,6 @@ namespace
         }
     };
     TYPED_TEST_SUITE(SimdVec2ProjectionTests, SupportedFloatingPointTypes);
-
 
 
     /**
@@ -163,13 +138,6 @@ TYPED_TEST(SimdVec2NormalizationTests, ZeroMagnitudeTriggersAssertInDebugMode)
 }
 
 
-TYPED_TEST(SimdVec2NormalizationTests, StaticWrapper_ZeroMagnitudeTriggersAssertInDebugMode)
-{
-    const flcn::simd::Vec2<TypeParam> zVec(0, 0);
-    EXPECT_DEBUG_DEATH(static_cast<void>(flcn::simd::Vec2<TypeParam>::normalize(zVec)), "");
-}
-
-
 TYPED_TEST(SimdVec2ProjectionTests, ProjectionOntoZeroVectorTriggersAssertionInCallback)
 {
     const flcn::simd::Vec2<TypeParam> zeroVec(0, 0);
@@ -177,23 +145,10 @@ TYPED_TEST(SimdVec2ProjectionTests, ProjectionOntoZeroVectorTriggersAssertionInC
 }
 
 
-TYPED_TEST(SimdVec2ProjectionTests, StaticWrapper_ProjectionOntoZeroVectorTriggersAssertionInCallback)
-{
-    const flcn::simd::Vec2<TypeParam> zeroVec(0, 0);
-    EXPECT_DEBUG_DEATH(static_cast<void>(flcn::simd::Vec2<TypeParam>::project(this->_vec, zeroVec)), "");
-}
-
 TYPED_TEST(SimdVec2RejectionTests, FromZeroVectorTriggersAssertionInCallback)
 {
     const flcn::simd::Vec2<TypeParam> zeroVec(0, 0);
     EXPECT_DEBUG_DEATH(static_cast<void>(this->_vec.reject(zeroVec)), "");
-}
-
-
-TYPED_TEST(SimdVec2RejectionTests, StaticWrapper_FromZeroVectorTriggersAssertionInCallback)
-{
-    const flcn::simd::Vec2<TypeParam> zeroVec(0, 0);
-    EXPECT_DEBUG_DEATH(static_cast<void>(flcn::simd::Vec2<TypeParam>::reject(this->_vec, zeroVec)), "");
 }
 
 #endif
